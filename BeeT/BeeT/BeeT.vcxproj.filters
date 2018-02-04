@@ -34,6 +34,9 @@
     <Filter Include="Header Files\Helpers">
       <UniqueIdentifier>{ee1413e9-34ea-44d1-a0ca-9cb08ccd3d32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Libraries\ImGui">
+      <UniqueIdentifier>{ab71823b-3e63-437b-8fc5-89e3ed47f8fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -52,6 +55,21 @@
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="External\imgui-1.53\imgui_demo.cpp">
+      <Filter>Libraries\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="External\imgui-1.53\imgui_draw.cpp">
+      <Filter>Libraries\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="External\imgui-1.53\imgui_impl_sdl_gl3.cpp">
+      <Filter>Libraries\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="External\imgui-1.53\imgui.cpp">
+      <Filter>Libraries\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
   </ItemGroup>
@@ -327,6 +345,30 @@
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
+      <Filter>Header Files\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="External\imgui-1.53\imgui_impl_sdl_gl3.h">
+      <Filter>Libraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\imgui-1.53\imgui_internal.h">
+      <Filter>Libraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\imgui-1.53\stb_rect_pack.h">
+      <Filter>Libraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\imgui-1.53\stb_textedit.h">
+      <Filter>Libraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\imgui-1.53\stb_truetype.h">
+      <Filter>Libraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\imgui-1.53\imconfig.h">
+      <Filter>Libraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\imgui-1.53\imgui.h">
+      <Filter>Libraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
       <Filter>Header Files\Modules</Filter>
     </ClInclude>
   </ItemGroup>

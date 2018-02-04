@@ -11,6 +11,9 @@ public:
 
 	virtual bool Init();
 	virtual bool CleanUp();
+	virtual bool PreUpdate();
+	virtual bool Update();
+	virtual bool PostUpdate();
 
 	const char* GetName()const;
 

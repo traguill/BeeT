@@ -13,22 +13,51 @@ Application* g_app = nullptr;
 int main(int argc, char* argv[])
 {
 	bool ret = false;
+	
+	g_app = new Application();
+	AppStep step = APP_START;
 
-	g_app = new Application();	
-	ret = g_app->Init();
-	if (ret == false)
+	while (step != AppStep::APP_QUIT)
 	{
-		LOGE("Initialization failed");
+		switch (step)
+		{
+		case APP_START:
+			ret = g_app->Init();
+			if (ret == false)
+			{
+				LOGE("Initialization failed.");
+				step = APP_QUIT;
+			}
+			else
+			{
+				LOGI("Initialization completed.");
+				step = APP_LOOP;
+			}
+			break;
+		case APP_LOOP:
+			ret = g_app->Update();
+			if (ret == false)
+			{
+				LOGI("Application starts to quit.");
+				step = APP_END;
+			}
+			break;
+		case APP_END:
+			ret = g_app->CleanUp();
+			if (ret == false)
+			{
+				LOGE("One or more modules failed at CleanUp. See errors above.");
+			}
+			else
+			{
+				LOGI("CleanUp completed.");
+			}
+			step = APP_QUIT;
+			break;
+		}
 	}
 
-	// Loop
-
-	ret = g_app->CleanUp();
-	if (ret == false)
-	{
-		LOGE("One or more modules failed at CleanUp. See errors above.");
-	}
-
+	LOGI("Application quitting");
 	delete g_app;
 
 	return 0;

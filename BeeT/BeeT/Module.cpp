@@ -18,6 +18,21 @@ bool Module::CleanUp()
 	return true;
 }
 
+bool Module::PreUpdate()
+{
+	return true;
+}
+
+bool Module::Update()
+{
+	return true;
+}
+
+bool Module::PostUpdate()
+{
+	return true;
+}
+
 const char * Module::GetName() const
 {
 	return name.data();

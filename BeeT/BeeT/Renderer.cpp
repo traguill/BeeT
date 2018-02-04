@@ -11,6 +11,9 @@
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "External/glew-2.1.0/lib/x86/glew32.lib")
 
+#include "External/imgui-1.53/imgui.h"
+#include "External/imgui-1.53/imgui_impl_sdl_gl3.h"
+
 Renderer::Renderer(const char* name) : Module(name)
 {}
 
@@ -77,14 +80,39 @@ bool Renderer::Init()
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_TEXTURE_2D);
 	glShadeModel(GL_SMOOTH);
+
+	// ImGui init
+	LOGI("Init ImGui");
+	ImGui_ImplSdlGL3_Init(g_app->window->sdlWindow);
+
+	// Add PreUpdate and PostUpdate to App steps
+	g_app->AddModulePreUpdate(this);
+	g_app->AddModulePostUpdate(this);
 	
 	return true;
 }
 
 bool Renderer::CleanUp()
 {
+	LOGI("Shutting down ImGui");
+	ImGui_ImplSdlGL3_Shutdown();
 	LOGI("Destroying SDL OpenGL renderer context");
 	SDL_GL_DeleteContext(context);
+	return true;
+}
+
+bool Renderer::PreUpdate()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	ImGui_ImplSdlGL3_NewFrame(g_app->window->sdlWindow);
+	return true;
+}
+
+bool Renderer::PostUpdate()
+{
+	ImGui::ShowTestWindow();
+	ImGui::Render();
+	SDL_GL_SwapWindow(g_app->window->sdlWindow);
 	return true;
 }
 

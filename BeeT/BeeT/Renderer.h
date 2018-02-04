@@ -13,6 +13,9 @@ public:
 	bool Init();
 	bool CleanUp();
 
+	bool PreUpdate();
+	bool PostUpdate();
+
 private:
 	bool CheckGLError()const;
 

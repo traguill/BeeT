@@ -3,9 +3,19 @@
 
 #include <vector>
 
+// Application lifecycle steps
+enum AppStep
+{
+	APP_START,
+	APP_LOOP,
+	APP_END,
+	APP_QUIT
+};
+
 // Forward declaration of modules
 class Module;
 class Window;
+class Input;
 class Renderer;
 
 class Application
@@ -16,10 +26,18 @@ public:
 
 	bool Init();
 	bool CleanUp();
+	bool Update();
+
+	// Add modules in steps. These methods doesn't check duplicates
+	void AddModuleStart(Module* moduleToAdd);
+	void AddModulePreUpdate(Module* moduleToAdd);
+	void AddModuleUpdate(Module* moduleToAdd);
+	void AddModulePostUpdate(Module* moduleToAdd);
 
 public:
 	// Modules
 	Window* window = nullptr;
+	Input* input = nullptr;
 	Renderer* renderer = nullptr;
 
 private:

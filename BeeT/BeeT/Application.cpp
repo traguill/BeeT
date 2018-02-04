@@ -2,6 +2,7 @@
 #include "Log.h"
 #include "Module.h"
 #include "Window.h"
+#include "Input.h"
 #include "Renderer.h"
 
 using namespace std;
@@ -9,9 +10,11 @@ using namespace std;
 Application::Application()
 {
 	window = new Window("Window");
+	input = new Input("Input");
 	renderer = new Renderer("Renderer");
 
 	modules.push_back(window);
+	modules.push_back(input);
 	modules.push_back(renderer);
 }
 
@@ -47,4 +50,50 @@ bool Application::CleanUp()
 		}
 	}
 	return true;
+}
+
+bool Application::Update()
+{
+	// PreUpdate
+	for (vector<Module*>::iterator itModule = preUpdateModules.begin(); itModule != preUpdateModules.end(); ++itModule)
+	{
+		if ((*itModule)->PreUpdate() == false)
+			return false;
+	}
+
+	// Update
+	for (vector<Module*>::iterator itModule = updateModules.begin(); itModule != updateModules.end(); ++itModule)
+	{
+		if ((*itModule)->Update() == false)
+			return false;
+	}
+	
+	// PostUpdate
+	for (vector<Module*>::iterator itModule = postUpdateModules.begin(); itModule != postUpdateModules.end(); ++itModule)
+	{
+		if ((*itModule)->PostUpdate() == false)
+			return false;
+	}
+
+	return true;
+}
+
+void Application::AddModuleStart(Module * moduleToAdd)
+{
+	startModules.push_back(moduleToAdd);
+}
+
+void Application::AddModulePreUpdate(Module * moduleToAdd)
+{
+	preUpdateModules.push_back(moduleToAdd);
+}
+
+void Application::AddModuleUpdate(Module * moduleToAdd)
+{
+	updateModules.push_back(moduleToAdd);
+}
+
+void Application::AddModulePostUpdate(Module * moduleToAdd)
+{
+	postUpdateModules.push_back(moduleToAdd);
 }
