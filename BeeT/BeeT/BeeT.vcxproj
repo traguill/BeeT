@@ -113,10 +113,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="External\imgui-1.53\imgui.cpp" />
-    <ClCompile Include="External\imgui-1.53\imgui_demo.cpp" />
-    <ClCompile Include="External\imgui-1.53\imgui_draw.cpp" />
-    <ClCompile Include="External\imgui-1.53\imgui_impl_sdl_gl3.cpp" />
+    <ClCompile Include="BeeTGUI.cpp" />
+    <ClCompile Include="External\ImGui\imgui.cpp" />
+    <ClCompile Include="External\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="External\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="External\ImGui\imgui_impl_sdl_gl3.cpp" />
+    <ClCompile Include="External\NodeEditor\Source\Editor.cpp" />
+    <ClCompile Include="External\NodeEditor\Source\NodeEditor.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
@@ -126,17 +129,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="BeeTGUI.h" />
     <ClInclude Include="External\glew-2.1.0\include\eglew.h" />
     <ClInclude Include="External\glew-2.1.0\include\glew.h" />
     <ClInclude Include="External\glew-2.1.0\include\glxew.h" />
     <ClInclude Include="External\glew-2.1.0\include\wglew.h" />
-    <ClInclude Include="External\imgui-1.53\imconfig.h" />
-    <ClInclude Include="External\imgui-1.53\imgui.h" />
-    <ClInclude Include="External\imgui-1.53\imgui_impl_sdl_gl3.h" />
-    <ClInclude Include="External\imgui-1.53\imgui_internal.h" />
-    <ClInclude Include="External\imgui-1.53\stb_rect_pack.h" />
-    <ClInclude Include="External\imgui-1.53\stb_textedit.h" />
-    <ClInclude Include="External\imgui-1.53\stb_truetype.h" />
+    <ClInclude Include="External\ImGui\imconfig.h" />
+    <ClInclude Include="External\ImGui\imgui.h" />
+    <ClInclude Include="External\ImGui\imgui_impl_sdl_gl3.h" />
+    <ClInclude Include="External\ImGui\imgui_internal.h" />
+    <ClInclude Include="External\ImGui\stb_rect_pack.h" />
+    <ClInclude Include="External\ImGui\stb_textedit.h" />
+    <ClInclude Include="External\ImGui\stb_truetype.h" />
+    <ClInclude Include="External\NodeEditor\Include\NodeEditor.h" />
+    <ClInclude Include="External\NodeEditor\Source\Editor.h" />
+    <ClInclude Include="External\NodeEditor\Source\Shared\Interop.h" />
+    <ClInclude Include="External\NodeEditor\Source\Shared\Math2D.h" />
     <ClInclude Include="External\SDL2-2.0.7\include\begin_code.h" />
     <ClInclude Include="External\SDL2-2.0.7\include\close_code.h" />
     <ClInclude Include="External\SDL2-2.0.7\include\SDL.h" />
@@ -226,6 +234,7 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="External\NodeEditor\Source\Shared\Math2D.inl" />
     <None Include="External\SDL2-2.0.7\include\SDL_config.h.cmake" />
     <None Include="External\SDL2-2.0.7\include\SDL_config.h.in" />
     <None Include="External\SDL2-2.0.7\include\SDL_config_macosx.h.orig" />

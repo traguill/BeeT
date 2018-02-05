@@ -11,8 +11,8 @@
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "External/glew-2.1.0/lib/x86/glew32.lib")
 
-#include "External/imgui-1.53/imgui.h"
-#include "External/imgui-1.53/imgui_impl_sdl_gl3.h"
+#include "External/ImGui/imgui.h"
+#include "External/ImGui/imgui_impl_sdl_gl3.h"
 
 Renderer::Renderer(const char* name) : Module(name)
 {}
@@ -110,7 +110,6 @@ bool Renderer::PreUpdate()
 
 bool Renderer::PostUpdate()
 {
-	ImGui::ShowTestWindow();
 	ImGui::Render();
 	SDL_GL_SwapWindow(g_app->window->sdlWindow);
 	return true;

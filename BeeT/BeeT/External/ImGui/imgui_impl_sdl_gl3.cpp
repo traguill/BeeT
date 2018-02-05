@@ -14,7 +14,7 @@
 // SDL,GL3W
 #include "../SDL2-2.0.7/include/SDL.h"
 #include "../SDL2-2.0.7/include/SDL_syswm.h"
-#include "../glew-2.1.0/include/glew.h"	 This example is using gl3w to access OpenGL functions (because it is small). You may use glew/glad/glLoadGen/etc. whatever already works for you.
+#include "../glew-2.1.0/include/glew.h"
 
 // Data
 static double       g_Time = 0.0f;
@@ -339,9 +339,9 @@ bool    ImGui_ImplSdlGL3_Init(SDL_Window* window)
     io.KeyMap[ImGuiKey_Z] = SDLK_z;
 
     io.RenderDrawListsFn = ImGui_ImplSdlGL3_RenderDrawLists;   // Alternatively you can set this to NULL and call ImGui::GetDrawData() after ImGui::Render() to get the same ImDrawData pointer.
-    io.SetClipboardTextFn = ImGui_ImplSdlGL3_SetClipboardText;
-    io.GetClipboardTextFn = ImGui_ImplSdlGL3_GetClipboardText;
-    io.ClipboardUserData = NULL;
+    //io.SetClipboardTextFn = ImGui_ImplSdlGL3_SetClipboardText;
+    //io.GetClipboardTextFn = ImGui_ImplSdlGL3_GetClipboardText;
+    //io.ClipboardUserData = NULL;
 
 #ifdef _WIN32
     SDL_SysWMinfo wmInfo;
