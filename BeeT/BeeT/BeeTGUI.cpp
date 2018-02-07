@@ -1,7 +1,8 @@
 #include "BeeTGui.h"
 #include "Application.h"
 
-
+#include "ThirdParty/ImGui/imgui.h"
+#include "ThirdParty/ImGui/imgui_impl_sdl_gl3.h"
 
 namespace ne = ax::NodeEditor;
 
@@ -16,6 +17,10 @@ bool BeeTGui::Init()
 	editorContext = ne::CreateEditor();
 
 	g_app->AddModuleUpdate(this);
+
+	// Testing
+
+	// Init texture
 
 	return true;
 }
@@ -254,7 +259,6 @@ void BeeTGui::DrawTreeNode()
 	// Draw Input
 	drawList->AddRectFilled(to_imvec(inputsRect.top_left()) + ImVec2(0, 1), to_imvec(inputsRect.bottom_right()), IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), inputAlpha), 4.0f, 12);
 	
-	// Same as before but with a StyleVar. Not a clue why
 	ImGui::PushStyleVar(ImGuiStyleVar_AntiAliasFringeScale, 1.0f);
 	drawList->AddRect(to_imvec(inputsRect.top_left()) + ImVec2(0, 1), to_imvec(inputsRect.bottom_right()), IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), inputAlpha), 4.0f, 12);
 	ImGui::PopStyleVar();
@@ -262,12 +266,11 @@ void BeeTGui::DrawTreeNode()
 	// Draw Output
 	drawList->AddRectFilled(to_imvec(outputsRect.top_left()), to_imvec(outputsRect.bottom_right()) - ImVec2(0, 1), IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), outputAlpha), 4.0f, 3);
 	
-	// Same as with input. Don't know why the duplicate with the AntiAliasFringeScale. Investigate this Style.
 	ImGui::PushStyleVar(ImGuiStyleVar_AntiAliasFringeScale, 1.0f);
 	drawList->AddRect(to_imvec(outputsRect.top_left()), to_imvec(outputsRect.bottom_right()) - ImVec2(0, 1), IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), outputAlpha), 4.0f, 3);
 	ImGui::PopStyleVar();
 	
-	// Content. Same methodology, a duplicated with a style.
+	// Draw Content
 	drawList->AddRectFilled(to_imvec(contentRect.top_left()), to_imvec(contentRect.bottom_right()), IM_COL32(24, 64, 128, 200), 0.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_AntiAliasFringeScale, 1.0f);
 	drawList->AddRect(to_imvec(contentRect.top_left()), to_imvec(contentRect.bottom_right()), IM_COL32(48, 128, 255, 100), 0.0f);

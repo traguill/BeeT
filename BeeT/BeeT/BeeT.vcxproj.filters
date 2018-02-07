@@ -13,15 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Libraries">
-      <UniqueIdentifier>{c25d348b-5670-4eae-b107-28a9355872ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Libraries\SDL">
-      <UniqueIdentifier>{117fe1b2-20d7-444d-b1e0-352aed2ded94}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Libraries\Glew">
-      <UniqueIdentifier>{362a0593-88ac-4f83-8b4e-deb76f2c5def}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Modules">
       <UniqueIdentifier>{7488c51d-ab80-41f8-b303-bb8dcdb1afdc}</UniqueIdentifier>
     </Filter>
@@ -34,10 +25,19 @@
     <Filter Include="Header Files\Helpers">
       <UniqueIdentifier>{ee1413e9-34ea-44d1-a0ca-9cb08ccd3d32}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Libraries\NodeEditor">
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{c25d348b-5670-4eae-b107-28a9355872ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\SDL">
+      <UniqueIdentifier>{117fe1b2-20d7-444d-b1e0-352aed2ded94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Glew">
+      <UniqueIdentifier>{362a0593-88ac-4f83-8b4e-deb76f2c5def}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\NodeEditor">
       <UniqueIdentifier>{d445d775-66c3-45e6-bb6a-6d720ebcdc9a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Libraries\ImGui">
+    <Filter Include="ThirdParty\ImGui">
       <UniqueIdentifier>{0bdd97cc-8d4d-4d10-a552-3561d1b2eb6c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -63,287 +63,29 @@
     <ClCompile Include="Input.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="External\NodeEditor\Source\Editor.cpp">
-      <Filter>Libraries\NodeEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="External\NodeEditor\Source\NodeEditor.cpp">
-      <Filter>Libraries\NodeEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="External\ImGui\imgui.cpp">
-      <Filter>Libraries\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="External\ImGui\imgui_demo.cpp">
-      <Filter>Libraries\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="External\ImGui\imgui_draw.cpp">
-      <Filter>Libraries\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="External\ImGui\imgui_impl_sdl_gl3.cpp">
-      <Filter>Libraries\ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="BeeTGui.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_demo.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_draw.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_impl_sdl_gl3.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\NodeEditor\Source\Editor.cpp">
+      <Filter>ThirdParty\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\NodeEditor\Source\NodeEditor.cpp">
+      <Filter>ThirdParty\NodeEditor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="External\SDL2-2.0.7\include\begin_code.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\close_code.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_assert.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_atomic.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_audio.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_bits.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_blendmode.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_clipboard.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_config.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_config_android.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_config_iphoneos.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_config_macosx.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_config_minimal.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_config_pandora.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_config_psp.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_config_windows.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_config_winrt.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_config_wiz.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_copying.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_cpuinfo.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_egl.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_endian.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_error.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_events.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_filesystem.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_gamecontroller.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_gesture.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_haptic.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_hints.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_joystick.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_keyboard.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_keycode.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_loadso.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_log.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_main.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_messagebox.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_mouse.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_mutex.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_name.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_opengl.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_opengl_glext.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_opengles.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_opengles2.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_opengles2_gl2.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_opengles2_gl2ext.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_opengles2_gl2platform.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_opengles2_khrplatform.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_pixels.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_platform.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_power.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_quit.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_rect.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_render.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_revision.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_rwops.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_scancode.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_shape.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_stdinc.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_surface.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_system.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_syswm.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_test.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_test_assert.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_test_common.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_test_compare.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_test_crc32.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_test_font.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_test_fuzzer.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_test_harness.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_test_images.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_test_log.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_test_md5.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_test_memory.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_test_random.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_thread.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_timer.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_touch.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_types.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_version.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_video.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\SDL2-2.0.7\include\SDL_vulkan.h">
-      <Filter>Libraries\SDL</Filter>
-    </ClInclude>
-    <ClInclude Include="External\glew-2.1.0\include\glew.h">
-      <Filter>Libraries\Glew</Filter>
-    </ClInclude>
-    <ClInclude Include="External\glew-2.1.0\include\glxew.h">
-      <Filter>Libraries\Glew</Filter>
-    </ClInclude>
-    <ClInclude Include="External\glew-2.1.0\include\wglew.h">
-      <Filter>Libraries\Glew</Filter>
-    </ClInclude>
-    <ClInclude Include="External\glew-2.1.0\include\eglew.h">
-      <Filter>Libraries\Glew</Filter>
-    </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -362,55 +104,319 @@
     <ClInclude Include="Input.h">
       <Filter>Header Files\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="External\NodeEditor\Source\Editor.h">
-      <Filter>Libraries\NodeEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="External\NodeEditor\Source\Shared\Interop.h">
-      <Filter>Libraries\NodeEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="External\NodeEditor\Source\Shared\Math2D.h">
-      <Filter>Libraries\NodeEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="External\NodeEditor\Include\NodeEditor.h">
-      <Filter>Libraries\NodeEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="External\ImGui\imconfig.h">
-      <Filter>Libraries\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="External\ImGui\imgui.h">
-      <Filter>Libraries\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="External\ImGui\imgui_internal.h">
-      <Filter>Libraries\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="External\ImGui\stb_rect_pack.h">
-      <Filter>Libraries\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="External\ImGui\stb_textedit.h">
-      <Filter>Libraries\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="External\ImGui\stb_truetype.h">
-      <Filter>Libraries\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="External\ImGui\imgui_impl_sdl_gl3.h">
-      <Filter>Libraries\ImGui</Filter>
-    </ClInclude>
     <ClInclude Include="BeeTGui.h">
       <Filter>Header Files\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ThirdParty\glew-2.1.0\include\glew.h">
+      <Filter>ThirdParty\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\glew-2.1.0\include\glxew.h">
+      <Filter>ThirdParty\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\glew-2.1.0\include\wglew.h">
+      <Filter>ThirdParty\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\glew-2.1.0\include\eglew.h">
+      <Filter>ThirdParty\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imgui_impl_sdl_gl3.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imgui_internal.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\stb_image.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\stb_rect_pack.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\stb_textedit.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\stb_truetype.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imconfig.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imgui.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NodeEditor\Include\NodeEditor.h">
+      <Filter>ThirdParty\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NodeEditor\Source\Editor.h">
+      <Filter>ThirdParty\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NodeEditor\Source\Shared\Math2D.h">
+      <Filter>ThirdParty\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NodeEditor\Source\Shared\picojson.h">
+      <Filter>ThirdParty\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NodeEditor\Source\Shared\Interop.h">
+      <Filter>ThirdParty\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\close_code.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_assert.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_atomic.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_audio.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_bits.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_blendmode.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_clipboard.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_config.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_config_android.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_config_iphoneos.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_config_macosx.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_config_minimal.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_config_pandora.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_config_psp.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_config_windows.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_config_winrt.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_config_wiz.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_copying.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_cpuinfo.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_egl.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_endian.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_error.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_events.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_filesystem.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_gamecontroller.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_gesture.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_haptic.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_hints.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_joystick.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_keyboard.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_keycode.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_loadso.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_log.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_main.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_messagebox.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_mouse.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_mutex.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_name.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_opengl.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_opengl_glext.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_opengles.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_opengles2.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_opengles2_gl2.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_opengles2_gl2ext.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_opengles2_gl2platform.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_opengles2_khrplatform.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_pixels.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_platform.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_power.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_quit.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_rect.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_render.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_revision.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_rwops.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_scancode.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_shape.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_stdinc.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_surface.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_system.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_syswm.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_test.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_test_assert.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_test_common.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_test_compare.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_test_crc32.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_test_font.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_test_fuzzer.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_test_harness.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_test_images.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_test_log.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_test_md5.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_test_memory.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_test_random.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_thread.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_timer.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_touch.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_types.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_version.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_video.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\SDL_vulkan.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL2-2.0.7\include\begin_code.h">
+      <Filter>ThirdParty\SDL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="External\SDL2-2.0.7\include\SDL_config.h.cmake">
-      <Filter>Libraries\SDL</Filter>
+    <None Include="ThirdParty\NodeEditor\Source\Shared\Math2D.inl">
+      <Filter>ThirdParty\NodeEditor</Filter>
     </None>
-    <None Include="External\SDL2-2.0.7\include\SDL_config.h.in">
-      <Filter>Libraries\SDL</Filter>
+    <None Include="ThirdParty\SDL2-2.0.7\include\SDL_config.h.cmake">
+      <Filter>ThirdParty\SDL</Filter>
     </None>
-    <None Include="External\SDL2-2.0.7\include\SDL_config_macosx.h.orig">
-      <Filter>Libraries\SDL</Filter>
+    <None Include="ThirdParty\SDL2-2.0.7\include\SDL_config.h.in">
+      <Filter>ThirdParty\SDL</Filter>
     </None>
-    <None Include="External\NodeEditor\Source\Shared\Math2D.inl">
-      <Filter>Libraries\NodeEditor</Filter>
+    <None Include="ThirdParty\SDL2-2.0.7\include\SDL_config_macosx.h.orig">
+      <Filter>ThirdParty\SDL</Filter>
     </None>
   </ItemGroup>
 </Project>

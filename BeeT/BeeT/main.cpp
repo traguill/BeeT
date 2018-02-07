@@ -1,9 +1,9 @@
 #include "Application.h"
 #include "Log.h"
 
-#include "External/SDL2-2.0.7/include/SDL.h"
-#pragma comment( lib, "External/SDL2-2.0.7/lib/x86/SDL2.lib" )
-#pragma comment( lib, "External/SDL2-2.0.7/lib/x86/SDL2main.lib" )
+#include "ThirdParty/SDL2-2.0.7/include/SDL.h"
+#pragma comment( lib, "ThirdParty/SDL2-2.0.7/lib/x86/SDL2.lib" )
+#pragma comment( lib, "ThirdParty/SDL2-2.0.7/lib/x86/SDL2main.lib" )
 
 #define WIN32_MEAN_AND_LEAN
 

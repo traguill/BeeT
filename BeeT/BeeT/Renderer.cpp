@@ -2,17 +2,17 @@
 #include "Application.h"
 #include "Window.h"
 #include "Log.h"
-#include "External/glew-2.1.0/include/glew.h"
-#include "External/SDL2-2.0.7/include/SDL_opengl.h"
+#include "ThirdParty/glew-2.1.0/include/glew.h"
+#include "ThirdParty/SDL2-2.0.7/include/SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
-#pragma comment(lib, "External/glew-2.1.0/lib/x86/glew32.lib")
+#pragma comment(lib, "ThirdParty/glew-2.1.0/lib/x86/glew32.lib")
 
-#include "External/ImGui/imgui.h"
-#include "External/ImGui/imgui_impl_sdl_gl3.h"
+#include "ThirdParty/ImGui/imgui.h"
+#include "ThirdParty/ImGui/imgui_impl_sdl_gl3.h"
 
 Renderer::Renderer(const char* name) : Module(name)
 {}

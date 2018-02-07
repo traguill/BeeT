@@ -2,7 +2,7 @@
 #define __RENDERER_H__
 
 #include "Module.h"
-#include "External/SDL2-2.0.7/include/SDL.h"
+#include "ThirdParty/SDL2-2.0.7/include/SDL.h"
 
 class Renderer : public Module
 {

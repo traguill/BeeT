@@ -2,9 +2,9 @@
 #define __BEETGUI_H__
 
 #include "Module.h"
-#include "External\NodeEditor\Include\NodeEditor.h"
+#include "ThirdParty/NodeEditor/Include/NodeEditor.h"
 //Testing
-#include "External/NodeEditor/Source/Shared/Interop.h"
+#include "ThirdParty/NodeEditor/Source/Shared/Interop.h"
 
 class BeeTGui : public Module
 {
@@ -39,6 +39,9 @@ private:
 	ax::rect inputsRect;
 	ax::rect contentRect;
 	ax::rect outputsRect;
+
+	// Texture
+	static ImTextureID decoratorBackgroundTex;
 
 };
 #endif

@@ -1,9 +1,9 @@
 #include "Input.h"
 #include "Application.h"
 
-#include "External/SDL2-2.0.7/include/SDL.h"
-#include "External/ImGui/imgui.h"
-#include "External/ImGui/imgui_impl_sdl_gl3.h"
+#include "ThirdParty/SDL2-2.0.7/include/SDL.h"
+#include "ThirdParty/ImGui/imgui.h"
+#include "ThirdParty/ImGui/imgui_impl_sdl_gl3.h"
 
 Input::Input(const char* name) : Module(name)
 {}
