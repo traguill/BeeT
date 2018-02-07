@@ -4,7 +4,7 @@
 #include "Window.h"
 #include "Input.h"
 #include "Renderer.h"
-#include "BeeTGUI.h"
+#include "BeeTGui.h"
 
 using namespace std;
 
@@ -12,12 +12,12 @@ Application::Application()
 {
 	window = new Window("Window");
 	input = new Input("Input");
-	beetGUI = new BeeTGUI("BeeTGUI");
+	beetGui = new BeeTGui("BeeTGui");
 	renderer = new Renderer("Renderer");
 
 	modules.push_back(window);
 	modules.push_back(input);
-	modules.push_back(beetGUI);
+	modules.push_back(beetGui);
 	modules.push_back(renderer);
 }
 

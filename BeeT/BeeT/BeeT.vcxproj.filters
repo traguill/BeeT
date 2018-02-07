@@ -69,9 +69,6 @@
     <ClCompile Include="External\NodeEditor\Source\NodeEditor.cpp">
       <Filter>Libraries\NodeEditor</Filter>
     </ClCompile>
-    <ClCompile Include="BeeTGUI.cpp">
-      <Filter>Source Files\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="External\ImGui\imgui.cpp">
       <Filter>Libraries\ImGui</Filter>
     </ClCompile>
@@ -83,6 +80,9 @@
     </ClCompile>
     <ClCompile Include="External\ImGui\imgui_impl_sdl_gl3.cpp">
       <Filter>Libraries\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="BeeTGui.cpp">
+      <Filter>Source Files\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -374,9 +374,6 @@
     <ClInclude Include="External\NodeEditor\Include\NodeEditor.h">
       <Filter>Libraries\NodeEditor</Filter>
     </ClInclude>
-    <ClInclude Include="BeeTGUI.h">
-      <Filter>Header Files\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="External\ImGui\imconfig.h">
       <Filter>Libraries\ImGui</Filter>
     </ClInclude>
@@ -397,6 +394,9 @@
     </ClInclude>
     <ClInclude Include="External\ImGui\imgui_impl_sdl_gl3.h">
       <Filter>Libraries\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="BeeTGui.h">
+      <Filter>Header Files\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

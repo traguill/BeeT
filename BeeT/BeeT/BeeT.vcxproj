@@ -113,7 +113,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="BeeTGUI.cpp" />
+    <ClCompile Include="BeeTGui.cpp" />
     <ClCompile Include="External\ImGui\imgui.cpp" />
     <ClCompile Include="External\ImGui\imgui_demo.cpp" />
     <ClCompile Include="External\ImGui\imgui_draw.cpp" />
@@ -129,7 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="BeeTGUI.h" />
+    <ClInclude Include="BeeTGui.h" />
     <ClInclude Include="External\glew-2.1.0\include\eglew.h" />
     <ClInclude Include="External\glew-2.1.0\include\glew.h" />
     <ClInclude Include="External\glew-2.1.0\include\glxew.h" />
