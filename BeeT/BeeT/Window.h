@@ -13,6 +13,8 @@ public:
 	bool Init();
 	bool CleanUp();
 
+	void GetWindowSize(int& width, int& height)const;
+
 public:
 	SDL_Window* sdlWindow = nullptr;
 

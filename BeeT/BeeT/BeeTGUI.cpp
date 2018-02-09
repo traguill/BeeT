@@ -1,8 +1,11 @@
 #include "BeeTGui.h"
 #include "Application.h"
 #include "Log.h"
+#include "BeeTEditor.h"
 
 #include "ThirdParty/ImGui/imgui.h"
+
+namespace ne = ax::NodeEditor;
 
 BeeTGui::BeeTGui(const char* name) : Module(name)
 {}
@@ -12,19 +15,41 @@ BeeTGui::~BeeTGui()
 
 bool BeeTGui::Init()
 {
+	editorContext = ne::CreateEditor();
+	beetEditor = new BeeTEditor();
+
 	g_app->AddModuleUpdate(this);
 	return true;
 }
 
 bool BeeTGui::CleanUp()
 {
+	delete beetEditor;
+	ne::DestroyEditor(editorContext);
 	return true;
 }
 
 bool BeeTGui::Update()
 {
 	MenuBar();
-	return true;
+
+	bool ret = false;
+	switch (mode)
+	{
+	case BEET_EDITOR:
+		ret = beetEditor->Update();
+		break;
+	case BEET_DEBUGGER:
+		// TODO
+		break;
+	}
+
+	return ret;
+}
+
+ax::NodeEditor::EditorContext * BeeTGui::GetNodeEditorContext() const
+{
+	return editorContext;
 }
 
 void BeeTGui::MenuBar()

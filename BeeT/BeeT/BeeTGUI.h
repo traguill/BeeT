@@ -2,6 +2,14 @@
 #define __BEETGUI_H__
 
 #include "Module.h"
+#include "ThirdParty/NodeEditor/Include/NodeEditor.h"
+
+enum BeeTMode {
+	BEET_EDITOR,
+	BEET_DEBUGGER
+};
+
+class BeeTEditor;
 
 class BeeTGui : public Module
 {
@@ -13,9 +21,18 @@ public:
 	bool CleanUp();
 	bool Update();
 
+	ax::NodeEditor::EditorContext* GetNodeEditorContext()const;
+
 private:
 	void MenuBar();
 
+private:
+	BeeTMode mode = BEET_EDITOR; // BeeTGui has two modes: Editor and Debugger. Only one of them can be enabled at the time
+
+	ax::NodeEditor::EditorContext* editorContext = nullptr; // Context to handle the node graph editor
+
+	// Modes
+	BeeTEditor* beetEditor = nullptr;
 };
 #endif
 

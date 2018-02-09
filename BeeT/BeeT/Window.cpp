@@ -42,3 +42,9 @@ bool Window::CleanUp()
 	SDL_Quit();
 	return true;
 }
+
+void Window::GetWindowSize(int & width, int & height) const
+{
+	width = screenWidth;
+	height = screenHeight;
+}

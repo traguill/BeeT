@@ -7,6 +7,8 @@ public:
 	BeeTEditor();
 	~BeeTEditor();
 
+	bool Update();
+
 private:
 
 };
