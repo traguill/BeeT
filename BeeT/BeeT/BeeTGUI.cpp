@@ -16,7 +16,9 @@ BeeTGui::~BeeTGui()
 bool BeeTGui::Init()
 {
 	editorContext = ne::CreateEditor();
+	
 	beetEditor = new BeeTEditor();
+	beetEditor->Init();
 
 	g_app->AddModuleUpdate(this);
 	return true;
@@ -24,6 +26,7 @@ bool BeeTGui::Init()
 
 bool BeeTGui::CleanUp()
 {
+	beetEditor->CleanUp();
 	delete beetEditor;
 	ne::DestroyEditor(editorContext);
 	return true;
