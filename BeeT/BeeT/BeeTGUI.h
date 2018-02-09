@@ -14,6 +14,7 @@ public:
 	bool Update();
 
 private:
+	void MenuBar();
 
 };
 #endif

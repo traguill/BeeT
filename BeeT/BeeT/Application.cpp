@@ -78,7 +78,7 @@ bool Application::Update()
 			return false;
 	}
 
-	return true;
+	return !quitRequested;
 }
 
 void Application::AddModuleStart(Module * moduleToAdd)
@@ -99,4 +99,9 @@ void Application::AddModuleUpdate(Module * moduleToAdd)
 void Application::AddModulePostUpdate(Module * moduleToAdd)
 {
 	postUpdateModules.push_back(moduleToAdd);
+}
+
+void Application::RequestQuit()
+{
+	quitRequested = true;
 }

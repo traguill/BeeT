@@ -35,6 +35,9 @@ public:
 	void AddModuleUpdate(Module* moduleToAdd);
 	void AddModulePostUpdate(Module* moduleToAdd);
 
+	// Quick way to exit the application
+	void RequestQuit();
+
 public:
 	// Modules
 	Window* window = nullptr;
@@ -49,6 +52,8 @@ private:
 	std::vector<Module*> preUpdateModules;
 	std::vector<Module*> updateModules;
 	std::vector<Module*> postUpdateModules;
+
+	bool quitRequested = false;
 };
 extern Application* g_app;
 
