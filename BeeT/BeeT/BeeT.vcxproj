@@ -113,7 +113,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="BeeTEditor.cpp" />
     <ClCompile Include="BeeTGui.cpp" />
+    <ClCompile Include="BehaviorTree.cpp" />
+    <ClCompile Include="BTLink.cpp" />
+    <ClCompile Include="BTNode.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
@@ -129,7 +133,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="BeeTEditor.h" />
     <ClInclude Include="BeeTGui.h" />
+    <ClInclude Include="BehaviorTree.h" />
+    <ClInclude Include="BTLink.h" />
+    <ClInclude Include="BTNode.h" />
+    <ClInclude Include="BTNodeTypes.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Module.h" />
@@ -240,6 +249,10 @@
     <None Include="ThirdParty\SDL2-2.0.7\include\SDL_config.h.cmake" />
     <None Include="ThirdParty\SDL2-2.0.7\include\SDL_config.h.in" />
     <None Include="ThirdParty\SDL2-2.0.7\include\SDL_config_macosx.h.orig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="TestGuiCode_cpp.txt" />
+    <Text Include="TestGuiCode_h.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

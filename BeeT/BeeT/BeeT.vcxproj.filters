@@ -40,6 +40,18 @@
     <Filter Include="ThirdParty\ImGui">
       <UniqueIdentifier>{0bdd97cc-8d4d-4d10-a552-3561d1b2eb6c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\BehaviorTree">
+      <UniqueIdentifier>{bba84cde-49ba-462d-8b60-c617602934d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\BehaviorTree">
+      <UniqueIdentifier>{5b4c2865-2e86-4e1a-8f29-b94f01ab519e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\BeeTEditor">
+      <UniqueIdentifier>{92cdb589-927c-4d23-9bb6-5c26a54c057b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\BeeTEditor">
+      <UniqueIdentifier>{169227a3-b370-4cbe-8bc2-e60d12ce16dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -83,6 +95,18 @@
     </ClCompile>
     <ClCompile Include="ThirdParty\NodeEditor\Source\NodeEditor.cpp">
       <Filter>ThirdParty\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorTree.cpp">
+      <Filter>Source Files\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="BTNode.cpp">
+      <Filter>Source Files\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="BTLink.cpp">
+      <Filter>Source Files\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="BeeTEditor.cpp">
+      <Filter>Source Files\BeeTEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -404,6 +428,21 @@
     <ClInclude Include="ThirdParty\SDL2-2.0.7\include\begin_code.h">
       <Filter>ThirdParty\SDL</Filter>
     </ClInclude>
+    <ClInclude Include="BehaviorTree.h">
+      <Filter>Header Files\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="BTNode.h">
+      <Filter>Header Files\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="BTLink.h">
+      <Filter>Header Files\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="BTNodeTypes.h">
+      <Filter>Header Files\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="BeeTEditor.h">
+      <Filter>Header Files\BeeTEditor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ThirdParty\NodeEditor\Source\Shared\Math2D.inl">
@@ -418,5 +457,13 @@
     <None Include="ThirdParty\SDL2-2.0.7\include\SDL_config_macosx.h.orig">
       <Filter>ThirdParty\SDL</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="TestGuiCode_h.txt">
+      <Filter>Header Files\Helpers</Filter>
+    </Text>
+    <Text Include="TestGuiCode_cpp.txt">
+      <Filter>Header Files\Helpers</Filter>
+    </Text>
   </ItemGroup>
 </Project>

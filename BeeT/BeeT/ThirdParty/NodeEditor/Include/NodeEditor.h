@@ -250,16 +250,16 @@ bool Link(int id, int startPinId, int endPinId, const ImVec4& color = ImVec4(1, 
 
 void Flow(int linkId);
 
-bool BeginCreate(const ImVec4& color = ImVec4(1, 1, 1, 1), float thickness = 1.0f);
+bool BeginCreate(const ImVec4& color = ImVec4(1, 1, 1, 1), float thickness = 1.0f); // Creates an arrow to connect two nodes
 bool QueryNewLink(int* startId, int* endId);
 bool QueryNewLink(int* startId, int* endId, const ImVec4& color, float thickness = 1.0f);
-bool QueryNewNode(int* pinId);
+bool QueryNewNode(int* pinId); // Fills a valid new unique pinId if a new node can be connected. Return false if not.
 bool QueryNewNode(int* pinId, const ImVec4& color, float thickness = 1.0f);
 bool AcceptNewItem();
 bool AcceptNewItem(const ImVec4& color, float thickness = 1.0f);
 void RejectNewItem();
 void RejectNewItem(const ImVec4& color, float thickness = 1.0f);
-void EndCreate();
+void EndCreate(); // End of the arrow creation to connect two nodes
 
 bool BeginDelete();
 bool QueryDeletedLink(int* linkId, int* startId = nullptr, int* endId = nullptr);
