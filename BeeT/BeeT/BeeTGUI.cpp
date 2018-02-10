@@ -35,7 +35,7 @@ bool BeeTGui::CleanUp()
 bool BeeTGui::Update()
 {
 	MenuBar();
-
+	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowRounding, 0.0f);
 	bool ret = false;
 	switch (mode)
 	{
@@ -46,7 +46,7 @@ bool BeeTGui::Update()
 		// TODO
 		break;
 	}
-
+	ImGui::PopStyleVar(); // WindowRounding
 	return ret;
 }
 
