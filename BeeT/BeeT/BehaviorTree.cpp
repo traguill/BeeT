@@ -20,12 +20,14 @@ BehaviorTree::~BehaviorTree()
 	}
 }
 
-void BehaviorTree::AddNode()
+void BehaviorTree::AddNode(float posX, float posY)
 {
 	int id = GetNextId();
 	BTNode* node = new BTNode(id, GetNextId(), GetNextId(), BTNodeType::ACTION);
 
 	nodesList.insert(pair<int, BTNode*>(id, node));
+
+	ne::SetNodePosition(node->GetId(), ImVec2(posX, posY));
 	LOGI("Node %i created", id);
 }
 

@@ -48,13 +48,11 @@ bool BeeTEditor::CleanUp()
 
 void BeeTEditor::Editor()
 {
-	ne::Suspend();
-	
-	// Input
-	if (ImGui::IsMouseReleased(1))
+	if (ne::ShowBackgroundContextMenu())
 	{
-		HandleRightMouseButton();
+		ImGui::OpenPopup("Create New Node");
 	}
+	ne::Suspend();
 
 	// PopUps
 	ShowPopUps();
@@ -77,9 +75,10 @@ void BeeTEditor::ShowPopUps()
 	// Create a new node
 	if (ImGui::BeginPopup("Create New Node"))
 	{
+		ImVec2 cursorPosition = ImGui::GetMousePosOnOpeningCurrentPopup();
 		if (ImGui::MenuItem("Test Node #1"))
 		{
-			bt->AddNode(); // TODO: Pass the node type
+			bt->AddNode(cursorPosition.x, cursorPosition.y); // TODO: Pass the node type
 		}
 		if (ImGui::MenuItem("Test Node #2"))
 		{
