@@ -38,6 +38,9 @@ private:
 	ImVec2 editorSize;
 	ImVec2 editorCanvasSize = ImVec2(0.75f, 1.0f);
 	ImVec2 inspectorSize = ImVec2(0.25f, 1.0f);
+
+	// Inspector
+	int selectedNodeId = -1;
 };
 #endif
 

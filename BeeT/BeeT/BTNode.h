@@ -20,6 +20,7 @@ public:
 	
 	// Getters
 	int GetId()const;
+	std::string GetName()const;
 
 public:
 	ax::rect inputsRect;

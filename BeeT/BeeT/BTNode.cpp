@@ -9,6 +9,10 @@ namespace ne = ax::NodeEditor;
 BTNode::BTNode(int id, int sourcePinId, int targetPinId, BTNodeType type, BTNode* parent, BTLink* inputLink) : id(id), sourcePinId(sourcePinId), targetPinId(targetPinId), type(type), parent(parent), inputLink(inputLink)
 {
 	LOGI("Node id: %i sourcePin: %i targetPin: %i", id, sourcePinId, targetPinId);
+	// Temporal way to set the node's name
+	char buf[100];
+	snprintf(buf, sizeof(buf), "Node %i", id);
+	name = buf;
 }
 
 BTNode::~BTNode()
@@ -53,7 +57,7 @@ void BTNode::PrepareToDraw()
 	ImGui::Dummy(ImVec2(160, 0));
 
 	ImGui::Spring(1);
-	ImGui::TextUnformatted("Node's Name");
+	ImGui::Text("%s", name.data());
 	ImGui::Spring(1);
 
 	ImGui::EndVertical(); // 'content'
@@ -82,4 +86,9 @@ void BTNode::PrepareToDraw()
 int BTNode::GetId() const
 {
 	return id;
+}
+
+std::string BTNode::GetName() const
+{
+	return name;
 }

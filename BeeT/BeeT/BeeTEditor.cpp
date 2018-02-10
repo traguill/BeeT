@@ -5,6 +5,7 @@
 #include "Window.h"
 #include "ThirdParty/NodeEditor/Include/NodeEditor.h"
 #include "BehaviorTree.h"
+#include "BTNode.h"
 
 namespace ne = ax::NodeEditor;
 
@@ -65,19 +66,37 @@ void BeeTEditor::Editor()
 
 void BeeTEditor::Inspector()
 {
+	// Get the node selected at this frame
+	if (ne::HasSelectionChanged())
+	{
+		if (ne::GetSelectedObjectCount() == 1)
+		{
+			ne::GetSelectedNodes(&selectedNodeId, 1);
+		}
+		else
+			selectedNodeId = -1;
+	}
+
 	ImGui::SetNextWindowPos(ImVec2(screenWidth * 0.75f, ImGui::GetCursorPosY() - ImGui::GetCursorPosX()));
 	ImGui::SetNextWindowSize(ImVec2(editorSize.x * inspectorSize.x, editorSize.y * inspectorSize.y));
 	ImGui::Begin("Inspector", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
-
-	ImGui::Text("NODE TYPE");
-	ImGui::Text("Name: Placeholder");
-	ImGui::Text("Comment: ");
-	ImGui::TextWrapped("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et malesuada lorem. Nam posuere gravida ultricies. Vivamus id elementum odio. Maecenas sed sem nunc. Maecenas mattis ex mauris, eget tincidunt dolor aliquet in. Maecenas eget mauris posuere.");
 	
-	ImGui::Separator();
+	if (selectedNodeId != -1)
+	{
+		BTNode* nodeSel = bt->FindNode(selectedNodeId);
+		if (nodeSel)
+		{
+			ImGui::Text("NODE TYPE");
+			ImGui::Text("Name: %s", nodeSel->GetName().data());
+			ImGui::Text("Comment: ");
+			ImGui::TextWrapped("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et malesuada lorem. Nam posuere gravida ultricies. Vivamus id elementum odio. Maecenas sed sem nunc. Maecenas mattis ex mauris, eget tincidunt dolor aliquet in. Maecenas eget mauris posuere.");
 
-	ImGui::Text("Input: nodeInput");
-	ImGui::Text("Outputs: nodeOutputs");
+			ImGui::Separator();
+
+			ImGui::Text("Input: nodeInput");
+			ImGui::Text("Outputs: nodeOutputs");
+		}
+	}
 
 	ImGui::End();
 }

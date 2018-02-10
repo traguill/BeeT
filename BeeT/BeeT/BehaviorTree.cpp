@@ -88,6 +88,18 @@ void BehaviorTree::Draw()
 	}
 }
 
+BTNode * BehaviorTree::FindNode(int id) const
+{
+	map<int, BTNode*>::const_iterator node = nodesList.find(id);
+	if (node == nodesList.end())
+	{
+		LOGW("Could not find node %i", id);
+		return nullptr;
+	}
+	
+	return node->second;
+}
+
 int BehaviorTree::GetNextId()
 {
 	return nextId++;

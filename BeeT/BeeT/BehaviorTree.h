@@ -17,6 +17,8 @@ public:
 
 	void Draw();
 
+	BTNode* FindNode(int id)const;
+
 private:
 	int GetNextId();
 
