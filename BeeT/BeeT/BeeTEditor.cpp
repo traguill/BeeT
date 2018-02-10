@@ -25,18 +25,11 @@ bool BeeTEditor::Init()
 bool BeeTEditor::Update()
 {
 	g_app->window->GetWindowSize(screenWidth, screenHeight);
-	ImGui::SetNextWindowPos(ImVec2(0.0f, ImGui::GetCursorPosY() - ImGui::GetCursorPosX())); // The Y component substracts the cursorX position because imgui by default has margins
-	ImGui::SetNextWindowSize(ImVec2(screenWidth, screenHeight - (ImGui::GetCursorPosY() - ImGui::GetCursorPosX())));
-
-	ImGui::Begin("BeeT Editor Window", &beetEditorWindowOpen, flags);
-	
-	ne::SetCurrentEditor(g_app->beetGui->GetNodeEditorContext());
-	ne::Begin("BeeT Node Editor");
+	editorSize.x = screenWidth;
+	editorSize.y = screenHeight - (ImGui::GetCursorPosY() - ImGui::GetCursorPosX());
 
 	Editor();
-
-	ne::End(); // BeeT Node Editor
-	ImGui::End();
+	Inspector();
 	return true;
 }
 
@@ -48,30 +41,50 @@ bool BeeTEditor::CleanUp()
 
 void BeeTEditor::Editor()
 {
+	
+	ImGui::SetNextWindowPos(ImVec2(0.0f, ImGui::GetCursorPosY() - ImGui::GetCursorPosX())); // The Y component substracts the cursorX position because imgui by default has margins
+	ImGui::SetNextWindowSize(ImVec2(editorSize.x * editorCanvasSize.x, editorSize.y * editorCanvasSize.y));
+
+	ImGui::Begin("BeeT Editor Window", &beetEditorWindowOpen, flags);
+
+	ne::SetCurrentEditor(g_app->beetGui->GetNodeEditorContext());
+	ne::Begin("BeeT Node Editor");
+
 	if (ne::ShowBackgroundContextMenu())
 	{
 		ImGui::OpenPopup("Create New Node");
 	}
-	ne::Suspend();
-
+	
 	// PopUps
 	ShowPopUps();
 	
-	ne::Resume();
-
 	bt->Draw();
+	ne::End(); // BeeT Node Editor
+	ImGui::End();
 }
 
-void BeeTEditor::HandleRightMouseButton()
+void BeeTEditor::Inspector()
 {
-	if (ImGui::IsMouseHoveringWindow()) // TODO: Check if mouse is over the grid and not over a node or a window
-	{
-		ImGui::OpenPopup("Create New Node");
-	}
+	ImGui::SetNextWindowPos(ImVec2(screenWidth * 0.75f, ImGui::GetCursorPosY() - ImGui::GetCursorPosX()));
+	ImGui::SetNextWindowSize(ImVec2(editorSize.x * inspectorSize.x, editorSize.y * inspectorSize.y));
+	ImGui::Begin("Inspector", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+
+	ImGui::Text("NODE TYPE");
+	ImGui::Text("Name: Placeholder");
+	ImGui::Text("Comment: ");
+	ImGui::TextWrapped("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et malesuada lorem. Nam posuere gravida ultricies. Vivamus id elementum odio. Maecenas sed sem nunc. Maecenas mattis ex mauris, eget tincidunt dolor aliquet in. Maecenas eget mauris posuere.");
+	
+	ImGui::Separator();
+
+	ImGui::Text("Input: nodeInput");
+	ImGui::Text("Outputs: nodeOutputs");
+
+	ImGui::End();
 }
 
 void BeeTEditor::ShowPopUps()
 {
+	ne::Suspend();
 	// Create a new node
 	if (ImGui::BeginPopup("Create New Node"))
 	{
@@ -90,4 +103,5 @@ void BeeTEditor::ShowPopUps()
 		}
 		ImGui::EndPopup();
 	}
+	ne::Resume();
 }

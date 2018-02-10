@@ -18,9 +18,7 @@ public:
 private:
 
 	void Editor();
-
-	// User key or mouse input
-	void HandleRightMouseButton();
+	void Inspector();
 
 	// ImGui PopUps
 	void ShowPopUps();
@@ -32,9 +30,14 @@ private:
 	bool beetEditorWindowOpen = true;
 	ImGuiWindowFlags flags =  ImGuiWindowFlags_::ImGuiWindowFlags_NoResize
 							| ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar
-							| ImGuiWindowFlags_::ImGuiWindowFlags_NoMove;
+							| ImGuiWindowFlags_::ImGuiWindowFlags_NoMove
+							| ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse;
 	int screenWidth = 0;
 	int screenHeight = 0;
+
+	ImVec2 editorSize;
+	ImVec2 editorCanvasSize = ImVec2(0.75f, 1.0f);
+	ImVec2 inspectorSize = ImVec2(0.25f, 1.0f);
 };
 #endif
 
