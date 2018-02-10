@@ -443,6 +443,9 @@
     <ClInclude Include="BeeTEditor.h">
       <Filter>Header Files\BeeTEditor</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ThirdParty\NodeEditor\Source\Shared\Math2D.inl">
@@ -465,5 +468,15 @@
     <Text Include="TestGuiCode_cpp.txt">
       <Filter>Header Files\Helpers</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

@@ -143,6 +143,7 @@
     <ClInclude Include="Log.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ThirdParty\glew-2.1.0\include\eglew.h" />
     <ClInclude Include="ThirdParty\glew-2.1.0\include\glew.h" />
     <ClInclude Include="ThirdParty\glew-2.1.0\include\glxew.h" />
@@ -253,6 +254,12 @@
   <ItemGroup>
     <Text Include="TestGuiCode_cpp.txt" />
     <Text Include="TestGuiCode_h.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
