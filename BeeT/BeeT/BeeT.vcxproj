@@ -118,6 +118,7 @@
     <ClCompile Include="BehaviorTree.cpp" />
     <ClCompile Include="BTLink.cpp" />
     <ClCompile Include="BTNode.cpp" />
+    <ClCompile Include="BTNodeTypes.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="Input.cpp" />

@@ -7,7 +7,10 @@
 #include "BehaviorTree.h"
 #include "BTNode.h"
 
+#include <vector>
+
 namespace ne = ax::NodeEditor;
+using namespace std;
 
 BeeTEditor::BeeTEditor()
 {
@@ -26,7 +29,7 @@ bool BeeTEditor::Init()
 bool BeeTEditor::Update()
 {
 	g_app->window->GetWindowSize(screenWidth, screenHeight);
-	editorSize.x = screenWidth;
+	editorSize.x = (float) screenWidth;
 	editorSize.y = screenHeight - (ImGui::GetCursorPosY() - ImGui::GetCursorPosX());
 
 	Editor();
@@ -111,17 +114,14 @@ void BeeTEditor::ShowPopUps()
 	if (ImGui::BeginPopup("Create New Node"))
 	{
 		ImVec2 cursorPosition = ImGui::GetMousePosOnOpeningCurrentPopup();
-		if (ImGui::MenuItem("Test Node #1"))
-		{
-			bt->AddNode(cursorPosition.x, cursorPosition.y); // TODO: Pass the node type
-		}
-		if (ImGui::MenuItem("Test Node #2"))
-		{
+		vector<NodeType> typesList = g_app->beetGui->btNodeTypes->GetTypeList();
 
-		}
-		if (ImGui::MenuItem("Test Node #3"))
+		for (auto nodeType : typesList)
 		{
-
+			if (ImGui::MenuItem(nodeType.name.data()))
+			{
+				bt->AddNode(cursorPosition.x, cursorPosition.y, nodeType.typeId);
+			}
 		}
 		ImGui::EndPopup();
 	}

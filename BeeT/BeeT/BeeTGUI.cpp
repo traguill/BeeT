@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Log.h"
 #include "BeeTEditor.h"
+#include "BTNodeTypes.h"
 
 #include "ThirdParty/ImGui/imgui.h"
 
@@ -16,6 +17,10 @@ BeeTGui::~BeeTGui()
 bool BeeTGui::Init()
 {
 	editorContext = ne::CreateEditor();
+
+	// Init node types file
+	btNodeTypes = new BTNodeTypes();
+	btNodeTypes->Init();
 	
 	beetEditor = new BeeTEditor();
 	beetEditor->Init();
@@ -26,6 +31,7 @@ bool BeeTGui::Init()
 
 bool BeeTGui::CleanUp()
 {
+	delete btNodeTypes;
 	beetEditor->CleanUp();
 	delete beetEditor;
 	ne::DestroyEditor(editorContext);

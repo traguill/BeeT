@@ -13,7 +13,7 @@ public:
 	~BehaviorTree();
 
 	// Edition
-	void AddNode(float posX, float posY);
+	void AddNode(float posX, float posY, int typeId);
 
 	void Draw();
 

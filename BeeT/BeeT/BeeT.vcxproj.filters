@@ -120,6 +120,9 @@
     <ClCompile Include="FileSystem.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="BTNodeTypes.cpp">
+      <Filter>Source Files\BehaviorTree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">

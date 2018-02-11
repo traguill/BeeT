@@ -13,7 +13,7 @@ const float padding = 12.0f; // Testing
 class BTNode
 {
 public:
-	BTNode(int id, int sourcePinId, int targetPinId, BTNodeType type, BTNode* parent = nullptr, BTLink* inputLink = nullptr);
+	BTNode(int id, int sourcePinId, int targetPinId, int typeId, BTNode* parent = nullptr, BTLink* inputLink = nullptr);
 	~BTNode();
 
 	void PrepareToDraw();
@@ -31,7 +31,7 @@ private:
 	BTNode* parent = nullptr;
 	std::vector<BTNode*> childs;
 	int id = -1;
-	BTNodeType type;
+	const NodeType* type;
 
 	BTLink* inputLink = nullptr; // Only one input link for node
 	std::vector<BTLink*> outputLinks; // Some nodes have multiple child nodes, in consequence, multiple output links

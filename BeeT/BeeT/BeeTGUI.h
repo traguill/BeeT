@@ -10,6 +10,7 @@ enum BeeTMode {
 };
 
 class BeeTEditor;
+class BTNodeTypes;
 
 class BeeTGui : public Module
 {
@@ -26,6 +27,9 @@ public:
 private:
 	void MenuBar();
 
+public:
+	BTNodeTypes* btNodeTypes = nullptr;
+
 private:
 	BeeTMode mode = BEET_EDITOR; // BeeTGui has two modes: Editor and Debugger. Only one of them can be enabled at the time
 
@@ -33,6 +37,7 @@ private:
 
 	// Modes
 	BeeTEditor* beetEditor = nullptr;
+
 };
 #endif
 

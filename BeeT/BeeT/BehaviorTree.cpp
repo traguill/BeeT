@@ -1,7 +1,7 @@
 #include "BehaviorTree.h"
 #include "BTNode.h"
-#include "BTLink.h"
 #include "BTNodeTypes.h"
+#include "BTLink.h"
 #include "Log.h"
 #include "ThirdParty/NodeEditor/Include/NodeEditor.h"
 #include "ThirdParty/NodeEditor/Source/Shared/Interop.h"
@@ -20,10 +20,10 @@ BehaviorTree::~BehaviorTree()
 	}
 }
 
-void BehaviorTree::AddNode(float posX, float posY)
+void BehaviorTree::AddNode(float posX, float posY, int typeId)
 {
 	int id = GetNextId();
-	BTNode* node = new BTNode(id, GetNextId(), GetNextId(), BTNodeType::ACTION);
+	BTNode* node = new BTNode(id, GetNextId(), GetNextId(), typeId);
 
 	nodesList.insert(pair<int, BTNode*>(id, node));
 
