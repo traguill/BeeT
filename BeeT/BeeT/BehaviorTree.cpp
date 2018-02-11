@@ -14,6 +14,10 @@ BehaviorTree::BehaviorTree()
 
 BehaviorTree::~BehaviorTree()
 {
+	for (auto link : linksList)
+	{
+		delete link.second;
+	}
 	for (auto node : nodesList)
 	{
 		delete node.second;
@@ -22,13 +26,21 @@ BehaviorTree::~BehaviorTree()
 
 void BehaviorTree::AddNode(float posX, float posY, int typeId)
 {
-	int id = GetNextId();
-	BTNode* node = new BTNode(id, GetNextId(), GetNextId(), typeId);
+	int nodeId = GetNextId();
+	int inputId = GetNextId();
+	int outputId = GetNextId();
+	BTNode* node = new BTNode(nodeId, outputId, inputId, typeId);
 
-	nodesList.insert(pair<int, BTNode*>(id, node));
+	nodesList.insert(pair<int, BTNode*>(nodeId, node));
+	
+	ne::SetNodePosition(nodeId, ImVec2(posX, posY));
+	LOGI("Node %i created", nodeId);
+}
 
-	ne::SetNodePosition(node->GetId(), ImVec2(posX, posY));
-	LOGI("Node %i created", id);
+void BehaviorTree::AddLink(int startPinId, int endPinId)
+{
+	BTLink* link = new BTLink(GetNextId(), startPinId, endPinId);
+	linksList.insert(pair<int, BTLink*>(link->id, link));
 }
 
 void BehaviorTree::Draw()
@@ -86,6 +98,12 @@ void BehaviorTree::Draw()
 		drawList->AddRect(to_imvec(node.second->contentRect.top_left()), to_imvec(node.second->contentRect.bottom_right()), IM_COL32(48, 128, 255, 100), 0.0f);
 		ImGui::PopStyleVar();
 	}
+
+	// Draw Links
+	for (auto link : linksList)
+	{
+		ne::Link(link.second->id, link.second->sourcePinId, link.second->targetPinId, link.second->color, 2.0f);
+	}
 }
 
 BTNode * BehaviorTree::FindNode(int id) const
@@ -98,6 +116,28 @@ BTNode * BehaviorTree::FindNode(int id) const
 	}
 	
 	return node->second;
+}
+
+BTLink * BehaviorTree::FindLink(int id) const
+{
+	map<int, BTLink*>::const_iterator link = linksList.find(id);
+	if (link == linksList.end())
+	{
+		return nullptr;
+	}
+	return link->second;
+}
+
+BTPin * BehaviorTree::FindPin(int id) const
+{
+	for (auto node : nodesList)
+	{
+		if (node.second->inputPin.id == id)
+			return &node.second->inputPin;
+		if (node.second->outputPin.id == id)
+			return &node.second->outputPin;
+	}
+	return nullptr;
 }
 
 int BehaviorTree::GetNextId()

@@ -1,5 +1,4 @@
 #include "BTNode.h"
-#include "BTLink.h"
 #include "ThirdParty/NodeEditor/Include/NodeEditor.h"
 #include "ThirdParty/NodeEditor/Source/Shared/Interop.h"
 #include "Log.h"
@@ -8,15 +7,22 @@
 
 namespace ne = ax::NodeEditor;
 
-BTNode::BTNode(int id, int sourcePinId, int targetPinId, int typeId, BTNode* parent, BTLink* inputLink) : id(id), sourcePinId(sourcePinId), targetPinId(targetPinId), parent(parent), inputLink(inputLink)
+BTNode::BTNode(int id, int sourcePinId, int targetPinId, int typeId, BTNode* parent) : id(id), parent(parent)
 {
-	LOGI("Node id: %i sourcePin: %i targetPin: %i", id, sourcePinId, targetPinId);
 	// Temporal way to set the node's name
 	char buf[100];
 	snprintf(buf, sizeof(buf), "Node %i", id);
 	name = buf;
-	
+	// --------------------------------------------	
 	type = g_app->beetGui->btNodeTypes->GetTypeById(typeId);
+
+	inputPin.id = targetPinId;
+	inputPin.kind = ne::PinKind::Target;
+	inputPin.node = this;
+
+	outputPin.id = sourcePinId;
+	outputPin.kind = ne::PinKind::Source;
+	outputPin.node = this;
 }
 
 BTNode::~BTNode()
@@ -40,7 +46,7 @@ void BTNode::PrepareToDraw()
 		ne::PushStyleVar(ne::StyleVar_PinArrowSize, 10.0f);
 		ne::PushStyleVar(ne::StyleVar_PinArrowWidth, 10.0f);
 		ne::PushStyleVar(ne::StyleVar_PinCorners, 12);
-		ne::BeginPin(targetPinId, ne::PinKind::Target);
+		ne::BeginPin(inputPin.id, ne::PinKind::Target);
 		ne::PinPivotRect(to_imvec(inputsRect.top_left()), to_imvec(inputsRect.bottom_right()));
 		ne::PinRect(to_imvec(inputsRect.top_left()), to_imvec(inputsRect.bottom_right()));
 		ne::EndPin();
@@ -84,7 +90,7 @@ void BTNode::PrepareToDraw()
 		ne::PushStyleVar(ne::StyleVar_PinArrowSize, 10.0f);
 		ne::PushStyleVar(ne::StyleVar_PinArrowWidth, 10.0f);
 		ne::PushStyleVar(ne::StyleVar_PinCorners, 12);
-		ne::BeginPin(sourcePinId, ne::PinKind::Source);
+		ne::BeginPin(outputPin.id, ne::PinKind::Source);
 		ne::PinPivotRect(to_imvec(outputsRect.top_left()), to_imvec(outputsRect.bottom_right()));
 		ne::PinRect(to_imvec(outputsRect.top_left()), to_imvec(outputsRect.bottom_right()));
 		ne::EndPin();

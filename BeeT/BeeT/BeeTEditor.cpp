@@ -6,6 +6,7 @@
 #include "ThirdParty/NodeEditor/Include/NodeEditor.h"
 #include "BehaviorTree.h"
 #include "BTNode.h"
+#include "BTLink.h"
 
 #include <vector>
 
@@ -59,11 +60,12 @@ void BeeTEditor::Editor()
 	{
 		ImGui::OpenPopup("Create New Node");
 	}
+
+	bt->Draw();
 	
+	Links();
 	// PopUps
 	ShowPopUps();
-	
-	bt->Draw();
 	ne::End(); // BeeT Node Editor
 	ImGui::End();
 
@@ -128,4 +130,45 @@ void BeeTEditor::ShowPopUps()
 		ImGui::EndPopup();
 	}
 	ne::Resume();
+}
+
+void BeeTEditor::Links()
+{
+
+	if (ne::BeginCreate(ImColor(255, 255, 255), 2.0f))
+	{
+		int startPinId = 0, endPinId = 0;
+		if (ne::QueryNewLink(&startPinId, &endPinId))
+		{
+			BTPin* startPin = bt->FindPin(startPinId);
+			BTPin* endPin = bt->FindPin(endPinId);
+
+			if (startPin->kind == ne::PinKind::Target)
+			{
+				std::swap(startPin, endPin);
+				std::swap(startPinId, endPinId);
+			}
+
+			if (startPin && endPin)
+			{
+				if (endPin == startPin)
+				{
+					ne::RejectNewItem(ImColor(255, 0, 0), 2.0f);
+				}
+				else if (endPin->kind == startPin->kind)
+				{
+					ne::RejectNewItem(ImColor(255, 0, 0), 2.0f);
+				}
+				else
+				{
+					if (ne::AcceptNewItem(ImColor(128, 255, 128), 4.0f))
+					{
+						bt->AddLink(startPin->id, endPin->id);
+					}
+				}
+			}
+		}
+	}
+	
+	ne::EndCreate();
 }

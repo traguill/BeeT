@@ -5,6 +5,7 @@
 
 class BTNode;
 class BTLink;
+struct BTPin;
 
 class BehaviorTree
 {
@@ -14,10 +15,13 @@ public:
 
 	// Edition
 	void AddNode(float posX, float posY, int typeId);
+	void AddLink(int startPinId, int endPinId);
 
 	void Draw();
 
 	BTNode* FindNode(int id)const;
+	BTLink* FindLink(int id)const;
+	BTPin* FindPin(int id)const;
 
 private:
 	int GetNextId();
