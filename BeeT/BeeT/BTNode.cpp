@@ -75,9 +75,23 @@ void BTNode::PrepareToDraw()
 	ImGui::BeginHorizontal("outputs");
 	ImGui::Spring(0, padding * 2);
 
+	if (type->maxOutputs != 0)
+	{
+		ImGui::Dummy(ImVec2(0, padding));
+		ImGui::Spring(1, 0);
+		outputsRect = ImGui_GetItemRect();
 
-	// For simplicity, this node has no outputs. Same code as inputs
-	ImGui::Dummy(ImVec2(0, padding));
+		ne::PushStyleVar(ne::StyleVar_PinArrowSize, 10.0f);
+		ne::PushStyleVar(ne::StyleVar_PinArrowWidth, 10.0f);
+		ne::PushStyleVar(ne::StyleVar_PinCorners, 12);
+		ne::BeginPin(sourcePinId, ne::PinKind::Source);
+		ne::PinPivotRect(to_imvec(outputsRect.top_left()), to_imvec(outputsRect.bottom_right()));
+		ne::PinRect(to_imvec(outputsRect.top_left()), to_imvec(outputsRect.bottom_right()));
+		ne::EndPin();
+		ne::PopStyleVar(3);
+	}
+	else
+		ImGui::Dummy(ImVec2(0, padding));
 
 	ImGui::Spring(0, padding * 2);
 	ImGui::EndHorizontal(); // 'outputs'
@@ -95,4 +109,9 @@ int BTNode::GetId() const
 std::string BTNode::GetName() const
 {
 	return name;
+}
+
+std::string BTNode::GetTypeName() const
+{
+	return type->name;
 }

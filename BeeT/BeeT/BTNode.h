@@ -21,6 +21,7 @@ public:
 	// Getters
 	int GetId()const;
 	std::string GetName()const;
+	std::string GetTypeName()const;
 
 public:
 	ax::rect inputsRect;

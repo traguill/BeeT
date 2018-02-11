@@ -92,15 +92,17 @@ void BeeTEditor::Inspector()
 		BTNode* nodeSel = bt->FindNode(selectedNodeId);
 		if (nodeSel)
 		{
-			ImGui::Text("NODE TYPE");
+			ImGui::Text("Type: %s", nodeSel->GetTypeName().data());
 			ImGui::Text("Name: %s", nodeSel->GetName().data());
+			ImGui::Spacing();
 			ImGui::Text("Comment: ");
+			ImGui::Spacing();
 			ImGui::TextWrapped("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et malesuada lorem. Nam posuere gravida ultricies. Vivamus id elementum odio. Maecenas sed sem nunc. Maecenas mattis ex mauris, eget tincidunt dolor aliquet in. Maecenas eget mauris posuere.");
 
 			ImGui::Separator();
 
-			ImGui::Text("Input: nodeInput");
-			ImGui::Text("Outputs: nodeOutputs");
+			ImGui::Text("Input: 0");
+			ImGui::Text("Outputs: 0");
 		}
 	}
 

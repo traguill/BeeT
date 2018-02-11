@@ -84,6 +84,7 @@ bool Renderer::Init()
 	// ImGui init
 	LOGI("Init ImGui");
 	ImGui_ImplSdlGL3_Init(g_app->window->sdlWindow);
+	ImGui::GetIO().IniFilename = NULL; // Avoids creating the imgui.ini file
 
 	// Add PreUpdate and PostUpdate to App steps
 	g_app->AddModulePreUpdate(this);
