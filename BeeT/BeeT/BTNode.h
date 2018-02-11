@@ -22,6 +22,11 @@ public:
 	std::string GetName()const;
 	std::string GetTypeName()const;
 	
+	bool IsInputLinkAvailable()const; // Returns true if a link connection can be done
+	bool IsOutputLinkAvailable()const; // Returns true if a link connection can be done
+	void CreateInputLink();
+	void CreateOutputLink();
+	
 public:
 	ax::rect inputsRect;
 	ax::rect contentRect;
@@ -38,6 +43,9 @@ private:
 
 	std::string name;
 	std::string comment;
+
+	int numInputLinks = 0;
+	int numOutputLinks = 0;
 };
 #endif
 

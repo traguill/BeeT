@@ -151,21 +151,23 @@ void BeeTEditor::Links()
 
 			if (startPin && endPin)
 			{
-				if (endPin == startPin)
+				if (endPin->node->IsInputLinkAvailable() == false || startPin->node->IsOutputLinkAvailable() == false)
 				{
+					// Maximum number of link connections made in input or output
 					ne::RejectNewItem(ImColor(255, 0, 0), 2.0f);
 				}
-				else if (endPin->kind == startPin->kind)
+				else if (endPin == startPin || endPin->kind == startPin->kind || startPin->node == endPin->node)
 				{
+					// Same Pin || Same kind || Same node
 					ne::RejectNewItem(ImColor(255, 0, 0), 2.0f);
 				}
-				else
+				else if (ne::AcceptNewItem(ImColor(128, 255, 128), 4.0f))
 				{
-					if (ne::AcceptNewItem(ImColor(128, 255, 128), 4.0f))
-					{
-						bt->AddLink(startPin->id, endPin->id);
-					}
+					bt->AddLink(startPin->id, endPin->id);
+					startPin->node->CreateOutputLink();
+					endPin->node->CreateInputLink();
 				}
+				
 			}
 		}
 	}

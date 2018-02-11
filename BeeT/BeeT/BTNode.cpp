@@ -67,7 +67,9 @@ void BTNode::PrepareToDraw()
 	ImGui::Dummy(ImVec2(160, 0));
 
 	ImGui::Spring(1);
-	ImGui::Text("[%s] %s", type->name.data(), name.data());
+	ImGui::Text("[%s]", type->name.data());
+	ImGui::Spring(1);
+	ImGui::Text("%s", name.data());
 	ImGui::Spring(1);
 
 	ImGui::EndVertical(); // 'content'
@@ -118,4 +120,30 @@ std::string BTNode::GetName() const
 std::string BTNode::GetTypeName() const
 {
 	return type->name;
+}
+
+bool BTNode::IsInputLinkAvailable() const
+{
+	return (numInputLinks == 0) ? true : false;
+}
+
+bool BTNode::IsOutputLinkAvailable() const
+{
+	return (type->maxOutputs > numOutputLinks || type->maxOutputs == -1) ? true : false;
+}
+
+void BTNode::CreateInputLink()
+{
+	if (numInputLinks == 0)
+		++numInputLinks;
+	else
+		LOGW("Cannot create another input link! The node (%i) %s already have a input link connection", id, name.data());
+}
+
+void BTNode::CreateOutputLink()
+{
+	if (type->maxOutputs > numOutputLinks || type->maxOutputs == -1)
+		++numOutputLinks;
+	else
+		LOGW("Cannot create another output link! The node (%i) %s already have the maximum output link connections", id, name.data());
 }
