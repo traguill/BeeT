@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Log.h"
 #include "Module.h"
+#include "FileSystem.h"
 #include "Window.h"
 #include "Input.h"
 #include "Renderer.h"
@@ -10,11 +11,13 @@ using namespace std;
 
 Application::Application()
 {
+	fileSystem = new FileSystem("FileSystem");
 	window = new Window("Window");
 	input = new Input("Input");
 	beetGui = new BeeTGui("BeeTGui");
 	renderer = new Renderer("Renderer");
 
+	modules.push_back(fileSystem);
 	modules.push_back(window);
 	modules.push_back(input);
 	modules.push_back(beetGui);

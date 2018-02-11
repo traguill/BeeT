@@ -52,6 +52,9 @@
     <Filter Include="Source Files\BeeTEditor">
       <UniqueIdentifier>{169227a3-b370-4cbe-8bc2-e60d12ce16dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty\Json">
+      <UniqueIdentifier>{fcf7f28e-e48b-4fb8-aed7-976114a219db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -107,6 +110,15 @@
     </ClCompile>
     <ClCompile Include="BeeTEditor.cpp">
       <Filter>Source Files\BeeTEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\Json\parson.c">
+      <Filter>ThirdParty\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Data.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="FileSystem.cpp">
+      <Filter>Source Files\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -445,6 +457,18 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\Json\parson.h">
+      <Filter>ThirdParty\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Data.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Source Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="FileSystem.h">
+      <Filter>Header Files\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

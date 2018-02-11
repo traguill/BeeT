@@ -118,6 +118,8 @@
     <ClCompile Include="BehaviorTree.cpp" />
     <ClCompile Include="BTLink.cpp" />
     <ClCompile Include="BTNode.cpp" />
+    <ClCompile Include="Data.cpp" />
+    <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
@@ -127,6 +129,7 @@
     <ClCompile Include="ThirdParty\ImGui\imgui_demo.cpp" />
     <ClCompile Include="ThirdParty\ImGui\imgui_draw.cpp" />
     <ClCompile Include="ThirdParty\ImGui\imgui_impl_sdl_gl3.cpp" />
+    <ClCompile Include="ThirdParty\Json\parson.c" />
     <ClCompile Include="ThirdParty\NodeEditor\Source\Editor.cpp" />
     <ClCompile Include="ThirdParty\NodeEditor\Source\NodeEditor.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -139,9 +142,12 @@
     <ClInclude Include="BTLink.h" />
     <ClInclude Include="BTNode.h" />
     <ClInclude Include="BTNodeTypes.h" />
+    <ClInclude Include="Data.h" />
+    <ClInclude Include="FileSystem.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Module.h" />
+    <ClInclude Include="Point.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ThirdParty\glew-2.1.0\include\eglew.h" />
@@ -156,6 +162,7 @@
     <ClInclude Include="ThirdParty\ImGui\stb_rect_pack.h" />
     <ClInclude Include="ThirdParty\ImGui\stb_textedit.h" />
     <ClInclude Include="ThirdParty\ImGui\stb_truetype.h" />
+    <ClInclude Include="ThirdParty\Json\parson.h" />
     <ClInclude Include="ThirdParty\NodeEditor\Include\NodeEditor.h" />
     <ClInclude Include="ThirdParty\NodeEditor\Source\Editor.h" />
     <ClInclude Include="ThirdParty\NodeEditor\Source\Shared\Interop.h" />

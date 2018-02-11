@@ -14,6 +14,7 @@ enum AppStep
 
 // Forward declaration of modules
 class Module;
+class FileSystem;
 class Window;
 class Input;
 class Renderer;
@@ -40,6 +41,7 @@ public:
 
 public:
 	// Modules
+	FileSystem* fileSystem = nullptr;
 	Window* window = nullptr;
 	Input* input = nullptr;
 	Renderer* renderer = nullptr;
