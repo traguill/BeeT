@@ -87,14 +87,12 @@ void BTNode::PrepareToDraw()
 		ImGui::Spring(1, 0);
 		outputsRect = ImGui_GetItemRect();
 
-		ne::PushStyleVar(ne::StyleVar_PinArrowSize, 10.0f);
-		ne::PushStyleVar(ne::StyleVar_PinArrowWidth, 10.0f);
-		ne::PushStyleVar(ne::StyleVar_PinCorners, 12);
+		ne::PushStyleVar(ne::StyleVar_PinCorners, 3);
 		ne::BeginPin(outputPin.id, ne::PinKind::Source);
 		ne::PinPivotRect(to_imvec(outputsRect.top_left()), to_imvec(outputsRect.bottom_right()));
 		ne::PinRect(to_imvec(outputsRect.top_left()), to_imvec(outputsRect.bottom_right()));
 		ne::EndPin();
-		ne::PopStyleVar(3);
+		ne::PopStyleVar();
 	}
 	else
 		ImGui::Dummy(ImVec2(0, padding));
