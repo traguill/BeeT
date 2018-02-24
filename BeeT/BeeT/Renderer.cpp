@@ -7,12 +7,18 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-#pragma comment(lib, "opengl32.lib")
-#pragma comment(lib, "glu32.lib")
-#pragma comment(lib, "ThirdParty/glew-2.1.0/lib/x86/glew32.lib")
-
 #include "ThirdParty/ImGui/imgui.h"
 #include "ThirdParty/ImGui/imgui_impl_sdl_gl3.h"
+
+#pragma comment(lib, "opengl32.lib")
+#pragma comment(lib, "glu32.lib")
+
+#ifdef _DEBUG
+	#pragma comment(lib, "ThirdParty/glew-2.1.0/lib/libglew32d.lib")
+#else
+	#pragma comment(lib, "ThirdParty/glew-2.1.0/lib/libglew32.lib")
+#endif
+
 
 Renderer::Renderer(const char* name) : Module(name)
 {}

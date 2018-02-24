@@ -18,6 +18,7 @@
      misrepresented as being the original software.
   3. This notice may not be removed or altered from any source distribution.
 */
+#include "SDL_config_windows.h"
 
 #ifndef SDL_config_windows_h_
 #define SDL_config_windows_h_

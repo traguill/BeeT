@@ -2,10 +2,15 @@
 #include "Log.h"
 
 #include "ThirdParty/SDL2-2.0.7/include/SDL.h"
-#pragma comment( lib, "ThirdParty/SDL2-2.0.7/lib/x86/SDL2.lib" )
-#pragma comment( lib, "ThirdParty/SDL2-2.0.7/lib/x86/SDL2main.lib" )
+
+#ifdef _DEBUG
+	#pragma comment( lib, "ThirdParty/SDL2-2.0.7/lib/SDL2-staticd.lib" )
+#else
+	#pragma comment( lib, "ThirdParty/SDL2-2.0.7/lib/SDL2-static.lib")
+#endif
 
 #define WIN32_MEAN_AND_LEAN
+
 
 // Globals
 Application* g_app = nullptr;
