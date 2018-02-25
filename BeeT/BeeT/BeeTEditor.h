@@ -24,6 +24,7 @@ private:
 	void ShowPopUps();
 
 	// Editor helpers
+	void Menus(); //Background/Node/Link/Pin
 	void Links();
 
 private:

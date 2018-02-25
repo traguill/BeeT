@@ -56,10 +56,7 @@ void BeeTEditor::Editor()
 	ne::SetCurrentEditor(g_app->beetGui->GetNodeEditorContext());
 	ne::Begin("BeeT Node Editor");
 
-	if (ne::ShowBackgroundContextMenu())
-	{
-		ImGui::OpenPopup("Create New Node");
-	}
+	Menus();
 
 	bt->Draw();
 	
@@ -129,7 +126,35 @@ void BeeTEditor::ShowPopUps()
 		}
 		ImGui::EndPopup();
 	}
+
+	// Node Options
+	if (ImGui::BeginPopup("Node options"))
+	{
+		ne::ClearSelection();
+		ne::SelectNode(selectedNodeId);
+		if (ImGui::MenuItem("Remove"))
+		{
+			bt->RemoveNode(selectedNodeId);
+			selectedNodeId = -1;
+			ne::ClearSelection();
+		}
+		ImGui::EndPopup();
+	}
 	ne::Resume();
+}
+
+void BeeTEditor::Menus()
+{
+	if (ne::ShowBackgroundContextMenu())
+	{
+		ImGui::OpenPopup("Create New Node");
+	}
+	int nodeId = 0;
+	if (ne::ShowNodeContextMenu(&nodeId))
+	{
+		selectedNodeId = nodeId;
+		ImGui::OpenPopup("Node options");
+	}
 }
 
 void BeeTEditor::Links()

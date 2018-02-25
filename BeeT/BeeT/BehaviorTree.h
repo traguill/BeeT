@@ -17,6 +17,8 @@ public:
 	void AddNode(float posX, float posY, int typeId);
 	void AddLink(int startPinId, int endPinId);
 
+	void RemoveNode(int id);
+
 	void Draw();
 
 	BTNode* FindNode(int id)const;

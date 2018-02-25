@@ -43,6 +43,17 @@ void BehaviorTree::AddLink(int startPinId, int endPinId)
 	linksList.insert(pair<int, BTLink*>(link->id, link));
 }
 
+void BehaviorTree::RemoveNode(int id)
+{
+	map<int, BTNode*>::iterator found = nodesList.find(id);
+	if (found != nodesList.end())
+	{
+		// TODO: Check for links and remove them
+		delete found->second;
+		nodesList.erase(found);
+	}
+}
+
 void BehaviorTree::Draw()
 {
 	// Style Colors
