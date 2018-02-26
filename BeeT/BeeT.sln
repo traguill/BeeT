@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BeeT", "BeeT\BeeT.vcxproj", "{4E212529-FE31-40EE-9C0A-89A74404D637}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BeeT.GUI", "BeeTGUI\BeeT.vcxproj", "{4E212529-FE31-40EE-9C0A-89A74404D637}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0D3003E7-D8DB-4907-B579-0E125E5A1437} = {0D3003E7-D8DB-4907-B579-0E125E5A1437}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL2", "SDL2\SDL2.vcxproj", "{0D3003E7-D8DB-4907-B579-0E125E5A1437}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +26,14 @@ Global
 		{4E212529-FE31-40EE-9C0A-89A74404D637}.Release|x64.Build.0 = Release|x64
 		{4E212529-FE31-40EE-9C0A-89A74404D637}.Release|x86.ActiveCfg = Release|Win32
 		{4E212529-FE31-40EE-9C0A-89A74404D637}.Release|x86.Build.0 = Release|Win32
+		{0D3003E7-D8DB-4907-B579-0E125E5A1437}.Debug|x64.ActiveCfg = Debug|x64
+		{0D3003E7-D8DB-4907-B579-0E125E5A1437}.Debug|x64.Build.0 = Debug|x64
+		{0D3003E7-D8DB-4907-B579-0E125E5A1437}.Debug|x86.ActiveCfg = Debug|Win32
+		{0D3003E7-D8DB-4907-B579-0E125E5A1437}.Debug|x86.Build.0 = Debug|Win32
+		{0D3003E7-D8DB-4907-B579-0E125E5A1437}.Release|x64.ActiveCfg = Release|x64
+		{0D3003E7-D8DB-4907-B579-0E125E5A1437}.Release|x64.Build.0 = Release|x64
+		{0D3003E7-D8DB-4907-B579-0E125E5A1437}.Release|x86.ActiveCfg = Release|Win32
+		{0D3003E7-D8DB-4907-B579-0E125E5A1437}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
