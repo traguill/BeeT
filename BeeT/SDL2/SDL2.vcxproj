@@ -385,13 +385,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)lib\</OutDir>
-    <IntDir>$(SolutionDir)$(Configuration)\$(Platform)\$(ProjectName)\</IntDir>
+    <IntDir>$(SolutionDir)build\$(Configuration)\$(Platform)\$(ProjectName)\</IntDir>
     <TargetName>sdl2_static_x86d</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)lib\</OutDir>
-    <IntDir>$(SolutionDir)$(Configuration)\$(Platform)\$(ProjectName)\</IntDir>
+    <IntDir>$(SolutionDir)build\$(Configuration)\$(Platform)\$(ProjectName)\</IntDir>
     <TargetName>sdl2_static_x86</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
