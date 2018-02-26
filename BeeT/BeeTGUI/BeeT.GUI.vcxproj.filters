@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ThirdParty\ImGui\imgui.cpp">
+      <Filter>ThirdParty\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_demo.cpp">
+      <Filter>ThirdParty\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_draw.cpp">
+      <Filter>ThirdParty\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_impl_sdl_gl3.cpp">
+      <Filter>ThirdParty\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\NodeEditor\Source\NodeEditor.cpp">
+      <Filter>ThirdParty\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\NodeEditor\Source\Editor.cpp">
+      <Filter>ThirdParty\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Module.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="FileSystem.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="BeeTGui.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\Json\parson.c">
+      <Filter>ThirdParty\JSON</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Data.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="BeeTEditor.cpp">
+      <Filter>Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="BTNodeTypes.cpp">
+      <Filter>Editor\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="BTNode.cpp">
+      <Filter>Editor\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="BTLink.cpp">
+      <Filter>Editor\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="BehaviorTree.cpp">
+      <Filter>Editor\BehaviorTree</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="ThirdParty\glew-2.1.0\include\eglew.h">
+      <Filter>ThirdParty\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\glew-2.1.0\include\glew.h">
+      <Filter>ThirdParty\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\glew-2.1.0\include\glxew.h">
+      <Filter>ThirdParty\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\glew-2.1.0\include\wglew.h">
+      <Filter>ThirdParty\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imconfig.h">
+      <Filter>ThirdParty\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imgui.h">
+      <Filter>ThirdParty\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imgui_impl_sdl_gl3.h">
+      <Filter>ThirdParty\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imgui_internal.h">
+      <Filter>ThirdParty\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\stb_truetype.h">
+      <Filter>ThirdParty\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\stb_textedit.h">
+      <Filter>ThirdParty\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\stb_rect_pack.h">
+      <Filter>ThirdParty\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\stb_image.h">
+      <Filter>ThirdParty\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NodeEditor\Include\NodeEditor.h">
+      <Filter>ThirdParty\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NodeEditor\Source\Shared\Math2D.h">
+      <Filter>ThirdParty\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NodeEditor\Source\Shared\picojson.h">
+      <Filter>ThirdParty\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NodeEditor\Source\Editor.h">
+      <Filter>ThirdParty\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\NodeEditor\Source\Shared\Interop.h">
+      <Filter>ThirdParty\NodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>res</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="FileSystem.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="BeeTGui.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\Json\parson.h">
+      <Filter>ThirdParty\JSON</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Data.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="BeeTEditor.h">
+      <Filter>Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="BTNodeTypes.h">
+      <Filter>Editor\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="BTNode.h">
+      <Filter>Editor\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="BTLink.h">
+      <Filter>Editor\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorTree.h">
+      <Filter>Editor\BehaviorTree</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="TestGuiCode_cpp.txt">
+      <Filter>Helpers</Filter>
+    </Text>
+    <Text Include="TestGuiCode_h.txt">
+      <Filter>Helpers</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{e5ae878c-18e8-4487-9b09-602a962e19b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{c05454df-097a-4e60-9c31-91bec7d99bde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Glew">
+      <UniqueIdentifier>{e5193885-0e7f-4b16-8848-fb961b6f7c14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\Imgui">
+      <UniqueIdentifier>{0acfa81e-7aed-411a-ab59-2424d27f994f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\NodeEditor">
+      <UniqueIdentifier>{cfe2c4c3-73d6-46c3-9d0a-602e416b2d33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{3551f922-b8f1-407a-a2a4-3c4abdaffa86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\JSON">
+      <UniqueIdentifier>{0b67ecf5-afdb-41ca-a8cd-88f58ebf71ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{3631715f-05b8-4afc-992e-62daef28ffcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor">
+      <UniqueIdentifier>{83cf1368-a416-40d2-bc03-947c18e5b683}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\BehaviorTree">
+      <UniqueIdentifier>{204bdcd8-38f7-4800-b6ca-88ac856a8106}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ThirdParty\NodeEditor\Source\Shared\Math2D.inl">
+      <Filter>ThirdParty\NodeEditor</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\icon.ico">
+      <Filter>res</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
