@@ -16,17 +16,32 @@ BTNode::BTNode(int id, int sourcePinId, int targetPinId, int typeId, BTNode* par
 	// --------------------------------------------	
 	type = g_app->beetGui->btNodeTypes->GetTypeById(typeId);
 
-	inputPin.id = targetPinId;
-	inputPin.kind = ne::PinKind::Target;
-	inputPin.node = this;
-
-	outputPin.id = sourcePinId;
-	outputPin.kind = ne::PinKind::Source;
-	outputPin.node = this;
+	inputPin = new BTPin(targetPinId, ne::PinKind::Target, this);
+	outputPin = new BTPin(sourcePinId, ne::PinKind::Source, this);
 }
 
 BTNode::~BTNode()
-{}
+{
+	delete inputPin;
+	delete outputPin;
+}
+
+std::vector<BTLink*> BTNode::ClearLinks()
+{
+	std::vector<BTLink*> linkList;
+	for (std::vector<BTLink*>::iterator link = inputPin->links.begin(); link != inputPin->links.end(); ++link)
+	{
+		linkList.push_back(*link);
+		(*link)->CleanUp(false);
+	}
+	for (std::vector<BTLink*>::iterator link = outputPin->links.begin(); link != outputPin->links.end(); ++link)
+	{
+		linkList.push_back(*link);
+		(*link)->CleanUp(true);
+	}
+
+	return linkList;
+}
 
 void BTNode::PrepareToDraw()
 {
@@ -46,7 +61,7 @@ void BTNode::PrepareToDraw()
 		ne::PushStyleVar(ne::StyleVar_PinArrowSize, 10.0f);
 		ne::PushStyleVar(ne::StyleVar_PinArrowWidth, 10.0f);
 		ne::PushStyleVar(ne::StyleVar_PinCorners, 12);
-		ne::BeginPin(inputPin.id, ne::PinKind::Target);
+		ne::BeginPin(inputPin->id, ne::PinKind::Target);
 		ne::PinPivotRect(to_imvec(inputsRect.top_left()), to_imvec(inputsRect.bottom_right()));
 		ne::PinRect(to_imvec(inputsRect.top_left()), to_imvec(inputsRect.bottom_right()));
 		ne::EndPin();
@@ -90,7 +105,7 @@ void BTNode::PrepareToDraw()
 		outputsRect = ImGui_GetItemRect();
 
 		ne::PushStyleVar(ne::StyleVar_PinCorners, 3);
-		ne::BeginPin(outputPin.id, ne::PinKind::Source);
+		ne::BeginPin(outputPin->id, ne::PinKind::Source);
 		ne::PinPivotRect(to_imvec(outputsRect.top_left()), to_imvec(outputsRect.bottom_right()));
 		ne::PinRect(to_imvec(outputsRect.top_left()), to_imvec(outputsRect.bottom_right()));
 		ne::EndPin();
@@ -115,35 +130,4 @@ int BTNode::GetId() const
 std::string BTNode::GetName() const
 {
 	return name;
-}
-
-std::string BTNode::GetTypeName() const
-{
-	return type->name;
-}
-
-bool BTNode::IsInputLinkAvailable() const
-{
-	return (numInputLinks == 0) ? true : false;
-}
-
-bool BTNode::IsOutputLinkAvailable() const
-{
-	return (type->maxOutputs > numOutputLinks || type->maxOutputs == -1) ? true : false;
-}
-
-void BTNode::CreateInputLink()
-{
-	if (numInputLinks == 0)
-		++numInputLinks;
-	else
-		LOGW("Cannot create another input link! The node (%i) %s already have a input link connection", id, name.data());
-}
-
-void BTNode::CreateOutputLink()
-{
-	if (type->maxOutputs > numOutputLinks || type->maxOutputs == -1)
-		++numOutputLinks;
-	else
-		LOGW("Cannot create another output link! The node (%i) %s already have the maximum output link connections", id, name.data());
 }

@@ -152,6 +152,7 @@
     <ClCompile Include="BTLink.cpp" />
     <ClCompile Include="BTNode.cpp" />
     <ClCompile Include="BTNodeTypes.cpp" />
+    <ClCompile Include="BTPin.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="BTLink.h" />
     <ClInclude Include="BTNode.h" />
     <ClInclude Include="BTNodeTypes.h" />
+    <ClInclude Include="BTPin.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="Input.h" />

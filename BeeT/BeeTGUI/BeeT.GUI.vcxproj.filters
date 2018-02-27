@@ -63,6 +63,9 @@
     <ClCompile Include="BehaviorTree.cpp">
       <Filter>Editor\BehaviorTree</Filter>
     </ClCompile>
+    <ClCompile Include="BTPin.cpp">
+      <Filter>Editor\BehaviorTree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -163,6 +166,9 @@
       <Filter>Editor\BehaviorTree</Filter>
     </ClInclude>
     <ClInclude Include="BehaviorTree.h">
+      <Filter>Editor\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="BTPin.h">
       <Filter>Editor\BehaviorTree</Filter>
     </ClInclude>
   </ItemGroup>

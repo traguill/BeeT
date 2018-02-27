@@ -2,7 +2,9 @@
 #include "BTNode.h"
 #include "BTNodeTypes.h"
 #include "BTLink.h"
+#include "BTPin.h"
 #include "Log.h"
+
 #include "ThirdParty/NodeEditor/Include/NodeEditor.h"
 #include "ThirdParty/NodeEditor/Source/Shared/Interop.h"
 
@@ -37,20 +39,29 @@ void BehaviorTree::AddNode(float posX, float posY, int typeId)
 	LOGI("Node %i created", nodeId);
 }
 
-void BehaviorTree::AddLink(int startPinId, int endPinId)
+void BehaviorTree::AddLink(BTPin* startPinId, BTPin* endPinId)
 {
 	BTLink* link = new BTLink(GetNextId(), startPinId, endPinId);
+	startPinId->links.push_back(link);
+	endPinId->links.push_back(link);
 	linksList.insert(pair<int, BTLink*>(link->id, link));
 }
 
 void BehaviorTree::RemoveNode(int id)
 {
+	vector<BTLink*> linksToRemove;
 	map<int, BTNode*>::iterator found = nodesList.find(id);
 	if (found != nodesList.end())
 	{
-		// TODO: Check for links and remove them
+		linksToRemove = found->second->ClearLinks();
 		delete found->second;
 		nodesList.erase(found);
+	}
+
+	for (auto link : linksToRemove)
+	{
+		linksList.erase(link->id);
+		delete link;
 	}
 }
 
@@ -113,7 +124,7 @@ void BehaviorTree::Draw()
 	// Draw Links
 	for (auto link : linksList)
 	{
-		ne::Link(link.second->id, link.second->sourcePinId, link.second->targetPinId, link.second->color, 2.0f);
+		ne::Link(link.second->id, link.second->sourcePin->id, link.second->targetPin->id, link.second->color, 2.0f);
 	}
 }
 
@@ -143,10 +154,10 @@ BTPin * BehaviorTree::FindPin(int id) const
 {
 	for (auto node : nodesList)
 	{
-		if (node.second->inputPin.id == id)
-			return &node.second->inputPin;
-		if (node.second->outputPin.id == id)
-			return &node.second->outputPin;
+		if (node.second->inputPin->id == id)
+			return node.second->inputPin;
+		if (node.second->outputPin->id == id)
+			return node.second->outputPin;
 	}
 	return nullptr;
 }

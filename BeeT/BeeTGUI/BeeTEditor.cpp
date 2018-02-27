@@ -91,7 +91,7 @@ void BeeTEditor::Inspector()
 		BTNode* nodeSel = bt->FindNode(selectedNodeId);
 		if (nodeSel)
 		{
-			ImGui::Text("Type: %s", nodeSel->GetTypeName().data());
+			ImGui::Text("Type: %s", nodeSel->type->name.data());
 			ImGui::Text("Name: %s", nodeSel->GetName().data());
 			ImGui::Spacing();
 			ImGui::Text("Comment: ");
@@ -176,7 +176,7 @@ void BeeTEditor::Links()
 
 			if (startPin && endPin)
 			{
-				if (endPin->node->IsInputLinkAvailable() == false || startPin->node->IsOutputLinkAvailable() == false)
+				if (endPin->IsLinkAvailable() == false || startPin->IsLinkAvailable() == false)
 				{
 					// Maximum number of link connections made in input or output
 					ne::RejectNewItem(ImColor(255, 0, 0), 2.0f);
@@ -188,11 +188,8 @@ void BeeTEditor::Links()
 				}
 				else if (ne::AcceptNewItem(ImColor(128, 255, 128), 4.0f))
 				{
-					bt->AddLink(startPin->id, endPin->id);
-					startPin->node->CreateOutputLink();
-					endPin->node->CreateInputLink();
+					bt->AddLink(startPin, endPin);
 				}
-				
 			}
 		}
 	}

@@ -14,8 +14,7 @@ BTNodeTypes::BTNodeTypes()
 }
 
 BTNodeTypes::~BTNodeTypes()
-{
-}
+{}
 
 void BTNodeTypes::Init()
 {

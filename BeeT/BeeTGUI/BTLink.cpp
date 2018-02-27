@@ -1,20 +1,42 @@
 #include "BTLink.h"
-#include "BTNode.h"
+#include "BTPin.h"
 
-BTLink::BTLink()
-{
-}
+#include <vector>
+#include <algorithm>
 
-BTLink::BTLink(int id, int sourcePinId, int targetPinId) : id(id), sourcePinId(sourcePinId), targetPinId(targetPinId)
+BTLink::BTLink(int id, BTPin* sourcePin, BTPin* targetPin) : id(id), sourcePin(sourcePin), targetPin(targetPin)
 {}
 
 BTLink::~BTLink()
 {
 }
 
-BTPin::BTPin()
-{}
-
-BTPin::BTPin(int id, BTNode * node, ax::NodeEditor::PinKind kind) : id(id), node(node), kind(kind)
+void BTLink::CleanUp(bool fromSourcePin)
 {
+	if (fromSourcePin)
+	{
+		sourcePin = nullptr;
+		if (targetPin)
+		{
+			std::vector<BTLink*>::iterator found = std::find(targetPin->links.begin(), targetPin->links.end(), this);
+			if (found != targetPin->links.end())
+			{
+				targetPin->links.erase(found);
+			}
+			targetPin = nullptr;
+		}
+	}
+	else
+	{
+		targetPin = nullptr;
+		if (sourcePin)
+		{
+			std::vector<BTLink*>::iterator found = std::find(sourcePin->links.begin(), sourcePin->links.end(), this);
+			if (found != sourcePin->links.end())
+			{
+				sourcePin->links.erase(found);
+			}
+			sourcePin = nullptr;
+		}	
+	}
 }
