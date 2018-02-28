@@ -18,6 +18,7 @@ public:
 	void AddLink(BTPin* startPinId, BTPin* endPinId);
 
 	void RemoveNode(int id);
+	void RemoveLink(int id);
 
 	void Draw();
 

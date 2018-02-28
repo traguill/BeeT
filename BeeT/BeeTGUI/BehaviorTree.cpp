@@ -65,6 +65,19 @@ void BehaviorTree::RemoveNode(int id)
 	}
 }
 
+void BehaviorTree::RemoveLink(int id)
+{
+	map<int, BTLink*>::iterator found = linksList.find(id);
+	if (found != linksList.end())
+	{
+		found->second->CleanUp(false);
+		found->second->CleanUp(true);
+
+		delete found->second;
+		linksList.erase(found);
+	}
+}
+
 void BehaviorTree::Draw()
 {
 	// Style Colors

@@ -140,6 +140,20 @@ void BeeTEditor::ShowPopUps()
 		}
 		ImGui::EndPopup();
 	}
+
+	// Link Options
+	if (ImGui::BeginPopup("Link options"))
+	{
+		ne::ClearSelection();
+		ne::SelectLink(selectedLinkId);
+		if(ImGui::MenuItem("Remove"))
+		{
+			bt->RemoveLink(selectedLinkId);
+			selectedLinkId = -1;
+			ne::ClearSelection();
+		}
+		ImGui::EndPopup();
+	}
 	ne::Resume();
 }
 
@@ -149,11 +163,13 @@ void BeeTEditor::Menus()
 	{
 		ImGui::OpenPopup("Create New Node");
 	}
-	int nodeId = 0;
-	if (ne::ShowNodeContextMenu(&nodeId))
+	if (ne::ShowNodeContextMenu(&selectedNodeId))
 	{
-		selectedNodeId = nodeId;
 		ImGui::OpenPopup("Node options");
+	}
+	if (ne::ShowLinkContextMenu(&selectedLinkId))
+	{
+		ImGui::OpenPopup("Link options");
 	}
 }
 

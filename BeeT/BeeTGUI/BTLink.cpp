@@ -15,7 +15,6 @@ void BTLink::CleanUp(bool fromSourcePin)
 {
 	if (fromSourcePin)
 	{
-		sourcePin = nullptr;
 		if (targetPin)
 		{
 			std::vector<BTLink*>::iterator found = std::find(targetPin->links.begin(), targetPin->links.end(), this);
@@ -28,7 +27,6 @@ void BTLink::CleanUp(bool fromSourcePin)
 	}
 	else
 	{
-		targetPin = nullptr;
 		if (sourcePin)
 		{
 			std::vector<BTLink*>::iterator found = std::find(sourcePin->links.begin(), sourcePin->links.end(), this);
