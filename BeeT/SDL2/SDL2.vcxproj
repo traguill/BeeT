@@ -103,6 +103,8 @@
     <ClInclude Include="include\SDL_vulkan.h" />
     <ClInclude Include="include\winapifamily.h" />
     <ClInclude Include="include\winpackagefamily.h" />
+    <ClInclude Include="SDL_net\include\SDL_net.h" />
+    <ClInclude Include="SDL_net\src\SDLnetsys.h" />
     <ClInclude Include="src\audio\directsound\SDL_directsound.h" />
     <ClInclude Include="src\audio\disk\SDL_diskaudio.h" />
     <ClInclude Include="src\audio\dummy\SDL_dummyaudio.h" />
@@ -198,6 +200,10 @@
     <ClInclude Include="src\video\windows\wmmsg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SDL_net\src\SDLnet.c" />
+    <ClCompile Include="SDL_net\src\SDLnetselect.c" />
+    <ClCompile Include="SDL_net\src\SDLnetTCP.c" />
+    <ClCompile Include="SDL_net\src\SDLnetUDP.c" />
     <ClCompile Include="src\atomic\SDL_atomic.c" />
     <ClCompile Include="src\atomic\SDL_spinlock.c" />
     <ClCompile Include="src\audio\directsound\SDL_directsound.c" />
@@ -407,7 +413,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <OmitDefaultLibName>true</OmitDefaultLibName>
-      <PreprocessorDefinitions>_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Lib>
@@ -433,7 +439,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <OmitDefaultLibName>true</OmitDefaultLibName>
-      <PreprocessorDefinitions>_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
