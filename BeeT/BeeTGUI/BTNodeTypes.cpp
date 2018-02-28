@@ -30,7 +30,7 @@ void BTNodeTypes::Init()
 
 NodeType * BTNodeTypes::GetTypeById(int id)
 {
-	if (id >= typesList.size() || id < 0)
+	if ((unsigned int)id >= typesList.size() || id < 0)
 	{
 		LOGW("Couldn't find node type with id: %", id);
 		return nullptr;

@@ -19,7 +19,7 @@ bool BTPin::IsLinkAvailable() const
 		ret = (links.size() == 0);
 		break;
 	case ax::NodeEditor::PinKind::Source: //Output
-		ret = (node->type->maxOutputs > links.size() || node->type->maxOutputs == -1);
+		ret = ((unsigned int)node->type->maxOutputs > links.size() || node->type->maxOutputs == -1);
 		break;
 	}
 	return ret;
