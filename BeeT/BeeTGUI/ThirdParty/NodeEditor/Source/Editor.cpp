@@ -815,8 +815,8 @@ ed::EditorContext::EditorContext(const ax::NodeEditor::Config* config):
 
 ed::EditorContext::~EditorContext()
 {
-    if (m_IsInitialized)
-        SaveSettings();
+    /*if (m_IsInitialized)
+        SaveSettings();*/
 
     for (auto link  : m_Links)  delete link.m_Object;
     for (auto pin   : m_Pins)   delete pin.m_Object;

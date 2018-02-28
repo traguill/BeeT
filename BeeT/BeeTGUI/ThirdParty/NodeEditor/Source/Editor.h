@@ -1042,6 +1042,10 @@ struct Config: ax::NodeEditor::Config
 struct EditorContext
 {
     EditorContext(const ax::NodeEditor::Config* config = nullptr);
+	/*
+		Auto-save settings has been disabled.
+		TODO: Create custom Save and Load methods.
+	*/
     ~EditorContext();
 
     Style& GetStyle() { return m_Style; }
