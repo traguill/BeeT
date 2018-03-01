@@ -69,18 +69,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="ThirdParty\glew-2.1.0\include\eglew.h">
-      <Filter>ThirdParty\Glew</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\glew-2.1.0\include\glew.h">
-      <Filter>ThirdParty\Glew</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\glew-2.1.0\include\glxew.h">
-      <Filter>ThirdParty\Glew</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\glew-2.1.0\include\wglew.h">
-      <Filter>ThirdParty\Glew</Filter>
-    </ClInclude>
     <ClInclude Include="ThirdParty\ImGui\imconfig.h">
       <Filter>ThirdParty\Imgui</Filter>
     </ClInclude>
@@ -186,9 +174,6 @@
     </Filter>
     <Filter Include="ThirdParty">
       <UniqueIdentifier>{c05454df-097a-4e60-9c31-91bec7d99bde}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ThirdParty\Glew">
-      <UniqueIdentifier>{e5193885-0e7f-4b16-8848-fb961b6f7c14}</UniqueIdentifier>
     </Filter>
     <Filter Include="ThirdParty\Imgui">
       <UniqueIdentifier>{0acfa81e-7aed-411a-ab59-2424d27f994f}</UniqueIdentifier>

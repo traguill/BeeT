@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "Window.h"
 #include "Log.h"
-#include "ThirdParty/glew-2.1.0/include/glew.h"
+#include "../Glew/include/GL/glew.h"
 #include "../SDL2/include/SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
@@ -14,9 +14,9 @@
 #pragma comment(lib, "glu32.lib")
 
 #ifdef _DEBUG
-	#pragma comment(lib, "ThirdParty/glew-2.1.0/lib/libglew32d.lib")
+	#pragma comment( lib, "../lib/glew_static_x86d.lib" )
 #else
-	#pragma comment(lib, "ThirdParty/glew-2.1.0/lib/libglew32.lib")
+	#pragma comment( lib, "../lib/glew_static_x86.lib" )
 #endif
 
 
