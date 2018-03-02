@@ -3,6 +3,7 @@
 
 #include "ThirdParty/ImGui/imgui.h"
 #include "Data.h"
+#include <map>
 
 class BTPin;
 
@@ -10,6 +11,7 @@ class BTLink
 {
 public:
 	BTLink(int id, BTPin* sourcePin, BTPin* targetPin);
+	BTLink(Data& data, const std::map<int, BTPin*>& pinsList);
 	~BTLink();
 
 	void CleanUp(bool fromSourcePin);

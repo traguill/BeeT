@@ -26,8 +26,17 @@ BehaviorTree::BehaviorTree(Data & data)
 		BTNode* node = new BTNode(this, nodeData);
 		nodesList.insert(pair<int, BTNode*>(node->GetId(), node));
 		ne::SetNodePosition(node->GetId(), ImVec2(nodeData.GetFloat("positionX"), nodeData.GetFloat("positionY")));
+		pinsList.insert(pair<int, BTPin*>(node->inputPin->id, node->inputPin));
+		pinsList.insert(pair<int, BTPin*>(node->outputPin->id, node->outputPin));
 	}
 	//Load Links
+	int numLinks = data.GetArraySize("links");
+	for (int i = 0; i < numLinks; ++i)
+	{
+		Data linkData = data.GetArray("links", i);
+		BTLink* link = new BTLink(linkData, pinsList);
+		linksList.insert(pair<int, BTLink*>(link->id, link));
+	}
 
 	nextId = data.GetInt("nextId");
 	int rootNodeId = data.GetInt("rootNodeId");
