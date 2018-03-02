@@ -15,6 +15,8 @@ public:
 	bool Update();
 	bool CleanUp();
 
+	void Serialize()const;
+
 private:
 
 	void Editor();

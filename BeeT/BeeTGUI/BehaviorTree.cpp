@@ -4,6 +4,7 @@
 #include "BTLink.h"
 #include "BTPin.h"
 #include "Log.h"
+#include "Data.h"
 
 #include "ThirdParty/NodeEditor/Include/NodeEditor.h"
 #include "ThirdParty/NodeEditor/Source/Shared/Interop.h"
@@ -76,6 +77,65 @@ void BehaviorTree::RemoveLink(int id)
 		delete found->second;
 		linksList.erase(found);
 	}
+}
+
+bool BehaviorTree::Serialize() const
+{
+	bool ret = false;
+	Data data;
+	data.AppendArray("nodes");
+	// Serialize BTNodes
+	bool allNodesSerialized = false;
+	
+	if (rootNode)
+		rootNode->Save(data);
+
+	while (allNodesSerialized == false)
+	{
+		allNodesSerialized = true;
+		BTNode* nodeNotSerialized = nullptr;
+		for (auto node : nodesList)
+		{
+			if (node.second->saveFlag == false)
+			{
+				nodeNotSerialized = node.second;
+				allNodesSerialized = false;
+				break;
+			}
+		}
+		if (allNodesSerialized = false)
+		{
+			// Find rootNode of this sub-tree. Serialize from that node
+			while (nodeNotSerialized->GetParent() != nullptr)
+			{
+				nodeNotSerialized = nodeNotSerialized->GetParent();
+			}
+			nodeNotSerialized->Save(data);
+		}
+	}
+	// Reset saveFlag of all nodes
+	for (auto node : nodesList)
+	{
+		node.second->saveFlag = false;
+	}
+
+	// Serialize BTLinks
+
+	data.AppendInt("nextId", nextId);
+	if (rootNode)
+		data.AppendInt("rootNodeId", rootNode->GetId());
+	else
+		data.AppendInt("rootNodeId", -1);
+
+	char* buffer = nullptr;
+	unsigned int size = data.Serialize(&buffer);
+
+	// Return the buffer and size?
+
+	if (buffer)
+		delete buffer;
+	
+	return ret;
 }
 
 void BehaviorTree::Draw()

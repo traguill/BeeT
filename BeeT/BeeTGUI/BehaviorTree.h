@@ -20,6 +20,9 @@ public:
 	void RemoveNode(int id);
 	void RemoveLink(int id);
 
+	// Serialization
+	bool Serialize()const;
+
 	void Draw();
 
 	BTNode* FindNode(int id)const;

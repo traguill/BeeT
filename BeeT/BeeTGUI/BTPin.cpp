@@ -24,3 +24,12 @@ bool BTPin::IsLinkAvailable() const
 	}
 	return ret;
 }
+
+void BTPin::Save(Data & file) const
+{
+	Data data;
+	data.AppendInt("id", id);
+	data.AppendInt("kind", static_cast<int>(kind));
+
+	file.AppendArrayValue(data);
+}

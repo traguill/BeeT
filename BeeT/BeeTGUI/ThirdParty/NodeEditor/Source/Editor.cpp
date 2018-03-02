@@ -827,7 +827,7 @@ void ed::EditorContext::Begin(const char* id, const ImVec2& size)
 {
     if (!m_IsInitialized)
     {
-        LoadSettings();
+        //LoadSettings();
         m_IsInitialized = true;
     }
 

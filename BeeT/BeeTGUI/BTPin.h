@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "ThirdParty/NodeEditor/Include/NodeEditor.h"
+#include "Data.h"
 
 class BTNode;
 class BTLink;
@@ -15,6 +16,8 @@ public:
 	~BTPin();
 
 	bool IsLinkAvailable()const;
+
+	void Save(Data& file)const;
 
 public:
 	int id = -1;

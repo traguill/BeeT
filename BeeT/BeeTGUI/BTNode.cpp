@@ -131,3 +131,26 @@ std::string BTNode::GetName() const
 {
 	return name;
 }
+
+BTNode * BTNode::GetParent() const
+{
+	return parent;
+}
+
+void BTNode::Save(Data& file)
+{
+	Data data;
+	data.AppendInt("id", id);
+	data.AppendInt("parentId", (parent) ? parent->id : -1);
+	data.AppendInt("type", type->typeId);
+
+	data.AppendArray("pins");
+	inputPin->Save(data);
+	outputPin->Save(data);
+
+	data.AppendString("name", name.data());
+	data.AppendString("comment", comment.data());
+
+	file.AppendArrayValue(data);
+	saveFlag = true;
+}

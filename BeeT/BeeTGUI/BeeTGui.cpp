@@ -4,6 +4,8 @@
 #include "BeeTEditor.h"
 #include "BTNodeTypes.h"
 
+#include "FileSystem.h" // Testing: To show the current directory path in MainMenuBar->File.
+
 #include "ThirdParty/ImGui/imgui.h"
 
 namespace ne = ax::NodeEditor;
@@ -67,6 +69,14 @@ void BeeTGui::MenuBar()
 	{
 		if (ImGui::BeginMenu("File"))
 		{
+			ImGui::MenuItem(g_app->fileSystem->GetDirectory().data());
+			if (ImGui::MenuItem("Save##menubar_file_save"))
+			{
+				if (mode == BeeTMode::BEET_EDITOR)
+				{
+					beetEditor->Serialize();
+				}
+			}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Edit"))

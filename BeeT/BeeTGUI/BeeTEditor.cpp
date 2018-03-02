@@ -44,6 +44,14 @@ bool BeeTEditor::CleanUp()
 	return true;
 }
 
+void BeeTEditor::Serialize() const
+{
+	// In progress: Now only save one BT. In the future choose one of the opened BTs to save or save them all.
+	bool ret = bt->Serialize();
+	if (!ret)
+		LOGE("Behavior Tree was not saved. An error occurred in the process.");
+}
+
 void BeeTEditor::Editor()
 {
 	

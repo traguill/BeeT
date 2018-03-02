@@ -7,6 +7,7 @@
 #include "BTLink.h"
 #include "BTPin.h"
 #include "ThirdParty/NodeEditor/Source/Shared/Math2D.h"
+#include "Data.h"
 
 const float padding = 12.0f; // Testing
 
@@ -23,6 +24,9 @@ public:
 	// Getters
 	int GetId()const;
 	std::string GetName()const;
+	BTNode* GetParent()const;
+
+	void Save(Data& file);
 	
 public:
 	ax::rect inputsRect;
@@ -34,6 +38,8 @@ public:
 
 	const NodeType* type;
 
+	bool saveFlag = false; // True when has been serialized
+
 private:
 	BTNode* parent = nullptr;
 	std::vector<BTNode*> childs;
@@ -41,6 +47,7 @@ private:
 
 	std::string name;
 	std::string comment;
+
 };
 #endif
 
