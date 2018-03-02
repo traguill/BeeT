@@ -148,6 +148,10 @@ void BTNode::Save(Data& file)
 	inputPin->Save(data);
 	outputPin->Save(data);
 
+	ImVec2 nodePosition = ne::GetNodePosition(id);
+	data.AppendFloat("positionX", nodePosition.x);
+	data.AppendFloat("positionY", nodePosition.y);
+
 	data.AppendString("name", name.data());
 	data.AppendString("comment", comment.data());
 

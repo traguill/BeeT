@@ -79,9 +79,8 @@ void BehaviorTree::RemoveLink(int id)
 	}
 }
 
-bool BehaviorTree::Serialize() const
+int BehaviorTree::Serialize(char** buffer) const
 {
-	bool ret = false;
 	Data data;
 	data.AppendArray("nodes");
 	// Serialize BTNodes
@@ -103,7 +102,7 @@ bool BehaviorTree::Serialize() const
 				break;
 			}
 		}
-		if (allNodesSerialized = false)
+		if (allNodesSerialized == false)
 		{
 			// Find rootNode of this sub-tree. Serialize from that node
 			while (nodeNotSerialized->GetParent() != nullptr)
@@ -120,6 +119,11 @@ bool BehaviorTree::Serialize() const
 	}
 
 	// Serialize BTLinks
+	data.AppendArray("links");
+	for (auto link : linksList)
+	{
+		link.second->Save(data);
+	}
 
 	data.AppendInt("nextId", nextId);
 	if (rootNode)
@@ -127,15 +131,7 @@ bool BehaviorTree::Serialize() const
 	else
 		data.AppendInt("rootNodeId", -1);
 
-	char* buffer = nullptr;
-	unsigned int size = data.Serialize(&buffer);
-
-	// Return the buffer and size?
-
-	if (buffer)
-		delete buffer;
-	
-	return ret;
+	return data.Serialize(buffer);
 }
 
 void BehaviorTree::Draw()

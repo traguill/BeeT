@@ -3,6 +3,7 @@
 #include "Log.h"
 #include "Application.h"
 #include "Window.h"
+#include "FileSystem.h"
 #include "ThirdParty/NodeEditor/Include/NodeEditor.h"
 #include "BehaviorTree.h"
 #include "BTNode.h"
@@ -47,9 +48,21 @@ bool BeeTEditor::CleanUp()
 void BeeTEditor::Serialize() const
 {
 	// In progress: Now only save one BT. In the future choose one of the opened BTs to save or save them all.
-	bool ret = bt->Serialize();
-	if (!ret)
-		LOGE("Behavior Tree was not saved. An error occurred in the process.");
+	char* buffer = nullptr;
+	int size = bt->Serialize(&buffer);
+	if (size == 0)
+	{
+		LOGE("Behavior Tree was not saved. An error occurred during serialization.");
+	}
+	else
+	{
+		unsigned int ret = g_app->fileSystem->Save("./bt.txt", buffer, size);
+		if(ret == 0)
+			LOGE("Behavior Tree was not saved. An error occurred while writting data on a file.")
+	}
+
+	if (buffer)
+		delete buffer;
 }
 
 void BeeTEditor::Editor()

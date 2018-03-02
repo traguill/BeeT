@@ -273,9 +273,9 @@ void Data::LoadArray(const char* name)
 
 size_t Data::Serialize(char ** buffer)
 {
-	size_t size = json_serialization_size(root_value);
+	size_t size = json_serialization_size_pretty(root_value);
 	*buffer = new char[size];
-	json_serialize_to_buffer(root_value, *buffer, size);
+	json_serialize_to_buffer_pretty(root_value, *buffer, size);
 	return size;
 }
 

@@ -2,6 +2,7 @@
 #define __BTLINK_H__
 
 #include "ThirdParty/ImGui/imgui.h"
+#include "Data.h"
 
 class BTPin;
 
@@ -12,6 +13,7 @@ public:
 	~BTLink();
 
 	void CleanUp(bool fromSourcePin);
+	void Save(Data& file)const;
 
 public:
 	int id = -1;

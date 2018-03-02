@@ -21,7 +21,7 @@ public:
 	void RemoveLink(int id);
 
 	// Serialization
-	bool Serialize()const;
+	int Serialize(char** buffer)const;
 
 	void Draw();
 

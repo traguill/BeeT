@@ -38,3 +38,12 @@ void BTLink::CleanUp(bool fromSourcePin)
 		}	
 	}
 }
+
+void BTLink::Save(Data & file) const
+{
+	Data data;
+	data.AppendInt("id", id);
+	data.AppendInt("sourceId", sourcePin->id);
+	data.AppendInt("targetId", targetPin->id);
+	file.AppendArrayValue(data);
+}
