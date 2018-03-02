@@ -2,6 +2,7 @@
 #define __BEHAVIORTREE_H__
 
 #include <map>
+#include "Data.h"
 
 class BTNode;
 class BTLink;
@@ -11,6 +12,7 @@ class BehaviorTree
 {
 public:
 	BehaviorTree();
+	BehaviorTree(Data& data);
 	~BehaviorTree();
 
 	// Edition

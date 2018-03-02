@@ -13,6 +13,7 @@ class BTPin
 public:
 	BTPin();
 	BTPin(int id, ax::NodeEditor::PinKind kind, BTNode* node);
+	BTPin(BTNode* node, Data& data);
 	~BTPin();
 
 	bool IsLinkAvailable()const;

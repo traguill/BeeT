@@ -16,6 +16,7 @@ public:
 	bool CleanUp();
 
 	void Serialize()const;
+	void Load(const char* path);
 
 private:
 

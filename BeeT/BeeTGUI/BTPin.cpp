@@ -7,6 +7,12 @@ BTPin::BTPin()
 BTPin::BTPin(int id, ax::NodeEditor::PinKind kind, BTNode * node) : id(id), kind(kind), node(node)
 {}
 
+BTPin::BTPin(BTNode* node, Data & data) : node(node)
+{
+	id = data.GetInt("id");
+	kind = (ax::NodeEditor::PinKind)data.GetInt("kind");
+}
+
 BTPin::~BTPin()
 {}
 

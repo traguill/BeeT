@@ -11,10 +11,13 @@
 
 const float padding = 12.0f; // Testing
 
+class BehaviorTree;
+
 class BTNode
 {
 public:
-	BTNode(int id, int sourcePinId, int targetPinId, int typeId, BTNode* parent = nullptr);
+	BTNode(int id, int sourcePinId, int targetPinId, int typeId, BehaviorTree* bt, BTNode* parent = nullptr);
+	BTNode(BehaviorTree* bt, Data& data);
 	~BTNode();
 
 	std::vector<BTLink*> ClearLinks();
@@ -47,6 +50,7 @@ private:
 
 	std::string name;
 	std::string comment;
+	BehaviorTree* bt = nullptr;
 
 };
 #endif

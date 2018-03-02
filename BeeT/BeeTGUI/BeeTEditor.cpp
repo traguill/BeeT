@@ -65,6 +65,28 @@ void BeeTEditor::Serialize() const
 		delete buffer;
 }
 
+void BeeTEditor::Load(const char * path)
+{
+	char* buffer = nullptr;
+	unsigned int size = g_app->fileSystem->Load(path, &buffer);
+	if (size > 0)
+	{
+		Data btData(buffer);
+
+		if (bt)
+			delete bt; // For now the current BT is destroyed and replaced.
+
+		bt = new BehaviorTree(btData);
+	}
+	else
+	{
+		LOGE("Could not open the file %s", path);
+	}
+
+	if (buffer)
+		delete buffer;
+}
+
 void BeeTEditor::Editor()
 {
 	

@@ -4,10 +4,11 @@
 #include "Log.h"
 #include "Application.h"
 #include "BeeTGui.h"
+#include "BehaviorTree.h"
 
 namespace ne = ax::NodeEditor;
 
-BTNode::BTNode(int id, int sourcePinId, int targetPinId, int typeId, BTNode* parent) : id(id), parent(parent)
+BTNode::BTNode(int id, int sourcePinId, int targetPinId, int typeId, BehaviorTree* bt, BTNode* parent) : id(id), bt(bt), parent(parent)
 {
 	// Temporal way to set the node's name
 	char buf[100];
@@ -18,6 +19,20 @@ BTNode::BTNode(int id, int sourcePinId, int targetPinId, int typeId, BTNode* par
 
 	inputPin = new BTPin(targetPinId, ne::PinKind::Target, this);
 	outputPin = new BTPin(sourcePinId, ne::PinKind::Source, this);
+}
+
+BTNode::BTNode(BehaviorTree* bt, Data & data) : bt(bt)
+{
+	id = data.GetInt("id");
+	int parentId = data.GetInt("parentId");
+	parent = parentId > 0 ? bt->FindNode(parentId) : nullptr;
+	type = g_app->beetGui->btNodeTypes->GetTypeById(data.GetInt("type"));
+
+	inputPin = new BTPin(this, data.GetArray("pins", 0));
+	outputPin = new BTPin(this, data.GetArray("pins", 1));
+
+	name = data.GetString("name");
+	comment = data.GetString("comment");
 }
 
 BTNode::~BTNode()
