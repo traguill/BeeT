@@ -71,25 +71,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetExt>.dll</TargetExt>
-    <OutDir>$(SolutionDir)build\</OutDir>
+    <OutDir>$(SolutionDir)build\demo\</OutDir>
     <IntDir>$(SolutionDir)build\$(Configuration)\$(Platform)\$(ProjectName)\</IntDir>
     <TargetName>BeeTLibd</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetExt>.dll</TargetExt>
-    <OutDir>$(SolutionDir)build\</OutDir>
+    <OutDir>$(SolutionDir)build\demo\</OutDir>
     <IntDir>$(SolutionDir)build\$(Configuration)\$(Platform)\$(ProjectName)\</IntDir>
     <TargetName>BeeTLib</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.dll</TargetExt>
-    <OutDir>$(SolutionDir)build\</OutDir>
+    <OutDir>$(SolutionDir)build\demo\</OutDir>
     <IntDir>$(SolutionDir)build\$(Configuration)\$(Platform)\$(ProjectName)\</IntDir>
     <TargetName>BeeTLib_x64d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetExt>.dll</TargetExt>
-    <OutDir>$(SolutionDir)build\</OutDir>
+    <OutDir>$(SolutionDir)build\demo\</OutDir>
     <IntDir>$(SolutionDir)build\$(Configuration)\$(Platform)\$(ProjectName)\</IntDir>
     <TargetName>BeeTLib_x64</TargetName>
   </PropertyGroup>

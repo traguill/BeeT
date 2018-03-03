@@ -9,6 +9,6 @@ namespace BeeT
 
 	int TestClass::AddFive(int number)
 	{
-		return number + 5;
+		return number;
 	}
 }
