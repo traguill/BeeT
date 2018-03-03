@@ -9,18 +9,12 @@
 // Demo requirements
 #include <iostream>
 
-
 int main(int argc, char** argv)
 {
-	int num = 4;
-
-	BeeT::TestClass object; 
-
-	int num2 = object.AddFive(num);
-
-	printf("%i\n", num2);
+	BeeT::Init();
+	BeeT::LoadBehaviorTree("bt.txt");
+	BeeT::Shutdown();
 
 	system("pause");
-
 	return 0;
 }
