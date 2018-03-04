@@ -1193,8 +1193,8 @@ void ed::EditorContext::End()
     if (HasSelectionChanged())
         MakeDirty(SaveReasonFlags::Selection);
 
-    if (m_Settings.m_IsDirty && !m_CurrentAction)
-        SaveSettings();
+   // if (m_Settings.m_IsDirty && !m_CurrentAction)
+     //   SaveSettings();
 
     m_IsFirstFrame = false;
 }

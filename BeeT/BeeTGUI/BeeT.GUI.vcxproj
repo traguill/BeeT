@@ -159,6 +159,7 @@
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Module.cpp" />
+    <ClCompile Include="Random.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ThirdParty\ImGui\imgui.cpp" />
     <ClCompile Include="ThirdParty\ImGui\imgui_demo.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="Log.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ThirdParty\ImGui\imconfig.h" />
@@ -204,10 +206,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ThirdParty\NodeEditor\Source\Shared\Math2D.inl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="TestGuiCode_cpp.txt" />
-    <Text Include="TestGuiCode_h.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\icon.ico" />

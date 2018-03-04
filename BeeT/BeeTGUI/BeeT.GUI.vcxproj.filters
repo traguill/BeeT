@@ -66,6 +66,9 @@
     <ClCompile Include="BTPin.cpp">
       <Filter>Editor\BehaviorTree</Filter>
     </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -159,14 +162,9 @@
     <ClInclude Include="BTPin.h">
       <Filter>Editor\BehaviorTree</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="TestGuiCode_cpp.txt">
+    <ClInclude Include="Random.h">
       <Filter>Helpers</Filter>
-    </Text>
-    <Text Include="TestGuiCode_h.txt">
-      <Filter>Helpers</Filter>
-    </Text>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">

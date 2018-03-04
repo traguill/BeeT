@@ -35,6 +35,7 @@ private:
 	int GetNextId();
 
 private:
+	int uid = -1;
 	std::map<int, BTNode*> nodesList;
 	std::map<int, BTLink*> linksList;
 

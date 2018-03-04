@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Random.h"
 #include "Log.h"
 
 #include "../SDL2/include/SDL.h"
@@ -15,11 +16,13 @@
 
 // Globals
 Application* g_app = nullptr;
+Random* g_rnd = nullptr;
 
 int SDL_main(int argc, char* argv[])
 {
 	bool ret = false;
 	
+	g_rnd = new Random();
 	g_app = new Application();
 	AppStep step = APP_START;
 
@@ -65,6 +68,7 @@ int SDL_main(int argc, char* argv[])
 
 	LOGI("Application quitting");
 	delete g_app;
+	delete g_rnd;
 
 	return 0;
 }

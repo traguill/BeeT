@@ -5,6 +5,7 @@
 #include "BTPin.h"
 #include "Log.h"
 #include "Data.h"
+#include "Random.h"
 
 #include "ThirdParty/NodeEditor/Include/NodeEditor.h"
 #include "ThirdParty/NodeEditor/Source/Shared/Interop.h"
@@ -13,12 +14,14 @@ namespace ne = ax::NodeEditor;
 using namespace std;
 
 BehaviorTree::BehaviorTree()
-{}
+{
+	uid = g_rnd->RandomInt();
+}
 
 BehaviorTree::BehaviorTree(Data & data)
 {
 	map<int, BTPin*> pinsList;
-	//Load Nodes
+	// Load Nodes
 	int numNodes = data.GetArraySize("nodes");
 	for (int i = 0; i < numNodes; ++i)
 	{
@@ -29,7 +32,7 @@ BehaviorTree::BehaviorTree(Data & data)
 		pinsList.insert(pair<int, BTPin*>(node->inputPin->id, node->inputPin));
 		pinsList.insert(pair<int, BTPin*>(node->outputPin->id, node->outputPin));
 	}
-	//Load Links
+	// Load Links
 	int numLinks = data.GetArraySize("links");
 	for (int i = 0; i < numLinks; ++i)
 	{
@@ -38,6 +41,7 @@ BehaviorTree::BehaviorTree(Data & data)
 		linksList.insert(pair<int, BTLink*>(link->id, link));
 	}
 
+	uid = data.GetInt("uid");
 	nextId = data.GetInt("nextId");
 	int rootNodeId = data.GetInt("rootNodeId");
 	map<int, BTNode*>::iterator found = nodesList.find(rootNodeId);
@@ -154,6 +158,7 @@ int BehaviorTree::Serialize(char** buffer) const
 		link.second->Save(data);
 	}
 
+	data.AppendInt("uid", uid);
 	data.AppendInt("nextId", nextId);
 	if (rootNode)
 		data.AppendInt("rootNodeId", rootNode->GetId());
