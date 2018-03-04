@@ -2,6 +2,9 @@
 
 BeeT is a Behavior Tree library for C++. It contains a graphical application to easily create, edit and debug Behavior Trees.
 
-*Work in progress*:
+<img height="128" src="https://i.imgur.com/ciDgvM0.png">
+*Work in progress*
 
-![current_progress](https://i.imgur.com/INJtukr.gif "Progress")
+Stage: Pre-production - [Vertical Slice] - Alpha - Beta - Gold
+
+Last release: [BeeT v0.01](https://github.com/traguill/BeeT/releases/tag/0.01)
