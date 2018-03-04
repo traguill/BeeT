@@ -18,6 +18,8 @@ public:
 	void Serialize()const;
 	void Load(const char* path);
 
+	void NewBehaviorTree();
+
 private:
 
 	void Editor();

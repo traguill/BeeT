@@ -69,21 +69,7 @@ void BeeTGui::MenuBar()
 	{
 		if (ImGui::BeginMenu("File"))
 		{
-			ImGui::MenuItem(g_app->fileSystem->GetDirectory().data());
-			if (ImGui::MenuItem("Open##menubar_file_open"))
-			{
-				if (mode == BeeTMode::BEET_EDITOR)
-				{
-					beetEditor->Load("bt.txt");
-				}
-			}
-			if (ImGui::MenuItem("Save##menubar_file_save"))
-			{
-				if (mode == BeeTMode::BEET_EDITOR)
-				{
-					beetEditor->Serialize();
-				}
-			}
+			FileMenuBar();
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Edit"))
@@ -99,5 +85,32 @@ void BeeTGui::MenuBar()
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
+	}
+}
+
+void BeeTGui::FileMenuBar()
+{
+	ImGui::Text(g_app->fileSystem->GetDirectory().data());
+	ImGui::Separator();
+	if (ImGui::MenuItem("New##menubar_file_new"))
+	{
+		if (mode == BeeTMode::BEET_EDITOR)
+		{
+			beetEditor->NewBehaviorTree();
+		}
+	}
+	if (ImGui::MenuItem("Open##menubar_file_open"))
+	{
+		if (mode == BeeTMode::BEET_EDITOR)
+		{
+			beetEditor->Load("bt.txt");
+		}
+	}
+	if (ImGui::MenuItem("Save##menubar_file_save"))
+	{
+		if (mode == BeeTMode::BEET_EDITOR)
+		{
+			beetEditor->Serialize();
+		}
 	}
 }

@@ -33,6 +33,9 @@ bool BeeT::LoadBehaviorTree(const char * buffer, int size)
 	BEET_ASSERT(buffer != NULL);
 
 	// TODO: Parse file
+	BehaviorTree bt;
+
+	
 
 	return true;
 }

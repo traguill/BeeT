@@ -12,7 +12,8 @@
 int main(int argc, char** argv)
 {
 	BeeT::Init();
-	BeeT::LoadBehaviorTree("bt.txt");
+
+	//BeeT::LoadBehaviorTree("bt.txt");
 	BeeT::Shutdown();
 
 	system("pause");

@@ -37,4 +37,13 @@ namespace BeeT
 	BEET_API void*	LoadFile(const char* filename, int* outFileSize = NULL);
 }
 
+struct BehaviorTree
+{
+	int uid;
+
+	// Testing
+	int numNodes;
+	int numLinks;
+};
+
 #endif

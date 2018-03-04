@@ -87,6 +87,13 @@ void BeeTEditor::Load(const char * path)
 		delete buffer;
 }
 
+void BeeTEditor::NewBehaviorTree()
+{
+	if (bt)
+		delete bt;
+	bt = new BehaviorTree();
+}
+
 void BeeTEditor::Editor()
 {
 	

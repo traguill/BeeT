@@ -26,6 +26,7 @@ public:
 
 private:
 	void MenuBar();
+	void FileMenuBar();
 
 public:
 	BTNodeTypes* btNodeTypes = nullptr;

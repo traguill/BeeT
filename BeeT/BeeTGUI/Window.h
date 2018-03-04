@@ -13,6 +13,7 @@ public:
 	bool Init();
 	bool CleanUp();
 
+	void OnResize(int width, int height);
 	void GetWindowSize(int& width, int& height)const;
 
 public:

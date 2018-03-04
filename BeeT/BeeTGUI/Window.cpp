@@ -18,7 +18,7 @@ bool Window::Init()
 		return false;
 	}
 
-	Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+	Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE;
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 	
@@ -28,6 +28,8 @@ bool Window::Init()
 		LOGE("SDL Window could not be created. \nSDL_Error: %s", SDL_GetError());
 		return false;
 	}
+
+	SDL_SetWindowMinimumSize(sdlWindow, screenWidth, screenHeight);
 
 	return true;
 }
@@ -41,6 +43,12 @@ bool Window::CleanUp()
 	}
 	SDL_Quit();
 	return true;
+}
+
+void Window::OnResize(int width, int height)
+{
+	screenWidth = width;
+	screenHeight = height;
 }
 
 void Window::GetWindowSize(int & width, int & height) const
