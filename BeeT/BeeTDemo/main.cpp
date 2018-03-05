@@ -13,7 +13,11 @@ int main(int argc, char** argv)
 {
 	BeeT::Init();
 
-	//BeeT::LoadBehaviorTree("bt.txt");
+	printf("%i\n", BeeT::BehaviorTreeCount());
+	int uid = BeeT::LoadBehaviorTree("bt.txt");
+	printf("BT: %i\n", uid);
+	printf("%i\n", BeeT::BehaviorTreeCount());
+
 	BeeT::Shutdown();
 
 	system("pause");

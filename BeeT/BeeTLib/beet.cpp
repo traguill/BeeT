@@ -1,4 +1,6 @@
 #include "beet.h"
+#include "BeeT_serializer.h"
+#include "BeeT_behaviortree.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,30 +27,41 @@ void BeeT::Shutdown()
 	if (g_Beet->initialized == false)
 		return;
 
+	for (auto bt : g_Beet->trees)
+		delete bt;
+
 	g_Beet->initialized = false;
 }
 
-bool BeeT::LoadBehaviorTree(const char * buffer, int size)
+int BeeT::LoadBehaviorTree(const char * buffer, int size)
 {
 	BEET_ASSERT(buffer != NULL);
 
-	// TODO: Parse file
-	BehaviorTree bt;
-
-	
-
-	return true;
+	BeeT_Serializer parser(buffer);
+	BeeT_BehaviorTree* bt = new BeeT_BehaviorTree(parser);
+	if (bt == NULL)
+		return -1;
+	g_Beet->trees.push_back(bt);
+	return bt->uid;
 }
 
-bool BeeT::LoadBehaviorTree(const char * filename)
+int BeeT::LoadBehaviorTree(const char * filename)
 {
 	BEET_ASSERT(filename != NULL);
 	int fileSize = 0;
 	char* fileData = (char*)BeeT::LoadFile(filename, &fileSize);
-	bool result = BeeT::LoadBehaviorTree(fileData, fileSize);
-	if (fileData != NULL)
+	int result = -1;
+	if (fileData != NULL)	// If fileData is NULL, the filename could not be found or loaded.
+	{
+		result = BeeT::LoadBehaviorTree(fileData, fileSize);
 		BeeT::MemFree(fileData);
+	}
 	return result;
+}
+
+size_t BeeT::BehaviorTreeCount()
+{
+	return g_Beet->trees.size();
 }
 
 void * BeeT::MemAlloc(size_t size)

@@ -12,20 +12,48 @@
 #define BEET_ASSERT(_EXPR)	assert(_EXPR)
 #endif
 
+#include <vector>
+
+// Forward declarations
+
+class BeeT_BehaviorTree;
+
+// -----------------------------------------------------------------------------------
+
 struct BeetContext
 {
 	bool initialized = false;
+	std::vector<BeeT_BehaviorTree*> trees;
 };
 
 namespace BeeT
 {
+	//--------------------------------------------------------------------------------
 	// Main
+	//--------------------------------------------------------------------------------
+
 	BEET_API void	Init();
 	BEET_API void	Shutdown();
 
-	// Behavior Tree
-	BEET_API bool	LoadBehaviorTree(const char* buffer, int size);
-	BEET_API bool	LoadBehaviorTree(const char* path);
+	//--------------------------------------------------------------------------------
+	// BehaviorTree
+	//--------------------------------------------------------------------------------
+
+	BEET_API int	LoadBehaviorTree(const char* buffer, int size);
+
+	/*
+	*	Loads a BehaviorTree from a file path.
+	*	\param filename The file path
+	*	\return The uid of the Behavior Tree on SUCCESS, -1 on FAIL.
+	*/
+	BEET_API int	LoadBehaviorTree(const char* filename);
+
+	//--------------------------------------------------------------------------------
+	// Utils
+	//--------------------------------------------------------------------------------
+
+	// Get the number of Behavior Trees loaded in memory.
+	BEET_API size_t	BehaviorTreeCount();
 
 	//--------------------------------------------------------------------------------
 	// Helpers
@@ -36,14 +64,4 @@ namespace BeeT
 
 	BEET_API void*	LoadFile(const char* filename, int* outFileSize = NULL);
 }
-
-struct BehaviorTree
-{
-	int uid;
-
-	// Testing
-	int numNodes;
-	int numLinks;
-};
-
 #endif
