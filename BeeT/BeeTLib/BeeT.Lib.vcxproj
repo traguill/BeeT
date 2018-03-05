@@ -140,12 +140,14 @@
   <ItemGroup>
     <ClInclude Include="beet.h" />
     <ClInclude Include="BeeT_behaviortree.h" />
+    <ClInclude Include="BeeT_node.h" />
     <ClInclude Include="BeeT_serializer.h" />
     <ClInclude Include="ThirdParty\parson.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="beet.cpp" />
     <ClCompile Include="BeeT_behaviortree.cpp" />
+    <ClCompile Include="BeeT_node.cpp" />
     <ClCompile Include="BeeT_serializer.cpp" />
     <ClCompile Include="ThirdParty\parson.c" />
   </ItemGroup>

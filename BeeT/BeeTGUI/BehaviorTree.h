@@ -34,6 +34,9 @@ public:
 private:
 	int GetNextId();
 
+	// Serialization
+	void AddNode(Data& data, std::map<int, BTPin*>& pinList);
+
 private:
 	int uid = -1;
 	std::map<int, BTNode*> nodesList;

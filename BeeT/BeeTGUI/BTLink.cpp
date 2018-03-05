@@ -1,12 +1,16 @@
 #include "BTLink.h"
 #include "BTPin.h"
 #include "Log.h"
+#include "BTNode.h"
 
 #include <vector>
 #include <algorithm>
 
 BTLink::BTLink(int id, BTPin* sourcePin, BTPin* targetPin) : id(id), sourcePin(sourcePin), targetPin(targetPin)
-{}
+{
+	this->sourcePin->node->AddChild(targetPin->node);
+	this->targetPin->node->SetParent(sourcePin->node);
+}
 
 BTLink::BTLink(Data & data, const std::map<int, BTPin*>& pinsList)
 {
@@ -24,6 +28,8 @@ BTLink::BTLink(Data & data, const std::map<int, BTPin*>& pinsList)
 	{
 		sourcePin->links.push_back(this);
 		targetPin->links.push_back(this);
+		sourcePin->node->AddChild(targetPin->node);
+		targetPin->node->SetParent(sourcePin->node);
 	}
 	else
 	{
@@ -32,35 +38,33 @@ BTLink::BTLink(Data & data, const std::map<int, BTPin*>& pinsList)
 }
 
 BTLink::~BTLink()
-{
-}
+{}
 
-void BTLink::CleanUp(bool fromSourcePin)
+void BTLink::CleanUp()
 {
-	if (fromSourcePin)
+	if (sourcePin->node && targetPin->node)
 	{
-		if (targetPin)
-		{
-			std::vector<BTLink*>::iterator found = std::find(targetPin->links.begin(), targetPin->links.end(), this);
-			if (found != targetPin->links.end())
-			{
-				targetPin->links.erase(found);
-			}
-			targetPin = nullptr;
-		}
+		sourcePin->node->RemoveChild(targetPin->node);
+		targetPin->node->RemoveParent();
 	}
 	else
 	{
-		if (sourcePin)
-		{
-			std::vector<BTLink*>::iterator found = std::find(sourcePin->links.begin(), sourcePin->links.end(), this);
-			if (found != sourcePin->links.end())
-			{
-				sourcePin->links.erase(found);
-			}
-			sourcePin = nullptr;
-		}	
+		LOGW("Link (%i) could not clean up correctly. Source node or target node does not exist", id);
 	}
+
+	std::vector<BTLink*>::iterator found = std::find(targetPin->links.begin(), targetPin->links.end(), this);
+	if (found != targetPin->links.end())
+	{
+		targetPin->links.erase(found);
+	}
+	targetPin = nullptr;
+
+	found = std::find(sourcePin->links.begin(), sourcePin->links.end(), this);
+	if (found != sourcePin->links.end())
+	{
+		sourcePin->links.erase(found);
+	}
+	sourcePin = nullptr;		
 }
 
 void BTLink::Save(Data & file) const

@@ -41,20 +41,15 @@ BTNode::~BTNode()
 	delete outputPin;
 }
 
-std::vector<BTLink*> BTNode::ClearLinks()
+std::vector<BTLink*> BTNode::GetAllLinks()
 {
 	std::vector<BTLink*> linkList;
 	for (std::vector<BTLink*>::iterator link = inputPin->links.begin(); link != inputPin->links.end(); ++link)
-	{
 		linkList.push_back(*link);
-		(*link)->CleanUp(false);
-	}
+	
 	for (std::vector<BTLink*>::iterator link = outputPin->links.begin(); link != outputPin->links.end(); ++link)
-	{
 		linkList.push_back(*link);
-		(*link)->CleanUp(true);
-	}
-
+	
 	return linkList;
 }
 
@@ -67,7 +62,7 @@ void BTNode::PrepareToDraw()
 	ImGui::BeginHorizontal("inputs");
 	ImGui::Spring(0, padding * 2);
 
-	if (bool nodeHasInput = true)
+	if (type->typeId != 0) // Check if is not root (type 0)
 	{
 		ImGui::Dummy(ImVec2(0, padding));
 		ImGui::Spring(1, 0);
@@ -152,6 +147,35 @@ BTNode * BTNode::GetParent() const
 	return parent;
 }
 
+std::vector<BTNode*> BTNode::GetChilds() const
+{
+	return childs;
+}
+
+void BTNode::SetParent(BTNode * parent)
+{
+	// Note: This method does NOT add this node to its parent's child list. See AddChild(BTNode*).
+	this->parent = parent;
+}
+
+void BTNode::RemoveParent()
+{
+	this->parent = nullptr;
+}
+
+void BTNode::AddChild(BTNode * child)
+{
+	if(std::find(childs.begin(), childs.end(), child) == childs.end())
+		childs.push_back(child);
+}
+
+void BTNode::RemoveChild(BTNode * child)
+{
+	std::vector<BTNode*>::iterator found = std::find(childs.begin(), childs.end(), child);
+	if (found != childs.end())
+		childs.erase(found);
+}
+
 void BTNode::Save(Data& file)
 {
 	Data data;
@@ -166,6 +190,10 @@ void BTNode::Save(Data& file)
 	ImVec2 nodePosition = ne::GetNodePosition(id);
 	data.AppendFloat("positionX", nodePosition.x);
 	data.AppendFloat("positionY", nodePosition.y);
+
+	data.AppendArray("childs");
+	for (auto child : childs)
+		child->Save(data);
 
 	data.AppendString("name", name.data());
 	data.AppendString("comment", comment.data());

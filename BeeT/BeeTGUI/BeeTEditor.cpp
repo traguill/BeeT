@@ -103,7 +103,6 @@ void BeeTEditor::Editor()
 
 	ImGui::Begin("BeeT Editor Window", &beetEditorWindowOpen, flags);
 
-	ne::SetCurrentEditor(g_app->beetGui->GetNodeEditorContext());
 	ne::Begin("BeeT Node Editor");
 
 	Menus();
@@ -144,9 +143,21 @@ void BeeTEditor::Inspector()
 			ImGui::Text("Type: %s", nodeSel->type->name.data());
 			ImGui::Text("Name: %s", nodeSel->GetName().data());
 			ImGui::Spacing();
-			ImGui::Text("Comment: ");
+			ImGui::Text("Debug: ");
 			ImGui::Spacing();
-			ImGui::TextWrapped("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et malesuada lorem. Nam posuere gravida ultricies. Vivamus id elementum odio. Maecenas sed sem nunc. Maecenas mattis ex mauris, eget tincidunt dolor aliquet in. Maecenas eget mauris posuere.");
+			ImGui::Separator();
+			BTNode* parent = nodeSel->GetParent();
+			if (parent)
+				ImGui::Text("Parent: %i", parent->GetId());
+			else
+				ImGui::Text("Parent: -1");
+			vector<BTNode*> childs = nodeSel->GetChilds();
+			ImGui::Text("Childs: %i", childs.size());
+			ImGui::Spacing();
+			for (auto nodeChild : childs)
+			{
+				ImGui::Text("    * Node %i", nodeChild->GetId());
+			}
 
 			ImGui::Separator();
 

@@ -19,10 +19,12 @@ BTNodeTypes::~BTNodeTypes()
 void BTNodeTypes::Init()
 {
 	// Default node types
-	NodeType sequence(0, "Sequence", -1);
-	NodeType action(1, "Action", 0);
-	NodeType condition(2, "Condition", 1);
+	NodeType root(0, "Root", 1);
+	NodeType sequence(1, "Sequence", -1);
+	NodeType action(2, "Action", 0);
+	NodeType condition(3, "Condition", 1);
 
+	typesList.push_back(root);
 	typesList.push_back(sequence);
 	typesList.push_back(action);
 	typesList.push_back(condition);

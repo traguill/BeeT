@@ -19,6 +19,7 @@ BeeTGui::~BeeTGui()
 bool BeeTGui::Init()
 {
 	editorContext = ne::CreateEditor();
+	ne::SetCurrentEditor(g_app->beetGui->GetNodeEditorContext());
 
 	// Init node types file
 	btNodeTypes = new BTNodeTypes();

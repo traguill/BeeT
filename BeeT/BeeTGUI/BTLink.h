@@ -14,7 +14,7 @@ public:
 	BTLink(Data& data, const std::map<int, BTPin*>& pinsList);
 	~BTLink();
 
-	void CleanUp(bool fromSourcePin);
+	void CleanUp();
 	void Save(Data& file)const;
 
 public:

@@ -16,6 +16,8 @@ using namespace std;
 BehaviorTree::BehaviorTree()
 {
 	uid = g_rnd->RandomInt();
+	AddNode(0, 0, 0); // Root node
+	rootNode = nodesList[0];
 }
 
 BehaviorTree::BehaviorTree(Data & data)
@@ -26,11 +28,7 @@ BehaviorTree::BehaviorTree(Data & data)
 	for (int i = 0; i < numNodes; ++i)
 	{
 		Data nodeData = data.GetArray("nodes", i);
-		BTNode* node = new BTNode(this, nodeData);
-		nodesList.insert(pair<int, BTNode*>(node->GetId(), node));
-		ne::SetNodePosition(node->GetId(), ImVec2(nodeData.GetFloat("positionX"), nodeData.GetFloat("positionY")));
-		pinsList.insert(pair<int, BTPin*>(node->inputPin->id, node->inputPin));
-		pinsList.insert(pair<int, BTPin*>(node->outputPin->id, node->outputPin));
+		AddNode(nodeData, pinsList);
 	}
 	// Load Links
 	int numLinks = data.GetArraySize("links");
@@ -87,15 +85,15 @@ void BehaviorTree::RemoveNode(int id)
 	map<int, BTNode*>::iterator found = nodesList.find(id);
 	if (found != nodesList.end())
 	{
-		linksToRemove = found->second->ClearLinks();
+		linksToRemove = found->second->GetAllLinks();
+		for (auto link : linksToRemove)
+		{
+			link->CleanUp();
+			linksList.erase(link->id);
+			delete link;
+		}
 		delete found->second;
 		nodesList.erase(found);
-	}
-
-	for (auto link : linksToRemove)
-	{
-		linksList.erase(link->id);
-		delete link;
 	}
 }
 
@@ -104,8 +102,7 @@ void BehaviorTree::RemoveLink(int id)
 	map<int, BTLink*>::iterator found = linksList.find(id);
 	if (found != linksList.end())
 	{
-		found->second->CleanUp(false);
-		found->second->CleanUp(true);
+		found->second->CleanUp();
 
 		delete found->second;
 		linksList.erase(found);
@@ -268,4 +265,18 @@ BTPin * BehaviorTree::FindPin(int id) const
 int BehaviorTree::GetNextId()
 {
 	return nextId++;
+}
+
+void BehaviorTree::AddNode(Data & data, map<int, BTPin*>& pinsList)
+{
+	BTNode* node = new BTNode(this, data);
+	nodesList.insert(pair<int, BTNode*>(node->GetId(), node));
+	pinsList.insert(pair<int, BTPin*>(node->inputPin->id, node->inputPin));
+	pinsList.insert(pair<int, BTPin*>(node->outputPin->id, node->outputPin));
+	int numChilds = data.GetArraySize("childs");
+	for (int i = 0; i < numChilds; ++i)
+	{
+		AddNode(data.GetArray("childs", i), pinsList);
+	}
+	ne::SetNodePosition(node->GetId(), ImVec2(data.GetFloat("positionX"), data.GetFloat("positionY")));
 }

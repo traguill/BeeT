@@ -20,7 +20,7 @@ public:
 	BTNode(BehaviorTree* bt, Data& data);
 	~BTNode();
 
-	std::vector<BTLink*> ClearLinks();
+	std::vector<BTLink*> GetAllLinks();
 
 	void PrepareToDraw();
 	
@@ -28,6 +28,12 @@ public:
 	int GetId()const;
 	std::string GetName()const;
 	BTNode* GetParent()const;
+	std::vector<BTNode*> GetChilds()const; // Use for Debug
+
+	void SetParent(BTNode* parent);
+	void RemoveParent();
+	void AddChild(BTNode* child);
+	void RemoveChild(BTNode* child);
 
 	void Save(Data& file);
 	
