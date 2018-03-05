@@ -158,7 +158,7 @@ void BeeTEditor::Inspector()
 			{
 				ImGui::Text("    * Node %i", nodeChild->GetId());
 			}
-
+			ImGui::Text("Subtree id: %i", nodeSel->GetSubtreeId());
 			ImGui::Separator();
 
 			ImGui::Text("Input: 0");
@@ -180,9 +180,12 @@ void BeeTEditor::ShowPopUps()
 
 		for (auto nodeType : typesList)
 		{
-			if (ImGui::MenuItem(nodeType.name.data()))
+			if (nodeType.typeId != 0) // Don't let the user create a Root node
 			{
-				bt->AddNode(cursorPosition.x, cursorPosition.y, nodeType.typeId);
+				if (ImGui::MenuItem(nodeType.name.data()))
+				{
+					bt->AddNode(cursorPosition.x, cursorPosition.y, nodeType.typeId);
+				}
 			}
 		}
 		ImGui::EndPopup();
@@ -261,6 +264,11 @@ void BeeTEditor::Links()
 				else if (endPin == startPin || endPin->kind == startPin->kind || startPin->node == endPin->node)
 				{
 					// Same Pin || Same kind || Same node
+					ne::RejectNewItem(ImColor(255, 0, 0), 2.0f);
+				}
+				else if (startPin->node->GetSubtreeId() == endPin->node->GetSubtreeId())
+				{
+					// Same tree it would create a loop
 					ne::RejectNewItem(ImColor(255, 0, 0), 2.0f);
 				}
 				else if (ne::AcceptNewItem(ImColor(128, 255, 128), 4.0f))

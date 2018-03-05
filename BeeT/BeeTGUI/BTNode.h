@@ -20,22 +20,28 @@ public:
 	BTNode(BehaviorTree* bt, Data& data);
 	~BTNode();
 
-	std::vector<BTLink*> GetAllLinks();
-
+	void Save(Data& file);
 	void PrepareToDraw();
 	
 	// Getters
 	int GetId()const;
 	std::string GetName()const;
 	BTNode* GetParent()const;
-	std::vector<BTNode*> GetChilds()const; // Use for Debug
+	std::vector<BTNode*> GetChilds()const;	// Use for Debug
+	std::vector<BTLink*> GetAllLinks();
+	int GetSubtreeId()const;
 
+	// Hierarchy
 	void SetParent(BTNode* parent);
 	void RemoveParent();
 	void AddChild(BTNode* child);
 	void RemoveChild(BTNode* child);
 
-	void Save(Data& file);
+	// Utils
+	void ForceRoot(); // Forces the node to be the root node. DO NOT USE!
+
+private:
+	void ReloadSubtreeId(); // Sets the subtree id depending on the parent's
 	
 public:
 	ax::rect inputsRect;
@@ -58,6 +64,7 @@ private:
 	std::string comment;
 	BehaviorTree* bt = nullptr;
 
+	int subtreeId = -1; // If this is 0 means that this node is inside the Root tree and will be executed. 
 };
 #endif
 

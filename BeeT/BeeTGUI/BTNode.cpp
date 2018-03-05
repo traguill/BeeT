@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "BeeTGui.h"
 #include "BehaviorTree.h"
+#include "Random.h"
 
 namespace ne = ax::NodeEditor;
 
@@ -19,6 +20,7 @@ BTNode::BTNode(int id, int sourcePinId, int targetPinId, int typeId, BehaviorTre
 
 	inputPin = new BTPin(targetPinId, ne::PinKind::Target, this);
 	outputPin = new BTPin(sourcePinId, ne::PinKind::Source, this);
+	ReloadSubtreeId();
 }
 
 BTNode::BTNode(BehaviorTree* bt, Data & data) : bt(bt)
@@ -33,6 +35,8 @@ BTNode::BTNode(BehaviorTree* bt, Data & data) : bt(bt)
 
 	name = data.GetString("name");
 	comment = data.GetString("comment");
+
+	ReloadSubtreeId();
 }
 
 BTNode::~BTNode()
@@ -51,6 +55,11 @@ std::vector<BTLink*> BTNode::GetAllLinks()
 		linkList.push_back(*link);
 	
 	return linkList;
+}
+
+int BTNode::GetSubtreeId() const
+{
+	return subtreeId;
 }
 
 void BTNode::PrepareToDraw()
@@ -156,11 +165,13 @@ void BTNode::SetParent(BTNode * parent)
 {
 	// Note: This method does NOT add this node to its parent's child list. See AddChild(BTNode*).
 	this->parent = parent;
+	ReloadSubtreeId();
 }
 
 void BTNode::RemoveParent()
 {
 	this->parent = nullptr;
+	ReloadSubtreeId();
 }
 
 void BTNode::AddChild(BTNode * child)
@@ -174,6 +185,11 @@ void BTNode::RemoveChild(BTNode * child)
 	std::vector<BTNode*>::iterator found = std::find(childs.begin(), childs.end(), child);
 	if (found != childs.end())
 		childs.erase(found);
+}
+
+void BTNode::ForceRoot()
+{
+	subtreeId = 0;
 }
 
 void BTNode::Save(Data& file)
@@ -200,4 +216,11 @@ void BTNode::Save(Data& file)
 
 	file.AppendArrayValue(data);
 	saveFlag = true;
+}
+
+void BTNode::ReloadSubtreeId()
+{
+	subtreeId = parent ? parent->subtreeId : g_rnd->RandomInt();
+	for (auto child : childs)
+		child->ReloadSubtreeId();
 }

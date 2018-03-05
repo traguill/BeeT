@@ -18,6 +18,7 @@ BehaviorTree::BehaviorTree()
 	uid = g_rnd->RandomInt();
 	AddNode(0, 0, 0); // Root node
 	rootNode = nodesList[0];
+	rootNode->ForceRoot();
 }
 
 BehaviorTree::BehaviorTree(Data & data)
@@ -44,6 +45,8 @@ BehaviorTree::BehaviorTree(Data & data)
 	int rootNodeId = data.GetInt("rootNodeId");
 	map<int, BTNode*>::iterator found = nodesList.find(rootNodeId);
 	rootNode = (found != nodesList.end()) ? found->second : nullptr;
+	if (rootNode)
+		rootNode->ForceRoot();
 }
 
 BehaviorTree::~BehaviorTree()
