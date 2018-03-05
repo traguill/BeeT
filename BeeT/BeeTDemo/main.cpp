@@ -18,6 +18,7 @@ int main(int argc, char** argv)
 	printf("BT: %i\n", uid);
 	printf("%i\n", BeeT::BehaviorTreeCount());
 
+	
 	BeeT::Shutdown();
 
 	system("pause");

@@ -3,6 +3,8 @@
 
 #include "BeeT_serializer.h"
 
+class BeeT_Node;
+
 class BeeT_BehaviorTree
 {
 public:
@@ -11,8 +13,7 @@ public:
 
 public:
 	int uid;
-	int numNodes;
-	int numLinks;
+	BeeT_Node* rootNode = nullptr;
 };
 #endif // !__BEET_BEHAVIORTREE_H__
 
