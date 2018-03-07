@@ -23,6 +23,7 @@ public:
 	std::string GetDirectoryFromPath(const std::string& path)const;
 	unsigned int EnumerateFiles(const char* path, std::vector<std::string>& files);
 	
+	void RemoveDirectoriesFromList(std::vector<std::string>& list)const;
 	unsigned int FilterFiles(const std::vector<std::string>& filenames, std::vector<std::string>& filtered, const std::string& filter)const;
 	bool IsDirectory(const char* fname)const;
 

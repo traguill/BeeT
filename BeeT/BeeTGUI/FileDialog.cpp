@@ -10,6 +10,7 @@ using namespace std;
 FileDialog::FileDialog()
 {
 	path = g_app->fileSystem->GetDirectory();
+	format = ".txt";
 }
 
 FileDialog::~FileDialog()
@@ -24,30 +25,35 @@ void FileDialog::Draw()
 	
 	ImGui::Begin("File Dialog Title");
 
-	ImGui::Text("%s ##filedialogwindow_filename", path.data());
-	
+	ImGui::Text("%s", path.data());
+	ImGui::Separator();
 	ImGui::BeginChild("##filedialogwindow_listfiles", ImVec2(ImGui::GetWindowContentRegionWidth(), 300), false, ImGuiWindowFlags_HorizontalScrollbar);
 	
-	vector<string> files;
+	vector<string> files, filtered;
 	g_app->fileSystem->EnumerateFiles("/", files);
-	for (auto file : files)
+	g_app->fileSystem->RemoveDirectoriesFromList(files);
+	g_app->fileSystem->FilterFiles(files, filtered, format);
+	for (auto file : filtered)
 	{
-		if (g_app->fileSystem->IsDirectory(file.data()))
-			ImGui::Text("'-> %s", file.data());
-		else
-			ImGui::Text("* %s", file.data());
+		ImGui::Text("	* %s", file.data());
 	}
 		
 
 	ImGui::EndChild();
 	
-
+	ImGui::Separator();
 	//ImGui::Text("Name: "); ImGui::SameLine(); ImGui::InputText("##filedialogwindow_name", &b, 1);
-	ImGui::Text("Format: *.txt"); 
+	ImGui::Text("Format: *%s", format.data()); 
 
 	ImGui::Button("Accept##filedialogwindow_accept");
 	ImGui::SameLine();
 	ImGui::Button("Cancel##filedialogwindow_cancel");
 
 	ImGui::End();
+}
+
+void FileDialog::SetFormat(const char * format)
+{
+	this->format = ".";
+	this->format.append(format);
 }

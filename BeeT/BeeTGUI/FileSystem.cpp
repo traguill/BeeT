@@ -128,6 +128,17 @@ unsigned int FileSystem::EnumerateFiles(const char * path, std::vector<std::stri
 	return files.size();
 }
 
+void FileSystem::RemoveDirectoriesFromList(std::vector<std::string>& list) const
+{
+	vector<string> tmp = list;
+	list.clear();
+	for (auto file : tmp)
+	{
+		if (IsDirectory(file.data()) == false)
+			list.push_back(file);
+	}
+}
+
 unsigned int FileSystem::FilterFiles(const vector<string>& filenames, vector<string>& filtered, const string & filter) const
 {
 	filtered.clear();
