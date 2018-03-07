@@ -11,6 +11,7 @@ enum BeeTMode {
 
 class BeeTEditor;
 class BTNodeTypes;
+class FileDialog;
 
 class BeeTGui : public Module
 {
@@ -35,6 +36,7 @@ private:
 	BeeTMode mode = BEET_EDITOR; // BeeTGui has two modes: Editor and Debugger. Only one of them can be enabled at the time
 
 	ax::NodeEditor::EditorContext* editorContext = nullptr; // Context to handle the node graph editor
+	FileDialog* fileDialog = nullptr;
 
 	// Modes
 	BeeTEditor* beetEditor = nullptr;

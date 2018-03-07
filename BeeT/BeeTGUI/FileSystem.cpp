@@ -1,6 +1,13 @@
 #include "FileSystem.h"
 #include "Log.h"
-#include <Windows.h>
+#include "../PhysFS/include/physfs.h"
+#include "../SDL2/include/SDL.h"
+
+#ifdef _DEBUG
+#pragma comment( lib, "../lib/physfs_staticd.lib" )
+#else
+#pragma comment( lib, "../lib/physfs_static.lib" )
+#endif
 
 using namespace std;
 
@@ -12,52 +19,83 @@ FileSystem::~FileSystem()
 
 bool FileSystem::Init()
 {
-	// Get the current directory
-	char directory[MAX_PATH];
-	GetCurrentDirectory(MAX_PATH, directory);
 
-	currentDirectory = string(directory);
-	currentDirectory.append("\\");
+	char* basePath = SDL_GetBasePath();
+	PHYSFS_init(basePath);
+	currentDirectory = basePath;
+	SDL_free(basePath);
 
+	AddPath(currentDirectory.data());
 	LOGI("Current directory: %s", currentDirectory.data());
 
+	if (PHYSFS_setWriteDir(".") == 0)
+	{
+		LOGE("Could not set a write directory");
+	}
+
+	return true;
+}
+
+bool FileSystem::CleanUp()
+{
+	PHYSFS_deinit();
 	return true;
 }
 
 unsigned int FileSystem::Load(const char * path, char ** buffer) const
 {
-	size_t result = 0;
-	FILE* file;
-	fopen_s(&file, path, "rb");
+	unsigned int ret = 0;
 
-	if (file)
+	PHYSFS_file* fs_file = PHYSFS_openRead(path);
+
+	if (fs_file != NULL)
 	{
-		fseek(file, 0, SEEK_END);
-		long size = ftell(file);
-		rewind(file);
+		PHYSFS_sint64 size = PHYSFS_fileLength(fs_file);
 
-		*buffer = new char[(unsigned int)size];
-		if (*buffer)
+		if (size > 0)
 		{
-			result = fread(*buffer, 1, size, file);
+			*buffer = new char[(unsigned int)size];
+			PHYSFS_sint64 readed = PHYSFS_read(fs_file, *buffer, 1, (PHYSFS_sint32)size);
+			if (readed != size)
+			{
+				LOGE("File System error while reading from file %s: %s\n", path, PHYSFS_getLastError());
+				if (buffer)
+					delete[] buffer;
+			}
+			else
+				ret = (unsigned int)readed;
 		}
-		fclose(file);
-	}
 
-	return result;
+		if (PHYSFS_close(fs_file) == 0)
+			LOGE("File System error while closing file %s: %s\n", path, PHYSFS_getLastError());
+	}
+	else
+		LOGE("File System error while opening file %s: %s\n", path, PHYSFS_getLastError());
+
+	return ret;
 }
 
 unsigned int FileSystem::Save(const char * path, const void * buffer, unsigned int size) const
 {
-	size_t ret = 0;
-	FILE* file;
-	fopen_s(&file, path, "wb");
+	unsigned int ret = 0;
 
-	if (file)
+	PHYSFS_file* fs_file = PHYSFS_openWrite(path);
+
+	if (fs_file != NULL)
 	{
-		ret = fwrite(buffer, sizeof(char), size, file);
-		fclose(file);
+		PHYSFS_sint64 written = PHYSFS_write(fs_file, (const void*)buffer, 1, size);
+		if (written != size)
+		{
+			LOGE("File System error while writing to file %s: %s\n", path, PHYSFS_getLastError());
+		}
+		else
+			ret = (unsigned int)written;
+
+		if (PHYSFS_close(fs_file) == 0)
+			LOGE("File System error while closing file %s: %s\n", path, PHYSFS_getLastError());
 	}
+	else
+		LOGE("File System error while opening file %s: %s\n", path, PHYSFS_getLastError());
 
 	return ret;
 }
@@ -79,23 +117,15 @@ string FileSystem::GetDirectoryFromPath(const string & path) const
 	return path.substr(0, path.find_last_of("\\/") + 1);
 }
 
-unsigned int FileSystem::GetAllFilesInDirectory(const char * path, vector<string>& filenames) const
+unsigned int FileSystem::EnumerateFiles(const char * path, std::vector<std::string>& files)
 {
-	WIN32_FIND_DATA data;
-	HANDLE h_find = FindFirstFile(path, &data);
-
-	filenames.clear();
-
-	if (h_find != INVALID_HANDLE_VALUE)
-	{
-		do
-		{
-			filenames.push_back(data.cFileName);
-		} while (FindNextFile(h_find, &data));
-		FindClose(h_find);
-	}
-
-	return filenames.size();
+	files.clear();
+	char** rc = PHYSFS_enumerateFiles(path);
+	char** i;
+	for (i = rc; *i != NULL; i++)
+		files.push_back(*i);
+	PHYSFS_freeList(rc);
+	return files.size();
 }
 
 unsigned int FileSystem::FilterFiles(const vector<string>& filenames, vector<string>& filtered, const string & filter) const
@@ -113,4 +143,19 @@ unsigned int FileSystem::FilterFiles(const vector<string>& filenames, vector<str
 	}
 
 	return filtered.size();
+}
+
+bool FileSystem::IsDirectory(const char * fname) const
+{
+	return PHYSFS_isDirectory(fname) == 0 ? false : true;
+}
+
+bool FileSystem::AddPath(const char * path, const char * mountPoint)
+{
+	if (PHYSFS_mount(path, mountPoint, 1) == 0)
+	{
+		LOGE("Could not add path or zip (%s): %s", path, PHYSFS_getLastError());
+		return false;
+	}
+	return true;
 }

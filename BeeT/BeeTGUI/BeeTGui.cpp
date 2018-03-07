@@ -3,6 +3,7 @@
 #include "Log.h"
 #include "BeeTEditor.h"
 #include "BTNodeTypes.h"
+#include "FileDialog.h"
 
 #include "FileSystem.h" // Testing: To show the current directory path in MainMenuBar->File.
 
@@ -28,12 +29,14 @@ bool BeeTGui::Init()
 	beetEditor = new BeeTEditor();
 	beetEditor->Init();
 
+	fileDialog = new FileDialog();
 	g_app->AddModuleUpdate(this);
 	return true;
 }
 
 bool BeeTGui::CleanUp()
 {
+	delete fileDialog;
 	delete btNodeTypes;
 	beetEditor->CleanUp();
 	delete beetEditor;
@@ -45,6 +48,7 @@ bool BeeTGui::Update()
 {
 	MenuBar();
 	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowRounding, 0.0f);
+	fileDialog->Draw();
 	bool ret = false;
 	switch (mode)
 	{

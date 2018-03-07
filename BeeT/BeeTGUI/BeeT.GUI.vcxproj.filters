@@ -69,6 +69,9 @@
     <ClCompile Include="Random.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="FileDialog.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -163,6 +166,9 @@
       <Filter>Editor\BehaviorTree</Filter>
     </ClInclude>
     <ClInclude Include="Random.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="FileDialog.h">
       <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>
