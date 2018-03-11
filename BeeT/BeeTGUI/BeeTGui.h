@@ -24,10 +24,15 @@ public:
 	bool Update();
 
 	ax::NodeEditor::EditorContext* GetNodeEditorContext()const;
+	void ResetNodeEditorContext(); //TODO: Re-do this to let each BT to have its own context.
+
+	static void LoadFile(void* obj, const char* filename);
+	static void SaveFile(void* obj, const char* filename);
 
 private:
 	void MenuBar();
 	void FileMenuBar();
+	
 
 public:
 	BTNodeTypes* btNodeTypes = nullptr;

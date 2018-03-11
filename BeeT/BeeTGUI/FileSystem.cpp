@@ -28,7 +28,7 @@ bool FileSystem::Init()
 	AddPath(currentDirectory.data());
 	LOGI("Current directory: %s", currentDirectory.data());
 
-	if (PHYSFS_setWriteDir(".") == 0)
+	if (PHYSFS_setWriteDir(currentDirectory.data()) == 0)
 	{
 		LOGE("Could not set a write directory");
 	}

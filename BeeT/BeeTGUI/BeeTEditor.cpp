@@ -45,7 +45,7 @@ bool BeeTEditor::CleanUp()
 	return true;
 }
 
-void BeeTEditor::Serialize() const
+void BeeTEditor::Serialize(const char* filename) const
 {
 	// In progress: Now only save one BT. In the future choose one of the opened BTs to save or save them all.
 	char* buffer = nullptr;
@@ -56,7 +56,7 @@ void BeeTEditor::Serialize() const
 	}
 	else
 	{
-		unsigned int ret = g_app->fileSystem->Save("./bt.txt", buffer, size);
+		unsigned int ret = g_app->fileSystem->Save(filename, buffer, size);
 		if(ret == 0)
 			LOGE("Behavior Tree was not saved. An error occurred while writting data on a file.")
 	}
@@ -73,10 +73,7 @@ void BeeTEditor::Load(const char * path)
 	{
 		Data btData(buffer);
 
-		if (bt)
-			delete bt; // For now the current BT is destroyed and replaced.
-
-		bt = new BehaviorTree(btData);
+		NewBehaviorTree(&btData); // For now the current BT is destroyed and replaced.
 	}
 	else
 	{
@@ -87,11 +84,15 @@ void BeeTEditor::Load(const char * path)
 		delete buffer;
 }
 
-void BeeTEditor::NewBehaviorTree()
+void BeeTEditor::NewBehaviorTree(Data* data)
 {
+	g_app->beetGui->ResetNodeEditorContext();
 	if (bt)
 		delete bt;
-	bt = new BehaviorTree();
+	if (data)
+		bt = new BehaviorTree(*data);
+	else
+		bt = new BehaviorTree();
 }
 
 void BeeTEditor::Editor()

@@ -4,6 +4,7 @@
 #include "ThirdParty/ImGui/imgui.h"
 
 class BehaviorTree;
+class Data;
 
 class BeeTEditor
 {
@@ -15,10 +16,10 @@ public:
 	bool Update();
 	bool CleanUp();
 
-	void Serialize()const;
+	void Serialize(const char* filename)const;
 	void Load(const char* path);
 
-	void NewBehaviorTree();
+	void NewBehaviorTree(Data* data = nullptr);
 
 private:
 

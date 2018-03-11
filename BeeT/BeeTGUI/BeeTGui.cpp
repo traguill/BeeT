@@ -20,7 +20,7 @@ BeeTGui::~BeeTGui()
 bool BeeTGui::Init()
 {
 	editorContext = ne::CreateEditor();
-	ne::SetCurrentEditor(g_app->beetGui->GetNodeEditorContext());
+	ne::SetCurrentEditor(GetNodeEditorContext());
 
 	// Init node types file
 	btNodeTypes = new BTNodeTypes();
@@ -68,6 +68,13 @@ ax::NodeEditor::EditorContext * BeeTGui::GetNodeEditorContext() const
 	return editorContext;
 }
 
+void BeeTGui::ResetNodeEditorContext()
+{
+	ne::DestroyEditor(editorContext);
+	editorContext = ne::CreateEditor();
+	ne::SetCurrentEditor(editorContext);
+}
+
 void BeeTGui::MenuBar()
 {
 	if (ImGui::BeginMainMenuBar())
@@ -101,6 +108,7 @@ void BeeTGui::FileMenuBar()
 	{
 		if (mode == BeeTMode::BEET_EDITOR)
 		{
+			fileDialog->ClearLastOpenedFileName();
 			beetEditor->NewBehaviorTree();
 		}
 	}
@@ -108,14 +116,26 @@ void BeeTGui::FileMenuBar()
 	{
 		if (mode == BeeTMode::BEET_EDITOR)
 		{
-			beetEditor->Load("bt.txt");
+			fileDialog->EnableWindow(FileDialogMode::OPEN_FILE);
+			fileDialog->SetAcceptFunctionCallback(BeeTGui::LoadFile, this);
 		}
 	}
 	if (ImGui::MenuItem("Save##menubar_file_save"))
 	{
 		if (mode == BeeTMode::BEET_EDITOR)
 		{
-			beetEditor->Serialize();
+			fileDialog->EnableWindow(FileDialogMode::SAVE_FILE);
+			fileDialog->SetAcceptFunctionCallback(BeeTGui::SaveFile, this);
 		}
 	}
+}
+
+void BeeTGui::LoadFile(void* obj, const char* filename)
+{
+	((BeeTGui*)obj)->beetEditor->Load(filename);
+}
+
+void BeeTGui::SaveFile(void* obj, const char* filename)
+{
+	((BeeTGui*)obj)->beetEditor->Serialize(filename);
 }
