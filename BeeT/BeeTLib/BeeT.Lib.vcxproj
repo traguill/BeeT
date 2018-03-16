@@ -148,7 +148,7 @@
     <ClCompile Include="beet.c" />
     <ClCompile Include="BeeT_behaviortree.c" />
     <ClCompile Include="BeeT_node.c" />
-    <ClCompile Include="BeeT_serializer.cpp" />
+    <ClCompile Include="BeeT_serializer.c" />
     <ClCompile Include="ThirdParty\parson.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

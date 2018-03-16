@@ -3,52 +3,50 @@
 
 #include "ThirdParty/parson.h"
 
+typedef enum{false, true} bool;
+
 //Wrapper for Parson (JSON) library
 
-class BeeT_Serializer
-{
-	BeeT_Serializer();
-	BeeT_Serializer(const char* filename);
-	BeeT_Serializer(JSON_Object* root);
-	~BeeT_Serializer();
+typedef struct BeeT_Serializer BeeT_Serializer;
 
-	//Append
-	bool AppendArray(const char* name);
-	bool AppendArrayValue(const BeeT_Serializer& data);
-	bool AppendString(const char* name, const char* string);
-	bool AppendBool(const char* name, bool value);
-	bool AppendUInt(const char* name, unsigned int value);
-	bool AppendInt(const char* name, int value);
-	bool AppendFloat(const char* name, float value);
-	bool AppendFloat2(const char * name, const float * value);
-	bool AppendInt2(const char* name, const int* value);
-	bool AppendFloat3(const char* name, const float* value);
-	bool AppendFloat4(const char* name, const float* value);
-	bool AppendDouble(const char* name, double value);
-	BeeT_Serializer AppendJObject(const char* name);
+BeeT_Serializer* BeeT_Serializer__Create();
+BeeT_Serializer* BeeT_Serializer__Create(const char* filename);
+BeeT_Serializer* BeeT_Serializer__Create(JSON_Object* root);
 
-	//Gets
-	BeeT_Serializer GetJObject(const char* name)const;
-	const char* GetString(const char* name)const;
-	int GetInt(const char* name)const;
-	BeeT_Serializer GetArray(const char* name, unsigned int index)const;
-	size_t GetArraySize(const char* name)const;
-	bool GetBool(const char* name)const;
-	unsigned int GetUInt(const char* name)const;
-	float GetFloat(const char* name)const;
-	double GetDouble(const char* name)const;
+void BeeT_Serializer__Destroy(BeeT_Serializer* self);
 
-	//Loading an array into the data
-	void LoadArray(const char* name);
+// Append types
+bool BeeT_Serializer__AppendArray(BeeT_Serializer* self, const char* name);
+bool BeeT_Serializer__AppendArrayValue(BeeT_Serializer* self, const BeeT_Serializer* data);
+bool BeeT_Serializer__AppendString(BeeT_Serializer* self, const char* name, const char* string);
+bool BeeT_Serializer__AppendBool(BeeT_Serializer* self, const char* name, bool value);
+bool BeeT_Serializer__AppendUInt(BeeT_Serializer* self, const char* name, unsigned int value);
+bool BeeT_Serializer__AppendInt(BeeT_Serializer* self, const char* name, int value);
+bool BeeT_Serializer__AppendFloat(BeeT_Serializer* self, const char* name, float value);
+bool BeeT_Serializer__AppendFloat2(BeeT_Serializer* self, const char * name, const float * value);
+bool BeeT_Serializer__AppendInt2(BeeT_Serializer* self, const char* name, const int* value);
+bool BeeT_Serializer__AppendFloat3(BeeT_Serializer* self, const char* name, const float* value);
+bool BeeT_Serializer__AppendFloat4(BeeT_Serializer* self, const char* name, const float* value);
+bool BeeT_Serializer__AppendDouble(BeeT_Serializer* self, const char* name, double value);
+BeeT_Serializer* AppendJObject(BeeT_Serializer* self, const char* name);
 
-	//Save
-	size_t Serialize(char** buffer);
+// Get types
+BeeT_Serializer*	BeeT_Serializer__GetJObject(const BeeT_Serializer* self, const char* name);
+const char*			BeeT_Serializer__GetString(const BeeT_Serializer* self, const char* name);
+int					BeeT_Serializer__GetInt(const BeeT_Serializer* self, const char* name);
+BeeT_Serializer*	BeeT_Serializer__GetArray(const BeeT_Serializer* self, const char* name, unsigned int index);
+size_t				BeeT_Serializer__GetArraySize(const BeeT_Serializer* self, const char* name);
+bool				BeeT_Serializer__GetBool(const BeeT_Serializer* self, const char* name);
+unsigned int		BeeT_Serializer__GetUInt(const BeeT_Serializer* self, const char* name);
+float				BeeT_Serializer__GetFloat(const BeeT_Serializer* self, const char* name);
+double				BeeT_Serializer__GetDouble(const BeeT_Serializer* self, const char* name);
 
-	bool IsNull()const;
+//Loading an array into the data
+void BeeT_Serializer__LoadArray(BeeT_Serializer* self, const char* name);
 
-	JSON_Value* root_value = nullptr;
-	JSON_Object* root = nullptr;
-	JSON_Array* array = nullptr;
-};
+//Save
+size_t BeeT_Serializer__Serialize(BeeT_Serializer* self, char** buffer);
+
+bool BeeT_Serializer__IsNull(const BeeT_Serializer* self);
 
 #endif // !__DATA_H__
