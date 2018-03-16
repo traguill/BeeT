@@ -36,12 +36,14 @@ void BeeT::Shutdown()
 int BeeT::LoadBehaviorTree(const char * buffer, int size)
 {
 	BEET_ASSERT(buffer != NULL);
+	BEET_ASSERT(g_Beet->numTreesLoaded < MAX_NUMBER_OF_BEHAVIOR_TREES);
 
 	BeeT_Serializer parser(buffer);
 	BeeT_BehaviorTree* bt = new BeeT_BehaviorTree(parser);
 	if (bt == NULL)
 		return -1;
-	g_Beet->trees.push_back(bt);
+	g_Beet->trees[g_Beet->numTreesLoaded] = bt;
+	g_Beet->numTreesLoaded++;
 	return bt->uid;
 }
 
@@ -61,7 +63,7 @@ int BeeT::LoadBehaviorTree(const char * filename)
 
 size_t BeeT::BehaviorTreeCount()
 {
-	return g_Beet->trees.size();
+	return g_Beet->numTreesLoaded;
 }
 
 void * BeeT::MemAlloc(size_t size)

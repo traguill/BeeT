@@ -11,7 +11,8 @@ BeeT_BehaviorTree::BeeT_BehaviorTree(BeeT_Serializer& data)
 		BeeT_Serializer nodeData = data.GetArray("nodes", i);
 		if (nodeData.GetInt("id") == rootId)
 		{
-			rootNode = new BeeT_Node(data.GetArray("nodes", i));
+			rootNode = new BeeT_Node();
+			rootNode->Init(data.GetArray("nodes", i));
 			break;
 		}
 	}

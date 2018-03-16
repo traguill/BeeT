@@ -12,18 +12,18 @@
 #define BEET_ASSERT(_EXPR)	assert(_EXPR)
 #endif
 
-#include <vector>
 
 // Forward declarations
 
-class BeeT_BehaviorTree;
+struct BeeT_BehaviorTree;
 
 // -----------------------------------------------------------------------------------
-
+#define MAX_NUMBER_OF_BEHAVIOR_TREES 20
 struct BeetContext
 {
 	bool initialized = false;
-	std::vector<BeeT_BehaviorTree*> trees;
+	BeeT_BehaviorTree* trees[MAX_NUMBER_OF_BEHAVIOR_TREES] = {NULL};
+	int numTreesLoaded = 0;
 };
 
 namespace BeeT

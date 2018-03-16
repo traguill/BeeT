@@ -35,19 +35,19 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="beet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ThirdParty\parson.c">
       <Filter>parson</Filter>
     </ClCompile>
+    <ClCompile Include="beet.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BeeT_behaviortree.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BeeT_node.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="BeeT_serializer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BeeT_behaviortree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BeeT_node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

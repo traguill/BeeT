@@ -7,7 +7,6 @@
 
 class BeeT_Serializer
 {
-public:
 	BeeT_Serializer();
 	BeeT_Serializer(const char* filename);
 	BeeT_Serializer(JSON_Object* root);
@@ -47,11 +46,9 @@ public:
 
 	bool IsNull()const;
 
-private:
 	JSON_Value* root_value = nullptr;
 	JSON_Object* root = nullptr;
 	JSON_Array* array = nullptr;
-
 };
 
 #endif // !__DATA_H__
