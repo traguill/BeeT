@@ -25,7 +25,6 @@ public:
 	
 	// Getters
 	int GetId()const;
-	std::string GetName()const;
 	BTNode* GetParent()const;
 	std::vector<BTNode*> GetChilds()const;	// Use for Debug
 	std::vector<BTLink*> GetAllLinks();
@@ -51,6 +50,7 @@ public:
 	BTPin* inputPin = nullptr;
 	BTPin* outputPin = nullptr;
 
+	std::string name;
 	const NodeType* type;
 
 	bool saveFlag = false; // True when has been serialized
@@ -60,7 +60,6 @@ private:
 	std::vector<BTNode*> childs;
 	int id = -1;
 
-	std::string name;
 	std::string comment;
 	BehaviorTree* bt = nullptr;
 

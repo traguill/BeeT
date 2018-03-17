@@ -101,9 +101,9 @@ void BTNode::PrepareToDraw()
 	ImGui::Dummy(ImVec2(160, 0));
 
 	ImGui::Spring(1);
-	ImGui::Text("[%s]", type->name.data());
-	ImGui::Spring(1);
 	ImGui::Text("%s", name.data());
+	ImGui::Spring(1);
+	ImGui::Text("[%s]", type->name.data());
 	ImGui::Spring(1);
 
 	ImGui::EndVertical(); // 'content'
@@ -144,11 +144,6 @@ void BTNode::PrepareToDraw()
 int BTNode::GetId() const
 {
 	return id;
-}
-
-std::string BTNode::GetName() const
-{
-	return name;
 }
 
 BTNode * BTNode::GetParent() const

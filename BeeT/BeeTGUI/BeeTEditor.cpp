@@ -142,7 +142,16 @@ void BeeTEditor::Inspector()
 		if (nodeSel)
 		{
 			ImGui::Text("Type: %s", nodeSel->type->name.data());
-			ImGui::Text("Name: %s", nodeSel->GetName().data());
+			
+			ImGui::Text("Name: "); ImGui::SameLine();
+			char nodeNameTmp[_MAX_PATH];
+			strcpy_s(nodeNameTmp, _MAX_PATH, nodeSel->name.data());
+			ImGuiInputTextFlags inputFlags = ImGuiInputTextFlags_AutoSelectAll;
+			if (ImGui::InputText("###", nodeNameTmp, _MAX_PATH, inputFlags))
+			{
+				nodeSel->name = nodeNameTmp;
+			}
+			
 			ImGui::Spacing();
 			ImGui::Text("Debug: ");
 			ImGui::Spacing();
