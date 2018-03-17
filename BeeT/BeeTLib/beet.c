@@ -6,6 +6,59 @@
 #include <stdlib.h>
 
 //-----------------------------------------------------------------
+// Helpers
+//-----------------------------------------------------------------
+
+void * MemAlloc(size_t size)
+{
+	return malloc(size);
+}
+
+void MemFree(void * ptr)
+{
+	BEET_ASSERT(ptr);
+	free(ptr);
+}
+
+void * LoadFile(const char * filename, int * outFileSize)
+{
+	BEET_ASSERT(filename != NULL);
+	if (outFileSize)
+		*outFileSize = 0;
+
+	FILE* file;
+	if ((file = fopen(filename, "r")) == NULL)
+		return NULL;
+
+	int fileSize;
+	if (fseek(file, 0, SEEK_END) || (fileSize = (int)ftell(file)) == -1 || fseek(file, 0, SEEK_SET))
+	{
+		fclose(file);
+		return NULL;
+	}
+
+	void* fileData = MemAlloc(fileSize);
+	if (fileData == NULL)
+	{
+		fclose(file);
+		return NULL;
+	}
+
+	if (fread(fileData, 1, (size_t)fileSize, file) != (size_t)fileSize)
+	{
+		fclose(file);
+		MemFree(fileData);
+		return NULL;
+	}
+
+	fclose(file);
+	if (outFileSize)
+		*outFileSize = fileSize;
+
+	return fileData;
+}
+
+//-----------------------------------------------------------------
 // Context
 //-----------------------------------------------------------------
 
@@ -45,13 +98,13 @@ void BeetContext__AddTree(BeetContext* ctx, BeeT_BehaviorTree* bt)
 // BeeT API
 //-----------------------------------------------------------------
 
-void Init()
+void BEET_Init()
 {
 	BeetContext__Init(g_Beet);
 	g_Beet->initialized = BEET_TRUE;
 }
 
-void Shutdown()
+void BEET_Shutdown()
 {
 	if (g_Beet->initialized == BEET_FALSE)
 		return;
@@ -59,7 +112,7 @@ void Shutdown()
 	BeetContext__Destroy(g_Beet);
 }
 
-int LoadBehaviorTree(const char * buffer, int size)
+int BEET_LoadBehaviorTree(const char * buffer, int size)
 {
 	BEET_ASSERT(buffer != NULL);
 
@@ -75,7 +128,7 @@ int LoadBehaviorTree(const char * buffer, int size)
 	return bt->uid;
 }
 
-int LoadBehaviorTreeFromFile(const char * filename)
+int BEET_LoadBehaviorTreeFromFile(const char * filename)
 {
 	BEET_ASSERT(filename != NULL);
 	int fileSize = 0;
@@ -83,62 +136,13 @@ int LoadBehaviorTreeFromFile(const char * filename)
 	int result = -1;
 	if (fileData != NULL)	// If fileData is NULL, the filename could not be found or loaded.
 	{
-		result = LoadBehaviorTree(fileData, fileSize);
+		result = BEET_LoadBehaviorTree(fileData, fileSize);
 		MemFree(fileData);
 	}
 	return result;
 }
 
-size_t BehaviorTreeCount()
+size_t BEET_BehaviorTreeCount()
 {
 	return g_Beet->numTreesLoaded;
-}
-
-void * MemAlloc(size_t size)
-{
-	return malloc(size);
-}
-
-void MemFree(void * ptr)
-{
-	BEET_ASSERT(ptr);
-	free(ptr);
-}
-
-void * LoadFile(const char * filename, int * outFileSize)
-{
-	BEET_ASSERT(filename != NULL);
-	if (outFileSize)
-		*outFileSize = 0;
-
-	FILE* file ;
-	if ((file = fopen(filename, "r")) == NULL)
-		return NULL;
-
-	int fileSize;
-	if (fseek(file, 0, SEEK_END) || (fileSize = (int)ftell(file)) == -1 || fseek(file, 0, SEEK_SET))
-	{
-		fclose(file);
-		return NULL;
-	}
-
-	void* fileData = MemAlloc(fileSize);
-	if (fileData == NULL)
-	{
-		fclose(file);
-		return NULL;
-	}
-
-	if (fread(fileData, 1, (size_t)fileSize, file) != (size_t)fileSize)
-	{
-		fclose(file);
-		MemFree(fileData);
-		return NULL;
-	}
-
-	fclose(file);
-	if (outFileSize)
-		*outFileSize = fileSize;
-
-	return fileData;
 }

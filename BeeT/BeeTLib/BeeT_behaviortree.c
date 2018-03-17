@@ -22,6 +22,7 @@ BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 		}
 		free(nodeData);
 	}
+	return tree;
 }
 
 void BeeT_BehaviorTree__Destroy(BeeT_BehaviorTree * self)

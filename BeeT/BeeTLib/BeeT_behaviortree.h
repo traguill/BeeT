@@ -10,8 +10,7 @@ typedef struct
 }BeeT_BehaviorTree;
 
 BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer* data);
-void BeeT_BehaviorTree__Destroy(BeeT_BehaviorTree* self);
-
+void BeeT_BehaviorTree__Destroy(struct BeeT_BehaviorTree* self);
 
 #endif // !__BEET_BEHAVIORTREE_H__
 
