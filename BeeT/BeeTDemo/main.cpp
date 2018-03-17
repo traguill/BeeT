@@ -14,10 +14,9 @@ int main(int argc, char** argv)
 	BEET_Init();
 
 	printf("%i\n", BEET_BehaviorTreeCount());
-	int uid = BEET_LoadBehaviorTreeFromFile("bt.txt");
+	int uid = BEET_LoadBehaviorTreeFromFile("bt.json");
 	printf("BT: %i\n", uid);
 	printf("%i\n", BEET_BehaviorTreeCount());
-
 	
 	BEET_Shutdown();
 

@@ -10,8 +10,8 @@ using namespace std;
 FileDialog::FileDialog()
 {
 	path = g_app->fileSystem->GetDirectory();
-	format = ".txt";
-	newFilenameName = "*.txt";
+	format = ".json";
+	newFilenameName = "*.json";
 }
 
 FileDialog::~FileDialog()
@@ -131,7 +131,7 @@ void FileDialog::CleanUpBeforeClosingWindow()
 {
 	show = false;
 	fileSelected = "";
-	newFilenameName = "*.txt";
+	newFilenameName = "*.json";
 }
 
 void FileDialog::ShowFileName()

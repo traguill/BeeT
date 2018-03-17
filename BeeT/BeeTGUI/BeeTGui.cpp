@@ -91,11 +91,6 @@ void BeeTGui::MenuBar()
 			ImGui::MenuItem("This is the last placeholder");
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Quit"))
-		{
-			g_app->RequestQuit();
-			ImGui::EndMenu();
-		}
 		ImGui::EndMainMenuBar();
 	}
 }
@@ -127,6 +122,10 @@ void BeeTGui::FileMenuBar()
 			fileDialog->EnableWindow(FileDialogMode::SAVE_FILE);
 			fileDialog->SetAcceptFunctionCallback(BeeTGui::SaveFile, this);
 		}
+	}
+	if (ImGui::MenuItem("Quit"))
+	{
+		g_app->RequestQuit();
 	}
 }
 
