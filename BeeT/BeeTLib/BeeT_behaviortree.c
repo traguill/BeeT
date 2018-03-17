@@ -1,25 +1,34 @@
 #include "BeeT_behaviortree.h"
 #include "BeeT_node.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-BeeT_BehaviorTree::BeeT_BehaviorTree(BeeT_Serializer& data)
+BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 {
-	uid = data.GetInt("uid");
-	int rootId = data.GetInt("rootId");
-	int numNodes = data.GetArraySize("nodes");
+	BeeT_BehaviorTree* tree = malloc(sizeof(BeeT_BehaviorTree));
+	tree->uid = BeeT_Serializer__GetInt(data, "uid");
+	int rootId = BeeT_Serializer__GetInt(data, "rootId");
+	int numNodes = BeeT_Serializer__GetArraySize(data, "nodes");
 	for (int i = 0; i < numNodes; ++i)
 	{
-		BeeT_Serializer nodeData = data.GetArray("nodes", i);
-		if (nodeData.GetInt("id") == rootId)
+		BeeT_Serializer* nodeData = BeeT_Serializer__GetArray(data, "nodes", i);
+		if (BeeT_Serializer__GetInt(nodeData, "id") == rootId)
 		{
-			rootNode = new BeeT_Node();
-			rootNode->Init(data.GetArray("nodes", i));
+			BeeT_Serializer* rootNodeData = BeeT_Serializer__GetArray(data, "nodes", i);
+			tree->rootNode = BeeT_Node__Init(rootNodeData);
+			free(nodeData);
+			free(rootNodeData);
 			break;
 		}
+		free(nodeData);
 	}
 }
 
-BeeT_BehaviorTree::~BeeT_BehaviorTree()
+void BeeT_BehaviorTree__Destroy(BeeT_BehaviorTree * self)
 {
-	if (rootNode)
-		delete rootNode;
+	if (self->rootNode)
+	{
+		BeeT_Node__Destroy(self->rootNode);
+		free(self);
+	}
 }

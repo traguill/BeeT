@@ -11,15 +11,15 @@
 
 int main(int argc, char** argv)
 {
-	BeeT::Init();
+	Init();
 
-	printf("%i\n", BeeT::BehaviorTreeCount());
-	int uid = BeeT::LoadBehaviorTree("bt.txt");
+	printf("%i\n", BehaviorTreeCount());
+	int uid = LoadBehaviorTreeFromFile("bt.txt");
 	printf("BT: %i\n", uid);
-	printf("%i\n", BeeT::BehaviorTreeCount());
+	printf("%i\n", BehaviorTreeCount());
 
 	
-	BeeT::Shutdown();
+	Shutdown();
 
 	system("pause");
 	return 0;

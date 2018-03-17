@@ -13,71 +13,99 @@ static BeetContext beetDefaultContext;
 #define BEET_GLOBAL_CONTEXT_PTR &beetDefaultContext;
 BeetContext* g_Beet = BEET_GLOBAL_CONTEXT_PTR;
 
+void BeetContext__Init(BeetContext* ctx)
+{
+	ctx->initialized = BEET_FALSE;
+	ctx->maxNumTreesLoaded = 32;
+	ctx->numTreesLoaded = 0;
+	ctx->trees = (BeeT_BehaviorTree*)malloc(ctx->maxNumTreesLoaded * sizeof(BeeT_BehaviorTree*));
+}
+
+void BeetContext__Destroy(BeetContext* ctx)
+{
+	for (int i = 0; i < ctx->numTreesLoaded; ++i)
+		BeeT_BehaviorTree__Destroy(ctx->trees[i]);
+	free(ctx->trees);
+	ctx->trees = NULL;
+	ctx->numTreesLoaded = 0;
+	ctx->initialized = BEET_FALSE;
+}
+
+void BeetContext__AddTree(BeetContext* ctx, BeeT_BehaviorTree* bt)
+{
+	if (ctx->numTreesLoaded == ctx->maxNumTreesLoaded)
+	{
+		ctx->maxNumTreesLoaded += 32;
+		ctx->trees = (BeeT_BehaviorTree*)realloc(ctx->trees, sizeof(BeeT_BehaviorTree*) * ctx->maxNumTreesLoaded);
+	}
+
+	ctx->trees[ctx->numTreesLoaded++] = bt;
+}
 //-----------------------------------------------------------------
 // BeeT API
 //-----------------------------------------------------------------
 
-void BeeT::Init()
+void Init()
 {
-	g_Beet->initialized = true;
+	BeetContext__Init(g_Beet);
+	g_Beet->initialized = BEET_TRUE;
 }
 
-void BeeT::Shutdown()
+void Shutdown()
 {
-	if (g_Beet->initialized == false)
+	if (g_Beet->initialized == BEET_FALSE)
 		return;
 
-	for (auto bt : g_Beet->trees)
-		delete bt;
-
-	g_Beet->initialized = false;
+	BeetContext__Destroy(g_Beet);
 }
 
-int BeeT::LoadBehaviorTree(const char * buffer, int size)
+int LoadBehaviorTree(const char * buffer, int size)
 {
 	BEET_ASSERT(buffer != NULL);
-	BEET_ASSERT(g_Beet->numTreesLoaded < MAX_NUMBER_OF_BEHAVIOR_TREES);
 
-	BeeT_Serializer parser(buffer);
-	BeeT_BehaviorTree* bt = new BeeT_BehaviorTree(parser);
+	BeeT_Serializer* parser = BeeT_Serializer__CreateFromBuffer(buffer);
+	BeeT_BehaviorTree* bt = BeeT_BehaviorTree__Init(parser);
 	if (bt == NULL)
 		return -1;
-	g_Beet->trees[g_Beet->numTreesLoaded] = bt;
-	g_Beet->numTreesLoaded++;
+	
+	BeetContext__AddTree(g_Beet, bt);
+
+	BeeT_Serializer__Destroy(parser);
+
 	return bt->uid;
 }
 
-int BeeT::LoadBehaviorTree(const char * filename)
+int LoadBehaviorTreeFromFile(const char * filename)
 {
 	BEET_ASSERT(filename != NULL);
 	int fileSize = 0;
-	char* fileData = (char*)BeeT::LoadFile(filename, &fileSize);
+	char* fileData = (char*)LoadFile(filename, &fileSize);
 	int result = -1;
 	if (fileData != NULL)	// If fileData is NULL, the filename could not be found or loaded.
 	{
-		result = BeeT::LoadBehaviorTree(fileData, fileSize);
-		BeeT::MemFree(fileData);
+		result = LoadBehaviorTree(fileData, fileSize);
+		MemFree(fileData);
 	}
 	return result;
 }
 
-size_t BeeT::BehaviorTreeCount()
+size_t BehaviorTreeCount()
 {
 	return g_Beet->numTreesLoaded;
 }
 
-void * BeeT::MemAlloc(size_t size)
+void * MemAlloc(size_t size)
 {
 	return malloc(size);
 }
 
-void BeeT::MemFree(void * ptr)
+void MemFree(void * ptr)
 {
 	BEET_ASSERT(ptr);
-	return free(ptr);
+	free(ptr);
 }
 
-void * BeeT::LoadFile(const char * filename, int * outFileSize)
+void * LoadFile(const char * filename, int * outFileSize)
 {
 	BEET_ASSERT(filename != NULL);
 	if (outFileSize)
@@ -94,7 +122,7 @@ void * BeeT::LoadFile(const char * filename, int * outFileSize)
 		return NULL;
 	}
 
-	void* fileData = BeeT::MemAlloc(fileSize);
+	void* fileData = MemAlloc(fileSize);
 	if (fileData == NULL)
 	{
 		fclose(file);
@@ -104,7 +132,7 @@ void * BeeT::LoadFile(const char * filename, int * outFileSize)
 	if (fread(fileData, 1, (size_t)fileSize, file) != (size_t)fileSize)
 	{
 		fclose(file);
-		BeeT::MemFree(fileData);
+		MemFree(fileData);
 		return NULL;
 	}
 

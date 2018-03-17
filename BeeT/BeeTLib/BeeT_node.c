@@ -1,25 +1,27 @@
 #include "BeeT_node.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-BeeT_Node::BeeT_Node()
-{}
-
-BeeT_Node::~BeeT_Node()
+BeeT_Node* BeeT_Node__Init(BeeT_Serializer* data)
 {
-	for (int i = 0; i < numChilds; ++i)
-		delete childs[i];
-
-	delete childs;
+	BeeT_Node* node = malloc(sizeof(BeeT_Node));
+	node->id = BeeT_Serializer__GetInt(data, "id");
+	node->type = BeeT_Serializer__GetInt(data, "type");
+	node->numChilds = BeeT_Serializer__GetArraySize(data, "childs");
+	int childsSize = sizeof(BeeT_Node*) * node->numChilds;
+	node->childs = malloc(childsSize);
+	for (int i = 0; i < node->numChilds; ++i)
+	{
+		node->childs[i] = malloc(sizeof(BeeT_Node));
+		BeeT_Node__Init(node->childs[i], BeeT_Serializer__GetArray(data, "childs", i));
+	}
+	return node;
 }
 
-void InitNode(BeeT_Serializer & data)
+void BeeT_Node__Destroy(BeeT_Node * self)
 {
-	id = data.GetInt("id");
-	type = data.GetInt("type");
-	numChilds = data.GetArraySize("childs");
-	childs = new BeeT_Node*[numChilds];
-	for (int i = 0; i < numChilds; ++i)
-	{
-		childs[i] = new BeeT_Node();
-		childs[i]->Init(data.GetArray("childs", i));
-	}
+	for (int i = 0; i < self->numChilds; ++i)
+		free(self->childs[i]);
+	free(self->childs);
+	free(self);
 }

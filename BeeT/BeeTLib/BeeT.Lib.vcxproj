@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="beet.h" />
     <ClInclude Include="BeeT_behaviortree.h" />
+    <ClInclude Include="BeeT_internal.h" />
     <ClInclude Include="BeeT_node.h" />
     <ClInclude Include="BeeT_serializer.h" />
     <ClInclude Include="ThirdParty\parson.h" />

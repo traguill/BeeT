@@ -16,16 +16,16 @@ BeeT_Serializer * BeeT_Serializer__Create()
 	return result;
 }
 
-BeeT_Serializer * BeeT_Serializer__Create(const char * filename)
+BeeT_Serializer * BeeT_Serializer__CreateFromBuffer(const char * buf)
 {
 	BeeT_Serializer* result = (BeeT_Serializer*)malloc(sizeof(BeeT_Serializer));
 	result->array = NULL;
-	result->root_value = json_parse_string(filename);
+	result->root_value = json_parse_string(buf);
 	result->root = json_value_get_object(result->root_value);
 	return result;
 }
 
-BeeT_Serializer * BeeT_Serializer__Create(JSON_Object * root)
+BeeT_Serializer * BeeT_Serializer__CreateFromObject(JSON_Object * root)
 {
 	BeeT_Serializer* result = (BeeT_Serializer*)malloc(sizeof(BeeT_Serializer));
 	result->array = NULL;
@@ -37,48 +37,49 @@ BeeT_Serializer * BeeT_Serializer__Create(JSON_Object * root)
 void BeeT_Serializer__Destroy(BeeT_Serializer * self)
 {
 	json_value_free(self->root_value);
+	free(self);
 }
 
-bool BeeT_Serializer__AppendArray(BeeT_Serializer* self, const char * name)
+BEET_bool BeeT_Serializer__AppendArray(BeeT_Serializer* self, const char * name)
 {
 	JSON_Value* value = json_value_init_array();
 	self->array = json_value_get_array(value);
 	return json_object_set_value(self->root, name, value) == JSONSuccess;
 }
 
-bool BeeT_Serializer__AppendArrayValue(BeeT_Serializer* self, const BeeT_Serializer* data)
+BEET_bool BeeT_Serializer__AppendArrayValue(BeeT_Serializer* self, const BeeT_Serializer* data)
 {
 	if (!self->array)
-		return false;
+		return BEET_FALSE;
 	return json_array_append_value(self->array, json_value_deep_copy(data->root_value)) == JSONSuccess;
 }
 
-bool BeeT_Serializer__AppendString(BeeT_Serializer* self, const char * name, const char * string)
+BEET_bool BeeT_Serializer__AppendString(BeeT_Serializer* self, const char * name, const char * string)
 {
 	return json_object_set_string(self->root, name, string) == JSONSuccess;
 }
 
-bool BeeT_Serializer__AppendBool(BeeT_Serializer* self, const char * name, bool value)
+BEET_bool BeeT_Serializer__AppendBool(BeeT_Serializer* self, const char * name, BEET_bool value)
 {
 	return json_object_set_boolean(self->root, name, value) == JSONSuccess;
 }
 
-bool BeeT_Serializer__AppendUInt(BeeT_Serializer* self, const char * name, unsigned int value)
+BEET_bool BeeT_Serializer__AppendUInt(BeeT_Serializer* self, const char * name, unsigned int value)
 {
 	return json_object_set_number(self->root, name, (double)value) == JSONSuccess;
 }
 
-bool BeeT_Serializer__AppendInt(BeeT_Serializer* self, const char * name, int value)
+BEET_bool BeeT_Serializer__AppendInt(BeeT_Serializer* self, const char * name, int value)
 {
 	return json_object_set_number(self->root, name, value) == JSONSuccess;
 }
 
-bool BeeT_Serializer__AppendFloat(BeeT_Serializer* self, const char * name, float value)
+BEET_bool BeeT_Serializer__AppendFloat(BeeT_Serializer* self, const char * name, float value)
 {
 	return json_object_set_number(self->root, name, (double)value) == JSONSuccess;
 }
 
-bool BeeT_Serializer__AppendFloat2(BeeT_Serializer* self, const char * name, const float * value)
+BEET_bool BeeT_Serializer__AppendFloat2(BeeT_Serializer* self, const char * name, const float * value)
 {
 	JSON_Value* j_value = json_value_init_array();
 	JSON_Array* array = json_value_get_array(j_value);
@@ -89,7 +90,7 @@ bool BeeT_Serializer__AppendFloat2(BeeT_Serializer* self, const char * name, con
 	return json_object_set_value(self->root, name, j_value) == JSONSuccess;
 }
 
-bool BeeT_Serializer__AppendInt2(BeeT_Serializer* self, const char * name, const int * value)
+BEET_bool BeeT_Serializer__AppendInt2(BeeT_Serializer* self, const char * name, const int * value)
 {
 	JSON_Value* j_value = json_value_init_array();
 	JSON_Array* array = json_value_get_array(j_value);
@@ -100,7 +101,7 @@ bool BeeT_Serializer__AppendInt2(BeeT_Serializer* self, const char * name, const
 	return json_object_set_value(self->root, name, j_value) == JSONSuccess;
 }
 
-bool BeeT_Serializer__AppendFloat3(BeeT_Serializer* self, const char * name, const float * value)
+BEET_bool BeeT_Serializer__AppendFloat3(BeeT_Serializer* self, const char * name, const float * value)
 {
 	JSON_Value* j_value = json_value_init_array();
 	JSON_Array* array = json_value_get_array(j_value);
@@ -111,7 +112,7 @@ bool BeeT_Serializer__AppendFloat3(BeeT_Serializer* self, const char * name, con
 	return json_object_set_value(self->root, name, j_value) == JSONSuccess;
 }
 
-bool BeeT_Serializer__AppendFloat4(BeeT_Serializer* self, const char * name, const float * value)
+BEET_bool BeeT_Serializer__AppendFloat4(BeeT_Serializer* self, const char * name, const float * value)
 {
 	JSON_Value* j_value = json_value_init_array();
 	JSON_Array* array = json_value_get_array(j_value);
@@ -122,7 +123,7 @@ bool BeeT_Serializer__AppendFloat4(BeeT_Serializer* self, const char * name, con
 	return json_object_set_value(self->root, name, j_value) == JSONSuccess;
 }
 
-bool BeeT_Serializer__AppendDouble(BeeT_Serializer* self, const char * name, double value)
+BEET_bool BeeT_Serializer__AppendDouble(BeeT_Serializer* self, const char * name, double value)
 {
 	return json_object_set_number(self->root, name, value) == JSONSuccess;
 }
@@ -166,10 +167,10 @@ size_t BeeT_Serializer__GetArraySize(const BeeT_Serializer* self, const char* na
 	return size;
 }
 
-bool BeeT_Serializer__GetBool(const BeeT_Serializer* self, const char * name)
+BEET_bool BeeT_Serializer__GetBool(const BeeT_Serializer* self, const char * name)
 {
 	int ret = json_object_get_boolean(self->root, name);
-	return (ret > 0) ? true : false;
+	return (ret > 0) ? BEET_TRUE : BEET_FALSE;
 }
 
 unsigned int BeeT_Serializer__GetUInt(const BeeT_Serializer* self, const char * name)
@@ -202,7 +203,7 @@ size_t BeeT_Serializer__Serialize(BeeT_Serializer* self, char ** buffer)
 	return size;
 }
 
-bool BeeT_Serializer__IsNull(const BeeT_Serializer* self)
+BEET_bool BeeT_Serializer__IsNull(const BeeT_Serializer* self)
 {
-	return (self->root_value == NULL && self->root == NULL && self->array == NULL) ? true : false;
+	return (self->root_value == NULL && self->root == NULL && self->array == NULL) ? BEET_TRUE : BEET_FALSE;
 }

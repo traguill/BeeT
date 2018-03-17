@@ -3,15 +3,15 @@
 
 #include "BeeT_serializer.h"
 
-struct BeeT_Node;
-
-struct BeeT_BehaviorTree
+typedef struct
 {
 	int uid;
-	BeeT_Node* rootNode = nullptr;
+	struct BeeT_Node* rootNode;
+}BeeT_BehaviorTree;
 
-	BeeT_BehaviorTree(BeeT_Serializer& data);
-	~BeeT_BehaviorTree();
-};
+BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer* data);
+void BeeT_BehaviorTree__Destroy(BeeT_BehaviorTree* self);
+
+
 #endif // !__BEET_BEHAVIORTREE_H__
 

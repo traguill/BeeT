@@ -1,67 +1,65 @@
 #ifndef __BEET_H__
 #define __BEET_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifdef BEET_EXPORTS
 	#define BEET_API __declspec(dllexport)
 #else
 	#define BEET_API __declspec(dllimport)
 #endif
 
-#ifndef BEET_ASSERT
-#include <assert.h>
-#define BEET_ASSERT(_EXPR)	assert(_EXPR)
-#endif
-
-
-// Forward declarations
-
-struct BeeT_BehaviorTree;
+#include "BeeT_internal.h"
 
 // -----------------------------------------------------------------------------------
-#define MAX_NUMBER_OF_BEHAVIOR_TREES 20
-struct BeetContext
+typedef struct
 {
-	bool initialized = false;
-	BeeT_BehaviorTree* trees[MAX_NUMBER_OF_BEHAVIOR_TREES] = {NULL};
-	int numTreesLoaded = 0;
-};
+	BEET_bool initialized;
+	struct BeeT_BehaviorTree** trees;
+	int numTreesLoaded;
+	int maxNumTreesLoaded;
+}BeetContext;
 
-namespace BeeT
-{
-	//--------------------------------------------------------------------------------
-	// Main
-	//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
+// Main
+//--------------------------------------------------------------------------------
 
-	BEET_API void	Init();
-	BEET_API void	Shutdown();
+BEET_API void	Init();
+BEET_API void	Shutdown();
 
-	//--------------------------------------------------------------------------------
-	// BehaviorTree
-	//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
+// BehaviorTree
+//--------------------------------------------------------------------------------
 
-	BEET_API int	LoadBehaviorTree(const char* buffer, int size);
+BEET_API int	LoadBehaviorTree(const char* buffer, int size);
 
-	/*
-	*	Loads a BehaviorTree from a file path.
-	*	\param filename The file path
-	*	\return The uid of the Behavior Tree on SUCCESS, -1 on FAIL.
-	*/
-	BEET_API int	LoadBehaviorTree(const char* filename);
+/*
+*	Loads a BehaviorTree from a file path.
+*	\param filename The file path
+*	\return The uid of the Behavior Tree on SUCCESS, -1 on FAIL.
+*/
+BEET_API int	LoadBehaviorTreeFromFile(const char* filename);
 
-	//--------------------------------------------------------------------------------
-	// Utils
-	//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
+// Utils
+//--------------------------------------------------------------------------------
 
-	// Get the number of Behavior Trees loaded in memory.
-	BEET_API size_t	BehaviorTreeCount();
+// Get the number of Behavior Trees loaded in memory.
+BEET_API size_t	BehaviorTreeCount();
 
-	//--------------------------------------------------------------------------------
-	// Helpers
-	//--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
+// Helpers
+//--------------------------------------------------------------------------------
 
-	BEET_API void*	MemAlloc(size_t size);
-	BEET_API void	MemFree(void* ptr);
+void*	MemAlloc(size_t size);
+void	MemFree(void* ptr);
 
-	BEET_API void*	LoadFile(const char* filename, int* outFileSize = NULL);
+void*	LoadFile(const char* filename, int* outFileSize);
+
+#ifdef __cplusplus
 }
 #endif
+
+#endif // BEET_H
