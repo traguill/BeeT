@@ -28,6 +28,21 @@ void ItemList::Draw()
 	if (listPtr == nullptr)
 		return;
 
+	if (ImGui::IsKeyReleased(ImGui::GetKeyIndex(ImGuiKey_Enter)))
+	{
+		if (!itemSelected.empty() && !categorySelected.empty())
+		{
+			ExecuteSelFunc(categorySelected, itemSelected);
+			return;
+		}
+	}
+
+	if (ImGui::IsKeyReleased(ImGui::GetKeyIndex(ImGuiKey_Escape)))
+	{
+		SetVisible(false);
+		return;
+	}
+
 	bool open = true;
 	ImGui::SetNextWindowSize(ImVec2(250.0f, 350.0f));
 	if (visibleFlag)
@@ -48,9 +63,13 @@ void ItemList::Draw()
 	}
 
 	if (filter.Draw(" search(?)"))
+	{
 		FilterMatchItems();
+	}
 
 	bool firstSelected = true;
+	itemSelected.clear();
+	categorySelected.clear();
 	for (auto category : matchItems)
 	{
 		if (category.open)
@@ -66,7 +85,11 @@ void ItemList::Draw()
 						ExecuteSelFunc(category.category, item);
 					}
 					if (firstSelected)
+					{
 						firstSelected = false;
+						itemSelected = item;
+						categorySelected = category.category;
+					}
 				}
 				ImGui::TreePop();
 			}
@@ -92,6 +115,7 @@ void ItemList::Draw()
 			}	
 		}
 	}
+
 	ImGui::End();
 }
 

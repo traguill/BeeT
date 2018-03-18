@@ -42,6 +42,8 @@ private:
 	std::vector<MatchFilterItems> matchItems;
 	ImGuiTextFilter filter;
 	bool visible = false;
+	std::string itemSelected;
+	std::string categorySelected;
 
 	bool visibleFlag = false; // Set to true the first tick the window is visible
 
