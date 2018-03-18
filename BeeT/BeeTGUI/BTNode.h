@@ -60,7 +60,6 @@ private:
 	std::vector<BTNode*> childs;
 	int id = -1;
 
-	std::string comment;
 	BehaviorTree* bt = nullptr;
 
 	int subtreeId = -1; // If this is 0 means that this node is inside the Root tree and will be executed. 

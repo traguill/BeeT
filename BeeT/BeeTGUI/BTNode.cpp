@@ -34,7 +34,6 @@ BTNode::BTNode(BehaviorTree* bt, Data & data) : bt(bt)
 	outputPin = new BTPin(this, data.GetArray("pins", 1));
 
 	name = data.GetString("name");
-	comment = data.GetString("comment");
 
 	ReloadSubtreeId();
 }
@@ -207,7 +206,6 @@ void BTNode::Save(Data& file)
 		child->Save(data);
 
 	data.AppendString("name", name.data());
-	data.AppendString("comment", comment.data());
 
 	file.AppendArrayValue(data);
 	saveFlag = true;
