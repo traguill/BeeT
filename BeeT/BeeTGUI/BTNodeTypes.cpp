@@ -1,12 +1,13 @@
 #include "BTNodeTypes.h"
 #include "Log.h"
+#include "ItemList.h"
 
 using namespace std;
 
 NodeType::NodeType()
 {}
 
-NodeType::NodeType(int typeId, std::string name, int maxOutputs) : typeId(typeId), name(name), maxOutputs(maxOutputs)
+NodeType::NodeType(int typeId, const std::string& category, const std::string& name, int maxOutputs) : typeId(typeId), category(category), name(name), maxOutputs(maxOutputs)
 {}
 
 BTNodeTypes::BTNodeTypes()
@@ -14,20 +15,23 @@ BTNodeTypes::BTNodeTypes()
 }
 
 BTNodeTypes::~BTNodeTypes()
-{}
+{
+	if (listObject)
+		delete listObject;
+}
 
 void BTNodeTypes::Init()
 {
-	// Default node types
-	NodeType root(0, "Root", 1);
-	NodeType sequence(1, "Sequence", -1);
-	NodeType action(2, "Action", 0);
-	NodeType condition(3, "Condition", 1);
+	listObject = new ListObject(); // Container to display all types in the ItemList widget
 
-	typesList.push_back(root);
-	typesList.push_back(sequence);
-	typesList.push_back(action);
-	typesList.push_back(condition);
+	// Default node types
+	InsertType("", "Root", 1);
+	
+	InsertType("Composites", "Selector", -1);
+	InsertType("Composites", "Sequence", -1);
+	InsertType("Composites", "Parallel", -1);
+
+	InsertType("Tasks", "Custom Task", 0);
 }
 
 NodeType * BTNodeTypes::GetTypeById(int id)
@@ -41,9 +45,29 @@ NodeType * BTNodeTypes::GetTypeById(int id)
 	return &typesList[id];
 }
 
-std::vector<NodeType> BTNodeTypes::GetTypeList() const
+int BTNodeTypes::GetNodeTypeId(const std::string & category, const std::string & name) const
 {
-	return typesList;
+	for (int i = 0; i < typesList.size(); i++)
+	{
+		if (typesList[i].category.compare(category) == 0)
+			if (typesList[i].name.compare(name) == 0)
+				return typesList[i].typeId;
+	}
+	return -1;
+}
+
+ListObject * BTNodeTypes::GetListObjectPtr() const
+{
+	return listObject;
+}
+
+void BTNodeTypes::InsertType(const std::string& category, const std::string& name, int maxOutputs)
+{
+	NodeType newNodeType((int)typesList.size(), category, name, maxOutputs);
+	typesList.push_back(newNodeType);
+
+	if(category.length() > 0)
+		listObject->AddItemInCategory(category, name);
 }
 
 

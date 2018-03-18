@@ -70,7 +70,10 @@
       <Filter>Helpers</Filter>
     </ClCompile>
     <ClCompile Include="FileDialog.cpp">
-      <Filter>Helpers</Filter>
+      <Filter>Editor\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemList.cpp">
+      <Filter>Editor\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -169,7 +172,10 @@
       <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="FileDialog.h">
-      <Filter>Helpers</Filter>
+      <Filter>Editor\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemList.h">
+      <Filter>Editor\Widgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +205,9 @@
     </Filter>
     <Filter Include="Editor\BehaviorTree">
       <UniqueIdentifier>{204bdcd8-38f7-4800-b6ca-88ac856a8106}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\Widgets">
+      <UniqueIdentifier>{755a1c1d-9753-4bd0-bdb8-efb3cdaec05c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

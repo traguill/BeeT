@@ -157,6 +157,7 @@
     <ClCompile Include="FileDialog.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="ItemList.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Module.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="FileDialog.h" />
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="ItemList.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="Point.h" />

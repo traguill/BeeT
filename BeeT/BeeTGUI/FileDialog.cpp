@@ -24,7 +24,6 @@ void FileDialog::Draw()
 		return;
 
 	ImGui::SetNextWindowFocus();
-	//ImGui::ShowTestWindow();
 	bool open = true;
 	ImGui::Begin("File Dialog Title", &open, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);
 

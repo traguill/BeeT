@@ -8,6 +8,7 @@
 #include "BehaviorTree.h"
 #include "BTNode.h"
 #include "BTLink.h"
+#include "ItemList.h"
 
 #include <vector>
 
@@ -25,6 +26,7 @@ BeeTEditor::~BeeTEditor()
 bool BeeTEditor::Init()
 {
 	bt = new BehaviorTree();
+	widgetItemList = new ItemList();
 	return true;
 }
 
@@ -42,6 +44,7 @@ bool BeeTEditor::Update()
 bool BeeTEditor::CleanUp()
 {
 	delete bt;
+	delete widgetItemList;
 	return true;
 }
 
@@ -95,6 +98,19 @@ void BeeTEditor::NewBehaviorTree(Data* data)
 		bt = new BehaviorTree();
 }
 
+void BeeTEditor::CallBackAddNode(void * obj, const std::string & category, const std::string & item)
+{
+	BeeTEditor* editor = ((BeeTEditor*)obj);
+	if (editor && g_app && g_app->beetGui)
+	{
+		int id = g_app->beetGui->btNodeTypes->GetNodeTypeId(category, item);
+		if (id != -1)
+		{
+			editor->bt->AddNode(ImGui::GetCursorPosX(), ImGui::GetCursorPosY(), id);
+		}
+	}
+}
+
 void BeeTEditor::Editor()
 {
 	
@@ -107,12 +123,18 @@ void BeeTEditor::Editor()
 	ne::Begin("BeeT Node Editor");
 
 	Menus();
-
-	bt->Draw();
-	
+	bt->Draw();	
 	Links();
-	// PopUps
+
+	// Node Editor Suspended -----------------------------
+	ne::Suspend();
 	ShowPopUps();
+	
+	if(widgetItemList->IsVisible())
+		widgetItemList->Draw();
+	ne::Resume();
+	// ---------------------------------------------------
+
 	ne::End(); // BeeT Node Editor
 	ImGui::End();
 
@@ -181,9 +203,8 @@ void BeeTEditor::Inspector()
 
 void BeeTEditor::ShowPopUps()
 {
-	ne::Suspend();
 	// Create a new node
-	if (ImGui::BeginPopup("Create New Node"))
+	/*if (ImGui::BeginPopup("Create New Node"))
 	{
 		ImVec2 cursorPosition = ImGui::GetMousePosOnOpeningCurrentPopup();
 		vector<NodeType> typesList = g_app->beetGui->btNodeTypes->GetTypeList();
@@ -195,11 +216,9 @@ void BeeTEditor::ShowPopUps()
 				if (ImGui::MenuItem(nodeType.name.data()))
 				{
 					bt->AddNode(cursorPosition.x, cursorPosition.y, nodeType.typeId);
-				}
-			}
-		}
+
 		ImGui::EndPopup();
-	}
+	}*/
 
 	// Node Options
 	if (ImGui::BeginPopup("Node options"))
@@ -228,14 +247,17 @@ void BeeTEditor::ShowPopUps()
 		}
 		ImGui::EndPopup();
 	}
-	ne::Resume();
 }
 
 void BeeTEditor::Menus()
 {
 	if (ne::ShowBackgroundContextMenu())
 	{
-		ImGui::OpenPopup("Create New Node");
+		// Activate ItemList
+		widgetItemList->SetVisible(true, g_app->beetGui->btNodeTypes->GetListObjectPtr());
+		// Link Select Function
+		widgetItemList->SetSelFunctionCallback(BeeTEditor::CallBackAddNode, this);
+
 	}
 	if (ne::ShowNodeContextMenu(&selectedNodeId))
 	{

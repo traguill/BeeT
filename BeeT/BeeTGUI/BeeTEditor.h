@@ -2,9 +2,11 @@
 #define __BEETEDITOR_H__
 
 #include "ThirdParty/ImGui/imgui.h"
+#include <string>
 
 class BehaviorTree;
 class Data;
+class ItemList;
 
 class BeeTEditor
 {
@@ -20,6 +22,8 @@ public:
 	void Load(const char* path);
 
 	void NewBehaviorTree(Data* data = nullptr);
+
+	static void CallBackAddNode(void* obj, const std::string& category, const std::string& item);
 
 private:
 
@@ -48,6 +52,9 @@ private:
 	ImVec2 editorSize;
 	ImVec2 editorCanvasSize = ImVec2(0.75f, 1.0f);
 	ImVec2 inspectorSize = ImVec2(0.25f, 1.0f);
+
+	// Widgets
+	ItemList* widgetItemList = nullptr;
 
 	// Inspector
 	int selectedNodeId = -1;
