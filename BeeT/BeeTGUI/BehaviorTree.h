@@ -16,7 +16,7 @@ public:
 	~BehaviorTree();
 
 	// Edition
-	void AddNode(float posX, float posY, int typeId);
+	int AddNode(float posX, float posY, int typeId);
 	void AddLink(BTPin* startPinId, BTPin* endPinId);
 
 	void RemoveNode(int id);

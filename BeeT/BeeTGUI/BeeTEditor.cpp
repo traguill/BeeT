@@ -26,6 +26,7 @@ BeeTEditor::~BeeTEditor()
 bool BeeTEditor::Init()
 {
 	bt = new BehaviorTree();
+	ne::CenterNodeOnScreen(0); // Root node has always id = 0. Careful! It may not work in the future.
 	widgetItemList = new ItemList();
 	return true;
 }
@@ -97,6 +98,7 @@ void BeeTEditor::NewBehaviorTree(Data* data)
 		bt = new BehaviorTree(*data);
 	else
 		bt = new BehaviorTree();
+	ne::CenterNodeOnScreen(0); // Root node has always id = 0. Careful! It may not work in the future.
 }
 
 void BeeTEditor::CallBackAddNode(void * obj, const std::string & category, const std::string & item)
@@ -108,7 +110,11 @@ void BeeTEditor::CallBackAddNode(void * obj, const std::string & category, const
 		if (id != -1)
 		{
 			ImVec2 pos = ne::ScreenToCanvas(ImGui::GetMousePos());
-			editor->bt->AddNode(pos.x, pos.y, id);
+			int nodeId = editor->bt->AddNode(pos.x, pos.y, id);
+			editor->selectedNodeId = nodeId;
+			ne::ClearSelection();
+			ne::SelectNode(nodeId);
+			editor->nodeAddedFlag = true;
 		}
 	}
 }
@@ -158,6 +164,11 @@ void BeeTEditor::Inspector()
 			char nodeNameTmp[_MAX_PATH];
 			strcpy_s(nodeNameTmp, _MAX_PATH, nodeSel->name.data());
 			ImGuiInputTextFlags inputFlags = ImGuiInputTextFlags_AutoSelectAll;
+			if (nodeAddedFlag)
+			{
+				ImGui::SetKeyboardFocusHere();
+				nodeAddedFlag = false;
+			}
 			if (ImGui::InputText("###", nodeNameTmp, _MAX_PATH, inputFlags))
 			{
 				nodeSel->name = nodeNameTmp;

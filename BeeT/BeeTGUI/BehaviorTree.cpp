@@ -61,7 +61,7 @@ BehaviorTree::~BehaviorTree()
 	}
 }
 
-void BehaviorTree::AddNode(float posX, float posY, int typeId)
+int BehaviorTree::AddNode(float posX, float posY, int typeId)
 {
 	int nodeId = GetNextId();
 	int inputId = GetNextId();
@@ -72,6 +72,7 @@ void BehaviorTree::AddNode(float posX, float posY, int typeId)
 	
 	ne::SetNodePosition(nodeId, ImVec2(posX, posY));
 	LOGI("Node %i created", nodeId);
+	return nodeId;
 }
 
 void BehaviorTree::AddLink(BTPin* startPinId, BTPin* endPinId)

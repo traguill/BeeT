@@ -60,6 +60,8 @@ private:
 	// Inspector
 	int selectedNodeId = -1;
 	int selectedLinkId = -1;
+
+	bool nodeAddedFlag = false;
 };
 #endif
 
