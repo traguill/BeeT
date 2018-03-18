@@ -11,12 +11,9 @@ namespace ne = ax::NodeEditor;
 
 BTNode::BTNode(int id, int sourcePinId, int targetPinId, int typeId, BehaviorTree* bt, BTNode* parent) : id(id), bt(bt), parent(parent)
 {
-	// Temporal way to set the node's name
-	char buf[100];
-	snprintf(buf, sizeof(buf), "Node %i", id);
-	name = buf;
-	// --------------------------------------------	
 	type = g_app->beetGui->btNodeTypes->GetTypeById(typeId);
+	if(type)
+		name = type->name;
 
 	inputPin = new BTPin(targetPinId, ne::PinKind::Target, this);
 	outputPin = new BTPin(sourcePinId, ne::PinKind::Source, this);

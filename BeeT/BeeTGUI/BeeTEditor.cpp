@@ -37,6 +37,7 @@ bool BeeTEditor::Update()
 	editorSize.y = screenHeight - (ImGui::GetCursorPosY() - ImGui::GetCursorPosX());
 
 	Editor();
+	UpdateSelection();
 	Inspector();
 	return true;
 }
@@ -121,7 +122,6 @@ void BeeTEditor::Editor()
 	ImGui::Begin("BeeT Editor Window", &beetEditorWindowOpen, flags);
 
 	ne::Begin("BeeT Node Editor");
-
 	Menus();
 	bt->Draw();	
 	Links();
@@ -143,17 +143,6 @@ void BeeTEditor::Editor()
 
 void BeeTEditor::Inspector()
 {
-	// Get the node selected at this frame
-	if (ne::HasSelectionChanged())
-	{
-		if (ne::GetSelectedObjectCount() == 1)
-		{
-			ne::GetSelectedNodes(&selectedNodeId, 1);
-		}
-		else
-			selectedNodeId = -1;
-	}
-
 	ImGui::SetNextWindowPos(ImVec2(screenWidth * 0.75f, ImGui::GetCursorPosY() - ImGui::GetCursorPosX()));
 	ImGui::SetNextWindowSize(ImVec2(editorSize.x * inspectorSize.x, editorSize.y * inspectorSize.y));
 	ImGui::Begin("Inspector", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
@@ -243,7 +232,13 @@ void BeeTEditor::Menus()
 	}
 	if (ne::ShowNodeContextMenu(&selectedNodeId))
 	{
-		ImGui::OpenPopup("Node options");
+		if(bt->IsRoot(selectedNodeId) == false)
+			ImGui::OpenPopup("Node options");
+		else
+		{
+			ne::ClearSelection();
+			selectedNodeId = -1;
+		}
 	}
 	if (ne::ShowLinkContextMenu(&selectedLinkId))
 	{
@@ -294,4 +289,39 @@ void BeeTEditor::Links()
 	}
 	
 	ne::EndCreate();
+}
+
+void BeeTEditor::UpdateSelection()
+{
+	// Get the node selected at this frame. ALWAYS remove root node from selection
+	if (ne::HasSelectionChanged())
+	{
+		int selCount = ne::GetSelectedObjectCount();
+		if (selCount == 1)
+		{
+			ne::GetSelectedNodes(&selectedNodeId, 1);
+			if (bt->IsRoot(selectedNodeId))
+			{
+				selectedNodeId = -1;
+				ne::ClearSelection();
+			}
+		}
+		else
+		{
+			selectedNodeId = -1;
+			vector<int> selNodes;
+			selNodes.resize(selCount);
+
+			ne::GetSelectedNodes(selNodes.data(), selCount);
+			for (int i = 0; i < selCount; i++)
+			{
+				if (bt->IsRoot(selNodes[i]))
+				{
+					ne::DeselectNode(selNodes[i]);
+					break;
+				}
+			}
+		}
+	}
+
 }

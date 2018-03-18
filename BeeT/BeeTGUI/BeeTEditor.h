@@ -36,6 +36,7 @@ private:
 	// Editor helpers
 	void Menus(); //Background/Node/Link/Pin
 	void Links();
+	void UpdateSelection();
 
 private:
 	// For testing, a default behavior tree is already created. In the future, allow to create a new one or open an existent

@@ -28,7 +28,7 @@ BEET_bool BeeT_Serializer__AppendInt2(BeeT_Serializer* self, const char* name, c
 BEET_bool BeeT_Serializer__AppendFloat3(BeeT_Serializer* self, const char* name, const float* value);
 BEET_bool BeeT_Serializer__AppendFloat4(BeeT_Serializer* self, const char* name, const float* value);
 BEET_bool BeeT_Serializer__AppendDouble(BeeT_Serializer* self, const char* name, double value);
-BeeT_Serializer* AppendJObject(BeeT_Serializer* self, const char* name);
+BeeT_Serializer* BeeT_Serializer__AppendJObject(BeeT_Serializer* self, const char* name);
 
 // Get types
 BeeT_Serializer*	BeeT_Serializer__GetJObject(const BeeT_Serializer* self, const char* name);

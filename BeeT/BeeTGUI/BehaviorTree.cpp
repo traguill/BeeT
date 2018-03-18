@@ -84,6 +84,8 @@ void BehaviorTree::AddLink(BTPin* startPinId, BTPin* endPinId)
 
 void BehaviorTree::RemoveNode(int id)
 {
+	if (rootNode && rootNode->GetId() == id) // Root Node cannot be deleted!
+		return;
 	vector<BTLink*> linksToRemove;
 	map<int, BTNode*>::iterator found = nodesList.find(id);
 	if (found != nodesList.end())
@@ -263,6 +265,11 @@ BTPin * BehaviorTree::FindPin(int id) const
 			return node.second->outputPin;
 	}
 	return nullptr;
+}
+
+bool BehaviorTree::IsRoot(int id) const
+{
+	return rootNode ? rootNode->GetId() == id : false;
 }
 
 int BehaviorTree::GetNextId()

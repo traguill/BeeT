@@ -30,6 +30,7 @@ public:
 	BTNode* FindNode(int id)const;
 	BTLink* FindLink(int id)const;
 	BTPin* FindPin(int id)const;
+	bool IsRoot(int id)const;
 
 private:
 	int GetNextId();
