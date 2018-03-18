@@ -30,12 +30,23 @@ void ItemList::Draw()
 
 	bool open = true;
 	ImGui::SetNextWindowSize(ImVec2(250.0f, 350.0f));
+	if (visibleFlag)
+		ImGui::SetNextWindowPos(ImVec2(posX, posY));
+
 	ImGui::Begin("ItemList", &open, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
 	if (visibleFlag)
 	{
 		ImGui::SetKeyboardFocusHere();
 		visibleFlag = false;
 	}
+
+	if (!ImGui::IsWindowFocused())
+	{
+		SetVisible(false);
+		ImGui::End();
+		return;
+	}
+
 	if (filter.Draw(" search(?)"))
 		FilterMatchItems();
 
@@ -81,7 +92,6 @@ void ItemList::Draw()
 			}	
 		}
 	}
-	
 	ImGui::End();
 }
 
@@ -120,6 +130,12 @@ void ItemList::SetSelFunctionCallback(void(*fc)(void *, const std::string &, con
 {
 	selFunc = fc;
 	object = obj;
+}
+
+void ItemList::SetWidgetPosition(float x, float y)
+{
+	posX = x;
+	posY = y;
 }
 
 void ItemList::FilterMatchItems()

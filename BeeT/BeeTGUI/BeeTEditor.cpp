@@ -106,7 +106,8 @@ void BeeTEditor::CallBackAddNode(void * obj, const std::string & category, const
 		int id = g_app->beetGui->btNodeTypes->GetNodeTypeId(category, item);
 		if (id != -1)
 		{
-			editor->bt->AddNode(ImGui::GetCursorPosX(), ImGui::GetCursorPosY(), id);
+			ImVec2 pos = ne::ScreenToCanvas(ImGui::GetMousePos());
+			editor->bt->AddNode(pos.x, pos.y, id);
 		}
 	}
 }
@@ -203,23 +204,6 @@ void BeeTEditor::Inspector()
 
 void BeeTEditor::ShowPopUps()
 {
-	// Create a new node
-	/*if (ImGui::BeginPopup("Create New Node"))
-	{
-		ImVec2 cursorPosition = ImGui::GetMousePosOnOpeningCurrentPopup();
-		vector<NodeType> typesList = g_app->beetGui->btNodeTypes->GetTypeList();
-
-		for (auto nodeType : typesList)
-		{
-			if (nodeType.typeId != 0) // Don't let the user create a Root node
-			{
-				if (ImGui::MenuItem(nodeType.name.data()))
-				{
-					bt->AddNode(cursorPosition.x, cursorPosition.y, nodeType.typeId);
-
-		ImGui::EndPopup();
-	}*/
-
 	// Node Options
 	if (ImGui::BeginPopup("Node options"))
 	{
@@ -253,11 +237,10 @@ void BeeTEditor::Menus()
 {
 	if (ne::ShowBackgroundContextMenu())
 	{
-		// Activate ItemList
-		widgetItemList->SetVisible(true, g_app->beetGui->btNodeTypes->GetListObjectPtr());
-		// Link Select Function
-		widgetItemList->SetSelFunctionCallback(BeeTEditor::CallBackAddNode, this);
-
+		widgetItemList->SetVisible(true, g_app->beetGui->btNodeTypes->GetListObjectPtr());	// Activate ItemList
+		widgetItemList->SetSelFunctionCallback(BeeTEditor::CallBackAddNode, this);			// Link Select Function
+		ImVec2 mPos = ne::CanvasToScreen(ImGui::GetMousePos());
+		widgetItemList->SetWidgetPosition(mPos.x, mPos.y);
 	}
 	if (ne::ShowNodeContextMenu(&selectedNodeId))
 	{

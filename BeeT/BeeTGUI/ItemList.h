@@ -29,7 +29,7 @@ public:
 	void SetVisible(bool visible, ListObject* lObject = nullptr);
 	bool IsVisible()const;
 	void SetSelFunctionCallback(void(*fc)(void*, const std::string&, const std::string&), void* obj);
-
+	void SetWidgetPosition(float x, float y);
 
 private:
 	void FilterMatchItems();
@@ -47,6 +47,8 @@ private:
 
 	void* object; // Class to call the selFunc
 	void(*selFunc)(void* obj, const std::string& category, const std::string& item); // Function to call when an item is selected
+
+	float posX, posY;
 };
 #endif // !__ITEM_LIST_H__
 
