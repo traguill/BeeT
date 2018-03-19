@@ -40,7 +40,7 @@ BehaviorTree::BehaviorTree(Data & data)
 		linksList.insert(pair<int, BTLink*>(link->id, link));
 	}
 
-	uid = data.GetInt("uid");
+	uid = data.GetUInt("uid");
 	nextId = data.GetInt("nextId");
 	int rootNodeId = data.GetInt("rootNodeId");
 	map<int, BTNode*>::iterator found = nodesList.find(rootNodeId);
@@ -161,7 +161,7 @@ int BehaviorTree::Serialize(char** buffer) const
 		link.second->Save(data);
 	}
 
-	data.AppendInt("uid", uid);
+	data.AppendUInt("uid", uid);
 	data.AppendInt("nextId", nextId);
 	if (rootNode)
 		data.AppendInt("rootNodeId", rootNode->GetId());

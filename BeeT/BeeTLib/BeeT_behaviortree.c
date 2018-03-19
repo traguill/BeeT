@@ -6,7 +6,7 @@
 BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 {
 	BeeT_BehaviorTree* tree = malloc(sizeof(BeeT_BehaviorTree));
-	tree->uid = BeeT_Serializer__GetInt(data, "uid");
+	tree->uid = BeeT_Serializer__GetUInt(data, "uid");
 	int rootId = BeeT_Serializer__GetInt(data, "rootId");
 	int numNodes = BeeT_Serializer__GetArraySize(data, "nodes");
 	for (int i = 0; i < numNodes; ++i)

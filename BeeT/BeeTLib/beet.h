@@ -33,14 +33,14 @@ BEET_API void	BEET_Shutdown();
 // BehaviorTree
 //--------------------------------------------------------------------------------
 
-BEET_API int	BEET_LoadBehaviorTree(const char* buffer, int size);
+BEET_API unsigned int BEET_LoadBehaviorTree(const char* buffer, int size);
 
 /*
 *	Loads a BehaviorTree from a file path.
 *	\param filename The file path
 *	\return The uid of the Behavior Tree on SUCCESS, -1 on FAIL.
 */
-BEET_API int	BEET_LoadBehaviorTreeFromFile(const char* filename);
+BEET_API unsigned int BEET_LoadBehaviorTreeFromFile(const char* filename);
 
 //--------------------------------------------------------------------------------
 // Utils

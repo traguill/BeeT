@@ -16,12 +16,12 @@ float Random::RandomFloat()
 	return seed * (1.0f / 4294967295.0f);
 }
 
-int Random::RandomInt()
+unsigned int Random::RandomInt()
 {
 	seed ^= (seed << 5);
 	seed ^= (seed >> 13);
 	seed ^= (seed << 6);
-	return (int)seed;
+	return seed;
 }
 
 int Random::RandomInt(int min, int max)

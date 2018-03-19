@@ -5,7 +5,7 @@
 
 typedef struct
 {
-	int uid;
+	unsigned int uid;
 	struct BeeT_Node* rootNode;
 }BeeT_BehaviorTree;
 

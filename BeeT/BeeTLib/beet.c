@@ -112,14 +112,14 @@ void BEET_Shutdown()
 	BeetContext__Destroy(g_Beet);
 }
 
-int BEET_LoadBehaviorTree(const char * buffer, int size)
+unsigned int BEET_LoadBehaviorTree(const char * buffer, int size)
 {
 	BEET_ASSERT(buffer != NULL);
 
 	BeeT_Serializer* parser = BeeT_Serializer__CreateFromBuffer(buffer);
 	BeeT_BehaviorTree* bt = BeeT_BehaviorTree__Init(parser);
 	if (bt == NULL)
-		return -1;
+		return 0;
 	
 	BeetContext__AddTree(g_Beet, bt);
 
@@ -128,12 +128,12 @@ int BEET_LoadBehaviorTree(const char * buffer, int size)
 	return bt->uid;
 }
 
-int BEET_LoadBehaviorTreeFromFile(const char * filename)
+unsigned int BEET_LoadBehaviorTreeFromFile(const char * filename)
 {
 	BEET_ASSERT(filename != NULL);
 	int fileSize = 0;
 	char* fileData = (char*)LoadFile(filename, &fileSize);
-	int result = -1;
+	unsigned int result = 0;
 	if (fileData != NULL)	// If fileData is NULL, the filename could not be found or loaded.
 	{
 		result = BEET_LoadBehaviorTree(fileData, fileSize);

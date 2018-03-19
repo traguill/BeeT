@@ -39,7 +39,7 @@ private:
 	void AddNode(Data& data, std::map<int, BTPin*>& pinList);
 
 private:
-	int uid = -1;
+	unsigned int uid = 0;
 	std::map<int, BTNode*> nodesList;
 	std::map<int, BTLink*> linksList;
 
