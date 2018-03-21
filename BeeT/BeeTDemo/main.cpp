@@ -7,16 +7,14 @@
 #endif // DEBUG
 
 // Demo requirements
+#include "Tests.h"
 #include <iostream>
 
 int main(int argc, char** argv)
 {
 	BEET_Init();
 
-	printf("%i\n", BEET_BehaviorTreeCount());
-	unsigned int uid = BEET_LoadBehaviorTreeFromFile("bt.json");
-	printf("BT: %u\n", uid);
-	printf("%i\n", BEET_BehaviorTreeCount());
+	RunTest(1);
 	
 	BEET_Shutdown();
 
