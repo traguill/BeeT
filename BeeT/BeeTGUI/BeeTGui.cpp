@@ -4,6 +4,7 @@
 #include "BeeTEditor.h"
 #include "BTNodeTypes.h"
 #include "FileDialog.h"
+#include "OutputLog.h"
 
 #include "FileSystem.h" // Testing: To show the current directory path in MainMenuBar->File.
 
@@ -48,6 +49,7 @@ bool BeeTGui::Update()
 {
 	MenuBar();
 	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowRounding, 0.0f);
+	OpenWindows(); // Draw currently open windows
 	fileDialog->Draw();
 	bool ret = false;
 	switch (mode)
@@ -91,6 +93,14 @@ void BeeTGui::MenuBar()
 			ImGui::MenuItem("This is the last placeholder");
 			ImGui::EndMenu();
 		}
+		if (ImGui::BeginMenu("Window"))
+		{
+			if (ImGui::MenuItem("Output", NULL, g_output->windowOpen))
+			{
+				g_output->windowOpen = !g_output->windowOpen;
+			}
+			ImGui::EndMenu();
+		}
 		ImGui::EndMainMenuBar();
 	}
 }
@@ -127,6 +137,12 @@ void BeeTGui::FileMenuBar()
 	{
 		g_app->RequestQuit();
 	}
+}
+
+void BeeTGui::OpenWindows()
+{
+	if (g_output->windowOpen)
+		g_output->Draw();
 }
 
 void BeeTGui::LoadFile(void* obj, const char* filename)

@@ -161,6 +161,7 @@
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Module.cpp" />
+    <ClCompile Include="OutputLog.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ThirdParty\ImGui\imgui.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="ItemList.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Module.h" />
+    <ClInclude Include="OutputLog.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />

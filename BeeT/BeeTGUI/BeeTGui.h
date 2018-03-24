@@ -32,7 +32,7 @@ public:
 private:
 	void MenuBar();
 	void FileMenuBar();
-	
+	void OpenWindows();
 
 public:
 	BTNodeTypes* btNodeTypes = nullptr;

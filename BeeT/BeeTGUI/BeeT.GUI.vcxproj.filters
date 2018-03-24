@@ -75,6 +75,9 @@
     <ClCompile Include="ItemList.cpp">
       <Filter>Editor\Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="OutputLog.cpp">
+      <Filter>Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -177,6 +180,9 @@
     <ClInclude Include="ItemList.h">
       <Filter>Editor\Widgets</Filter>
     </ClInclude>
+    <ClInclude Include="OutputLog.h">
+      <Filter>Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
@@ -208,6 +214,9 @@
     </Filter>
     <Filter Include="Editor\Widgets">
       <UniqueIdentifier>{755a1c1d-9753-4bd0-bdb8-efb3cdaec05c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows">
+      <UniqueIdentifier>{04e16ff5-bb89-4071-9a32-ebfa4d0feadc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
