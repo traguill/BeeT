@@ -22,6 +22,7 @@
     <ClInclude Include="include\begin_code.h" />
     <ClInclude Include="include\close_code.h" />
     <ClInclude Include="include\SDL.h" />
+    <ClInclude Include="include\SDLnetsys.h" />
     <ClInclude Include="include\SDL_assert.h" />
     <ClInclude Include="include\SDL_atomic.h" />
     <ClInclude Include="include\SDL_audio.h" />
@@ -59,6 +60,7 @@
     <ClInclude Include="include\SDL_mouse.h" />
     <ClInclude Include="include\SDL_mutex.h" />
     <ClInclude Include="include\SDL_name.h" />
+    <ClInclude Include="include\SDL_net.h" />
     <ClInclude Include="include\SDL_opengl.h" />
     <ClInclude Include="include\SDL_opengles.h" />
     <ClInclude Include="include\SDL_opengles2.h" />
@@ -103,8 +105,6 @@
     <ClInclude Include="include\SDL_vulkan.h" />
     <ClInclude Include="include\winapifamily.h" />
     <ClInclude Include="include\winpackagefamily.h" />
-    <ClInclude Include="SDL_net\include\SDL_net.h" />
-    <ClInclude Include="SDL_net\src\SDLnetsys.h" />
     <ClInclude Include="src\audio\directsound\SDL_directsound.h" />
     <ClInclude Include="src\audio\disk\SDL_diskaudio.h" />
     <ClInclude Include="src\audio\dummy\SDL_dummyaudio.h" />
@@ -200,10 +200,6 @@
     <ClInclude Include="src\video\windows\wmmsg.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SDL_net\src\SDLnet.c" />
-    <ClCompile Include="SDL_net\src\SDLnetselect.c" />
-    <ClCompile Include="SDL_net\src\SDLnetTCP.c" />
-    <ClCompile Include="SDL_net\src\SDLnetUDP.c" />
     <ClCompile Include="src\atomic\SDL_atomic.c" />
     <ClCompile Include="src\atomic\SDL_spinlock.c" />
     <ClCompile Include="src\audio\directsound\SDL_directsound.c" />
@@ -261,6 +257,10 @@
     <ClCompile Include="src\libm\s_sin.c" />
     <ClCompile Include="src\libm\s_tan.c" />
     <ClCompile Include="src\loadso\windows\SDL_sysloadso.c" />
+    <ClCompile Include="src\net\SDLnet.c" />
+    <ClCompile Include="src\net\SDLnetselect.c" />
+    <ClCompile Include="src\net\SDLnetTCP.c" />
+    <ClCompile Include="src\net\SDLnetUDP.c" />
     <ClCompile Include="src\power\SDL_power.c" />
     <ClCompile Include="src\power\windows\SDL_syspower.c" />
     <ClCompile Include="src\render\direct3d11\SDL_render_d3d11.c" />
@@ -418,6 +418,7 @@
     </ClCompile>
     <Lib>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <AdditionalDependencies>ws2_32.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -426,6 +427,9 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>ws2_32.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -448,6 +452,7 @@
     </Link>
     <Lib>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
+      <AdditionalDependencies>ws2_32.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -461,6 +466,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>ws2_32.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -400,17 +400,17 @@
     <ClCompile Include="src\render\SDL_yuv_sw.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="SDL_net\src\SDLnet.c">
-      <Filter>SDL_net\src</Filter>
+    <ClCompile Include="src\net\SDLnetTCP.c">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="SDL_net\src\SDLnetselect.c">
-      <Filter>SDL_net\src</Filter>
+    <ClCompile Include="src\net\SDLnetUDP.c">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="SDL_net\src\SDLnetTCP.c">
-      <Filter>SDL_net\src</Filter>
+    <ClCompile Include="src\net\SDLnet.c">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="SDL_net\src\SDLnetUDP.c">
-      <Filter>SDL_net\src</Filter>
+    <ClCompile Include="src\net\SDLnetselect.c">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -945,11 +945,11 @@
     <ClInclude Include="src\video\windows\wmmsg.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="SDL_net\include\SDL_net.h">
-      <Filter>SDL_net\Headers</Filter>
+    <ClInclude Include="include\SDL_net.h">
+      <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="SDL_net\src\SDLnetsys.h">
-      <Filter>SDL_net\src</Filter>
+    <ClInclude Include="include\SDLnetsys.h">
+      <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -958,15 +958,6 @@
     </Filter>
     <Filter Include="src">
       <UniqueIdentifier>{d3bcf12b-0313-45c5-91a5-402ea52976bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SDL_net">
-      <UniqueIdentifier>{a99316ea-7604-4e9a-8579-adbeb143a624}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SDL_net\src">
-      <UniqueIdentifier>{a3f67e68-3a78-42b3-ba18-1025f6d4b1e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SDL_net\Headers">
-      <UniqueIdentifier>{3ca112c6-d4f3-4d49-b349-38e2e67bdb4c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

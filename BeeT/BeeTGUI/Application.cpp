@@ -6,6 +6,7 @@
 #include "Input.h"
 #include "Renderer.h"
 #include "BeeTGui.h"
+#include "Network.h"
 
 using namespace std;
 
@@ -14,12 +15,14 @@ Application::Application()
 	fileSystem = new FileSystem("FileSystem");
 	window = new Window("Window");
 	input = new Input("Input");
+	network = new Network("Network");
 	beetGui = new BeeTGui("BeeTGui");
 	renderer = new Renderer("Renderer");
 
 	modules.push_back(fileSystem);
 	modules.push_back(window);
 	modules.push_back(input);
+	modules.push_back(network);
 	modules.push_back(beetGui);
 	modules.push_back(renderer);
 }

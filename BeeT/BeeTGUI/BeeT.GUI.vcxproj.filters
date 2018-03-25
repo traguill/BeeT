@@ -78,6 +78,9 @@
     <ClCompile Include="OutputLog.cpp">
       <Filter>Windows</Filter>
     </ClCompile>
+    <ClCompile Include="Network.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -182,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="OutputLog.h">
       <Filter>Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Network.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

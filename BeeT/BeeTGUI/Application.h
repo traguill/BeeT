@@ -19,6 +19,7 @@ class Window;
 class Input;
 class Renderer;
 class BeeTGui;
+class Network;
 
 class Application
 {
@@ -46,6 +47,7 @@ public:
 	Input* input = nullptr;
 	Renderer* renderer = nullptr;
 	BeeTGui* beetGui = nullptr;
+	Network* network = nullptr;
 
 private:
 	std::vector<Module*> modules;

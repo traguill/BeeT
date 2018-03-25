@@ -23,7 +23,7 @@
 /* $Id$ */
 
 #include "SDLnetsys.h"
-#include "../SDL_net/include/SDL_net.h"
+#include "SDL_net.h"
 
 #ifdef WITHOUT_SDL
 #include <string.h>

@@ -22,7 +22,7 @@
 /* $Id$ */
 
 #include "SDLnetsys.h"
-#include "../SDL_net/include/SDL_net.h"
+#include "SDL_net.h"
 
 /* The network API for TCP sockets */
 
