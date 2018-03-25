@@ -47,7 +47,7 @@ NodeType * BTNodeTypes::GetTypeById(int id)
 
 int BTNodeTypes::GetNodeTypeId(const std::string & category, const std::string & name) const
 {
-	for (int i = 0; i < typesList.size(); i++)
+	for (int i = 0; i < (int)typesList.size(); i++)
 	{
 		if (typesList[i].category.compare(category) == 0)
 			if (typesList[i].name.compare(name) == 0)

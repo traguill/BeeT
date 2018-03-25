@@ -9,17 +9,6 @@
 // Helpers
 //-----------------------------------------------------------------
 
-void * MemAlloc(size_t size)
-{
-	return malloc(size);
-}
-
-void MemFree(void * ptr)
-{
-	BEET_ASSERT(ptr);
-	free(ptr);
-}
-
 void * LoadFile(const char * filename, int * outFileSize)
 {
 	BEET_ASSERT(filename != NULL);
@@ -37,7 +26,7 @@ void * LoadFile(const char * filename, int * outFileSize)
 		return NULL;
 	}
 
-	void* fileData = MemAlloc(fileSize);
+	void* fileData = BEET_malloc(fileSize);
 	if (fileData == NULL)
 	{
 		fclose(file);
@@ -47,7 +36,7 @@ void * LoadFile(const char * filename, int * outFileSize)
 	if (fread(fileData, 1, (size_t)fileSize, file) != (size_t)fileSize)
 	{
 		fclose(file);
-		MemFree(fileData);
+		BEET_free(fileData);
 		return NULL;
 	}
 
@@ -71,14 +60,14 @@ void BeetContext__Init(BeetContext* ctx)
 	ctx->initialized = BEET_FALSE;
 	ctx->maxNumTreesLoaded = 32;
 	ctx->numTreesLoaded = 0;
-	ctx->trees = (BeeT_BehaviorTree*)malloc(ctx->maxNumTreesLoaded * sizeof(BeeT_BehaviorTree*));
+	ctx->trees = (BeeT_BehaviorTree**)BEET_malloc(ctx->maxNumTreesLoaded * sizeof(BeeT_BehaviorTree*));
 }
 
 void BeetContext__Destroy(BeetContext* ctx)
 {
 	for (int i = 0; i < ctx->numTreesLoaded; ++i)
 		BeeT_BehaviorTree__Destroy(ctx->trees[i]);
-	free(ctx->trees);
+	BEET_free(ctx->trees);
 	ctx->trees = NULL;
 	ctx->numTreesLoaded = 0;
 	ctx->initialized = BEET_FALSE;
@@ -89,7 +78,7 @@ void BeetContext__AddTree(BeetContext* ctx, BeeT_BehaviorTree* bt)
 	if (ctx->numTreesLoaded == ctx->maxNumTreesLoaded)
 	{
 		ctx->maxNumTreesLoaded += 32;
-		ctx->trees = (BeeT_BehaviorTree*)realloc(ctx->trees, sizeof(BeeT_BehaviorTree*) * ctx->maxNumTreesLoaded);
+		*ctx->trees = (BeeT_BehaviorTree*)BEET_realloc(ctx->trees, sizeof(BeeT_BehaviorTree*) * ctx->maxNumTreesLoaded);
 	}
 
 	ctx->trees[ctx->numTreesLoaded++] = bt;
@@ -137,7 +126,7 @@ unsigned int BEET_LoadBehaviorTreeFromFile(const char * filename)
 	if (fileData != NULL)	// If fileData is NULL, the filename could not be found or loaded.
 	{
 		result = BEET_LoadBehaviorTree(fileData, fileSize);
-		MemFree(fileData);
+		BEET_free(fileData);
 	}
 	return result;
 }

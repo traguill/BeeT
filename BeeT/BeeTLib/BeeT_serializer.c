@@ -9,7 +9,7 @@ struct BeeT_Serializer
 
 BeeT_Serializer * BeeT_Serializer__Create()
 {
-	BeeT_Serializer* result = (BeeT_Serializer*)malloc(sizeof(BeeT_Serializer));
+	BeeT_Serializer* result = (BeeT_Serializer*)BEET_malloc(sizeof(BeeT_Serializer));
 	result->array = NULL;
 	result->root_value = json_value_init_object();
 	result->root = json_value_get_object(result->root_value);
@@ -18,7 +18,7 @@ BeeT_Serializer * BeeT_Serializer__Create()
 
 BeeT_Serializer * BeeT_Serializer__CreateFromBuffer(const char * buf)
 {
-	BeeT_Serializer* result = (BeeT_Serializer*)malloc(sizeof(BeeT_Serializer));
+	BeeT_Serializer* result = (BeeT_Serializer*)BEET_malloc(sizeof(BeeT_Serializer));
 	result->array = NULL;
 	result->root_value = json_parse_string(buf);
 	result->root = json_value_get_object(result->root_value);
@@ -27,7 +27,7 @@ BeeT_Serializer * BeeT_Serializer__CreateFromBuffer(const char * buf)
 
 BeeT_Serializer * BeeT_Serializer__CreateFromObject(JSON_Object * root)
 {
-	BeeT_Serializer* result = (BeeT_Serializer*)malloc(sizeof(BeeT_Serializer));
+	BeeT_Serializer* result = (BeeT_Serializer*)BEET_malloc(sizeof(BeeT_Serializer));
 	result->array = NULL;
 	result->root_value = NULL;
 	result->root = root;
@@ -37,7 +37,7 @@ BeeT_Serializer * BeeT_Serializer__CreateFromObject(JSON_Object * root)
 void BeeT_Serializer__Destroy(BeeT_Serializer * self)
 {
 	json_value_free(self->root_value);
-	free(self);
+	BEET_free(self);
 }
 
 BEET_bool BeeT_Serializer__AppendArray(BeeT_Serializer* self, const char * name)
@@ -198,7 +198,7 @@ void BeeT_Serializer__LoadArray(BeeT_Serializer* self, const char* name)
 size_t BeeT_Serializer__Serialize(BeeT_Serializer* self, char ** buffer)
 {
 	size_t size = json_serialization_size_pretty(self->root_value);
-	*buffer = malloc(size);
+	*buffer = BEET_malloc(size);
 	json_serialize_to_buffer_pretty(self->root_value, *buffer, size);
 	return size;
 }

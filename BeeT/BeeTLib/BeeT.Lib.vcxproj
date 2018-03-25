@@ -139,15 +139,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="beet.h" />
+    <ClInclude Include="beet_begin.h" />
     <ClInclude Include="BeeT_behaviortree.h" />
-    <ClInclude Include="BeeT_internal.h" />
+    <ClInclude Include="beet_end.h" />
     <ClInclude Include="BeeT_node.h" />
+    <ClInclude Include="beet_overrides.h" />
     <ClInclude Include="BeeT_serializer.h" />
+    <ClInclude Include="beet_std.h" />
     <ClInclude Include="ThirdParty\parson.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="beet.c" />
     <ClCompile Include="BeeT_behaviortree.c" />
+    <ClCompile Include="BeeT_memory.c" />
     <ClCompile Include="BeeT_node.c" />
     <ClCompile Include="BeeT_serializer.c" />
     <ClCompile Include="ThirdParty\parson.c" />

@@ -16,6 +16,12 @@
     <Filter Include="parson">
       <UniqueIdentifier>{32f5668b-b981-494c-b49a-40c242a70485}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Helpers">
+      <UniqueIdentifier>{f6994e34-0fcf-42ab-813c-09cd09315f77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Helpers">
+      <UniqueIdentifier>{1a171c38-2978-4eb6-af32-2d57ec3659f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="beet.h">
@@ -33,8 +39,17 @@
     <ClInclude Include="BeeT_node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BeeT_internal.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="beet_begin.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="beet_end.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="beet_std.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="beet_overrides.h">
+      <Filter>Header Files\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -51,7 +66,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BeeT_serializer.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="BeeT_memory.c">
+      <Filter>Source Files\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

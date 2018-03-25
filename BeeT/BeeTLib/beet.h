@@ -1,17 +1,13 @@
 #ifndef __BEET_H__
 #define __BEET_H__
 
+#include "beet_std.h"
+
+#include "beet_begin.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#ifdef BEET_EXPORTS
-	#define BEET_API __declspec(dllexport)
-#else
-	#define BEET_API __declspec(dllimport)
-#endif
-
-#include "BeeT_internal.h"
 
 // -----------------------------------------------------------------------------------
 typedef struct
@@ -49,8 +45,16 @@ BEET_API unsigned int BEET_LoadBehaviorTreeFromFile(const char* filename);
 // Get the number of Behavior Trees loaded in memory.
 BEET_API size_t	BEET_BehaviorTreeCount();
 
+//--------------------------------------------------------------------------------
+// Memory
+//--------------------------------------------------------------------------------
+
+// Call this before anything else.
+// Returns 1 on sucess and 0 on failure.
+BEET_API int BEET_SetMemoryFunctions(BeeT_Malloc_Function malloc_func, BeeT_Free_Function free_func, BeeT_Realloc_Function realloc_func);
+
 #ifdef __cplusplus
 }
 #endif
-
+#include "beet_end.h"
 #endif // BEET_H

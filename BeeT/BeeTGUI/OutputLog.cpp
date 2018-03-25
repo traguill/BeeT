@@ -50,7 +50,7 @@ void Outputlog::Draw()
 	const char* line = bufBegin;
 	for (int lineNum = 0; line != NULL; lineNum++)
 	{
-		const char* lineEnd = (lineNum < lineOffsets.size()) ? bufBegin + lineOffsets[lineNum] : NULL;
+		const char* lineEnd = (lineNum < (int)lineOffsets.size()) ? bufBegin + lineOffsets[lineNum] : NULL;
 		if (filter.PassFilter(line, lineEnd))
 			ImGui::TextUnformatted(line, lineEnd);
 		line = lineEnd && lineEnd[1] ? lineEnd + 1 : NULL;

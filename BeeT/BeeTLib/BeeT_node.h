@@ -3,7 +3,7 @@
 
 #include "BeeT_serializer.h"
 
-typedef struct{
+typedef struct BeeT_Node{
 	int id;
 	struct BeeT_Node** childs;
 	int numChilds;
