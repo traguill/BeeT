@@ -2,6 +2,16 @@
 * BeeT ChangeLog
 *************************
 
+BeeT v0.1
+-------------------------
+- Demo code organized in Tests
+- GUI: new window, Output:
+    - Filter output messages by type: INFO, WARNING, ERROR
+    - Clear all messages
+- Library:
+    - Restructured SDL alike
+    - Corrected all warnings
+
 BeeT v0.03
 -------------------------
 - Library: conversion from C++ to C
