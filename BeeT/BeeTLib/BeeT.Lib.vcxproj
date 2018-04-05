@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{39D01010-6082-41BE-AB53-BAC7D1A19E70}</ProjectGuid>
     <RootNamespace>BeeTLib</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -141,6 +141,7 @@
     <ClInclude Include="beet.h" />
     <ClInclude Include="beet_begin.h" />
     <ClInclude Include="BeeT_behaviortree.h" />
+    <ClInclude Include="BeeT_dequeue.h" />
     <ClInclude Include="beet_end.h" />
     <ClInclude Include="BeeT_node.h" />
     <ClInclude Include="beet_overrides.h" />
@@ -151,6 +152,7 @@
   <ItemGroup>
     <ClCompile Include="beet.c" />
     <ClCompile Include="BeeT_behaviortree.c" />
+    <ClCompile Include="BeeT_dequeue.c" />
     <ClCompile Include="BeeT_memory.c" />
     <ClCompile Include="BeeT_node.c" />
     <ClCompile Include="BeeT_serializer.c" />

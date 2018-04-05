@@ -1,5 +1,4 @@
 #include "BeeT_behaviortree.h"
-#include "BeeT_node.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -22,6 +21,12 @@ BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 		}
 		BEET_free(nodeData);
 	}
+
+	tree->StartBehavior = StartBehavior;
+	tree->StopBehavior = StopBehavior;
+	tree->Update = Update;
+	tree->Step = Step;
+
 	return tree;
 }
 
@@ -32,4 +37,26 @@ void BeeT_BehaviorTree__Destroy(BeeT_BehaviorTree * self)
 		BeeT_Node__Destroy(self->rootNode);
 		BEET_free(self);
 	}
+}
+
+
+// Functions -----------------------------------------------------------------------------
+void StartBehavior(BeeT_BehaviorTree* bt, BeeT_Node* behavior, ObserverFunc* obsFunc)
+{
+	if (obsFunc != NULL)
+		behavior->observer = obsFunc;
+
+
+}
+void StopBehavior(BeeT_BehaviorTree* bt, BeeT_Node* behavior, NodeStatus resultStatus)
+{
+
+}
+void Update(BeeT_BehaviorTree* bt)
+{
+
+}
+BEET_bool Step(BeeT_BehaviorTree* bt)
+{
+	return BEET_TRUE;
 }

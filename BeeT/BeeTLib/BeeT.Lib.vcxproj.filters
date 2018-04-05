@@ -51,6 +51,9 @@
     <ClInclude Include="beet_overrides.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="BeeT_dequeue.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ThirdParty\parson.c">
@@ -69,6 +72,9 @@
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="BeeT_memory.c">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="BeeT_dequeue.c">
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
