@@ -2,6 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Forward delcarations
+void StartBehavior(BeeT_BehaviorTree*, BeeT_Node*, ObserverFunc*);
+void StopBehavior(BeeT_BehaviorTree*, BeeT_Node*, NodeStatus);
+void Update(BeeT_BehaviorTree*);
+BEET_bool Step(BeeT_BehaviorTree*);
+
 BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 {
 	BeeT_BehaviorTree* tree = BEET_malloc(sizeof(BeeT_BehaviorTree));
@@ -22,10 +28,10 @@ BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 		BEET_free(nodeData);
 	}
 
-	tree->StartBehavior = StartBehavior;
-	tree->StopBehavior = StopBehavior;
-	tree->Update = Update;
-	tree->Step = Step;
+	tree->StartBehavior = &StartBehavior;
+	tree->StopBehavior = &StopBehavior;
+	tree->Update = &Update;
+	tree->Step = &Step;
 
 	return tree;
 }

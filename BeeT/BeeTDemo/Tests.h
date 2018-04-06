@@ -10,4 +10,8 @@ void RunTest(int testId);
 // Prints the BT loaded id.
 void Test1();
 
+
+// Tests all the dequeue functionality.
+void Test2();
+
 #endif // !__TESTS_H__

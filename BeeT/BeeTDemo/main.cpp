@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 {
 	BEET_Init();
 
-	RunTest(1);
+	RunTest(2);
 	
 	BEET_Shutdown();
 

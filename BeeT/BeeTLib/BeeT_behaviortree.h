@@ -4,7 +4,8 @@
 #include "BeeT_serializer.h"
 #include "BeeT_node.h"
 
-typedef struct BeeT_BehaviorTree
+typedef struct BeeT_BehaviorTree BeeT_BehaviorTree;
+struct BeeT_BehaviorTree
 {
 	unsigned int uid;
 	BeeT_Node* rootNode;
@@ -16,7 +17,7 @@ typedef struct BeeT_BehaviorTree
 	void(*Update)(BeeT_BehaviorTree*);
 	BEET_bool(*Step)(BeeT_BehaviorTree*);
 
-}BeeT_BehaviorTree;
+};
 
 BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer* data);
 void BeeT_BehaviorTree__Destroy(BeeT_BehaviorTree* self);

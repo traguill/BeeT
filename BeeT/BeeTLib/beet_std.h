@@ -19,6 +19,7 @@ typedef enum {
 extern "C" {
 #endif
 
+// Memory ---------------------------------------------------------
 extern BEET_API void *BEET_malloc(size_t size);
 extern BEET_API void  BEET_free(void* mem);
 extern BEET_API void *BEET_realloc(void* mem, size_t size);
@@ -26,6 +27,33 @@ extern BEET_API void *BEET_realloc(void* mem, size_t size);
 typedef void * (*BeeT_Malloc_Function)(size_t);
 typedef void(*BeeT_Free_Function)(void*);
 typedef void * (*BeeT_Realloc_Function)(void* mem, size_t size);
+//------------------------------------------------------------------
+
+// Dequeue ---------------------------------------------------------
+
+typedef struct BeeT_dequeue dequeue;
+
+struct BeeT_dequeue
+{
+	char* data;
+	unsigned int size;
+	unsigned int itemSize;
+	unsigned int maxSize;
+	int frontId;
+	int backId;
+
+	void (*push_back)(dequeue*, void*);
+	void (*push_front)(dequeue*, void*);
+	void (*pop_back)(dequeue*);
+	void (*pop_front)(dequeue*);
+	void* (*back)(dequeue*);
+	void* (*front)(dequeue*);
+
+};
+
+BEET_API dequeue* InitDequeue(unsigned int itemSize);
+BEET_API void DestroyDequeue(dequeue* deq);
+// ------------------------------------------------------------------
 
 #ifdef __cplusplus
 }
