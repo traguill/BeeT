@@ -7,10 +7,10 @@ void push_back(dequeue* deq, void* item)
 	if (deq->backId == deq->maxSize - 1 || deq->maxSize == 0)
 	{
 		deq->maxSize += 8;
-		deq->data = (char*)BEET_realloc(deq->data, deq->maxSize);
+		deq->data = (char*)BEET_realloc(deq->data, deq->maxSize * deq->itemSize);
 	}
 
-	memcpy(&deq->data[deq->backId], item, deq->itemSize);
+	memcpy(&deq->data[deq->backId * deq->itemSize], item, deq->itemSize);
 	deq->backId++;
 	deq->size++;
 }
@@ -24,13 +24,13 @@ void push_front(dequeue* deq, void* item)
 		deq->backId += deq->frontId;
 		unsigned int prevSize = deq->maxSize;
 		deq->maxSize += deq->frontId + 1;
-		char* tmp = (char*)BEET_malloc(deq->maxSize);
-		memcpy(tmp + deq->frontId, deq->data, prevSize);
+		char* tmp = (char*)BEET_malloc(deq->maxSize * deq->itemSize);
+		memcpy(tmp + (deq->frontId * deq->itemSize), deq->data, prevSize * deq->itemSize);
 		char* tmp2 = deq->data;
 		deq->data = tmp;
 		BEET_free(*tmp2);
 	}
-	memcpy(&deq->data[deq->frontId], item, deq->itemSize);
+	memcpy(&deq->data[deq->frontId * deq->itemSize], item, deq->itemSize);
 	deq->frontId--;
 	deq->size++;
 }
@@ -55,12 +55,12 @@ void pop_front(dequeue* deq)
 
 void* back(dequeue* deq)
 {
-	return deq->data[deq->backId - 1];
+	return deq->data[(deq->backId - 1) * deq->itemSize];
 }
 
 void* front(dequeue* deq)
 {
-	return deq->data[deq->frontId + 1];
+	return deq->data[(deq->frontId + 1) * deq->itemSize];
 }
 
 dequeue * InitDequeue(unsigned int itemSize)

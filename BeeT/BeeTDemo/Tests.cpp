@@ -71,8 +71,7 @@ void Test2()
 		// Test pop front
 		d->pop_front(d);
 		front = (int)d->front(d);
-		printf("Pop front %d\n", front);
-		
+		printf("Pop front %d\n", front);		
 
 		DestroyDequeue(d);
 		printf("Dequeue destroy successful\n");
