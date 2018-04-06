@@ -19,7 +19,7 @@ void RunTest(int testId)
 		Test2();
 		break;
 	default:
-		cout << "There is no test Nº" << testId << endl;
+		cout << "There is no test num " << testId << endl;
 		break;
 	}
 }

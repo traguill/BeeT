@@ -12,9 +12,19 @@
 
 int main(int argc, char** argv)
 {
+	std::cout << "Enter a test number: " << std::endl;
+
 	BEET_Init();
 
-	RunTest(2);
+	int n = 0;
+	while (!(std::cin >> n))
+	{
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		std::cout << "Invalid input" << std::endl;
+	}
+	
+	RunTest(n);
 	
 	BEET_Shutdown();
 
