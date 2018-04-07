@@ -1,6 +1,4 @@
 #include "BeeT_behaviortree.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 // Forward delcarations
 void StartBehavior(BeeT_BehaviorTree*, BeeT_Node*, ObserverFunc*);
@@ -28,6 +26,7 @@ BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 		BEET_free(nodeData);
 	}
 
+	tree->runningNodes = InitDequeue(sizeof(BeeT_Node*));
 	tree->StartBehavior = &StartBehavior;
 	tree->StopBehavior = &StopBehavior;
 	tree->Update = &Update;
@@ -52,17 +51,45 @@ void StartBehavior(BeeT_BehaviorTree* bt, BeeT_Node* behavior, ObserverFunc* obs
 	if (obsFunc != NULL)
 		behavior->observer = obsFunc;
 
-
+	bt->runningNodes->push_front(bt->runningNodes, behavior);
 }
-void StopBehavior(BeeT_BehaviorTree* bt, BeeT_Node* behavior, NodeStatus resultStatus)
+void StopBehavior(BeeT_Node* behavior, NodeStatus resultStatus)
 {
-
+	BEET_ASSERT(resultStatus != NS_RUNNING);
+	behavior->status = resultStatus;
+	if (behavior->observer)
+	{
+		behavior->observer(resultStatus);
+	}
 }
 void Update(BeeT_BehaviorTree* bt)
 {
-
+	bt->runningNodes->push_back(bt->runningNodes, NULL); // Marks end of update
+	while (bt->Step(bt))
+	{
+		continue;
+	}
 }
 BEET_bool Step(BeeT_BehaviorTree* bt)
 {
+	BeeT_Node* current = bt->runningNodes->front(bt->runningNodes);
+	bt->runningNodes->pop_front(bt->runningNodes);
+
+	if (current == NULL)
+	{
+		return BEET_FALSE;
+	}
+
+	//current->update();
+
+	if (current->status != NS_RUNNING && current->observer)
+	{
+		current->observer(current->status);
+	}
+	else
+	{
+		bt->runningNodes->push_back(bt->runningNodes, current);
+	}
+
 	return BEET_TRUE;
 }

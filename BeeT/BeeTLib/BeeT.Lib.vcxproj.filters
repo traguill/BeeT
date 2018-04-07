@@ -30,9 +30,6 @@
     <ClInclude Include="ThirdParty\parson.h">
       <Filter>parson</Filter>
     </ClInclude>
-    <ClInclude Include="BeeT_serializer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BeeT_behaviortree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -49,6 +46,9 @@
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="beet_overrides.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="BeeT_serializer.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
