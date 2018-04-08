@@ -1,95 +1,107 @@
 #include "beet_std.h"
 
-// Dequeue ----------------------------------------------
-void push_back(dequeue* deq, void* item)
+// -----------------------------------------------------------------------------------------
+// Dequeue
+// -----------------------------------------------------------------------------------------
+
+struct BeeT_dequeue
 {
-	// Not enough space. Expand the dequeue and reallocate
-	if (deq->backId == deq->maxSize - 1 || deq->maxSize == 0)
+	struct node_dequeue* head;
+	struct node_dequeue* tail;
+};
+
+dequeue* InitDequeue()
+{
+	dequeue* d = BEET_malloc(sizeof(dequeue));
+	if (d != NULL)
+		d->head = d->tail = NULL;
+	return d;
+}
+
+void DestroyDequeue(dequeue* deq)
+{
+	node_deq* item = deq->head;
+	node_deq* nextItem = NULL;
+	while (item != deq->tail)
 	{
-		deq->maxSize += 8;
-		deq->data = (char*)BEET_realloc(deq->data, deq->maxSize * deq->itemSize);
+		nextItem = item->next;
+		BEET_free(item);
+		item = nextItem;
 	}
-
-	memcpy(&deq->data[deq->backId * deq->itemSize], item, deq->itemSize);
-	deq->backId++;
-	deq->size++;
+	BEET_free(deq);
 }
 
-void push_front(dequeue* deq, void* item)
+BEET_bool dequeue_is_empty(dequeue* d)
 {
-	// Not enough space. Expand the dequeue and reallocate
-	if (deq->frontId == -1)
+	return d->head == NULL;
+}
+
+void dequeue_push_front(dequeue* d, void* value)
+{
+	node_deq* n = BEET_malloc(sizeof(node_deq));
+	n->data = value;
+	n->next = d->head;
+	n->prev = NULL;
+	if (d->tail == NULL)
 	{
-		deq->frontId = 7;
-		deq->backId += deq->frontId;
-		unsigned int prevSize = deq->maxSize;
-		deq->maxSize += deq->frontId + 1;
-		char* tmp = (char*)BEET_malloc(deq->maxSize * deq->itemSize);
-		memcpy(tmp + (deq->frontId * deq->itemSize), deq->data, prevSize * deq->itemSize);
-		char* tmp2 = deq->data;
-		deq->data = tmp;
-		BEET_free(*tmp2);
+		d->head = d->tail = n;
 	}
-	memcpy(&deq->data[deq->frontId * deq->itemSize], item, deq->itemSize);
-	deq->frontId--;
-	deq->size++;
-}
-
-void pop_back(dequeue* deq)
-{
-	if (deq->size != 0)
+	else
 	{
-		deq->size--;
-		deq->backId--;
+		d->head->prev = n;
+		d->head = n;
 	}
 }
 
-void pop_front(dequeue* deq)
+void dequeue_push_back(dequeue* d, void* value)
 {
-	if (deq->size)
+	node_deq* n = BEET_malloc(sizeof(node_deq));
+	n->data = value;
+	n->prev = d->tail;
+	n->next = NULL;
+	if (d->head == NULL)
 	{
-		deq->size--;
-		deq->frontId++;
+		d->head = d->tail = n;
 	}
-}
-
-void* back(dequeue* deq)
-{
-	return deq->data[(deq->backId - 1) * deq->itemSize];
-}
-
-void* front(dequeue* deq)
-{
-	return deq->data[(deq->frontId + 1) * deq->itemSize];
-}
-
-dequeue * InitDequeue(unsigned int itemSize)
-{
-	dequeue* deq = (dequeue*)BEET_malloc(sizeof(dequeue));
-	deq->itemSize = itemSize;
-
-	deq->data = NULL;
-	deq->maxSize = deq->size = 0;
-	deq->frontId = -1;
-	deq->backId = 0;
-
-	deq->push_back = &push_back;
-	deq->push_front = &push_front;
-	deq->pop_back = &pop_back;
-	deq->pop_front = &pop_front;
-	deq->back = &back;
-	deq->front = &front;
-
-	return deq;
-}
-void DestroyDequeue(dequeue * deq)
-{
-	if (deq != NULL)
+	else
 	{
-		if(deq->data != NULL)
-			BEET_free(deq->data);
-		BEET_free(deq);
+		d->tail->next = n;
+		d->tail = n;
 	}
-	return;
 }
-// -----------------------------------------------------------------
+
+void dequeue_pop_front(dequeue* d)
+{
+	node_deq* n = d->head;
+	if (d->head == d->tail)
+		d->head = d->tail = NULL;
+	else
+		d->head = n->next;
+	BEET_free(n);
+}
+
+void dequeue_pop_back(dequeue* d)
+{
+	node_deq* n = d->tail;
+	if (d->head == d->tail)
+		d->head = d->tail = NULL;
+	else
+		d->tail = n->prev;
+	BEET_free(n);
+}
+
+void* dequeue_front(dequeue* d)
+{
+	return d->head ? d->head->data : NULL;
+}
+
+void* dequeue_back(dequeue* d)
+{
+	return d->tail ? d->tail->data : NULL;
+}
+
+node_deq * dequeue_head(dequeue * d)
+{
+	return d->head;
+}
+// -----------------------------------------------------------------------------------------

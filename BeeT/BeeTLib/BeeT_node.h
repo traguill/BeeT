@@ -2,6 +2,7 @@
 #define __BEET_NODE_H__
 
 #include "BeeT_serializer.h"
+#include "BeeT_std.h"
 
 typedef enum NodeStatus
 {
@@ -21,23 +22,25 @@ typedef enum NodeType // Careful! This types need to be sync with the ones in th
 	NT_TASK
 }NodeType;
 
-typedef void(*ObserverFunc)(NodeStatus);
-
-typedef struct BeeT_Node{
+typedef struct BeeT_Node BeeT_Node;
+typedef void(*ObserverFunc)(BeeT_Node*, NodeStatus);
+struct BeeT_Node{
 	int id;
 	NodeType type;
+	struct BeeT_BehaviorTree* bt;
 
 	NodeStatus status;
 	ObserverFunc observer;
+	BeeT_Node* observerNode;
 
-	NodeStatus(*Tick)(BeeT_Node*);
+	NodeStatus(*Tick)(BeeT_Node*);	// Do not rewrite in child classes
+
+	void(*OnInit)(BeeT_Node*);
 	NodeStatus(*Update)(BeeT_Node*);
-	
-	void(*OnInit)();
-	void(*OnFinish)(NodeStatus);
-}BeeT_Node;
+	void(*OnFinish)(BeeT_Node*, NodeStatus);
+};
 
-BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data);
+BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, struct BeeT_BehaviorTree* bt);
 void BeeT_Node__Destroy(BeeT_Node* self);
 
 
@@ -46,15 +49,16 @@ void BeeT_Node__Destroy(BeeT_Node* self);
 // ---------------------------------------------------------------------------------
 typedef struct BTN_Root
 {
-	BeeT_Node* node;
+	BeeT_Node node;
+	BeeT_Node* startNode;
 }BTN_Root;
 
 
 typedef struct BTN_Composite
 {
-	BeeT_Node* node;
-	struct BeeT_Node** childs;
-	int numChilds;
+	BeeT_Node node;
+	dequeue* childs;
+	node_deq* current;
 }BTN_Composite;
 
 typedef BTN_Composite BTN_Selector;
@@ -64,8 +68,8 @@ typedef BTN_Composite BTN_Sequence;
 
 typedef struct BTN_Task
 {
-	BeeT_Node* node;
-	//data?
+	BeeT_Node node;
+	const char* name;
 }BTN_Task;
 #endif // !__BEET_NODE_H__
 

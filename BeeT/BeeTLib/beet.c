@@ -73,7 +73,7 @@ void BeetContext__Destroy(BeetContext* ctx)
 	ctx->initialized = BEET_FALSE;
 }
 
-void BeetContext__AddTree(BeetContext* ctx, BeeT_BehaviorTree* bt)
+unsigned int BeetContext__AddTree(BeetContext* ctx, BeeT_BehaviorTree* bt)
 {
 	if (ctx->numTreesLoaded == ctx->maxNumTreesLoaded)
 	{
@@ -82,6 +82,7 @@ void BeetContext__AddTree(BeetContext* ctx, BeeT_BehaviorTree* bt)
 	}
 
 	ctx->trees[ctx->numTreesLoaded++] = bt;
+	return ctx->numTreesLoaded - 1;
 }
 //-----------------------------------------------------------------
 // BeeT API
@@ -110,11 +111,11 @@ unsigned int BEET_LoadBehaviorTree(const char * buffer, int size)
 	if (bt == NULL)
 		return 0;
 	
-	BeetContext__AddTree(g_Beet, bt);
+	unsigned int uid = BeetContext__AddTree(g_Beet, bt);
 
 	BeeT_Serializer__Destroy(parser);
 
-	return bt->uid;
+	return uid;
 }
 
 unsigned int BEET_LoadBehaviorTreeFromFile(const char * filename)
@@ -129,6 +130,13 @@ unsigned int BEET_LoadBehaviorTreeFromFile(const char * filename)
 		BEET_free(fileData);
 	}
 	return result;
+}
+
+BEET_API void BEET_ExecuteBehaviorTree(unsigned int id)
+{
+	BeeT_BehaviorTree* bt = g_Beet->trees[id];
+	bt->StartBehavior(bt, bt->rootNode, NULL);
+	bt->Update(bt);
 }
 
 size_t BEET_BehaviorTreeCount()

@@ -30,7 +30,7 @@
     <ProjectGuid>{4EE5DD5A-D157-4494-85EE-61A99DB17AF9}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Glew</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

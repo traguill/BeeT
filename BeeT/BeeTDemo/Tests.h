@@ -14,4 +14,9 @@ void Test1();
 // Tests all the dequeue functionality.
 void Test2();
 
+// Loads a BT file named 'testing.json'.
+// Executes the BT to test the following nodes:
+//		- Sequence - Task
+void Test3();
+
 #endif // !__TESTS_H__

@@ -29,32 +29,35 @@ typedef void(*BeeT_Free_Function)(void*);
 typedef void * (*BeeT_Realloc_Function)(void* mem, size_t size);
 //------------------------------------------------------------------
 
-// Dequeue ---------------------------------------------------------
 
+// Dequeue ---------------------------------------------------------
 typedef struct BeeT_dequeue dequeue;
 
-struct BeeT_dequeue
+typedef struct node_dequeue node_deq;
+struct node_dequeue
 {
-	char* data;
-	unsigned int size;
-	unsigned int itemSize;
-	unsigned int maxSize;
-	int frontId;
-	int backId;
-
-	void (*push_back)(dequeue*, void*);
-	void (*push_front)(dequeue*, void*);
-	void (*pop_back)(dequeue*);
-	void (*pop_front)(dequeue*);
-	void* (*back)(dequeue*);
-	void* (*front)(dequeue*);
-
+	struct node_dequeue* next;
+	struct node_dequeue* prev;
+	void* data;
 };
 
-BEET_API dequeue* InitDequeue(unsigned int itemSize);
+BEET_API dequeue* InitDequeue();
 BEET_API void DestroyDequeue(dequeue* deq);
-// ------------------------------------------------------------------
 
+BEET_API BEET_bool dequeue_is_empty(dequeue* d);
+
+BEET_API void dequeue_push_front(dequeue* d, void* value);
+BEET_API void dequeue_push_back(dequeue* d, void* value);
+
+BEET_API void dequeue_pop_front(dequeue* d);
+BEET_API void dequeue_pop_back(dequeue* d);
+
+BEET_API void* dequeue_front(dequeue* d);
+BEET_API void* dequeue_back(dequeue* d);
+
+BEET_API node_deq* dequeue_head(dequeue* d);
+
+// ------------------------------------------------------------------
 #ifdef __cplusplus
 }
 #endif

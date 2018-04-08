@@ -38,6 +38,8 @@ BEET_API unsigned int BEET_LoadBehaviorTree(const char* buffer, int size);
 */
 BEET_API unsigned int BEET_LoadBehaviorTreeFromFile(const char* filename);
 
+BEET_API void BEET_ExecuteBehaviorTree(unsigned int id);
+
 //--------------------------------------------------------------------------------
 // Utils
 //--------------------------------------------------------------------------------

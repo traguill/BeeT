@@ -136,7 +136,7 @@ BeeT_Serializer* BeeT_Serializer__AppendJObject(BeeT_Serializer* self, const cha
 
 BeeT_Serializer* BeeT_Serializer__GetJObject(const BeeT_Serializer* self, const char* name)
 {
-	return BeeT_Serializer__Create(json_object_get_object(self->root, name));
+	return BeeT_Serializer__CreateFromObject(json_object_get_object(self->root, name));
 }
 
 const char * BeeT_Serializer__GetString(const BeeT_Serializer* self, const char* name) 
@@ -153,8 +153,8 @@ BeeT_Serializer* BeeT_Serializer__GetArray(const BeeT_Serializer* self, const ch
 {
 	JSON_Array* j_array = json_object_get_array(self->root, name);
 	if (j_array)
-		return BeeT_Serializer__Create(json_array_get_object(j_array, index));
-	return BeeT_Serializer__Create((JSON_Object*) NULL);
+		return BeeT_Serializer__CreateFromObject(json_array_get_object(j_array, index));
+	return BeeT_Serializer__CreateFromObject((JSON_Object*) NULL);
 }
 
 size_t BeeT_Serializer__GetArraySize(const BeeT_Serializer* self, const char* name) 

@@ -12,7 +12,7 @@
 
 int main(int argc, char** argv)
 {
-	std::cout << "Enter a test number: " << std::endl;
+	std::cout << "Enter a test number(1-3):" << std::endl;
 
 	BEET_Init();
 

@@ -8,9 +8,9 @@ BEET_bool Step(BeeT_BehaviorTree*);
 
 BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 {
-	BeeT_BehaviorTree* tree = BEET_malloc(sizeof(BeeT_BehaviorTree));
+	BeeT_BehaviorTree* tree = (BeeT_BehaviorTree*)BEET_malloc(sizeof(BeeT_BehaviorTree));
 	tree->uid = BeeT_Serializer__GetUInt(data, "uid");
-	int rootId = BeeT_Serializer__GetInt(data, "rootId");
+	int rootId = BeeT_Serializer__GetInt(data, "rootNodeId");
 	int numNodes = BeeT_Serializer__GetArraySize(data, "nodes");
 	for (int i = 0; i < numNodes; ++i)
 	{
@@ -18,7 +18,7 @@ BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 		if (BeeT_Serializer__GetInt(nodeData, "id") == rootId)
 		{
 			BeeT_Serializer* rootNodeData = BeeT_Serializer__GetArray(data, "nodes", i);
-			tree->rootNode = BeeT_Node__Init(rootNodeData);
+			tree->rootNode = BeeT_Node__Init(rootNodeData, tree);
 			BEET_free(nodeData);
 			BEET_free(rootNodeData);
 			break;
@@ -26,7 +26,7 @@ BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 		BEET_free(nodeData);
 	}
 
-	tree->runningNodes = InitDequeue(sizeof(BeeT_Node*));
+	tree->runningNodes = InitDequeue();
 	tree->StartBehavior = &StartBehavior;
 	tree->StopBehavior = &StopBehavior;
 	tree->Update = &Update;
@@ -51,7 +51,7 @@ void StartBehavior(BeeT_BehaviorTree* bt, BeeT_Node* behavior, ObserverFunc* obs
 	if (obsFunc != NULL)
 		behavior->observer = obsFunc;
 
-	bt->runningNodes->push_front(bt->runningNodes, behavior);
+	dequeue_push_front(bt->runningNodes, behavior);
 }
 void StopBehavior(BeeT_Node* behavior, NodeStatus resultStatus)
 {
@@ -59,12 +59,12 @@ void StopBehavior(BeeT_Node* behavior, NodeStatus resultStatus)
 	behavior->status = resultStatus;
 	if (behavior->observer)
 	{
-		behavior->observer(resultStatus);
+		behavior->observer(behavior->observerNode, resultStatus);
 	}
 }
 void Update(BeeT_BehaviorTree* bt)
 {
-	bt->runningNodes->push_back(bt->runningNodes, NULL); // Marks end of update
+	dequeue_push_back(bt->runningNodes, NULL); // Marks end of update
 	while (bt->Step(bt))
 	{
 		continue;
@@ -72,23 +72,24 @@ void Update(BeeT_BehaviorTree* bt)
 }
 BEET_bool Step(BeeT_BehaviorTree* bt)
 {
-	BeeT_Node* current = bt->runningNodes->front(bt->runningNodes);
-	bt->runningNodes->pop_front(bt->runningNodes);
+	BeeT_Node* current = (BeeT_Node*)dequeue_front(bt->runningNodes);
+	dequeue_pop_front(bt->runningNodes);
 
 	if (current == NULL)
 	{
 		return BEET_FALSE;
 	}
 
-	//current->update();
+	current->Tick(current);
 
-	if (current->status != NS_RUNNING && current->observer)
+	if (current->status != NS_RUNNING)
 	{
-		current->observer(current->status);
+		if(current->observer)
+			current->observer(current->observerNode, current->status);
 	}
 	else
 	{
-		bt->runningNodes->push_back(bt->runningNodes, current);
+		dequeue_push_back(bt->runningNodes, current);
 	}
 
 	return BEET_TRUE;
