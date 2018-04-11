@@ -5,24 +5,29 @@
 
 #include "beet_begin.h"
 
+#include "BeeT_node.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 // -----------------------------------------------------------------------------------
+typedef NodeStatus(*beetCallbackFunc)(unsigned int btId, const char* taskId);
+
 typedef struct
 {
 	BEET_bool initialized;
 	struct BeeT_BehaviorTree** trees;
 	int numTreesLoaded;
 	int maxNumTreesLoaded;
+	beetCallbackFunc callbackFunc;
 }BeetContext;
 
 //--------------------------------------------------------------------------------
 // Main
 //--------------------------------------------------------------------------------
 
-BEET_API void	BEET_Init();
+BEET_API void	BEET_Init(beetCallbackFunc callback);
 BEET_API void	BEET_Shutdown();
 
 //--------------------------------------------------------------------------------

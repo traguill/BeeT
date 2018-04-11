@@ -6,7 +6,7 @@ void StopBehavior(BeeT_BehaviorTree*, BeeT_Node*, NodeStatus);
 void Update(BeeT_BehaviorTree*);
 BEET_bool Step(BeeT_BehaviorTree*);
 
-BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
+BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data, beetCallbackFunc callbackFunc)
 {
 	BeeT_BehaviorTree* tree = (BeeT_BehaviorTree*)BEET_malloc(sizeof(BeeT_BehaviorTree));
 	tree->uid = BeeT_Serializer__GetUInt(data, "uid");
@@ -31,6 +31,8 @@ BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 	tree->StopBehavior = &StopBehavior;
 	tree->Update = &Update;
 	tree->Step = &Step;
+
+	tree->callbackFunc = callbackFunc;
 
 	return tree;
 }

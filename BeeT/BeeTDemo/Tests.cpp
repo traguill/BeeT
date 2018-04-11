@@ -1,5 +1,4 @@
 #include "Tests.h"
-#include "../BeeTLib/beet.h"
 
 // Test 2
 #include "../BeeTLib/beet_std.h"
@@ -25,6 +24,20 @@ void RunTest(int testId)
 		cout << "There is no test num " << testId << endl;
 		break;
 	}
+}
+
+NodeStatus TestCallbackFunc(int testId, unsigned int btUid, const char * taskId)
+{
+	NodeStatus ret = NS_INVALID;
+
+	switch (testId)
+	{
+	case 3:
+		ret = Test3CallbackFunc(btUid, taskId);
+		break;
+	}
+
+	return ret;
 }
 
 void Test1()
@@ -87,4 +100,10 @@ void Test3()
 	printf("Behavior Tree loaded with id %u\n", uid);
 	BEET_ExecuteBehaviorTree(uid);
 	printf("BehaviorTree end\n"); 
+}
+
+NodeStatus Test3CallbackFunc(unsigned int btUid, const char * taskId)
+{
+	printf("BT(%u): %s\n", btUid, taskId);
+	return NS_RUNNING;
 }

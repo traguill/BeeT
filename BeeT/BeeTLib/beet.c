@@ -55,12 +55,13 @@ static BeetContext beetDefaultContext;
 #define BEET_GLOBAL_CONTEXT_PTR &beetDefaultContext;
 BeetContext* g_Beet = BEET_GLOBAL_CONTEXT_PTR;
 
-void BeetContext__Init(BeetContext* ctx)
+void BeetContext__Init(BeetContext* ctx, beetCallbackFunc callback)
 {
 	ctx->initialized = BEET_FALSE;
 	ctx->maxNumTreesLoaded = 32;
 	ctx->numTreesLoaded = 0;
 	ctx->trees = (BeeT_BehaviorTree**)BEET_malloc(ctx->maxNumTreesLoaded * sizeof(BeeT_BehaviorTree*));
+	ctx->callbackFunc = callback;
 }
 
 void BeetContext__Destroy(BeetContext* ctx)
@@ -88,9 +89,10 @@ unsigned int BeetContext__AddTree(BeetContext* ctx, BeeT_BehaviorTree* bt)
 // BeeT API
 //-----------------------------------------------------------------
 
-void BEET_Init()
+void BEET_Init(beetCallbackFunc callback)
 {
-	BeetContext__Init(g_Beet);
+	BEET_ASSERT(callback != NULL);
+	BeetContext__Init(g_Beet, callback);
 	g_Beet->initialized = BEET_TRUE;
 }
 
@@ -107,7 +109,7 @@ unsigned int BEET_LoadBehaviorTree(const char * buffer, int size)
 	BEET_ASSERT(buffer != NULL);
 
 	BeeT_Serializer* parser = BeeT_Serializer__CreateFromBuffer(buffer);
-	BeeT_BehaviorTree* bt = BeeT_BehaviorTree__Init(parser);
+	BeeT_BehaviorTree* bt = BeeT_BehaviorTree__Init(parser, g_Beet->callbackFunc);
 	if (bt == NULL)
 		return 0;
 	

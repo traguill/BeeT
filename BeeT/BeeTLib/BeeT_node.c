@@ -63,7 +63,7 @@ NodeStatus Tick(BeeT_Node* n)
 		n->status = NS_RUNNING;
 	}
 
-	n->Update(n);
+	n->status = n->Update(n);
 
 	if (n->status != NS_RUNNING)
 	{
@@ -193,8 +193,8 @@ NodeStatus BTN_Sequence_Update(BeeT_Node* self)
 NodeStatus BTN_Task_Update(BeeT_Node* self)
 {
 	BTN_Task* btn = (BTN_Task*)self;
-	printf("Node(%d): %s\n", btn->node.id, btn->name);
-	return self->status = NS_SUCCESS;
+	
+	return btn->node.bt->callbackFunc(btn->node.id, btn->name);
 }
 
 

@@ -10,11 +10,16 @@
 #include "Tests.h"
 #include <iostream>
 
+int g_TestId = 0;
+
+NodeStatus CallbackFunc(unsigned int btId, const char* taskId)
+{
+	return TestCallbackFunc(g_TestId, btId, taskId);
+}
+
 int main(int argc, char** argv)
 {
 	std::cout << "Enter a test number(1-3):" << std::endl;
-
-	BEET_Init();
 
 	int n = 0;
 	while (!(std::cin >> n))
@@ -23,8 +28,10 @@ int main(int argc, char** argv)
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		std::cout << "Invalid input" << std::endl;
 	}
-	
-	RunTest(n);
+	g_TestId = n;
+
+	BEET_Init(CallbackFunc);
+	RunTest(g_TestId);
 	
 	BEET_Shutdown();
 
