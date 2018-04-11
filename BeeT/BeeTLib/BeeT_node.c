@@ -2,44 +2,6 @@
 #include "BeeT_behaviortree.h"
 #include <stdio.h>
 
-// ---------------------------------------------------------------------------------
-// Forward declarations
-// ---------------------------------------------------------------------------------
-
-NodeStatus Tick(BeeT_Node* n);
-
-// Inits Node Types
-BTN_Root*		BTN_Root_Init		(const BeeT_Serializer* data, BeeT_BehaviorTree* bt);
-BTN_Selector*	BTN_Selector_Init	(const BeeT_Serializer* data, BeeT_BehaviorTree* bt);
-BTN_Sequence*	BTN_Sequence_Init	(const BeeT_Serializer* data, BeeT_BehaviorTree* bt);
-// Parallel TODO: BTN_Root* BTN_Root_Init(BeeT_Node* n, const BeeT_Serializer* data);
-BTN_Task*		BTN_Task_Init		(const BeeT_Serializer* data);
-
-// OnInit functions
-void BTN_Root_OnInit		(BeeT_Node* self);
-void BTN_Selector_OnInit	(BeeT_Node* self);
-void BTN_Sequence_OnInit	(BeeT_Node* self);
-void BTN_Task_OnInit		(BeeT_Node* self);
-
-// Update functions
-NodeStatus BTN_Root_Update		(BeeT_Node* self);
-NodeStatus BTN_Selector_Update	(BeeT_Node* self);
-NodeStatus BTN_Sequence_Update	(BeeT_Node* self);
-NodeStatus BTN_Task_Update		(BeeT_Node* self);
-
-// OnFinish functions
-void BTN_Root_OnFinish		(BeeT_Node* self, NodeStatus status);
-void BTN_Selector_OnFinish	(BeeT_Node* self, NodeStatus status);
-void BTN_Sequence_OnFinish	(BeeT_Node* self, NodeStatus status);
-void BTN_Task_OnFinish		(BeeT_Node* self, NodeStatus status);
-
-// Observer functions
-void BTN_Root_TreeFinish		(BeeT_Node* self, NodeStatus s);
-void BTN_Selector_OnChildFinish	(BeeT_Node* self, NodeStatus s);
-void BTN_Sequence_OnChildFinish (BeeT_Node* self, NodeStatus s);
-
-// ---------------------------------------------------------------------------------
-
 BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, BeeT_BehaviorTree* bt)
 {
 	
@@ -73,9 +35,23 @@ BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, BeeT_BehaviorTree* bt)
 
 void BeeT_Node__Destroy(BeeT_Node * self)
 {
-	/*for (int i = 0; i < self->numChilds; ++i)
-		BEET_free(self->childs[i]);
-	BEET_free(self->childs);*/
+	switch (self->type)
+	{
+	case NT_ROOT:
+		BTN_Root_OnDestroy((BTN_Root*)self);
+		break;
+	case NT_SELECTOR:
+		BTN_Composite_OnDestroy((BTN_Composite*)self);
+		break;
+	case NT_SEQUENCE:
+		BTN_Composite_OnDestroy((BTN_Composite*)self);
+		break;
+	case NT_PARALLEL:
+		break;
+	case NT_TASK:
+		BTN_Task_OnDestroy((BTN_Task*)self);
+		break;
+	}
 	BEET_free(self);
 }
 
@@ -238,6 +214,40 @@ void BTN_Sequence_OnFinish(BeeT_Node* self, NodeStatus status)
 
 void BTN_Task_OnFinish(BeeT_Node* self, NodeStatus status)
 {
+}
+
+// BeeT Node OnDestroy functions ------------------------------------------------------------
+
+void BTN_Root_OnDestroy(BTN_Root * self)
+{
+	if (self->startNode)
+	{
+		BeeT_Node__Destroy(self->startNode);
+	}
+}
+
+void BTN_Composite_OnDestroy(BTN_Composite * self)
+{
+	if (self->childs)
+	{
+		do
+		{
+			BeeT_Node* n = dequeue_front(self->childs);
+			dequeue_pop_front(self->childs);
+			if (n)
+			{
+				BeeT_Node__Destroy(n);
+			}
+		} while (!dequeue_is_empty(self->childs));
+	}
+}
+
+void BTN_Task_OnDestroy(BTN_Task * self)
+{
+	if (self->name)
+	{
+		BEET_free(self->name);
+	}
 }
 
 // BeeT Node Observer functions -------------------------------------------------------------

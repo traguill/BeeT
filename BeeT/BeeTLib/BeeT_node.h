@@ -4,6 +4,9 @@
 #include "BeeT_serializer.h"
 #include "BeeT_std.h"
 
+// Forward declarations
+typedef struct BeeT_BehaviorTree;
+
 typedef enum NodeStatus
 {
 		NS_INVALID,
@@ -71,5 +74,48 @@ typedef struct BTN_Task
 	BeeT_Node node;
 	const char* name;
 }BTN_Task;
+
+// ---------------------------------------------------------------------------------
+// Node functions
+// ---------------------------------------------------------------------------------
+
+NodeStatus Tick(BeeT_Node* n);
+
+// Inits Node Types
+BTN_Root*		BTN_Root_Init(const BeeT_Serializer* data,struct BeeT_BehaviorTree* bt);
+BTN_Selector*	BTN_Selector_Init(const BeeT_Serializer* data, struct BeeT_BehaviorTree* bt);
+BTN_Sequence*	BTN_Sequence_Init(const BeeT_Serializer* data, struct BeeT_BehaviorTree* bt);
+// Parallel TODO: BTN_Root* BTN_Root_Init(BeeT_Node* n, const BeeT_Serializer* data);
+BTN_Task*		BTN_Task_Init(const BeeT_Serializer* data);
+
+// OnInit functions
+void BTN_Root_OnInit(BeeT_Node* self);
+void BTN_Selector_OnInit(BeeT_Node* self);
+void BTN_Sequence_OnInit(BeeT_Node* self);
+void BTN_Task_OnInit(BeeT_Node* self);
+
+// Update functions
+NodeStatus BTN_Root_Update(BeeT_Node* self);
+NodeStatus BTN_Selector_Update(BeeT_Node* self);
+NodeStatus BTN_Sequence_Update(BeeT_Node* self);
+NodeStatus BTN_Task_Update(BeeT_Node* self);
+
+// OnFinish functions
+void BTN_Root_OnFinish(BeeT_Node* self, NodeStatus status);
+void BTN_Selector_OnFinish(BeeT_Node* self, NodeStatus status);
+void BTN_Sequence_OnFinish(BeeT_Node* self, NodeStatus status);
+void BTN_Task_OnFinish(BeeT_Node* self, NodeStatus status);
+
+// OnDestroy functions
+void BTN_Root_OnDestroy(BTN_Root* self);
+void BTN_Composite_OnDestroy(BTN_Composite* self);
+void BTN_Task_OnDestroy(BTN_Task* self);
+
+// Observer functions
+void BTN_Root_TreeFinish(BeeT_Node* self, NodeStatus s);
+void BTN_Selector_OnChildFinish(BeeT_Node* self, NodeStatus s);
+void BTN_Sequence_OnChildFinish(BeeT_Node* self, NodeStatus s);
+
+// ---------------------------------------------------------------------------------
 #endif // !__BEET_NODE_H__
 

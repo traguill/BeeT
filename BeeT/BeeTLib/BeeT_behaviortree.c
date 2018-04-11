@@ -40,8 +40,8 @@ void BeeT_BehaviorTree__Destroy(BeeT_BehaviorTree * self)
 	if (self->rootNode)
 	{
 		BeeT_Node__Destroy(self->rootNode);
-		BEET_free(self);
 	}
+	BEET_free(self);
 }
 
 
