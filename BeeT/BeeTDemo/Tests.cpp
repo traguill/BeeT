@@ -26,20 +26,9 @@ void RunTest(int testId)
 	}
 }
 
-NodeStatus TestCallbackFunc(int testId, unsigned int btUid, const char * taskId)
-{
-	NodeStatus ret = NS_INVALID;
-
-	switch (testId)
-	{
-	case 3:
-		ret = Test3CallbackFunc(btUid, taskId);
-		break;
-	}
-
-	return ret;
-}
-
+// --------------------------------------------------------------------
+// TEST 1
+// --------------------------------------------------------------------
 void Test1()
 {
 	printf("%i\n", BEET_BehaviorTreeCount());
@@ -48,6 +37,9 @@ void Test1()
 	printf("%i\n", BEET_BehaviorTreeCount());
 }
 
+// --------------------------------------------------------------------
+// TEST 2
+// --------------------------------------------------------------------
 void Test2()
 {
 	dequeue* d = InitDequeue();
@@ -94,16 +86,53 @@ void Test2()
 	}
 }
 
+// --------------------------------------------------------------------
+// TEST 3
+// --------------------------------------------------------------------
+
+NodeStatus Test3PatrolFunc(unsigned int btUid, const char * taskId)
+{
+	printf("BT(%u): %s - Patrolling the area...\n", btUid, taskId);
+	return NS_SUCCESS;
+}
+
+NodeStatus Test3ShootFunc(unsigned int btUid, const char * taskId)
+{
+	printf("BT(%u): %s - The player! Shoot him!\n", btUid, taskId);
+	return NS_SUCCESS;
+}
+
+NodeStatus Test3DieFunc(unsigned int btUid, const char * taskId)
+{
+	printf("BT(%u): %s - R.I.P\n", btUid, taskId);
+	return NS_SUCCESS;
+}
+
 void Test3()
 {
 	unsigned int uid = BEET_LoadBehaviorTreeFromFile("bt.json");
 	printf("Behavior Tree loaded with id %u\n", uid);
+	
+	int result = 0;
+	result = BEET_SetTaskCallbackFunc(uid, "Patrol", Test3PatrolFunc);
+	if (result)
+		printf("Patrol callback function set correctly\n");
+	else
+		printf("Error while setting Patrol callback function\n");
+	
+	result = BEET_SetTaskCallbackFunc(uid, "Shoot", Test3ShootFunc);
+	if (result)
+		printf("Shoot callback function set correctly\n");
+	else
+		printf("Error while setting Shoot callback function\n");
+	
+	result = BEET_SetTaskCallbackFunc(uid, "Die", Test3DieFunc);
+	if (result)
+		printf("Die callback function set correctly\n");
+	else
+		printf("Error while setting Die callback function\n");
+
+	printf("Running Behavior Tree:\n-----------------------------------------\n");
 	BEET_ExecuteBehaviorTree(uid);
 	printf("BehaviorTree end\n"); 
-}
-
-NodeStatus Test3CallbackFunc(unsigned int btUid, const char * taskId)
-{
-	printf("BT(%u): %s\n", btUid, taskId);
-	return NS_RUNNING;
 }

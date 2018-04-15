@@ -5,8 +5,6 @@
 
 void RunTest(int testId);
 
-NodeStatus TestCallbackFunc(int testId, unsigned int btUid, const char* taskId);
-
 // TESTS ---------------------------------------------------
 
 // Loads a BT file named 'bt.json'. 
@@ -22,7 +20,5 @@ void Test2();
 // Executes the BT to test the following nodes:
 //		- Sequence - Task
 void Test3();
-NodeStatus Test3CallbackFunc(unsigned int btUid, const char* taskId);
-
 
 #endif // !__TESTS_H__

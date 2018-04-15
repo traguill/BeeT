@@ -69,10 +69,12 @@ typedef BTN_Composite BTN_Sequence;
 
 // Parallel TODO
 
+typedef NodeStatus(*beetCallbackFunc)(unsigned int btId, const char* taskId);
 typedef struct BTN_Task
 {
 	BeeT_Node node;
 	const char* name;
+	beetCallbackFunc callbackFunc;
 }BTN_Task;
 
 // ---------------------------------------------------------------------------------

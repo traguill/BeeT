@@ -55,13 +55,12 @@ static BeetContext beetDefaultContext;
 #define BEET_GLOBAL_CONTEXT_PTR &beetDefaultContext;
 BeetContext* g_Beet = BEET_GLOBAL_CONTEXT_PTR;
 
-void BeetContext__Init(BeetContext* ctx, beetCallbackFunc callback)
+void BeetContext__Init(BeetContext* ctx)
 {
 	ctx->initialized = BEET_FALSE;
 	ctx->maxNumTreesLoaded = 32;
 	ctx->numTreesLoaded = 0;
 	ctx->trees = (BeeT_BehaviorTree**)BEET_malloc(ctx->maxNumTreesLoaded * sizeof(BeeT_BehaviorTree*));
-	ctx->callbackFunc = callback;
 }
 
 void BeetContext__Destroy(BeetContext* ctx)
@@ -85,14 +84,18 @@ unsigned int BeetContext__AddTree(BeetContext* ctx, BeeT_BehaviorTree* bt)
 	ctx->trees[ctx->numTreesLoaded++] = bt;
 	return ctx->numTreesLoaded - 1;
 }
+
+BeeT_BehaviorTree* BeeTContext__GetTree(BeetContext* ctx, unsigned int btId)
+{
+	return (btId < ctx->numTreesLoaded) ? ctx->trees[btId] : NULL;
+}
 //-----------------------------------------------------------------
 // BeeT API
 //-----------------------------------------------------------------
 
-void BEET_Init(beetCallbackFunc callback)
+void BEET_Init()
 {
-	BEET_ASSERT(callback != NULL);
-	BeetContext__Init(g_Beet, callback);
+	BeetContext__Init(g_Beet);
 	g_Beet->initialized = BEET_TRUE;
 }
 
@@ -109,7 +112,7 @@ unsigned int BEET_LoadBehaviorTree(const char * buffer, int size)
 	BEET_ASSERT(buffer != NULL);
 
 	BeeT_Serializer* parser = BeeT_Serializer__CreateFromBuffer(buffer);
-	BeeT_BehaviorTree* bt = BeeT_BehaviorTree__Init(parser, g_Beet->callbackFunc);
+	BeeT_BehaviorTree* bt = BeeT_BehaviorTree__Init(parser);
 	if (bt == NULL)
 		return 0;
 	
@@ -136,9 +139,109 @@ unsigned int BEET_LoadBehaviorTreeFromFile(const char * filename)
 
 BEET_API void BEET_ExecuteBehaviorTree(unsigned int id)
 {
-	BeeT_BehaviorTree* bt = g_Beet->trees[id];
-	bt->StartBehavior(bt, bt->rootNode, NULL);
-	bt->Update(bt);
+	BeeT_BehaviorTree* bt = BeeTContext__GetTree(g_Beet, id);
+	if (bt)
+	{
+		bt->StartBehavior(bt, bt->rootNode, NULL);
+		bt->Update(bt);
+	}
+}
+
+void BEET_GetAllTasksNamesRecursive(BeeT_Node* n, dequeue* listNames)
+{
+	if (n != NULL)
+	{
+		switch (n->type)
+		{
+		case NT_ROOT:
+			BEET_GetAllTasksNamesRecursive(((BTN_Root*)n)->startNode, listNames);
+			break;
+		case NT_SELECTOR:
+		case NT_SEQUENCE:
+		{
+			dequeue* childs = ((BTN_Composite*)n)->childs;
+			node_deq* it = childs->head;
+			while (it != NULL)
+			{
+				BEET_GetAllTasksNamesRecursive((BeeT_Node*)it->data, listNames);
+				it = it->next;
+			}
+		}
+		break;
+		case NT_PARALLEL:
+			break;
+		case NT_TASK:
+			dequeue_push_back(listNames, ((BTN_Task*)n)->name);
+			break;
+		}
+	}
+}
+
+int BEET_GetAllTasksNames(unsigned int btId, dequeue * listNames)
+{
+	BEET_ASSERT(listNames != NULL);
+	int size = 0;
+	BeeT_BehaviorTree* bt = BeeTContext__GetTree(g_Beet, btId);
+	if(!dequeue_is_empty(listNames))
+		dequeue_clear(listNames);
+	if (bt != NULL)
+	{
+		BEET_GetAllTasksNamesRecursive(bt->rootNode, listNames);
+		size = (int)dequeue_size(listNames);
+	}
+	return size;
+}
+
+BTN_Task* FindTaskByNameRecurisve(BeeT_Node* n, const char* name)
+{
+	BTN_Task* result = NULL;
+	if (n != NULL)
+	{
+		switch (n->type)
+		{
+		case NT_ROOT:
+			result = FindTaskByNameRecurisve(((BTN_Root*)n)->startNode, name);
+			break;
+		case NT_SELECTOR:
+		case NT_SEQUENCE:
+		{
+			dequeue* childs = ((BTN_Composite*)n)->childs;
+			node_deq* it = childs->head;
+			while (it != NULL)
+			{
+				result = FindTaskByNameRecurisve((BeeT_Node*)it->data, name);
+				if (result != NULL)
+					break;
+				it = it->next;
+			}
+		}
+		break;
+		case NT_PARALLEL:
+			break;
+		case NT_TASK:
+			if (strcmp(((BTN_Task*)n)->name, name) == 0)
+			{
+				result = (BTN_Task*)n;
+			}
+			break;
+		}
+	}
+	return result;
+}
+
+int BEET_SetTaskCallbackFunc(unsigned int btId, const char * task, beetCallbackFunc callback)
+{
+	BeeT_BehaviorTree* bt = BeeTContext__GetTree(g_Beet, btId);
+	if (bt != NULL)
+	{
+		BTN_Task* taskNode = FindTaskByNameRecurisve(bt->rootNode, task);
+		if (taskNode != NULL)
+		{
+			taskNode->callbackFunc = callback;
+			return 1;
+		}
+	}
+	return 0;
 }
 
 size_t BEET_BehaviorTreeCount()

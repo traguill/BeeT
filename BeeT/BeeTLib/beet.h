@@ -12,7 +12,6 @@ extern "C" {
 #endif
 
 // -----------------------------------------------------------------------------------
-typedef NodeStatus(*beetCallbackFunc)(unsigned int btId, const char* taskId);
 
 typedef struct
 {
@@ -20,14 +19,13 @@ typedef struct
 	struct BeeT_BehaviorTree** trees;
 	int numTreesLoaded;
 	int maxNumTreesLoaded;
-	beetCallbackFunc callbackFunc;
 }BeetContext;
 
 //--------------------------------------------------------------------------------
 // Main
 //--------------------------------------------------------------------------------
 
-BEET_API void	BEET_Init(beetCallbackFunc callback);
+BEET_API void	BEET_Init();
 BEET_API void	BEET_Shutdown();
 
 //--------------------------------------------------------------------------------
@@ -44,6 +42,24 @@ BEET_API unsigned int BEET_LoadBehaviorTree(const char* buffer, int size);
 BEET_API unsigned int BEET_LoadBehaviorTreeFromFile(const char* filename);
 
 BEET_API void BEET_ExecuteBehaviorTree(unsigned int id);
+
+/*
+*	Get a list of all the nodes in a Behavior Tree of type 'Task' by their name. 
+*	IMPORTANT! DestroyDequeue when finish to free the buffer memory.
+*	\param1 Behavior Tree id.
+*   \param2 Pointer to the dequeue list to be filled.
+*	\return Number of names found.
+*/
+BEET_API int BEET_GetAllTasksNames(unsigned int btId, dequeue* listNames);
+
+/*
+*	Sets the function to be used when the 'Task' node is running.
+*	\param1 Behavior Tree id.
+*	\param2 Task name identifier
+*	\param3 Function callback to be called.
+*	\return Non-zero on success. 0 on failure.
+*/
+BEET_API int BEET_SetTaskCallbackFunc(unsigned int btId, const char* task, beetCallbackFunc callback);
 
 //--------------------------------------------------------------------------------
 // Utils

@@ -193,8 +193,8 @@ NodeStatus BTN_Sequence_Update(BeeT_Node* self)
 NodeStatus BTN_Task_Update(BeeT_Node* self)
 {
 	BTN_Task* btn = (BTN_Task*)self;
-	
-	return btn->node.bt->callbackFunc(btn->node.id, btn->name);
+	BEET_ASSERT(btn->callbackFunc);
+	return btn->callbackFunc(btn->node.bt->uid, btn->name);
 }
 
 

@@ -32,6 +32,11 @@ typedef void * (*BeeT_Realloc_Function)(void* mem, size_t size);
 
 // Dequeue ---------------------------------------------------------
 typedef struct BeeT_dequeue dequeue;
+struct BeeT_dequeue
+{
+	struct node_dequeue* head;
+	struct node_dequeue* tail;
+};
 
 typedef struct node_dequeue node_deq;
 struct node_dequeue
@@ -45,6 +50,8 @@ BEET_API dequeue* InitDequeue();
 BEET_API void DestroyDequeue(dequeue* deq);
 
 BEET_API BEET_bool dequeue_is_empty(dequeue* d);
+BEET_API void dequeue_clear(dequeue* d);
+BEET_API size_t dequeue_size(dequeue* d);
 
 BEET_API void dequeue_push_front(dequeue* d, void* value);
 BEET_API void dequeue_push_back(dequeue* d, void* value);

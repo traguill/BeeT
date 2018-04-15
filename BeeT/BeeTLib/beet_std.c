@@ -4,12 +4,6 @@
 // Dequeue
 // -----------------------------------------------------------------------------------------
 
-struct BeeT_dequeue
-{
-	struct node_dequeue* head;
-	struct node_dequeue* tail;
-};
-
 dequeue* InitDequeue()
 {
 	dequeue* d = BEET_malloc(sizeof(dequeue));
@@ -20,6 +14,17 @@ dequeue* InitDequeue()
 
 void DestroyDequeue(dequeue* deq)
 {
+	dequeue_clear(deq);
+	BEET_free(deq);
+}
+
+BEET_bool dequeue_is_empty(dequeue* d)
+{
+	return d->head == NULL;
+}
+
+void dequeue_clear(dequeue * deq)
+{
 	node_deq* item = deq->head;
 	node_deq* nextItem = NULL;
 	while (item != deq->tail)
@@ -28,12 +33,18 @@ void DestroyDequeue(dequeue* deq)
 		BEET_free(item);
 		item = nextItem;
 	}
-	BEET_free(deq);
 }
 
-BEET_bool dequeue_is_empty(dequeue* d)
+size_t dequeue_size(dequeue * d)
 {
-	return d->head == NULL;
+	size_t size = 0;
+	node_deq* it = d->head;
+	while (it != NULL)
+	{
+		size++;
+		it = it->next;
+	}
+	return size;
 }
 
 void dequeue_push_front(dequeue* d, void* value)

@@ -12,11 +12,6 @@
 
 int g_TestId = 0;
 
-NodeStatus CallbackFunc(unsigned int btId, const char* taskId)
-{
-	return TestCallbackFunc(g_TestId, btId, taskId);
-}
-
 int main(int argc, char** argv)
 {
 	std::cout << "Enter a test number(1-3):" << std::endl;
@@ -30,7 +25,7 @@ int main(int argc, char** argv)
 	}
 	g_TestId = n;
 
-	BEET_Init(CallbackFunc);
+	BEET_Init();
 	RunTest(g_TestId);
 	
 	BEET_Shutdown();
