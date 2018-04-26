@@ -28,7 +28,7 @@ public:
 
 	void SetVisible(bool visible, ListObject* lObject = nullptr);
 	bool IsVisible()const;
-	void SetSelFunctionCallback(void(*fc)(void*, const std::string&, const std::string&), void* obj);
+	void SetSelFunctionCallback(void(*fc)(void*, const std::string&, const std::string&, int), void* obj, int additionalData = -1);
 	void SetWidgetPosition(float x, float y);
 
 private:
@@ -45,10 +45,12 @@ private:
 	std::string itemSelected;
 	std::string categorySelected;
 
+	int additionalData = -1; // To save additional information
+
 	bool visibleFlag = false; // Set to true the first tick the window is visible
 
 	void* object; // Class to call the selFunc
-	void(*selFunc)(void* obj, const std::string& category, const std::string& item); // Function to call when an item is selected
+	void(*selFunc)(void* obj, const std::string& category, const std::string& item, int additionalData); // Function to call when an item is selected
 
 	float posX, posY;
 };

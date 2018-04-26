@@ -81,6 +81,9 @@
     <ClCompile Include="Network.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Blackboard.cpp">
+      <Filter>Editor\BehaviorTree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -188,6 +191,9 @@
     </ClInclude>
     <ClInclude Include="Network.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Blackboard.h">
+      <Filter>Editor\BehaviorTree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

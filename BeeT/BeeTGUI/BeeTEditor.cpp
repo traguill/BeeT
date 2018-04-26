@@ -9,6 +9,7 @@
 #include "BTNode.h"
 #include "BTLink.h"
 #include "ItemList.h"
+#include "Blackboard.h"
 
 #include <vector>
 
@@ -26,8 +27,11 @@ BeeTEditor::~BeeTEditor()
 bool BeeTEditor::Init()
 {
 	bt = new BehaviorTree();
+	bb = new Blackboard();
 	ne::CenterNodeOnScreen(0); // Root node has always id = 0. Careful! It may not work in the future.
 	widgetItemList = new ItemList();
+	widgetBBList = new ItemList();
+	InitBBListCategories();
 	return true;
 }
 
@@ -37,6 +41,7 @@ bool BeeTEditor::Update()
 	editorSize.x = (float) screenWidth;
 	editorSize.y = screenHeight - (ImGui::GetCursorPosY() - ImGui::GetCursorPosX());
 
+	BlackBoardWindow();
 	Editor();
 	UpdateSelection();
 	Inspector();
@@ -45,8 +50,11 @@ bool BeeTEditor::Update()
 
 bool BeeTEditor::CleanUp()
 {
+	delete bb;
 	delete bt;
 	delete widgetItemList;
+	delete bbVarListObj;
+	delete widgetBBList;
 	return true;
 }
 
@@ -92,16 +100,24 @@ void BeeTEditor::Load(const char * path)
 void BeeTEditor::NewBehaviorTree(Data* data)
 {
 	g_app->beetGui->ResetNodeEditorContext();
+	if (bb)
+		delete bb;
 	if (bt)
 		delete bt;
 	if (data)
+	{
 		bt = new BehaviorTree(*data);
+		//TODO: BB DATA
+	}
 	else
+	{
 		bt = new BehaviorTree();
+		bb = new Blackboard();
+	}
 	ne::CenterNodeOnScreen(0); // Root node has always id = 0. Careful! It may not work in the future.
 }
 
-void BeeTEditor::CallBackAddNode(void * obj, const std::string & category, const std::string & item)
+void BeeTEditor::CallBackAddNode(void * obj, const std::string & category, const std::string & item, int additionalData)
 {
 	BeeTEditor* editor = ((BeeTEditor*)obj);
 	if (editor && g_app && g_app->beetGui)
@@ -119,9 +135,88 @@ void BeeTEditor::CallBackAddNode(void * obj, const std::string & category, const
 	}
 }
 
+void BeeTEditor::CallBackBBVarType(void * obj, const std::string & category, const std::string & item, int additionalData)
+{
+	BeeTEditor* editor = (BeeTEditor*)obj;
+	if (editor)
+	{
+		BBVar* var = editor->bb->variables[additionalData];
+		if (var)
+		{
+			map<string, BBVarType>::iterator it = editor->bbVarTypeConversor.find(item);
+			if (it != editor->bbVarTypeConversor.end())
+			{
+				var->type = it->second;
+				editor->bb->SetLastTypeUsed(it->second);
+			}
+		}
+	}
+}
+
+void BeeTEditor::BlackBoardWindow()
+{
+	ImGui::SetNextWindowPos(ImVec2(0.0f, ImGui::GetCursorPosY() - ImGui::GetCursorPosX()));
+	ImGui::SetNextWindowSize(ImVec2(editorSize.x * blackboardSize.x, editorSize.y * blackboardSize.y));
+	ImGui::Begin("BlackBoard", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+	
+	if (widgetBBList->IsVisible())
+		widgetBBList->Draw();
+
+	for (int i = 0; i < bb->variables.size(); ++i)
+	{
+		BBVar* bbvar = bb->variables[i];
+		// Var TYPE
+		switch (bbvar->type)
+		{
+		case BV_BOOL:
+			ImGui::Text("bool   ");
+			break;
+		case BV_INT:
+			ImGui::Text("int    ");
+			break;
+		case BV_FLOAT:
+			ImGui::Text("float  ");
+			break;
+		case BV_STRING:
+			ImGui::Text("string ");
+			break;
+		default:
+			ImGui::Text("Error  ");
+			break;
+		}
+		
+		if (ImGui::IsItemClicked())
+		{
+			widgetBBList->SetWidgetPosition(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
+			widgetBBList->SetSelFunctionCallback(BeeTEditor::CallBackBBVarType, this, i);
+			widgetBBList->SetVisible(true, bbVarListObj);
+		}
+
+		ImGui::SameLine();
+
+		// Var NAME
+		char varNameTmp[_MAX_PATH];
+		strcpy_s(varNameTmp, _MAX_PATH, bbvar->name.data());
+		ImGuiInputTextFlags inputFlags = ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_CharsNoBlank;
+		ImGui::PushID(i);
+		if (ImGui::InputText("###", varNameTmp, _MAX_PATH, inputFlags))
+		{
+			bbvar->name = varNameTmp;
+		}
+		ImGui::PopID();
+	}
+
+	if (ImGui::Button("Add New"))
+	{
+		bb->CreateDummyVar();
+	}
+
+	ImGui::End();
+}
+
 void BeeTEditor::Editor()
 {
-	ImGui::SetNextWindowPos(ImVec2(0.0f, ImGui::GetCursorPosY() - ImGui::GetCursorPosX())); // The Y component substracts the cursorX position because imgui by default has margins
+	ImGui::SetNextWindowPos(ImVec2(screenWidth * blackboardSize.x, ImGui::GetCursorPosY() - ImGui::GetCursorPosX())); // The Y component substracts the cursorX position because imgui by default has margins
 	ImGui::SetNextWindowSize(ImVec2(editorSize.x * editorCanvasSize.x, editorSize.y * editorCanvasSize.y));
 	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
@@ -149,7 +244,7 @@ void BeeTEditor::Editor()
 
 void BeeTEditor::Inspector()
 {
-	ImGui::SetNextWindowPos(ImVec2(screenWidth * 0.75f, ImGui::GetCursorPosY() - ImGui::GetCursorPosX()));
+	ImGui::SetNextWindowPos(ImVec2(screenWidth * (blackboardSize.x + editorCanvasSize.x), ImGui::GetCursorPosY() - ImGui::GetCursorPosX()));
 	ImGui::SetNextWindowSize(ImVec2(editorSize.x * inspectorSize.x, editorSize.y * inspectorSize.y));
 	ImGui::Begin("Inspector", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 	
@@ -335,4 +430,20 @@ void BeeTEditor::UpdateSelection()
 		}
 	}
 
+}
+
+void BeeTEditor::InitBBListCategories()
+{
+	bbVarListObj = new ListObject();
+
+	bbVarListObj->AddItemInCategory("Basic", "Boolean");
+	bbVarTypeConversor.insert(pair<string, BBVarType>("Boolean", BV_BOOL));
+	bbVarListObj->AddItemInCategory("Basic", "Integer");
+	bbVarTypeConversor.insert(pair<string, BBVarType>("Integer", BV_INT));
+	bbVarListObj->AddItemInCategory("Basic", "Float");
+	bbVarTypeConversor.insert(pair<string, BBVarType>("Float", BV_FLOAT));
+	bbVarListObj->AddItemInCategory("Basic", "String");
+	bbVarTypeConversor.insert(pair<string, BBVarType>("String", BV_STRING));
+
+	bbVarListObj->SortAll();
 }

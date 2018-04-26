@@ -97,6 +97,7 @@
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_67_0\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>version.lib;imm32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -111,6 +112,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_67_0\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -122,6 +124,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_67_0\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -140,6 +143,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Program Files\boost\boost_1_67_0\boost_1_67_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -151,6 +155,7 @@
     <ClCompile Include="BeeTEditor.cpp" />
     <ClCompile Include="BeeTGui.cpp" />
     <ClCompile Include="BehaviorTree.cpp" />
+    <ClCompile Include="Blackboard.cpp" />
     <ClCompile Include="BTLink.cpp" />
     <ClCompile Include="BTNode.cpp" />
     <ClCompile Include="BTNodeTypes.cpp" />
@@ -181,6 +186,7 @@
     <ClInclude Include="BeeTEditor.h" />
     <ClInclude Include="BeeTGui.h" />
     <ClInclude Include="BehaviorTree.h" />
+    <ClInclude Include="Blackboard.h" />
     <ClInclude Include="BTLink.h" />
     <ClInclude Include="BTNode.h" />
     <ClInclude Include="BTNodeTypes.h" />

@@ -3,10 +3,14 @@
 
 #include "ThirdParty/ImGui/imgui.h"
 #include <string>
+#include <map>
 
 class BehaviorTree;
+class Blackboard;
 class Data;
 class ItemList;
+struct ListObject;
+enum BBVarType;
 
 class BeeTEditor
 {
@@ -23,10 +27,12 @@ public:
 
 	void NewBehaviorTree(Data* data = nullptr);
 
-	static void CallBackAddNode(void* obj, const std::string& category, const std::string& item);
+	static void CallBackAddNode(void* obj, const std::string& category, const std::string& item, int additionalData);
+	static void CallBackBBVarType(void* obj, const std::string& category, const std::string& item, int additionalData);
 
 private:
 
+	void BlackBoardWindow();
 	void Editor();
 	void Inspector();
 
@@ -38,9 +44,12 @@ private:
 	void Links();
 	void UpdateSelection();
 
+	void InitBBListCategories();
+
 private:
 	// For testing, a default behavior tree is already created. In the future, allow to create a new one or open an existent
 	BehaviorTree* bt = nullptr;
+	Blackboard* bb = nullptr;
 
 	bool beetEditorWindowOpen = true;
 	ImGuiWindowFlags flags =  ImGuiWindowFlags_::ImGuiWindowFlags_NoResize
@@ -51,11 +60,15 @@ private:
 	int screenHeight = 0;
 
 	ImVec2 editorSize;
-	ImVec2 editorCanvasSize = ImVec2(0.75f, 1.0f);
-	ImVec2 inspectorSize = ImVec2(0.25f, 1.0f);
+	ImVec2 editorCanvasSize = ImVec2(0.6f, 1.0f);
+	ImVec2 inspectorSize = ImVec2(0.2f, 1.0f);
+	ImVec2 blackboardSize = ImVec2(0.2f, 1.0f);
 
 	// Widgets
 	ItemList* widgetItemList = nullptr;
+	ItemList* widgetBBList = nullptr;
+	ListObject* bbVarListObj = nullptr;
+	std::map<std::string, BBVarType> bbVarTypeConversor;
 
 	// Inspector
 	int selectedNodeId = -1;

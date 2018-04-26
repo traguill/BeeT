@@ -150,10 +150,11 @@ bool ItemList::IsVisible() const
 	return visible;
 }
 
-void ItemList::SetSelFunctionCallback(void(*fc)(void *, const std::string &, const std::string &), void * obj)
+void ItemList::SetSelFunctionCallback(void(*fc)(void *, const std::string &, const std::string &, int), void * obj, int additionalData)
 {
 	selFunc = fc;
 	object = obj;
+	this->additionalData = additionalData;
 }
 
 void ItemList::SetWidgetPosition(float x, float y)
@@ -210,9 +211,10 @@ void ItemList::ExecuteSelFunc(const string& category, const string& item)
 {
 	if (object && selFunc)
 	{
-		selFunc(object, category, item);
+		selFunc(object, category, item, additionalData);
 	}
 	// Auto-closes
+	additionalData = -1;
 	SetVisible(false);
 }
 
