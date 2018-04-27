@@ -31,6 +31,24 @@ BTDecorator::BTDecorator(Blackboard * bb, Data & data) : bb(bb)
 		var = bb->FindVar(varName);
 	else
 		var = nullptr;
+
+	if (var)
+	{
+		switch (var->type)
+		{
+		case BV_BOOL:
+			break;
+		case BV_INT:
+			var2 = data.GetInt("var2");
+			break;
+		case BV_FLOAT:
+			var2 = data.GetFloat("var2");
+			break;
+		case BV_STRING:
+			var2 = std::string(data.GetString("var2"));
+			break;
+		}
+	}
 }
 
 BTDecorator::~BTDecorator()
@@ -108,6 +126,25 @@ void BTDecorator::Save(Data & file)
 		data.AppendString("var", var->name.data());
 	else
 		data.AppendString("var", "");
+	data.AppendInt("option", option);
+
+	if (var)
+	{
+		switch (var->type)
+		{
+		case BV_BOOL:
+			break;
+		case BV_INT:
+			data.AppendInt("var2", boost::any_cast<int>(var2));
+			break;
+		case BV_FLOAT:
+			data.AppendFloat("var2", boost::any_cast<float>(var2));
+			break;
+		case BV_STRING:
+			data.AppendString("var2", boost::any_cast<std::string>(var2).data());
+			break;
+		}
+	}
 
 	file.AppendArrayValue(data);
 }
@@ -228,13 +265,6 @@ void BTDecorator::TypeBoolOptions()
 		if (ImGui::MenuItem("IS TRUE"))
 			option = (int)DecBoolOpt::IS_TRUE;
 		ImGui::EndPopup(); 
-	}
-
-	ImGui::SameLine();
-	bool tmp = boost::any_cast<bool>(var2);
-	if (ImGui::Checkbox("###DecBoolCompare", &tmp))
-	{
-		var2 = tmp;
 	}
 }
 
