@@ -10,6 +10,7 @@
 #include "BTLink.h"
 #include "ItemList.h"
 #include "Blackboard.h"
+#include "BTDecorator.h"
 
 #include <vector>
 
@@ -27,11 +28,11 @@ BeeTEditor::~BeeTEditor()
 bool BeeTEditor::Init()
 {
 	bt = new BehaviorTree();
-	bb = new Blackboard();
 	ne::CenterNodeOnScreen(0); // Root node has always id = 0. Careful! It may not work in the future.
 	widgetItemList = new ItemList();
 	widgetBBList = new ItemList();
 	InitBBListCategories();
+	widgetBBVars = new ItemList();
 	return true;
 }
 
@@ -52,11 +53,11 @@ bool BeeTEditor::Update()
 
 bool BeeTEditor::CleanUp()
 {
-	delete bb;
 	delete bt;
 	delete widgetItemList;
-	delete bbVarListObj;
+	delete bbVarTypeObj;
 	delete widgetBBList;
+	delete widgetBBVars;
 	return true;
 }
 
@@ -64,7 +65,7 @@ void BeeTEditor::Serialize(const char* filename) const
 {
 	// In progress: Now only save one BT. In the future choose one of the opened BTs to save or save them all.
 	char* buffer = nullptr;
-	int size = bt->Serialize(&buffer, bb);
+	int size = bt->Serialize(&buffer);
 	if (size == 0)
 	{
 		LOGE("Behavior Tree was not saved. An error occurred during serialization.");
@@ -102,20 +103,23 @@ void BeeTEditor::Load(const char * path)
 void BeeTEditor::NewBehaviorTree(Data* data)
 {
 	g_app->beetGui->ResetNodeEditorContext();
-	if (bb)
-		delete bb;
 	if (bt)
 		delete bt;
 	if (data)
 	{
 		bt = new BehaviorTree(*data);
-		bb = new Blackboard(*data);
 	}
 	else
 	{
 		bt = new BehaviorTree();
-		bb = new Blackboard();
 	}
+	selectedNodeId = -1;
+	selectedLinkId = -1;
+
+	bbvarSelected = -1; 
+	bbvarSetFocus = false; 
+	bbvarValueSelected = -1; 
+
 	ne::CenterNodeOnScreen(0); // Root node has always id = 0. Careful! It may not work in the future.
 }
 
@@ -145,8 +149,23 @@ void BeeTEditor::CallBackBBVarType(void * obj, const std::string & category, con
 		map<string, BBVarType>::iterator it = editor->bbVarTypeConversor.find(item);
 		if (it != editor->bbVarTypeConversor.end())
 		{
-			editor->bb->ChangeVarType(additionalData, it->second);
+			editor->bt->bb->ChangeVarType(additionalData, it->second);
 		}
+	}
+}
+
+void BeeTEditor::CallBackBBVarList(void * obj, const std::string & category, const std::string & item, int additionalData)
+{
+	BeeTEditor* editor = (BeeTEditor*)obj;
+	if (editor)
+	{
+		delete editor->bbVarListObj;
+		editor->bbVarListObj = nullptr;
+
+		BBVar* var = editor->bt->bb->FindVar(item);
+
+		// TODO: For now only Blackboard comparisons
+		editor->bt->AddDecorator(editor->selectedNodeId, var); // TODO: SEND DECORATOR NAME
 	}
 }
 
@@ -158,6 +177,8 @@ void BeeTEditor::BlackboardWindow()
 	
 	if (widgetBBList->IsVisible())
 		widgetBBList->Draw();
+
+	Blackboard* bb = bt->bb;
 
 	for (int i = 0; i < bb->variables.size(); ++i)
 	{
@@ -186,7 +207,7 @@ void BeeTEditor::BlackboardWindow()
 		{
 			widgetBBList->SetWidgetPosition(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
 			widgetBBList->SetSelFunctionCallback(BeeTEditor::CallBackBBVarType, this, i);
-			widgetBBList->SetVisible(true, bbVarListObj);
+			widgetBBList->SetVisible(true, bbVarTypeObj);
 		}
 
 		ImGui::SameLine();
@@ -247,6 +268,7 @@ void BeeTEditor::BlackboardVarDetail()
 	ImGui::SetNextWindowSize(ImVec2(editorSize.x * blackboardVarDetailSize.x, editorSize.y * blackboardVarDetailSize.y));
 	ImGui::Begin("BlackBoard Variable", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 
+	Blackboard* bb = bt->bb;
 	if (bbvarValueSelected != -1)
 	{
 		BBVar* var = bb->variables[bbvarValueSelected];
@@ -326,6 +348,16 @@ void BeeTEditor::Editor()
 	
 	if(widgetItemList->IsVisible())
 		widgetItemList->Draw();
+
+	if (widgetBBVars->IsVisible())
+	{
+		widgetBBVars->Draw();
+	}
+	else if (bbVarListObj != nullptr)
+	{
+		delete bbVarListObj;
+		bbVarListObj = nullptr;
+	}
 	ne::Resume();
 	// ---------------------------------------------------
 
@@ -361,8 +393,22 @@ void BeeTEditor::Inspector()
 			{
 				nodeSel->name = nodeNameTmp;
 			}
-			
+
 			ImGui::Spacing();
+
+			if (nodeSel->decorators.size() > 0)
+			{
+				ImGui::Dummy(ImVec2(0.0f, 20.0f));
+				ImGui::Text("Decorators: ");
+				ImGui::Separator();
+			}
+			for (auto dec : nodeSel->decorators)
+			{
+				dec->InspectorInfo();
+			}
+			ImGui::Separator();
+
+			ImGui::Dummy(ImVec2(0.0f, 20.0f));
 			ImGui::Text("Debug: ");
 			ImGui::Spacing();
 			ImGui::Separator();
@@ -396,11 +442,19 @@ void BeeTEditor::ShowPopUps()
 	{
 		ne::ClearSelection();
 		ne::SelectNode(selectedNodeId);
-		if (ImGui::MenuItem("Remove"))
+		if (ImGui::MenuItem("Remove"))	// Remove
 		{
 			bt->RemoveNode(selectedNodeId);
 			selectedNodeId = -1;
 			ne::ClearSelection();
+		}
+
+		if (bt->bb->variables.size() > 0)
+		{
+			if(ImGui::MenuItem("Add Decorator")) // Add Decorator
+			{
+				ListAllBBVars();
+			}
 		}
 		ImGui::EndPopup();
 	}
@@ -527,16 +581,31 @@ void BeeTEditor::UpdateSelection()
 
 void BeeTEditor::InitBBListCategories()
 {
-	bbVarListObj = new ListObject();
+	bbVarTypeObj = new ListObject();
 
-	bbVarListObj->AddItemInCategory("Basic", "Boolean");
+	bbVarTypeObj->AddItemInCategory("Basic", "Boolean");
 	bbVarTypeConversor.insert(pair<string, BBVarType>("Boolean", BV_BOOL));
-	bbVarListObj->AddItemInCategory("Basic", "Integer");
+	bbVarTypeObj->AddItemInCategory("Basic", "Integer");
 	bbVarTypeConversor.insert(pair<string, BBVarType>("Integer", BV_INT));
-	bbVarListObj->AddItemInCategory("Basic", "Float");
+	bbVarTypeObj->AddItemInCategory("Basic", "Float");
 	bbVarTypeConversor.insert(pair<string, BBVarType>("Float", BV_FLOAT));
-	bbVarListObj->AddItemInCategory("Basic", "String");
+	bbVarTypeObj->AddItemInCategory("Basic", "String");
 	bbVarTypeConversor.insert(pair<string, BBVarType>("String", BV_STRING));
 
-	bbVarListObj->SortAll();
+	bbVarTypeObj->SortAll();
+}
+
+void BeeTEditor::ListAllBBVars()
+{
+	if (bbVarListObj == nullptr)
+	{
+		bbVarListObj = new ListObject();
+		for (auto var : bt->bb->variables)
+		{
+			bbVarListObj->AddItemInCategory("Blackboard", var->name.data());
+		}
+		widgetBBVars->SetWidgetPosition(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
+		widgetBBVars->SetSelFunctionCallback(BeeTEditor::CallBackBBVarList, this);
+		widgetBBVars->SetVisible(true, bbVarListObj);
+	}
 }

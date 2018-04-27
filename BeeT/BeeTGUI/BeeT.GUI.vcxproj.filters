@@ -84,6 +84,9 @@
     <ClCompile Include="Blackboard.cpp">
       <Filter>Editor\BehaviorTree</Filter>
     </ClCompile>
+    <ClCompile Include="BTDecorator.cpp">
+      <Filter>Editor\BehaviorTree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -193,6 +196,9 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Blackboard.h">
+      <Filter>Editor\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="BTDecorator.h">
       <Filter>Editor\BehaviorTree</Filter>
     </ClInclude>
   </ItemGroup>

@@ -83,6 +83,9 @@ void ItemList::Draw()
 					if (ImGui::Selectable(item.data(), firstSelected))
 					{
 						ExecuteSelFunc(category.category, item);
+						ImGui::TreePop();
+						ImGui::End();
+						return;
 					}
 					if (firstSelected)
 					{
@@ -108,6 +111,9 @@ void ItemList::Draw()
 						if (ImGui::Selectable(item.data()))
 						{
 							ExecuteSelFunc(category.category, item);
+							ImGui::TreePop();
+							ImGui::End();
+							return;
 						}
 					}
 				}

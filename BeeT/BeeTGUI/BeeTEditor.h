@@ -29,6 +29,7 @@ public:
 
 	static void CallBackAddNode(void* obj, const std::string& category, const std::string& item, int additionalData);
 	static void CallBackBBVarType(void* obj, const std::string& category, const std::string& item, int additionalData);
+	static void CallBackBBVarList(void* obj, const std::string& category, const std::string& item, int additionalData);
 
 private:
 
@@ -46,11 +47,11 @@ private:
 	void UpdateSelection();
 
 	void InitBBListCategories();
+	void ListAllBBVars();
 
 private:
 	// For testing, a default behavior tree is already created. In the future, allow to create a new one or open an existent
 	BehaviorTree* bt = nullptr;
-	Blackboard* bb = nullptr;
 
 	bool beetEditorWindowOpen = true;
 	ImGuiWindowFlags flags =  ImGuiWindowFlags_::ImGuiWindowFlags_NoResize
@@ -69,8 +70,11 @@ private:
 	// Widgets
 	ItemList* widgetItemList = nullptr;
 	ItemList* widgetBBList = nullptr;
-	ListObject* bbVarListObj = nullptr;
+	ListObject* bbVarTypeObj = nullptr;
 	std::map<std::string, BBVarType> bbVarTypeConversor;
+
+	ItemList* widgetBBVars = nullptr;
+	ListObject* bbVarListObj = nullptr;
 
 	// Inspector
 	int selectedNodeId = -1;

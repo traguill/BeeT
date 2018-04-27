@@ -6,6 +6,8 @@
 #include "BeeTGui.h"
 #include "BehaviorTree.h"
 #include "Random.h"
+#include "BTDecorator.h"
+#include "Blackboard.h"
 
 namespace ne = ax::NodeEditor;
 
@@ -32,11 +34,21 @@ BTNode::BTNode(BehaviorTree* bt, Data & data) : bt(bt)
 
 	name = data.GetString("name");
 
+	int numDecorators = data.GetArraySize("decorators");
+
+	for (int i = 0; i < numDecorators; ++i)
+	{
+		BTDecorator* dec = new BTDecorator(bt->bb, data.GetArray("decorators", i));
+		decorators.push_back(dec);
+	}
+
 	ReloadSubtreeId();
 }
 
 BTNode::~BTNode()
 {
+	for (auto dec : decorators)
+		delete dec;
 	delete inputPin;
 	delete outputPin;
 }
@@ -93,6 +105,12 @@ void BTNode::PrepareToDraw()
 	ImGui::BeginHorizontal("content_frame");
 	ImGui::Spring(1, padding);
 
+	ImGui::BeginVertical("contentBig", ImVec2(0.0f, 0.0f));
+
+	for (auto dec : decorators)
+	{
+		dec->PrepareToDraw();
+	}
 	ImGui::BeginVertical("content", ImVec2(0.0f, 0.0f));
 	ImGui::Dummy(ImVec2(160, 0));
 
@@ -105,6 +123,7 @@ void BTNode::PrepareToDraw()
 	ImGui::EndVertical(); // 'content'
 
 	contentRect = ImGui_GetItemRect();
+	ImGui::EndVertical(); //content big
 	ImGui::Spring(1, padding);
 	ImGui::EndHorizontal(); // 'content_frame'
 	// -------------------------------------------
@@ -135,6 +154,12 @@ void BTNode::PrepareToDraw()
 
 	ImGui::EndVertical(); // nodeId
 	ne::EndNode();
+}
+
+void BTNode::AddDecorator(Blackboard* bb, BBVar* var)
+{
+	BTDecorator* dec = new BTDecorator(bb, var);
+	decorators.push_back(dec);
 }
 
 int BTNode::GetId() const
@@ -203,6 +228,10 @@ void BTNode::Save(Data& file)
 		child->Save(data);
 
 	data.AppendString("name", name.data());
+
+	data.AppendArray("decorators");
+	for (auto dec : decorators)
+		dec->Save(data);
 
 	file.AppendArrayValue(data);
 	saveFlag = true;

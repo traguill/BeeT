@@ -7,6 +7,7 @@
 #include "Data.h"
 #include "Random.h"
 #include "Blackboard.h"
+#include "BTDecorator.h"
 
 #include "ThirdParty/NodeEditor/Include/NodeEditor.h"
 #include "ThirdParty/NodeEditor/Source/Shared/Interop.h"
@@ -16,6 +17,7 @@ using namespace std;
 
 BehaviorTree::BehaviorTree()
 {
+	bb = new Blackboard();
 	uid = g_rnd->RandomInt();
 	AddNode(0, 0, 0); // Root node
 	rootNode = nodesList[0];
@@ -24,6 +26,8 @@ BehaviorTree::BehaviorTree()
 
 BehaviorTree::BehaviorTree(Data & data)
 {
+	bb = new Blackboard(data);
+
 	map<int, BTPin*> pinsList;
 	// Load Nodes
 	int numNodes = data.GetArraySize("nodes");
@@ -60,6 +64,9 @@ BehaviorTree::~BehaviorTree()
 	{
 		delete node.second;
 	}
+
+	if(bb)
+		delete bb;
 }
 
 int BehaviorTree::AddNode(float posX, float posY, int typeId)
@@ -82,6 +89,17 @@ void BehaviorTree::AddLink(BTPin* startPinId, BTPin* endPinId)
 	startPinId->links.push_back(link);
 	endPinId->links.push_back(link);
 	linksList.insert(pair<int, BTLink*>(link->id, link));
+}
+
+void BehaviorTree::AddDecorator(int nodeId, BBVar* var)
+{
+	if (rootNode && rootNode->GetId() == nodeId) // Root Node cannot contain Decorators!
+		return;
+	BTNode* node = FindNode(nodeId);
+	if (node)
+	{
+		node->AddDecorator(bb, var);
+	}
 }
 
 void BehaviorTree::RemoveNode(int id)
@@ -116,7 +134,7 @@ void BehaviorTree::RemoveLink(int id)
 	}
 }
 
-int BehaviorTree::Serialize(char** buffer, Blackboard* bb) const
+int BehaviorTree::Serialize(char** buffer) const
 {
 	Data data;
 	data.AppendArray("nodes");
@@ -228,6 +246,15 @@ void BehaviorTree::Draw()
 		ImGui::PushStyleVar(ImGuiStyleVar_AntiAliasFringeScale, 1.0f);
 		drawList->AddRect(to_imvec(node.second->contentRect.top_left()), to_imvec(node.second->contentRect.bottom_right()), IM_COL32(48, 128, 255, 100), 0.0f);
 		ImGui::PopStyleVar();
+
+		// Draw Decorators (if any)
+		for (auto dec : node.second->decorators)
+		{
+			drawList->AddRectFilled(to_imvec(dec->contentRect.top_left()), to_imvec(dec->contentRect.bottom_right()), IM_COL32(255, 64, 128, 200), 0.0f);
+			ImGui::PushStyleVar(ImGuiStyleVar_AntiAliasFringeScale, 1.0f);
+			drawList->AddRect(to_imvec(dec->contentRect.top_left()), to_imvec(dec->contentRect.bottom_right()), IM_COL32(255, 128, 255, 100), 0.0f);
+			ImGui::PopStyleVar();
+		}
 	}
 
 	// Draw Links

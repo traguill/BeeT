@@ -156,6 +156,7 @@
     <ClCompile Include="BeeTGui.cpp" />
     <ClCompile Include="BehaviorTree.cpp" />
     <ClCompile Include="Blackboard.cpp" />
+    <ClCompile Include="BTDecorator.cpp" />
     <ClCompile Include="BTLink.cpp" />
     <ClCompile Include="BTNode.cpp" />
     <ClCompile Include="BTNodeTypes.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="BeeTGui.h" />
     <ClInclude Include="BehaviorTree.h" />
     <ClInclude Include="Blackboard.h" />
+    <ClInclude Include="BTDecorator.h" />
     <ClInclude Include="BTLink.h" />
     <ClInclude Include="BTNode.h" />
     <ClInclude Include="BTNodeTypes.h" />

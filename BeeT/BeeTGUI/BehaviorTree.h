@@ -8,6 +8,7 @@ class BTNode;
 class BTLink;
 class BTPin;
 class Blackboard;
+struct BBVar;
 
 class BehaviorTree
 {
@@ -19,12 +20,13 @@ public:
 	// Edition
 	int AddNode(float posX, float posY, int typeId);
 	void AddLink(BTPin* startPinId, BTPin* endPinId);
+	void AddDecorator(int nodeId, BBVar* var);
 
 	void RemoveNode(int id);
 	void RemoveLink(int id);
 
 	// Serialization
-	int Serialize(char** buffer, Blackboard* bb)const;
+	int Serialize(char** buffer)const;
 
 	void Draw();
 
@@ -38,6 +40,9 @@ private:
 
 	// Serialization
 	void AddNode(Data& data, std::map<int, BTPin*>& pinList);
+
+public:
+	Blackboard* bb = nullptr;
 
 private:
 	unsigned int uid = 0;

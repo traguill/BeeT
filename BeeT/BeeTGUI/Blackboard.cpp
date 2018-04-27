@@ -103,6 +103,15 @@ void Blackboard::ChangeVarType(int varId, BBVarType type)
 	}
 }
 
+BBVar * Blackboard::FindVar(const std::string & name)
+{
+	for (auto var : variables)
+		if (var->name.compare(name) == 0)
+			return var;
+
+	return nullptr;
+}
+
 void Blackboard::SetDefaultTypeValue(BBVar * var)
 {
 	switch (var->type)

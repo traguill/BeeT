@@ -33,6 +33,7 @@ public:
 	void CreateDummyVar();
 
 	void ChangeVarType(int varId, BBVarType type);
+	BBVar* FindVar(const std::string& name);
 
 private:
 

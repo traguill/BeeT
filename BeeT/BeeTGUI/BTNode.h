@@ -12,6 +12,9 @@
 const float padding = 12.0f; // Testing
 
 class BehaviorTree;
+class BTDecorator;
+class Blackboard;
+struct BBVar;
 
 class BTNode
 {
@@ -22,6 +25,9 @@ public:
 
 	void Save(Data& file);
 	void PrepareToDraw();
+
+	// Edition
+	void AddDecorator(Blackboard* bb, BBVar* var);
 	
 	// Getters
 	int GetId()const;
@@ -54,7 +60,8 @@ public:
 	const NodeType* type;
 
 	bool saveFlag = false; // True when has been serialized
-
+	
+	std::vector<BTDecorator*> decorators; // Decorators attached to this node
 private:
 	BTNode* parent = nullptr;
 	std::vector<BTNode*> childs;
@@ -63,6 +70,7 @@ private:
 	BehaviorTree* bt = nullptr;
 
 	int subtreeId = -1; // If this is 0 means that this node is inside the Root tree and will be executed. 
+
 };
 #endif
 
