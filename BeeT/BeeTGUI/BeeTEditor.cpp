@@ -45,6 +45,7 @@ bool BeeTEditor::Update()
 	Editor();
 	UpdateSelection();
 	Inspector();
+
 	return true;
 }
 
@@ -194,21 +195,46 @@ void BeeTEditor::BlackBoardWindow()
 
 		ImGui::SameLine();
 
-		// Var NAME
-		char varNameTmp[_MAX_PATH];
-		strcpy_s(varNameTmp, _MAX_PATH, bbvar->name.data());
-		ImGuiInputTextFlags inputFlags = ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_CharsNoBlank;
-		ImGui::PushID(i);
-		if (ImGui::InputText("###", varNameTmp, _MAX_PATH, inputFlags))
+		if (bbvarSelected == i) // Edit name
 		{
-			bbvar->name = varNameTmp;
+			char varNameTmp[_MAX_PATH];
+			strcpy_s(varNameTmp, _MAX_PATH, bbvar->name.data());
+			ImGuiInputTextFlags inputFlags = ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_EnterReturnsTrue;
+			ImGui::PushID(i);
+			if (bbvarSetFocus)	
+				ImGui::SetKeyboardFocusHere(0);
+		
+			if (ImGui::InputText("###", varNameTmp, _MAX_PATH, inputFlags))
+			{
+				bbvar->name = varNameTmp;
+				bbvarSelected = -1;
+			}	
+			if (ImGui::IsItemActive() == false && bbvarSetFocus == false)
+			{
+				bbvarSelected = -1;
+			}
+			if (bbvarSetFocus)
+				bbvarSetFocus = false;
+			ImGui::PopID();
 		}
-		ImGui::PopID();
+		else // Display name as selectable
+		{
+			if (ImGui::Selectable(bbvar->name.data(), false, ImGuiSelectableFlags_::ImGuiSelectableFlags_AllowDoubleClick))
+			{
+				if (ImGui::IsMouseDoubleClicked(0))
+				{
+					bbvarSelected = i;
+					bbvarSetFocus = true;
+				}
+			}
+		}	
 	}
 
 	if (ImGui::Button("Add New"))
 	{
 		bb->CreateDummyVar();
+		bbvarSelected = bb->variables.size() - 1;
+		bbvarSetFocus = true;
 	}
 
 	ImGui::End();

@@ -75,6 +75,10 @@ private:
 	int selectedLinkId = -1;
 
 	bool nodeAddedFlag = false;
+
+	// Blackboard
+	int bbvarSelected = -1;
+	bool bbvarSetFocus = false; // To set the focus on the bbVar next frame
 };
 #endif
 
