@@ -32,7 +32,8 @@ public:
 
 private:
 
-	void BlackBoardWindow();
+	void BlackboardWindow();
+	void BlackboardVarDetail();
 	void Editor();
 	void Inspector();
 
@@ -62,7 +63,8 @@ private:
 	ImVec2 editorSize;
 	ImVec2 editorCanvasSize = ImVec2(0.6f, 1.0f);
 	ImVec2 inspectorSize = ImVec2(0.2f, 1.0f);
-	ImVec2 blackboardSize = ImVec2(0.2f, 1.0f);
+	ImVec2 blackboardSize = ImVec2(0.2f, 0.8f);
+	ImVec2 blackboardVarDetailSize = ImVec2(0.2f, 0.2f);
 
 	// Widgets
 	ItemList* widgetItemList = nullptr;
@@ -77,8 +79,9 @@ private:
 	bool nodeAddedFlag = false;
 
 	// Blackboard
-	int bbvarSelected = -1;
+	int bbvarSelected = -1; // Selected to edit its name
 	bool bbvarSetFocus = false; // To set the focus on the bbVar next frame
+	int bbvarValueSelected = -1; // selected to change its value
 };
 #endif
 

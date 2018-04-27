@@ -28,7 +28,12 @@ public:
 
 	void CreateDummyVar();
 
-	void SetLastTypeUsed(BBVarType type);
+	void ChangeVarType(int varId, BBVarType type);
+
+private:
+
+	// Helpers
+	void SetDefaultTypeValue(BBVar* var);
 
 public:
 	std::vector<BBVar*> variables;

@@ -41,7 +41,8 @@ bool BeeTEditor::Update()
 	editorSize.x = (float) screenWidth;
 	editorSize.y = screenHeight - (ImGui::GetCursorPosY() - ImGui::GetCursorPosX());
 
-	BlackBoardWindow();
+	BlackboardWindow();
+	BlackboardVarDetail();
 	Editor();
 	UpdateSelection();
 	Inspector();
@@ -141,20 +142,15 @@ void BeeTEditor::CallBackBBVarType(void * obj, const std::string & category, con
 	BeeTEditor* editor = (BeeTEditor*)obj;
 	if (editor)
 	{
-		BBVar* var = editor->bb->variables[additionalData];
-		if (var)
+		map<string, BBVarType>::iterator it = editor->bbVarTypeConversor.find(item);
+		if (it != editor->bbVarTypeConversor.end())
 		{
-			map<string, BBVarType>::iterator it = editor->bbVarTypeConversor.find(item);
-			if (it != editor->bbVarTypeConversor.end())
-			{
-				var->type = it->second;
-				editor->bb->SetLastTypeUsed(it->second);
-			}
+			editor->bb->ChangeVarType(additionalData, it->second);
 		}
 	}
 }
 
-void BeeTEditor::BlackBoardWindow()
+void BeeTEditor::BlackboardWindow()
 {
 	ImGui::SetNextWindowPos(ImVec2(0.0f, ImGui::GetCursorPosY() - ImGui::GetCursorPosX()));
 	ImGui::SetNextWindowSize(ImVec2(editorSize.x * blackboardSize.x, editorSize.y * blackboardSize.y));
@@ -212,6 +208,7 @@ void BeeTEditor::BlackBoardWindow()
 			if (ImGui::IsItemActive() == false && bbvarSetFocus == false)
 			{
 				bbvarSelected = -1;
+				bbvarValueSelected = i;
 			}
 			if (bbvarSetFocus)
 				bbvarSetFocus = false;
@@ -219,22 +216,92 @@ void BeeTEditor::BlackBoardWindow()
 		}
 		else // Display name as selectable
 		{
-			if (ImGui::Selectable(bbvar->name.data(), false, ImGuiSelectableFlags_::ImGuiSelectableFlags_AllowDoubleClick))
+			bool isSelected = i == bbvarValueSelected ? true : false;
+			if (ImGui::Selectable(bbvar->name.data(), isSelected, ImGuiSelectableFlags_::ImGuiSelectableFlags_AllowDoubleClick))
 			{
 				if (ImGui::IsMouseDoubleClicked(0))
 				{
 					bbvarSelected = i;
 					bbvarSetFocus = true;
 				}
+				else // Single click
+				{
+					bbvarValueSelected = i;
+				}
 			}
 		}	
 	}
-
 	if (ImGui::Button("Add New"))
 	{
 		bb->CreateDummyVar();
-		bbvarSelected = bb->variables.size() - 1;
+		bbvarSelected = bbvarValueSelected = bb->variables.size() - 1;
 		bbvarSetFocus = true;
+	}
+
+	ImGui::End();
+}
+
+void BeeTEditor::BlackboardVarDetail()
+{
+	ImGui::SetNextWindowPos(ImVec2(0.0f, (ImGui::GetCursorPosY() - ImGui::GetCursorPosX()) + (blackboardSize.y * editorSize.y)));
+	ImGui::SetNextWindowSize(ImVec2(editorSize.x * blackboardVarDetailSize.x, editorSize.y * blackboardVarDetailSize.y));
+	ImGui::Begin("BlackBoard Variable", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+
+	if (bbvarValueSelected != -1)
+	{
+		BBVar* var = bb->variables[bbvarValueSelected];
+		ImGui::Text("%s", var->name.data());
+		
+		ImGui::Spacing();
+		
+		switch (var->type)
+		{
+		case BV_BOOL:
+		{
+			ImGui::Text("bool   "); ImGui::SameLine();
+			bool valBool = boost::any_cast<bool>(var->value);
+			if (ImGui::Checkbox("###bvboolinput", &valBool))
+			{
+				var->value = valBool;
+			}
+		}
+			break;
+		case BV_INT:
+		{
+			ImGui::Text("int    "); ImGui::SameLine();
+			int valInt = boost::any_cast<int>(var->value);
+			if (ImGui::InputInt("###bvintinput", &valInt))
+			{
+				var->value = valInt;
+			}
+		}
+			break;
+		case BV_FLOAT:
+		{
+			ImGui::Text("float  "); ImGui::SameLine();
+			float valFloat = boost::any_cast<float>(var->value);
+			if (ImGui::InputFloat("###bvfloatinput", &valFloat))
+			{
+				var->value = valFloat;
+			}
+		}
+			break;
+		case BV_STRING:
+			{
+				ImGui::Text("string "); ImGui::SameLine();
+				string valString = boost::any_cast<string>(var->value);
+				char varNameTmp[_MAX_PATH];
+				strcpy_s(varNameTmp, _MAX_PATH, valString.data());
+				if (ImGui::InputText("###bvstringinput", varNameTmp, _MAX_PATH))
+				{
+					var->value = string(varNameTmp);
+				}
+			}
+			break;
+		default:
+			ImGui::Text("Error  "); 
+			break;
+		}
 	}
 
 	ImGui::End();
