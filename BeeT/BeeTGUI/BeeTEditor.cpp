@@ -64,7 +64,7 @@ void BeeTEditor::Serialize(const char* filename) const
 {
 	// In progress: Now only save one BT. In the future choose one of the opened BTs to save or save them all.
 	char* buffer = nullptr;
-	int size = bt->Serialize(&buffer);
+	int size = bt->Serialize(&buffer, bb);
 	if (size == 0)
 	{
 		LOGE("Behavior Tree was not saved. An error occurred during serialization.");
@@ -109,7 +109,7 @@ void BeeTEditor::NewBehaviorTree(Data* data)
 	if (data)
 	{
 		bt = new BehaviorTree(*data);
-		//TODO: BB DATA
+		bb = new Blackboard(*data);
 	}
 	else
 	{

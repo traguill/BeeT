@@ -6,6 +6,7 @@
 #include "Log.h"
 #include "Data.h"
 #include "Random.h"
+#include "Blackboard.h"
 
 #include "ThirdParty/NodeEditor/Include/NodeEditor.h"
 #include "ThirdParty/NodeEditor/Source/Shared/Interop.h"
@@ -115,7 +116,7 @@ void BehaviorTree::RemoveLink(int id)
 	}
 }
 
-int BehaviorTree::Serialize(char** buffer) const
+int BehaviorTree::Serialize(char** buffer, Blackboard* bb) const
 {
 	Data data;
 	data.AppendArray("nodes");
@@ -167,6 +168,8 @@ int BehaviorTree::Serialize(char** buffer) const
 		data.AppendInt("rootNodeId", rootNode->GetId());
 	else
 		data.AppendInt("rootNodeId", -1);
+
+	bb->Serialize(data);
 
 	return data.Serialize(buffer);
 }

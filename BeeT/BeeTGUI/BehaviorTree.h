@@ -7,6 +7,7 @@
 class BTNode;
 class BTLink;
 class BTPin;
+class Blackboard;
 
 class BehaviorTree
 {
@@ -23,7 +24,7 @@ public:
 	void RemoveLink(int id);
 
 	// Serialization
-	int Serialize(char** buffer)const;
+	int Serialize(char** buffer, Blackboard* bb)const;
 
 	void Draw();
 

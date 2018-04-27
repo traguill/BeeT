@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <boost/any.hpp>
+#include "Data.h"
 
 enum BBVarType
 {
@@ -24,7 +25,10 @@ class Blackboard
 {
 public:
 	Blackboard();
+	Blackboard(Data& data);
 	~Blackboard();
+
+	void Serialize(Data& data)const;
 
 	void CreateDummyVar();
 
