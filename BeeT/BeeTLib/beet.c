@@ -244,49 +244,84 @@ int BEET_SetTaskCallbackFunc(unsigned int btId, const char * task, beetCallbackF
 	return 0;
 }
 
-BEET_bool BEET_BBGetBool(unsigned int btId, const char * varName)
+BBVar* BEET_QuickFindVar(unsigned int btId, const char* varName)
 {
 	BeeT_BehaviorTree* bt = BeeTContext__GetTree(g_Beet, btId);
 	if (bt != NULL)
+		return bt->bb->FindVar(bt->bb, varName);
+	else
+		return NULL;
+}
+
+BEET_bool BEET_BBGetBool(unsigned int btId, const char * varName)
+{
+	BBVar* var = BEET_QuickFindVar(btId, varName);
+	return var ? *(BEET_bool*)var->data : BEET_FALSE;
+}
+
+int BEET_BBGetInt(unsigned int btId, const char * varName)
+{
+	BBVar* var = BEET_QuickFindVar(btId, varName);
+	return var ? *(int*)var->data : 0;
+}
+
+float BEET_BBGetFloat(unsigned int btId, const char * varName)
+{
+	BBVar* var = BEET_QuickFindVar(btId, varName);
+	return var ? *(float*)var->data : 0.0f;
+}
+
+const char * BEET_BBGetString(unsigned int btId, const char * varName)
+{
+	BBVar* var = BEET_QuickFindVar(btId, varName);
+	return var ? (const char*)var->data : "";
+}
+
+BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool value)
+{
+	BBVar* var = BEET_QuickFindVar(btId, varName);
+	if (var)
 	{
-		
+		*((BEET_bool*)var->data) = value;
+		return BEET_TRUE;
 	}
 	return BEET_FALSE;
 }
 
- int BEET_BBGetInt(unsigned int btId, const char * varName)
-{
-	return  int();
-}
-
- float BEET_BBGetFloat(unsigned int btId, const char * varName)
-{
-	return  float();
-}
-
- char * BEET_BBGetString(unsigned int btId, const char * varName)
-{
-	return NULL;
-}
-
- BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool value)
-{
-	return  BEET_bool();
-}
-
  BEET_bool BEET_BBSetInt(unsigned int btId, const char * varName, int value)
 {
-	return  BEET_bool();
+	BBVar* var = BEET_QuickFindVar(btId, varName);
+	if (var)
+	{
+		*((int*)var->data) = value;
+		return BEET_TRUE;
+	}
+	return  BEET_FALSE;
 }
 
  BEET_bool BEET_BBSetFloat(unsigned int btId, const char * varName, float value)
 {
-	return  BEET_bool();
+	 BBVar* var = BEET_QuickFindVar(btId, varName);
+	 if (var)
+	 {
+		 *((float*)var->data) = value;
+		 return BEET_TRUE;
+	 }
+	 return  BEET_FALSE;
 }
 
  BEET_bool BEET_BBSetString(unsigned int btId, const char * varName, const char * value)
 {
-	return  BEET_bool();
+	 BBVar* var = BEET_QuickFindVar(btId, varName);
+	 if (var)
+	 {
+		 BEET_free(var->data);
+		 unsigned int bvLength = strlen(value) + 1;
+		 var->data = BEET_malloc(bvLength);
+		 strcpy(var->data, value);
+		 return BEET_TRUE;
+	 }
+	 return  BEET_FALSE;
 }
 
 size_t BEET_BehaviorTreeCount()

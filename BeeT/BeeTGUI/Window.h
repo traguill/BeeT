@@ -20,7 +20,7 @@ public:
 	SDL_Window* sdlWindow = nullptr;
 
 private:
-	int screenWidth = 1440;
-	int screenHeight = 900;
+	int screenWidth = 800;
+	int screenHeight = 600;
 };
 #endif

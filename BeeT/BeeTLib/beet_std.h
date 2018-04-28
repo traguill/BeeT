@@ -63,6 +63,7 @@ BEET_API void* dequeue_front(dequeue* d);
 BEET_API void* dequeue_back(dequeue* d);
 
 BEET_API node_deq* dequeue_head(dequeue* d);
+BEET_API node_deq* dequeue_tail(dequeue* d);
 
 // ------------------------------------------------------------------
 

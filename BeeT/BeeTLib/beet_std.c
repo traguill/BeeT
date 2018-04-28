@@ -115,4 +115,9 @@ node_deq * dequeue_head(dequeue * d)
 {
 	return d->head;
 }
+
+node_deq * dequeue_tail(dequeue * d)
+{
+	return d->tail;
+}
 // -----------------------------------------------------------------------------------------

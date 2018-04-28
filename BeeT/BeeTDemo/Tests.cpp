@@ -145,5 +145,39 @@ void Test4()
 	unsigned int uid = BEET_LoadBehaviorTreeFromFile("blackboard.json");
 	printf("Behavior Tree loaded with id %u\n", uid);
 
-	printf("All good\n");
+	bool mybool;
+	int myint;
+	float myfloat;
+	string mystring;
+
+	mybool = (bool)BEET_BBGetBool(uid, "mybool");
+	printf("mybool = %i\n", mybool);
+
+	myint = BEET_BBGetInt(uid, "myint");
+	printf("myint = %i\n", myint);
+
+	myfloat = BEET_BBGetFloat(uid, "myfloat");
+	printf("myfloat = %f\n", myfloat);
+
+	mystring = BEET_BBGetString(uid, "mystring");
+	printf("mystring = %s\n", mystring.data());
+
+	BEET_BBSetBool(uid, "mybool", BEET_FALSE);
+	BEET_BBSetInt(uid, "myint", 4);
+	BEET_BBSetFloat(uid, "myfloat", 123.456f);
+	BEET_BBSetString(uid, "mystring", "Goodbye World");
+
+	printf("----------------------------------\n");
+	
+	mybool = (bool)BEET_BBGetBool(uid, "mybool");
+	printf("mybool = %i\n", mybool);
+
+	myint = BEET_BBGetInt(uid, "myint");
+	printf("myint = %i\n", myint);
+
+	myfloat = BEET_BBGetFloat(uid, "myfloat");
+	printf("myfloat = %f\n", myfloat);
+
+	mystring = BEET_BBGetString(uid, "mystring");
+	printf("mystring = %s\n", mystring.data());
 }

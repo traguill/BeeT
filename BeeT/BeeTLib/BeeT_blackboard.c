@@ -1,27 +1,15 @@
 #include "BeeT_blackboard.h"
 #include <stdio.h>
 
-typedef enum BBVarType BBVarType;
-enum BBVarType
-{
-	BV_BOOL,
-	BV_INT,
-	BV_FLOAT,
-	BV_STRING
-};
+// Forward declarations
+BBVar* Blackboard_FindVar(BeeT_Blackboard* bb, const char* name);
 
-typedef struct BBVar BBVar;
-struct BBVar
-{
-	const char* name;
-	BBVarType type;
-	void* data;
-};
 
 BeeT_Blackboard* BeeT_Blackboard_Init(const BeeT_Serializer * data)
 {
 	BeeT_Blackboard* bb = (BeeT_Blackboard*)BEET_malloc(sizeof(BeeT_Blackboard));
 	
+	bb->FindVar = &Blackboard_FindVar;
 	bb->vars = InitDequeue();
 
 	int numVars = (int)BeeT_Serializer__GetArraySize(data, "blackboard");
@@ -73,4 +61,18 @@ void BeeT_Blackboard_Destroy(BeeT_Blackboard * self)
 	if (self->vars) //TODO: remove inside content of var. Actual implementation has memory leaks
 		DestroyDequeue(self->vars);
 	BEET_free(self);
+}
+
+BBVar* Blackboard_FindVar(BeeT_Blackboard* bb, const char* name)
+{
+	node_deq* it = bb->vars->head;
+	while (it)
+	{
+		BBVar* var = (BBVar*)it->data;
+		if (strcmp(var->name, name) == 0)
+			return var;
+		else
+			it = it->next;
+	}
+	return NULL;
 }
