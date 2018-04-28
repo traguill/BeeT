@@ -9,6 +9,8 @@ BEET_bool Step(BeeT_BehaviorTree*);
 BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 {
 	BeeT_BehaviorTree* tree = (BeeT_BehaviorTree*)BEET_malloc(sizeof(BeeT_BehaviorTree));
+	tree->bb = BeeT_Blackboard_Init(data);
+
 	tree->uid = BeeT_Serializer__GetUInt(data, "uid");
 	int rootId = BeeT_Serializer__GetInt(data, "rootNodeId");
 	int numNodes = BeeT_Serializer__GetArraySize(data, "nodes");
@@ -37,6 +39,8 @@ BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 
 void BeeT_BehaviorTree__Destroy(BeeT_BehaviorTree * self)
 {
+	if (self->bb)
+		BeeT_Blackboard_Destroy(self->bb);
 	if (self->rootNode)
 	{
 		BeeT_Node__Destroy(self->rootNode);

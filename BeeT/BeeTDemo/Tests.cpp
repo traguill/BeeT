@@ -20,6 +20,9 @@ void RunTest(int testId)
 	case 3:
 		Test3();
 		break;
+	case 4:
+		Test4();
+		break;
 	default:
 		cout << "There is no test num " << testId << endl;
 		break;
@@ -135,4 +138,12 @@ void Test3()
 	printf("Running Behavior Tree:\n-----------------------------------------\n");
 	BEET_ExecuteBehaviorTree(uid);
 	printf("BehaviorTree end\n"); 
+}
+
+void Test4()
+{
+	unsigned int uid = BEET_LoadBehaviorTreeFromFile("blackboard.json");
+	printf("Behavior Tree loaded with id %u\n", uid);
+
+	printf("All good\n");
 }

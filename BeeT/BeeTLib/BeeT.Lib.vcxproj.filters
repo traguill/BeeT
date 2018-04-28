@@ -51,6 +51,9 @@
     <ClInclude Include="BeeT_serializer.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="BeeT_blackboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ThirdParty\parson.c">
@@ -73,6 +76,9 @@
     </ClCompile>
     <ClCompile Include="beet_std.c">
       <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="BeeT_blackboard.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

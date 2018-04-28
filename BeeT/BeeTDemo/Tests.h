@@ -21,4 +21,8 @@ void Test2();
 //		- Sequence - Task
 void Test3();
 
+
+// Blackboard testing
+void Test4();
+
 #endif // !__TESTS_H__

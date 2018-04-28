@@ -4,13 +4,14 @@
 #include "BeeT_serializer.h"
 #include "BeeT_node.h"
 #include "beet_std.h"
+#include "BeeT_blackboard.h"
 
 typedef struct BeeT_BehaviorTree BeeT_BehaviorTree;
 struct BeeT_BehaviorTree
 {
 	unsigned int uid;
 	BeeT_Node* rootNode;
-
+	BeeT_Blackboard* bb;
 	dequeue* runningNodes;
 
 	void(*StartBehavior)(BeeT_BehaviorTree*, BeeT_Node*, ObserverFunc*);
