@@ -244,6 +244,51 @@ int BEET_SetTaskCallbackFunc(unsigned int btId, const char * task, beetCallbackF
 	return 0;
 }
 
+BEET_bool BEET_BBGetBool(unsigned int btId, const char * varName)
+{
+	BeeT_BehaviorTree* bt = BeeTContext__GetTree(g_Beet, btId);
+	if (bt != NULL)
+	{
+		
+	}
+	return BEET_FALSE;
+}
+
+ int BEET_BBGetInt(unsigned int btId, const char * varName)
+{
+	return  int();
+}
+
+ float BEET_BBGetFloat(unsigned int btId, const char * varName)
+{
+	return  float();
+}
+
+ char * BEET_BBGetString(unsigned int btId, const char * varName)
+{
+	return NULL;
+}
+
+ BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool value)
+{
+	return  BEET_bool();
+}
+
+ BEET_bool BEET_BBSetInt(unsigned int btId, const char * varName, int value)
+{
+	return  BEET_bool();
+}
+
+ BEET_bool BEET_BBSetFloat(unsigned int btId, const char * varName, float value)
+{
+	return  BEET_bool();
+}
+
+ BEET_bool BEET_BBSetString(unsigned int btId, const char * varName, const char * value)
+{
+	return  BEET_bool();
+}
+
 size_t BEET_BehaviorTreeCount()
 {
 	return g_Beet->numTreesLoaded;

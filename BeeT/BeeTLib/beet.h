@@ -62,6 +62,20 @@ BEET_API int BEET_GetAllTasksNames(unsigned int btId, dequeue* listNames);
 BEET_API int BEET_SetTaskCallbackFunc(unsigned int btId, const char* task, beetCallbackFunc callback);
 
 //--------------------------------------------------------------------------------
+// Blackboard
+//--------------------------------------------------------------------------------
+
+BEET_API BEET_bool		BEET_BBGetBool(unsigned int btId, const char* varName);
+BEET_API int			BEET_BBGetInt(unsigned int btId, const char* varName);
+BEET_API float			BEET_BBGetFloat(unsigned int btId, const char* varName);
+BEET_API const char*	BEET_BBGetString(unsigned int btId, const char* varName);
+
+BEET_API BEET_bool BEET_BBSetBool(unsigned int btId, const char* varName, BEET_bool value);
+BEET_API BEET_bool BEET_BBSetInt(unsigned int btId, const char* varName, int value);
+BEET_API BEET_bool BEET_BBSetFloat(unsigned int btId, const char* varName, float value);
+BEET_API BEET_bool BEET_BBSetString(unsigned int btId, const char* varName, const char* value);
+
+//--------------------------------------------------------------------------------
 // Utils
 //--------------------------------------------------------------------------------
 
