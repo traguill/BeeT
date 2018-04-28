@@ -3,6 +3,7 @@
 
 #include "BeeT_serializer.h"
 #include "BeeT_std.h"
+#include "BeeT_decorator.h"
 
 // Forward declarations
 typedef struct BeeT_BehaviorTree;
@@ -31,6 +32,8 @@ struct BeeT_Node{
 	int id;
 	NodeType type;
 	struct BeeT_BehaviorTree* bt;
+
+	dequeue* decorators;
 
 	NodeStatus status;
 	ObserverFunc observer;

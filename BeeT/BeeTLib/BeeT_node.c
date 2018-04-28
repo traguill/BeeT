@@ -30,6 +30,17 @@ BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, BeeT_BehaviorTree* bt)
 	node->observer = node->observerNode = NULL;
 	node->status = NS_INVALID;
 	node->Tick = &Tick;
+
+	node->decorators = InitDequeue();
+	int decSize = BeeT_Serializer__GetArraySize(data, "decorators");
+	for (int i = 0; i < decSize; ++i)
+	{
+		BeeT_Serializer* decData = BeeT_Serializer__GetArray(data, "decorators", i);
+		BeeT_decorator* dec = BeeT_Decorator_Init(decData, bt->bb);
+		dequeue_push_back(node->decorators, dec);
+		BEET_free(decData);
+	}
+
 	return node;
 }
 
@@ -52,11 +63,28 @@ void BeeT_Node__Destroy(BeeT_Node * self)
 		BTN_Task_OnDestroy((BTN_Task*)self);
 		break;
 	}
+	//TODO: Destroy dequeue decorators here
 	BEET_free(self);
 }
 
 NodeStatus Tick(BeeT_Node* n)
 {
+	//Check if all decorators return true
+	if (!dequeue_is_empty(n->decorators))
+	{
+		node_deq* item = n->decorators->head;
+		while (item)
+		{
+			BeeT_decorator* dec = (BeeT_decorator*)item->data;
+			if (dec->Pass(dec) == BEET_FALSE)
+			{
+				n->status = NS_FAILURE;		// Abort execution because a decorator failed
+				return n->status;
+			}
+			item = item->next;
+		}
+	}
+
 	if (n->status == NS_INVALID)
 	{
 		n->OnInit(n);

@@ -22,7 +22,10 @@ void Test2();
 void Test3();
 
 
-// Blackboard testing
+// Blackboard variables set/get
 void Test4();
+
+// Blackboard decorators in nodes
+void Test5();
 
 #endif // !__TESTS_H__

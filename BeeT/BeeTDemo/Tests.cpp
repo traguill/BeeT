@@ -23,6 +23,9 @@ void RunTest(int testId)
 	case 4:
 		Test4();
 		break;
+	case 5:
+		Test5();
+		break;
 	default:
 		cout << "There is no test num " << testId << endl;
 		break;
@@ -180,4 +183,29 @@ void Test4()
 
 	mystring = BEET_BBGetString(uid, "mystring");
 	printf("mystring = %s\n", mystring.data());
+}
+
+NodeStatus Test5IsSeven(unsigned int btUid, const char * taskId)
+{
+	printf("%s\n", taskId);
+	return NS_SUCCESS;
+}
+
+NodeStatus Test5Hello(unsigned int btUid, const char * taskId)
+{
+	printf("%s\n", taskId);
+	return NS_SUCCESS;
+}
+
+void Test5()
+{
+	unsigned int uid = BEET_LoadBehaviorTreeFromFile("blackboard.json");
+	printf("Behavior Tree loaded with id %u\n", uid);
+
+	BEET_SetTaskCallbackFunc(uid, "IsSeven", Test5IsSeven);
+	BEET_SetTaskCallbackFunc(uid, "Hello", Test5Hello);
+
+	printf("Running Behavior Tree:\n-----------------------------------------\n");
+	BEET_ExecuteBehaviorTree(uid);
+	printf("BehaviorTree end\n");
 }

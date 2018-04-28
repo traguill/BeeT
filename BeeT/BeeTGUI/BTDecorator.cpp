@@ -31,7 +31,7 @@ BTDecorator::BTDecorator(Blackboard * bb, Data & data) : bb(bb)
 		var = bb->FindVar(varName);
 	else
 		var = nullptr;
-
+	option = data.GetInt("option");
 	if (var)
 	{
 		switch (var->type)

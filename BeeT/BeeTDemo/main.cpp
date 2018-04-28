@@ -14,7 +14,7 @@ int g_TestId = 0;
 
 int main(int argc, char** argv)
 {
-	std::cout << "Enter a test number(1-3):" << std::endl;
+	std::cout << "Enter a test number(1-5):" << std::endl;
 
 	int n = 0;
 	while (!(std::cin >> n))
