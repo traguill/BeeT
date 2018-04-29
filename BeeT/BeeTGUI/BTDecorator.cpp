@@ -97,7 +97,7 @@ void BTDecorator::InspectorInfo()
 	PrintType();
 	ImGui::SameLine();
 	ImGui::Text("%s", var->name.data());
-	ImGui::SameLine();
+	//ImGui::SameLine();
 	switch (var->type)
 	{
 	case BV_BOOL:
@@ -315,7 +315,7 @@ void BTDecorator::TypeNumberOptions(int numType)
 
 	if (numType == 0) //Int
 	{
-		ImGui::SameLine();
+		//ImGui::SameLine();
 		int tmp = boost::any_cast<int>(var2);
 		if (ImGui::DragInt("###DecIntCompare", &tmp))
 		{
@@ -324,7 +324,7 @@ void BTDecorator::TypeNumberOptions(int numType)
 	}
 	if (numType == 1) // Float
 	{
-		ImGui::SameLine();
+		//ImGui::SameLine();
 		float tmp = boost::any_cast<float>(var2);
 		if (ImGui::DragFloat("###DecFloatCompare", &tmp))
 		{
@@ -370,7 +370,7 @@ void BTDecorator::TypeStringOptions()
 		ImGui::EndPopup();
 	}
 
-	ImGui::SameLine();
+	//ImGui::SameLine();
 	std::string valString = boost::any_cast<std::string>(var2);
 	char varNameTmp[_MAX_PATH];
 	strcpy_s(varNameTmp, _MAX_PATH, valString.data());

@@ -405,7 +405,9 @@ void BeeTEditor::Inspector()
 			for (auto dec : nodeSel->decorators)
 			{
 				dec->InspectorInfo();
+				ImGui::Separator();
 			}
+			ImGui::Spacing();
 			ImGui::Separator();
 
 			ImGui::Dummy(ImVec2(0.0f, 20.0f));
