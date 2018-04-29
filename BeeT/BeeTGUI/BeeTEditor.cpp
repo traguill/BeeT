@@ -324,6 +324,14 @@ void BeeTEditor::BlackboardVarDetail()
 			ImGui::Text("Error  "); 
 			break;
 		}
+		
+		if (ImGui::Button("Remove###bbdetailremove"))
+		{
+			bb->RemoveVar(bbvarValueSelected);
+			bbvarSelected = -1;
+			bbvarSetFocus = false;
+			bbvarValueSelected = -1;
+		}
 	}
 
 	ImGui::End();

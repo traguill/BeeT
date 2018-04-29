@@ -92,6 +92,14 @@ void Blackboard::CreateDummyVar()
 	variables.push_back(var);
 }
 
+void Blackboard::RemoveVar(int id)
+{
+	assert(id < variables.size());
+	BBVar* var = variables[id];
+	delete var;
+	variables.erase(variables.begin() + id);
+}
+
 void Blackboard::ChangeVarType(int varId, BBVarType type)
 {
 	if (varId < variables.size())

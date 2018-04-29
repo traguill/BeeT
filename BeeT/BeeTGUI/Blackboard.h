@@ -31,6 +31,7 @@ public:
 	void Serialize(Data& data)const;
 
 	void CreateDummyVar();
+	void RemoveVar(int id);
 
 	void ChangeVarType(int varId, BBVarType type);
 	BBVar* FindVar(const std::string& name);
