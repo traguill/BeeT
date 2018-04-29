@@ -2,8 +2,9 @@
 #include "ThirdParty/NodeEditor/Source/Shared/Interop.h"
 #include "Random.h"
 #include "Blackboard.h"
+#include "BTNode.h"
 
-BTDecorator::BTDecorator(Blackboard* bb, BBVar* var) : bb(bb), var(var)
+BTDecorator::BTDecorator(BTNode* node, Blackboard* bb, BBVar* var) : nodeAttachedTo(node), bb(bb), var(var)
 {
 	uid = (int)g_rnd->RandomInt();
 	switch (var->type)
@@ -23,7 +24,7 @@ BTDecorator::BTDecorator(Blackboard* bb, BBVar* var) : bb(bb), var(var)
 	}
 }
 
-BTDecorator::BTDecorator(Blackboard * bb, Data & data) : bb(bb)
+BTDecorator::BTDecorator(BTNode* node, Blackboard * bb, Data & data) : nodeAttachedTo(node), bb(bb)
 {
 	uid = data.GetInt("uid");
 	std::string varName = data.GetString("var");
@@ -94,6 +95,14 @@ void BTDecorator::InspectorInfo()
 {
 	if (var == nullptr)
 		return;
+	ImGui::PushID(uid);
+	if (ImGui::Button("x"))
+	{
+		nodeAttachedTo->RemoveDecorator(this);
+	}
+	ImGui::PopID();
+	ImGui::SameLine();
+
 	PrintType();
 	ImGui::SameLine();
 	ImGui::Text("%s", var->name.data());
@@ -113,7 +122,6 @@ void BTDecorator::InspectorInfo()
 		TypeStringOptions();
 		break;
 	}
-
 	ImGui::Spacing();
 }
 

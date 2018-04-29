@@ -6,7 +6,7 @@
 #include <boost/any.hpp>
 
 // TODO: Different types of decorators. For now only Blackboard comparisons
-
+class BTNode;
 class Blackboard;
 struct BBVar;
 
@@ -37,8 +37,8 @@ enum DecStringOpt
 class BTDecorator
 {
 public:
-	BTDecorator(Blackboard* bb, BBVar* var);
-	BTDecorator(Blackboard* bb, Data& data);
+	BTDecorator(BTNode* node, Blackboard* bb, BBVar* var);
+	BTDecorator(BTNode* node, Blackboard* bb, Data& data);
 	~BTDecorator();
 
 	void PrepareToDraw();
@@ -65,6 +65,7 @@ public:
 
 private:
 	int uid;
+	BTNode* nodeAttachedTo = nullptr;
 	Blackboard* bb = nullptr;
 	BBVar* var = nullptr;
 	

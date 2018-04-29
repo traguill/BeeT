@@ -28,6 +28,7 @@ public:
 
 	// Edition
 	void AddDecorator(Blackboard* bb, BBVar* var);
+	void RemoveDecorator(BTDecorator* dec);
 	
 	// Getters
 	int GetId()const;
@@ -62,6 +63,7 @@ public:
 	bool saveFlag = false; // True when has been serialized
 	
 	std::vector<BTDecorator*> decorators; // Decorators attached to this node
+
 private:
 	BTNode* parent = nullptr;
 	std::vector<BTNode*> childs;
@@ -70,6 +72,7 @@ private:
 	BehaviorTree* bt = nullptr;
 
 	int subtreeId = -1; // If this is 0 means that this node is inside the Root tree and will be executed. 
+	std::vector<BTDecorator*> decoratorsToRemove;
 
 };
 #endif

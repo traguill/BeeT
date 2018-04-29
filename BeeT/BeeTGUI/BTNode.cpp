@@ -38,7 +38,7 @@ BTNode::BTNode(BehaviorTree* bt, Data & data) : bt(bt)
 
 	for (int i = 0; i < numDecorators; ++i)
 	{
-		BTDecorator* dec = new BTDecorator(bt->bb, data.GetArray("decorators", i));
+		BTDecorator* dec = new BTDecorator(this, bt->bb, data.GetArray("decorators", i));
 		decorators.push_back(dec);
 	}
 
@@ -72,6 +72,18 @@ int BTNode::GetSubtreeId() const
 
 void BTNode::PrepareToDraw()
 {
+	// Remove decorators now (if any)
+	if (decoratorsToRemove.empty() == false)
+	{
+		for (auto dec : decoratorsToRemove)
+		{
+			decorators.erase(std::find(decorators.begin(), decorators.end(), dec));
+			delete dec;
+		}
+		decoratorsToRemove.clear();
+	}
+	// --------------------------------
+
 	ne::BeginNode(id);
 	ImGui::BeginVertical(id);
 
@@ -158,8 +170,14 @@ void BTNode::PrepareToDraw()
 
 void BTNode::AddDecorator(Blackboard* bb, BBVar* var)
 {
-	BTDecorator* dec = new BTDecorator(bb, var);
+	BTDecorator* dec = new BTDecorator(this, bb, var);
 	decorators.push_back(dec);
+}
+
+void BTNode::RemoveDecorator(BTDecorator * dec)
+{
+	assert(std::find(decorators.begin(), decorators.end(), dec) != decorators.end());
+	decoratorsToRemove.push_back(dec);
 }
 
 int BTNode::GetId() const
