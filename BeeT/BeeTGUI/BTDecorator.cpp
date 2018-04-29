@@ -185,22 +185,22 @@ void BTDecorator::PrepDrawInt()
 	switch ((DecNumberOpt)option)
 	{
 	case IS_EQUAL:
-		ImGui::Text("%s is Equal to", var->name.data());
+		ImGui::Text("%s is Equal to %i", var->name.data(), boost::any_cast<int>(var2));
 		break;
 	case IS_NOT_EQUAL:
-		ImGui::Text("%s is Not Equal to", var->name.data());
+		ImGui::Text("%s is Not Equal to %i", var->name.data(), boost::any_cast<int>(var2));
 		break;
 	case IS_GREATER:
-		ImGui::Text("%s is Greater than", var->name.data());
+		ImGui::Text("%s is Greater than %i", var->name.data(), boost::any_cast<int>(var2));
 		break;
 	case IS_LESS:
-		ImGui::Text("%s is less than", var->name.data());
+		ImGui::Text("%s is less than %i", var->name.data(), boost::any_cast<int>(var2));
 		break;
 	case IS_EQUAL_OR_GREATER:
-		ImGui::Text("%s is Equal or Greater than", var->name.data());
+		ImGui::Text("%s is Equal or Greater than %i", var->name.data(), boost::any_cast<int>(var2));
 		break;
 	case IS_EQUAL_OR_LESS:
-		ImGui::Text("%s is Equal or Less than", var->name.data());
+		ImGui::Text("%s is Equal or Less than %i", var->name.data(), boost::any_cast<int>(var2));
 		break;
 	}
 }
@@ -210,22 +210,22 @@ void BTDecorator::PrepDrawFloat()
 	switch ((DecNumberOpt)option)
 	{
 	case IS_EQUAL:
-		ImGui::Text("%s is Equal to", var->name.data());
+		ImGui::Text("%s is Equal to %.2f", var->name.data(), boost::any_cast<float>(var2));
 		break;
 	case IS_NOT_EQUAL:
-		ImGui::Text("%s is Not Equal to", var->name.data());
+		ImGui::Text("%s is Not Equal to %.2f", var->name.data(), boost::any_cast<float>(var2));
 		break;
 	case IS_GREATER:
-		ImGui::Text("%s is Greater than", var->name.data());
+		ImGui::Text("%s is Greater than %.2f", var->name.data(), boost::any_cast<float>(var2));
 		break;
 	case IS_LESS:
-		ImGui::Text("%s is less than", var->name.data());
+		ImGui::Text("%s is less than %.2f", var->name.data(), boost::any_cast<float>(var2));
 		break;
 	case IS_EQUAL_OR_GREATER:
-		ImGui::Text("%s is Equal or Greater than", var->name.data());
+		ImGui::Text("%s is Equal or Greater than %.2f", var->name.data(), boost::any_cast<float>(var2));
 		break;
 	case IS_EQUAL_OR_LESS:
-		ImGui::Text("%s is Equal or Less than", var->name.data());
+		ImGui::Text("%s is Equal or Less than %.2f", var->name.data(), boost::any_cast<float>(var2));
 		break;
 	}
 }
@@ -235,16 +235,16 @@ void BTDecorator::PrepDrawString()
 	switch ((DecStringOpt)option)
 	{
 	case S_IS_EQUAL:
-		ImGui::Text("%s is Equal to", var->name.data());
+		ImGui::Text("%s is Equal to %s", var->name.data(), boost::any_cast<std::string>(var2).data());
 		break;
 	case S_IS_NOT_EQUAL:
-		ImGui::Text("%s is Not Equal to", var->name.data());
+		ImGui::Text("%s is Not Equal to %s", var->name.data(), boost::any_cast<std::string>(var2).data());
 		break;
 	case CONTAINS:
-		ImGui::Text("%s Contains", var->name.data());
+		ImGui::Text("%s Contains %s", var->name.data(), boost::any_cast<std::string>(var2).data());
 		break;
 	case NOT_CONTAINS:
-		ImGui::Text("%s Not Contains", var->name.data());
+		ImGui::Text("%s Not Contains %s", var->name.data(), boost::any_cast<std::string>(var2).data());
 		break;
 	}
 }
