@@ -203,11 +203,14 @@ void BeeTEditor::BlackboardWindow()
 			break;
 		}
 		
-		if (ImGui::IsItemClicked())
+		if (ImGui::IsItemClicked()) // Change BBVar type
 		{
-			widgetBBList->SetWidgetPosition(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
-			widgetBBList->SetSelFunctionCallback(BeeTEditor::CallBackBBVarType, this, i);
-			widgetBBList->SetVisible(true, bbVarTypeObj);
+			if (bbvar->decorators.size() == 0) // Only allow change the type when BBVar is not linked to any decorator
+			{
+				widgetBBList->SetWidgetPosition(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
+				widgetBBList->SetSelFunctionCallback(BeeTEditor::CallBackBBVarType, this, i);
+				widgetBBList->SetVisible(true, bbVarTypeObj);
+			}
 		}
 
 		ImGui::SameLine();
