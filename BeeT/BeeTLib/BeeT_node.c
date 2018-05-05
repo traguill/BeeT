@@ -175,8 +175,11 @@ BTN_Task * BTN_Task_Init(const BeeT_Serializer * data)
 void BTN_Root_OnInit(BeeT_Node* self)
 {
 	BTN_Root* btn = (BTN_Root*)self;
-	btn->startNode->observerNode = btn;
-	btn->node.bt->StartBehavior(btn->node.bt, btn->startNode, &BTN_Root_TreeFinish);
+	if (btn->startNode)
+	{
+		btn->startNode->observerNode = btn;
+		btn->node.bt->StartBehavior(btn->node.bt, btn->startNode, &BTN_Root_TreeFinish);
+	}
 }
 
 void BTN_Selector_OnInit(BeeT_Node* self)
