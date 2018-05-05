@@ -12,6 +12,8 @@
 #include "Blackboard.h"
 #include "BTDecorator.h"
 
+#include "ThirdParty/ImGui/imgui_tabs.h"
+
 #include <vector>
 
 namespace ne = ax::NodeEditor;
@@ -33,6 +35,7 @@ bool BeeTEditor::Init()
 	widgetBBList = new ItemList();
 	InitBBListCategories();
 	widgetBBVars = new ItemList();
+
 	return true;
 }
 
@@ -44,7 +47,10 @@ bool BeeTEditor::Update()
 
 	BlackboardWindow();
 	BlackboardVarDetail();
+
 	Editor();
+	
+	
 	UpdateSelection();
 	Inspector();
 
@@ -345,36 +351,51 @@ void BeeTEditor::Editor()
 	ImGui::SetNextWindowPos(ImVec2(screenWidth * blackboardSize.x, ImGui::GetCursorPosY() - ImGui::GetCursorPosX())); // The Y component substracts the cursorX position because imgui by default has margins
 	ImGui::SetNextWindowSize(ImVec2(editorSize.x * editorCanvasSize.x, editorSize.y * editorCanvasSize.y));
 	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-
-	ImGui::Begin("BeeT Editor Window", &beetEditorWindowOpen, flags);
-
-	ne::Begin("BeeT Node Editor");
-	Menus();
-	bt->Draw();	
-	Links();
-
-	// Node Editor Suspended -----------------------------
-	ne::Suspend();
-	ShowPopUps();
 	
-	if(widgetItemList->IsVisible())
-		widgetItemList->Draw();
+	ImGui::Begin("BeeT Editor Window", &beetEditorWindowOpen, flags);
+	ImGui::BeginTabBar("###bt_tab_bar");
+	ImGui::DrawTabsBackground();
+	ImGui::SetCursorPosX(0.0f);
 
-	if (widgetBBVars->IsVisible())
+	if (ImGui::AddTab("Behavior1"))
 	{
-		widgetBBVars->Draw();
-	}
-	else if (bbVarListObj != nullptr)
-	{
-		delete bbVarListObj;
-		bbVarListObj = nullptr;
-	}
-	ne::Resume();
-	// ---------------------------------------------------
+		ne::Begin("BeeT Node Editor");
+		
+		Menus();
+		bt->Draw();
+		Links();
 
-	ne::End(); // BeeT Node Editor
+		// Node Editor Suspended -----------------------------
+		ne::Suspend();
+		ShowPopUps();
+
+		if (widgetItemList->IsVisible())
+			widgetItemList->Draw();
+
+		if (widgetBBVars->IsVisible())
+		{
+			widgetBBVars->Draw();
+		}
+		else if (bbVarListObj != nullptr)
+		{
+			delete bbVarListObj;
+			bbVarListObj = nullptr;
+		}
+		ne::Resume();
+		// ---------------------------------------------------
+
+		ne::End(); // BeeT Node Editor
+	}
+	if (ImGui::AddTab("Behavior2"))
+	{
+		ImGui::Text("Placeholder text");
+	}
+	ImGui::AddTab("Behavior3");
+	ImGui::AddTab("Behavior4");
+	ImGui::EndTabBar();
+
+	
 	ImGui::End();
-
 	ImGui::PopStyleVar(); // WindowPadding
 }
 

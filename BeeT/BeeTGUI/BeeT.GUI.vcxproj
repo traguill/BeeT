@@ -177,6 +177,7 @@
     <ClCompile Include="ThirdParty\ImGui\imgui_demo.cpp" />
     <ClCompile Include="ThirdParty\ImGui\imgui_draw.cpp" />
     <ClCompile Include="ThirdParty\ImGui\imgui_impl_sdl_gl3.cpp" />
+    <ClCompile Include="ThirdParty\ImGui\imgui_tabs.cpp" />
     <ClCompile Include="ThirdParty\Json\parson.c" />
     <ClCompile Include="ThirdParty\NodeEditor\Source\Editor.cpp" />
     <ClCompile Include="ThirdParty\NodeEditor\Source\NodeEditor.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="ThirdParty\ImGui\imgui.h" />
     <ClInclude Include="ThirdParty\ImGui\imgui_impl_sdl_gl3.h" />
     <ClInclude Include="ThirdParty\ImGui\imgui_internal.h" />
+    <ClInclude Include="ThirdParty\ImGui\imgui_tabs.h" />
     <ClInclude Include="ThirdParty\ImGui\stb_image.h" />
     <ClInclude Include="ThirdParty\ImGui\stb_rect_pack.h" />
     <ClInclude Include="ThirdParty\ImGui\stb_textedit.h" />

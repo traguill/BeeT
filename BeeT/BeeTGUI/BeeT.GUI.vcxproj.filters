@@ -87,6 +87,9 @@
     <ClCompile Include="BTDecorator.cpp">
       <Filter>Editor\BehaviorTree</Filter>
     </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_tabs.cpp">
+      <Filter>ThirdParty\Imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -200,6 +203,9 @@
     </ClInclude>
     <ClInclude Include="BTDecorator.h">
       <Filter>Editor\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imgui_tabs.h">
+      <Filter>ThirdParty\Imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

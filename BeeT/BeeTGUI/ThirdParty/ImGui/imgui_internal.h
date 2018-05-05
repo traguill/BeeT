@@ -3,7 +3,7 @@
 
 // You may use this file to debug, understand or extend ImGui features but we don't provide any guarantee of forward compatibility!
 // Implement maths operators for ImVec2 (disabled by default to not collide with using IM_VEC2_CLASS_EXTRA along with your own math types+operators)
-//   #define IMGUI_DEFINE_MATH_OPERATORS
+//#define IMGUI_DEFINE_MATH_OPERATORS
 
 #pragma once
 
@@ -221,6 +221,19 @@ enum ImGuiDataType
     ImGuiDataType_Int,
     ImGuiDataType_Float,
     ImGuiDataType_Float2,
+};
+
+enum ImDrawCornerFlags_
+{
+	ImDrawCornerFlags_TopLeft = 1 << 0, // 0x1
+	ImDrawCornerFlags_TopRight = 1 << 1, // 0x2
+	ImDrawCornerFlags_BotLeft = 1 << 2, // 0x4
+	ImDrawCornerFlags_BotRight = 1 << 3, // 0x8
+	ImDrawCornerFlags_Top = ImDrawCornerFlags_TopLeft | ImDrawCornerFlags_TopRight,   // 0x3
+	ImDrawCornerFlags_Bot = ImDrawCornerFlags_BotLeft | ImDrawCornerFlags_BotRight,   // 0xC
+	ImDrawCornerFlags_Left = ImDrawCornerFlags_TopLeft | ImDrawCornerFlags_BotLeft,    // 0x5
+	ImDrawCornerFlags_Right = ImDrawCornerFlags_TopRight | ImDrawCornerFlags_BotRight,  // 0xA
+	ImDrawCornerFlags_All = 0xF     // In your function calls you may use ~0 (= all bits sets) instead of ImDrawCornerFlags_All, as a convenience
 };
 
 // 2D axis aligned bounding-box
