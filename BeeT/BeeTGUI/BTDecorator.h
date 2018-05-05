@@ -46,6 +46,9 @@ public:
 
 	void Save(Data& file);
 
+	void Remove(bool isBBVarRemoved = false);
+	void CleanUp();
+
 private:
 	void PrintType()const;
 

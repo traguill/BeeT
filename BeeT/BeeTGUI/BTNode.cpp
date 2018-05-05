@@ -77,6 +77,7 @@ void BTNode::PrepareToDraw()
 	{
 		for (auto dec : decoratorsToRemove)
 		{
+			dec->CleanUp();
 			decorators.erase(std::find(decorators.begin(), decorators.end(), dec));
 			delete dec;
 		}

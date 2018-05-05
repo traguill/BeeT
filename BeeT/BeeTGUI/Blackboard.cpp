@@ -1,4 +1,5 @@
 #include "Blackboard.h"
+#include "BTDecorator.h"
 
 using namespace std;
 
@@ -96,6 +97,10 @@ void Blackboard::RemoveVar(int id)
 {
 	assert(id < variables.size());
 	BBVar* var = variables[id];
+	for (auto dec : var->decorators)
+	{
+		dec->Remove(true);
+	}
 	delete var;
 	variables.erase(variables.begin() + id);
 }

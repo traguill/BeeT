@@ -6,6 +6,8 @@
 #include <boost/any.hpp>
 #include "Data.h"
 
+class BTDecorator;
+
 enum BBVarType
 {
 	BV_BOOL,
@@ -19,6 +21,7 @@ struct BBVar
 	BBVarType type;
 	std::string name;
 	boost::any value;
+	std::vector<BTDecorator*> decorators; // Decorators this BBVar is linked to
 };
 
 class Blackboard

@@ -7,6 +7,7 @@
 BTDecorator::BTDecorator(BTNode* node, Blackboard* bb, BBVar* var) : nodeAttachedTo(node), bb(bb), var(var)
 {
 	uid = (int)g_rnd->RandomInt();
+	var->decorators.push_back(this);
 	switch (var->type)
 	{
 	case BV_BOOL:
@@ -29,7 +30,10 @@ BTDecorator::BTDecorator(BTNode* node, Blackboard * bb, Data & data) : nodeAttac
 	uid = data.GetInt("uid");
 	std::string varName = data.GetString("var");
 	if (varName.length() > 0)
+	{
 		var = bb->FindVar(varName);
+		var->decorators.push_back(this);
+	}
 	else
 		var = nullptr;
 	option = data.GetInt("option");
@@ -98,7 +102,7 @@ void BTDecorator::InspectorInfo()
 	ImGui::PushID(uid);
 	if (ImGui::Button("x"))
 	{
-		nodeAttachedTo->RemoveDecorator(this);
+		Remove();
 	}
 	ImGui::PopID();
 	ImGui::SameLine();
@@ -155,6 +159,21 @@ void BTDecorator::Save(Data & file)
 	}
 
 	file.AppendArrayValue(data);
+}
+
+void BTDecorator::Remove(bool isBBVarRemoved)
+{
+	nodeAttachedTo->RemoveDecorator(this);
+	if (isBBVarRemoved)
+		var = nullptr;
+}
+
+void BTDecorator::CleanUp()
+{
+	if (var)
+	{
+		var->decorators.erase(std::find(var->decorators.begin(), var->decorators.end(), this));
+	}
 }
 
 void BTDecorator::PrintType() const
