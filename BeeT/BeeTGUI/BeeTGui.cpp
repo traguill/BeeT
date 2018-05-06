@@ -20,8 +20,9 @@ BeeTGui::~BeeTGui()
 
 bool BeeTGui::Init()
 {
-	editorContext = ne::CreateEditor();
-	ne::SetCurrentEditor(GetNodeEditorContext());
+	currentEditorContext = ne::CreateEditor();
+	ne::SetCurrentEditor(currentEditorContext);
+	editorContextList.push_back(currentEditorContext);
 
 	// Init node types file
 	btNodeTypes = new BTNodeTypes();
@@ -41,7 +42,10 @@ bool BeeTGui::CleanUp()
 	delete btNodeTypes;
 	beetEditor->CleanUp();
 	delete beetEditor;
-	ne::DestroyEditor(editorContext);
+	for (auto editorContext : editorContextList)
+	{
+		ne::DestroyEditor(editorContext);
+	}
 	return true;
 }
 
@@ -65,16 +69,32 @@ bool BeeTGui::Update()
 	return ret;
 }
 
-ax::NodeEditor::EditorContext * BeeTGui::GetNodeEditorContext() const
+void BeeTGui::SetCurrentEditorContext(int id)
 {
-	return editorContext;
+	if (id < editorContextList.size())
+	{
+		currentEditorContext = editorContextList[id];
+		ne::SetCurrentEditor(currentEditorContext);
+	}
 }
 
-void BeeTGui::ResetNodeEditorContext()
+void BeeTGui::SetCurrentEditorContext(ax::NodeEditor::EditorContext * context)
 {
-	ne::DestroyEditor(editorContext);
-	editorContext = ne::CreateEditor();
-	ne::SetCurrentEditor(editorContext);
+	assert(context);
+	currentEditorContext = context;
+	ne::SetCurrentEditor(currentEditorContext);
+}
+
+ax::NodeEditor::EditorContext * BeeTGui::GetNodeEditorContext() const
+{
+	return currentEditorContext;
+}
+
+int BeeTGui::CreateNodeEditorContext()
+{
+	editorContextList.push_back(ne::CreateEditor());
+
+	return editorContextList.size() - 1;
 }
 
 void BeeTGui::MenuBar()

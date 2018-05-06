@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "ThirdParty/NodeEditor/Include/NodeEditor.h"
+#include <vector>
 
 enum BeeTMode {
 	BEET_EDITOR,
@@ -23,8 +24,10 @@ public:
 	bool CleanUp();
 	bool Update();
 
+	void SetCurrentEditorContext(int id);
+	void SetCurrentEditorContext(ax::NodeEditor::EditorContext* context);
 	ax::NodeEditor::EditorContext* GetNodeEditorContext()const;
-	void ResetNodeEditorContext(); //TODO: Re-do this to let each BT to have its own context.
+	int CreateNodeEditorContext(); //TODO: Re-do this to let each BT to have its own context.
 
 	static void LoadFile(void* obj, const char* filename);
 	static void SaveFile(void* obj, const char* filename);
@@ -40,7 +43,8 @@ public:
 private:
 	BeeTMode mode = BEET_EDITOR; // BeeTGui has two modes: Editor and Debugger. Only one of them can be enabled at the time
 
-	ax::NodeEditor::EditorContext* editorContext = nullptr; // Context to handle the node graph editor
+	std::vector<ax::NodeEditor::EditorContext*> editorContextList; 
+	ax::NodeEditor::EditorContext* currentEditorContext = nullptr; // Context to handle the node graph editor
 	FileDialog* fileDialog = nullptr;
 
 	// Modes

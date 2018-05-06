@@ -35,6 +35,8 @@ public:
 	BTPin* FindPin(int id)const;
 	bool IsRoot(int id)const;
 
+	unsigned int GetUID()const;
+
 private:
 	int GetNextId();
 

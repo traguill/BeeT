@@ -242,7 +242,7 @@ namespace ImGui
 
 // FIXME : unused ?
     /// Outwardly accessible way to set the active tab of the current stack.
-//    IMGUI_API static void SetActiveTabOfCurrentTabBar(const unsigned idx);
+    IMGUI_API static void SetActiveTabOfCurrentTabBar(const unsigned idx);
 
     /// Star the Tab Bar with this function. It creates a tab bar based on the computed CRC32 hash and pushes it into the internal stack if so.
     IMGUI_API void BeginTabBar(const char *label, const ImVec2 size = ImVec2(0, 0));

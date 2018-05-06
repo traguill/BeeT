@@ -29,7 +29,9 @@ BeeTEditor::~BeeTEditor()
 
 bool BeeTEditor::Init()
 {
-	bt = new BehaviorTree();
+	btCurrent = new BehaviorTree();
+	btList.push_back(btCurrent);
+
 	ne::CenterNodeOnScreen(0); // Root node has always id = 0. Careful! It may not work in the future.
 	widgetItemList = new ItemList();
 	widgetBBList = new ItemList();
@@ -50,7 +52,6 @@ bool BeeTEditor::Update()
 
 	Editor();
 	
-	
 	UpdateSelection();
 	Inspector();
 
@@ -59,7 +60,9 @@ bool BeeTEditor::Update()
 
 bool BeeTEditor::CleanUp()
 {
-	delete bt;
+	for (auto bt : btList)
+		delete bt;
+
 	delete widgetItemList;
 	delete bbVarTypeObj;
 	delete widgetBBList;
@@ -71,7 +74,7 @@ void BeeTEditor::Serialize(const char* filename) const
 {
 	// In progress: Now only save one BT. In the future choose one of the opened BTs to save or save them all.
 	char* buffer = nullptr;
-	int size = bt->Serialize(&buffer);
+	int size = btCurrent->Serialize(&buffer);
 	if (size == 0)
 	{
 		LOGE("Behavior Tree was not saved. An error occurred during serialization.");
@@ -108,9 +111,11 @@ void BeeTEditor::Load(const char * path)
 
 void BeeTEditor::NewBehaviorTree(Data* data)
 {
-	g_app->beetGui->ResetNodeEditorContext();
-	if (bt)
-		delete bt;
+	ax::NodeEditor::EditorContext* prevContext = g_app->beetGui->GetNodeEditorContext();
+	int editorId = g_app->beetGui->CreateNodeEditorContext();
+	g_app->beetGui->SetCurrentEditorContext(editorId);
+	
+	BehaviorTree* bt;
 	if (data)
 	{
 		bt = new BehaviorTree(*data);
@@ -119,6 +124,7 @@ void BeeTEditor::NewBehaviorTree(Data* data)
 	{
 		bt = new BehaviorTree();
 	}
+	btList.push_back(bt);
 	selectedNodeId = -1;
 	selectedLinkId = -1;
 
@@ -127,6 +133,9 @@ void BeeTEditor::NewBehaviorTree(Data* data)
 	bbvarValueSelected = -1; 
 
 	ne::CenterNodeOnScreen(0); // Root node has always id = 0. Careful! It may not work in the future.
+
+	// Reset the context to the old one
+	g_app->beetGui->SetCurrentEditorContext(prevContext);
 }
 
 void BeeTEditor::CallBackAddNode(void * obj, const std::string & category, const std::string & item, int additionalData)
@@ -138,7 +147,7 @@ void BeeTEditor::CallBackAddNode(void * obj, const std::string & category, const
 		if (id != -1)
 		{
 			ImVec2 pos = ne::ScreenToCanvas(ImGui::GetMousePos());
-			int nodeId = editor->bt->AddNode(pos.x, pos.y, id);
+			int nodeId = editor->btCurrent->AddNode(pos.x, pos.y, id);
 			editor->selectedNodeId = nodeId;
 			ne::ClearSelection();
 			ne::SelectNode(nodeId);
@@ -155,7 +164,7 @@ void BeeTEditor::CallBackBBVarType(void * obj, const std::string & category, con
 		map<string, BBVarType>::iterator it = editor->bbVarTypeConversor.find(item);
 		if (it != editor->bbVarTypeConversor.end())
 		{
-			editor->bt->bb->ChangeVarType(additionalData, it->second);
+			editor->btCurrent->bb->ChangeVarType(additionalData, it->second);
 		}
 	}
 }
@@ -168,10 +177,10 @@ void BeeTEditor::CallBackBBVarList(void * obj, const std::string & category, con
 		delete editor->bbVarListObj;
 		editor->bbVarListObj = nullptr;
 
-		BBVar* var = editor->bt->bb->FindVar(item);
+		BBVar* var = editor->btCurrent->bb->FindVar(item);
 
 		// TODO: For now only Blackboard comparisons
-		editor->bt->AddDecorator(editor->selectedNodeId, var); // TODO: SEND DECORATOR NAME
+		editor->btCurrent->AddDecorator(editor->selectedNodeId, var); // TODO: SEND DECORATOR NAME
 	}
 }
 
@@ -184,7 +193,7 @@ void BeeTEditor::BlackboardWindow()
 	if (widgetBBList->IsVisible())
 		widgetBBList->Draw();
 
-	Blackboard* bb = bt->bb;
+	Blackboard* bb = btCurrent->bb;
 
 	for (int i = 0; i < bb->variables.size(); ++i)
 	{
@@ -277,7 +286,7 @@ void BeeTEditor::BlackboardVarDetail()
 	ImGui::SetNextWindowSize(ImVec2(editorSize.x * blackboardVarDetailSize.x, editorSize.y * blackboardVarDetailSize.y));
 	ImGui::Begin("BlackBoard Variable", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 
-	Blackboard* bb = bt->bb;
+	Blackboard* bb = btCurrent->bb;
 	if (bbvarValueSelected != -1)
 	{
 		BBVar* var = bb->variables[bbvarValueSelected];
@@ -357,44 +366,45 @@ void BeeTEditor::Editor()
 	ImGui::DrawTabsBackground();
 	ImGui::SetCursorPosX(0.0f);
 
-	if (ImGui::AddTab("Behavior1"))
+	int btIdCount = 0;
+	for (auto bt : btList)
 	{
-		ne::Begin("BeeT Node Editor");
-		
-		Menus();
-		bt->Draw();
-		Links();
-
-		// Node Editor Suspended -----------------------------
-		ne::Suspend();
-		ShowPopUps();
-
-		if (widgetItemList->IsVisible())
-			widgetItemList->Draw();
-
-		if (widgetBBVars->IsVisible())
+		ImGui::PushID(bt->GetUID());
+		if (ImGui::AddTab("New Behavior Tree"))
 		{
-			widgetBBVars->Draw();
-		}
-		else if (bbVarListObj != nullptr)
-		{
-			delete bbVarListObj;
-			bbVarListObj = nullptr;
-		}
-		ne::Resume();
-		// ---------------------------------------------------
+			btCurrent = bt;
+			g_app->beetGui->SetCurrentEditorContext(btIdCount);
+			ne::Begin("BeeT Node Editor");
 
-		ne::End(); // BeeT Node Editor
+			Menus();
+			btCurrent->Draw();
+			Links();
+
+			// Node Editor Suspended -----------------------------
+			ne::Suspend();
+			ShowPopUps();
+
+			if (widgetItemList->IsVisible())
+				widgetItemList->Draw();
+
+			if (widgetBBVars->IsVisible())
+			{
+				widgetBBVars->Draw();
+			}
+			else if (bbVarListObj != nullptr)
+			{
+				delete bbVarListObj;
+				bbVarListObj = nullptr;
+			}
+			ne::Resume();
+			// ---------------------------------------------------
+
+			ne::End(); // BeeT Node Editor
+		}
+		ImGui::PopID();
+		btIdCount++;
 	}
-	if (ImGui::AddTab("Behavior2"))
-	{
-		ImGui::Text("Placeholder text");
-	}
-	ImGui::AddTab("Behavior3");
-	ImGui::AddTab("Behavior4");
 	ImGui::EndTabBar();
-
-	
 	ImGui::End();
 	ImGui::PopStyleVar(); // WindowPadding
 }
@@ -407,7 +417,7 @@ void BeeTEditor::Inspector()
 	
 	if (selectedNodeId != -1)
 	{
-		BTNode* nodeSel = bt->FindNode(selectedNodeId);
+		BTNode* nodeSel = btCurrent->FindNode(selectedNodeId);
 		if (nodeSel)
 		{
 			ImGui::Text("Type: %s", nodeSel->type->name.data());
@@ -478,12 +488,12 @@ void BeeTEditor::ShowPopUps()
 		ne::SelectNode(selectedNodeId);
 		if (ImGui::MenuItem("Remove"))	// Remove
 		{
-			bt->RemoveNode(selectedNodeId);
+			btCurrent->RemoveNode(selectedNodeId);
 			selectedNodeId = -1;
 			ne::ClearSelection();
 		}
 
-		if (bt->bb->variables.size() > 0)
+		if (btCurrent->bb->variables.size() > 0)
 		{
 			if(ImGui::MenuItem("Add Decorator")) // Add Decorator
 			{
@@ -500,7 +510,7 @@ void BeeTEditor::ShowPopUps()
 		ne::SelectLink(selectedLinkId);
 		if(ImGui::MenuItem("Remove"))
 		{
-			bt->RemoveLink(selectedLinkId);
+			btCurrent->RemoveLink(selectedLinkId);
 			selectedLinkId = -1;
 			ne::ClearSelection();
 		}
@@ -519,7 +529,7 @@ void BeeTEditor::Menus()
 	}
 	if (ne::ShowNodeContextMenu(&selectedNodeId))
 	{
-		if(bt->IsRoot(selectedNodeId) == false)
+		if(btCurrent->IsRoot(selectedNodeId) == false)
 			ImGui::OpenPopup("Node options");
 		else
 		{
@@ -541,8 +551,8 @@ void BeeTEditor::Links()
 		int startPinId = 0, endPinId = 0;
 		if (ne::QueryNewLink(&startPinId, &endPinId))
 		{
-			BTPin* startPin = bt->FindPin(startPinId);
-			BTPin* endPin = bt->FindPin(endPinId);
+			BTPin* startPin = btCurrent->FindPin(startPinId);
+			BTPin* endPin = btCurrent->FindPin(endPinId);
 
 			if (startPin->kind == ne::PinKind::Target)
 			{
@@ -569,7 +579,7 @@ void BeeTEditor::Links()
 				}
 				else if (ne::AcceptNewItem(ImColor(128, 255, 128), 4.0f))
 				{
-					bt->AddLink(startPin, endPin);
+					btCurrent->AddLink(startPin, endPin);
 				}
 			}
 		}
@@ -587,7 +597,7 @@ void BeeTEditor::UpdateSelection()
 		if (selCount == 1)
 		{
 			ne::GetSelectedNodes(&selectedNodeId, 1);
-			if (bt->IsRoot(selectedNodeId))
+			if (btCurrent->IsRoot(selectedNodeId))
 			{
 				selectedNodeId = -1;
 				ne::ClearSelection();
@@ -602,7 +612,7 @@ void BeeTEditor::UpdateSelection()
 			ne::GetSelectedNodes(selNodes.data(), selCount);
 			for (int i = 0; i < selCount; i++)
 			{
-				if (bt->IsRoot(selNodes[i]))
+				if (btCurrent->IsRoot(selNodes[i]))
 				{
 					ne::DeselectNode(selNodes[i]);
 					break;
@@ -634,7 +644,7 @@ void BeeTEditor::ListAllBBVars()
 	if (bbVarListObj == nullptr)
 	{
 		bbVarListObj = new ListObject();
-		for (auto var : bt->bb->variables)
+		for (auto var : btCurrent->bb->variables)
 		{
 			bbVarListObj->AddItemInCategory("Blackboard", var->name.data());
 		}

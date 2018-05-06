@@ -344,6 +344,14 @@ const bool ImGui::TabBarStack::doesTabBarExist(const char *id, unsigned int *con
     return false;
 }
 
+void ImGui::SetActiveTabOfCurrentTabBar(const unsigned idx)
+{
+	if (idx < TabStack.TabBarCount)
+	{
+		TabStack.CurrentTabBar = idx;
+	}
+}
+
 void ImGui::BeginTabBar(const char *label, const ImVec2 size) {
     // Pass this to doesTabBarExist() to get the index of the started TabBar
     unsigned idx;

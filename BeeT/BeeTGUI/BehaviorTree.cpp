@@ -303,6 +303,11 @@ bool BehaviorTree::IsRoot(int id) const
 	return rootNode ? rootNode->GetId() == id : false;
 }
 
+unsigned int BehaviorTree::GetUID() const
+{
+	return uid;
+}
+
 int BehaviorTree::GetNextId()
 {
 	return nextId++;

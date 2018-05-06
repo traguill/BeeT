@@ -4,6 +4,7 @@
 #include "ThirdParty/ImGui/imgui.h"
 #include <string>
 #include <map>
+#include <vector>
 
 class BehaviorTree;
 class Blackboard;
@@ -50,8 +51,8 @@ private:
 	void ListAllBBVars();
 
 private:
-	// For testing, a default behavior tree is already created. In the future, allow to create a new one or open an existent
-	BehaviorTree* bt = nullptr;
+	std::vector<BehaviorTree*> btList; // List of behavior trees opened
+	BehaviorTree* btCurrent; // Current bt selected
 
 	bool beetEditorWindowOpen = true;
 	ImGuiWindowFlags flags =  ImGuiWindowFlags_::ImGuiWindowFlags_NoResize
