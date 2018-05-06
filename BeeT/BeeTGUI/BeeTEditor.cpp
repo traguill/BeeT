@@ -54,6 +54,7 @@ bool BeeTEditor::Update()
 	
 	UpdateSelection();
 	Inspector();
+	BehaviortreeDetail();
 
 	return true;
 }
@@ -72,8 +73,9 @@ bool BeeTEditor::CleanUp()
 
 void BeeTEditor::Serialize(const char* filename) const
 {
-	// In progress: Now only save one BT. In the future choose one of the opened BTs to save or save them all.
 	char* buffer = nullptr;
+	string btName = g_app->fileSystem->GetFileNameFromPath(filename);
+	btCurrent->filename = btName;
 	int size = btCurrent->Serialize(&buffer);
 	if (size == 0)
 	{
@@ -98,7 +100,10 @@ void BeeTEditor::Load(const char * path)
 	{
 		Data btData(buffer);
 
-		NewBehaviorTree(&btData); // For now the current BT is destroyed and replaced.
+		NewBehaviorTree(&btData); 
+
+		string btName = g_app->fileSystem->GetFileNameFromPath(path);
+		btList.back()->filename = btName;
 	}
 	else
 	{
@@ -370,7 +375,8 @@ void BeeTEditor::Editor()
 	for (auto bt : btList)
 	{
 		ImGui::PushID(bt->GetUID());
-		if (ImGui::AddTab("New Behavior Tree"))
+		
+		if (ImGui::AddTab(bt->filename.data()))
 		{
 			btCurrent = bt;
 			g_app->beetGui->SetCurrentEditorContext(btIdCount);
@@ -402,6 +408,7 @@ void BeeTEditor::Editor()
 			ne::End(); // BeeT Node Editor
 		}
 		ImGui::PopID();
+
 		btIdCount++;
 	}
 	ImGui::EndTabBar();
@@ -476,6 +483,38 @@ void BeeTEditor::Inspector()
 		}
 	}
 
+	ImGui::End();
+}
+
+void BeeTEditor::BehaviortreeDetail()
+{
+	ImGui::SetNextWindowPos(ImVec2(screenWidth * (blackboardSize.x + editorCanvasSize.x), (ImGui::GetCursorPosY() - ImGui::GetCursorPosX()) + (inspectorSize.y * editorSize.y)));
+	ImGui::SetNextWindowSize(ImVec2(editorSize.x * btDetailSize.x, editorSize.y * btDetailSize.y));
+	ImGui::Begin("Behavior Tree Details", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+
+	if (btCurrent) // This should never be null, but just in case
+	{
+		ImGui::Text("File Name: ");
+
+		char btNameTmp[_MAX_PATH];
+		strcpy_s(btNameTmp, _MAX_PATH, btCurrent->filename.data());
+		if (ImGui::InputText("###btinputtext", btNameTmp, _MAX_PATH, ImGuiInputTextFlags_AutoSelectAll))
+		{
+			btCurrent->filename = btNameTmp;
+		}
+
+		ImGui::Text("Options: ");
+		if (ImGui::Button("Save"))
+		{
+			string filenamepath = btCurrent->filename + ".json";
+			g_app->beetGui->SaveFile(g_app->beetGui, filenamepath.data());
+		}
+		
+		ImGui::SameLine();
+
+		ImGui::Button("Save and Close"); ImGui::SameLine();
+		ImGui::Button("Close"); ImGui::SameLine();
+	}
 	ImGui::End();
 }
 

@@ -2,6 +2,7 @@
 #define __BEHAVIORTREE_H__
 
 #include <map>
+#include <string>
 #include "Data.h"
 
 class BTNode;
@@ -45,7 +46,7 @@ private:
 
 public:
 	Blackboard* bb = nullptr;
-
+	std::string filename;
 private:
 	unsigned int uid = 0;
 	std::map<int, BTNode*> nodesList;

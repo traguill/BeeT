@@ -38,6 +38,7 @@ private:
 	void BlackboardVarDetail();
 	void Editor();
 	void Inspector();
+	void BehaviortreeDetail();
 
 	// ImGui PopUps
 	void ShowPopUps();
@@ -64,9 +65,10 @@ private:
 
 	ImVec2 editorSize;
 	ImVec2 editorCanvasSize = ImVec2(0.6f, 1.0f);
-	ImVec2 inspectorSize = ImVec2(0.2f, 1.0f);
+	ImVec2 inspectorSize = ImVec2(0.2f, 0.8f);
 	ImVec2 blackboardSize = ImVec2(0.2f, 0.8f);
 	ImVec2 blackboardVarDetailSize = ImVec2(0.2f, 0.2f);
+	ImVec2 btDetailSize = ImVec2(0.2f, 0.2f);
 
 	// Widgets
 	ItemList* widgetItemList = nullptr;

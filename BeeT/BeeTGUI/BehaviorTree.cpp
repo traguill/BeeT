@@ -22,6 +22,7 @@ BehaviorTree::BehaviorTree()
 	AddNode(0, 0, 0); // Root node
 	rootNode = nodesList[0];
 	rootNode->ForceRoot();
+	filename = "BehaviorTree";
 }
 
 BehaviorTree::BehaviorTree(Data & data)
