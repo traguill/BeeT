@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="BeeTDebugger.cpp" />
     <ClCompile Include="BeeTEditor.cpp" />
     <ClCompile Include="BeeTGui.cpp" />
     <ClCompile Include="BehaviorTree.cpp" />
@@ -185,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="BeeTDebugger.h" />
     <ClInclude Include="BeeTEditor.h" />
     <ClInclude Include="BeeTGui.h" />
     <ClInclude Include="BehaviorTree.h" />

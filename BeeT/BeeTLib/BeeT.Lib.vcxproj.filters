@@ -22,6 +22,9 @@
     <Filter Include="Header Files\Helpers">
       <UniqueIdentifier>{1a171c38-2978-4eb6-af32-2d57ec3659f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SDL_net">
+      <UniqueIdentifier>{098ec4ad-204c-4297-ab5f-0930d0cc328e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="beet.h">
@@ -57,6 +60,21 @@
     <ClInclude Include="BeeT_decorator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BeeT_debugger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDLnetsys.h">
+      <Filter>SDL_net</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\SDL_net.h">
+      <Filter>SDL_net</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\close_code.h">
+      <Filter>SDL_net</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\begin_code.h">
+      <Filter>SDL_net</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ThirdParty\parson.c">
@@ -85,6 +103,21 @@
     </ClCompile>
     <ClCompile Include="BeeT_decorator.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BeeT_debugger.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SDLnet.c">
+      <Filter>SDL_net</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SDLnetselect.c">
+      <Filter>SDL_net</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SDLnetTCP.c">
+      <Filter>SDL_net</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\SDLnetUDP.c">
+      <Filter>SDL_net</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

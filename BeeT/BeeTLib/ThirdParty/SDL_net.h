@@ -27,6 +27,7 @@
 
 #define WITHOUT_SDL
 
+
 #ifdef WITHOUT_SDL
 #include <stdint.h>
 typedef uint8_t Uint8;
@@ -48,6 +49,17 @@ typedef struct SDLNet_version {
 typedef SDL_version SDLNet_version;
 
 #endif /* WITHOUT_SDL */
+
+// Link to own functions
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SDL_malloc		malloc
+#define SDL_free		free
+#define SDL_memset		memset
+#define SDL_vsnprintf	vsnprintf
+#define SDL_memcpy		memcpy
+#define SDL_realloc		realloc
 
 #include "begin_code.h"
 

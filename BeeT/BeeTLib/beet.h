@@ -28,6 +28,8 @@ typedef struct
 BEET_API void	BEET_Init();
 BEET_API void	BEET_Shutdown();
 
+BEET_API BEET_bool	BEET_InitDebugger(int port);
+
 //--------------------------------------------------------------------------------
 // BehaviorTree
 //--------------------------------------------------------------------------------

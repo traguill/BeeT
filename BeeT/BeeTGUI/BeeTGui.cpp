@@ -5,6 +5,7 @@
 #include "BTNodeTypes.h"
 #include "FileDialog.h"
 #include "OutputLog.h"
+#include "BeeTDebugger.h"
 
 #include "FileSystem.h" // Testing: To show the current directory path in MainMenuBar->File.
 
@@ -31,6 +32,9 @@ bool BeeTGui::Init()
 	beetEditor = new BeeTEditor();
 	beetEditor->Init();
 
+	beetDebugger = new BeeTDebugger();
+	beetDebugger->Init();
+
 	fileDialog = new FileDialog();
 	g_app->AddModuleUpdate(this);
 	return true;
@@ -38,6 +42,8 @@ bool BeeTGui::Init()
 
 bool BeeTGui::CleanUp()
 {
+	beetDebugger->CleanUp();
+	delete beetDebugger;
 	delete fileDialog;
 	delete btNodeTypes;
 	beetEditor->CleanUp();
@@ -62,7 +68,7 @@ bool BeeTGui::Update()
 		ret = beetEditor->Update();
 		break;
 	case BEET_DEBUGGER:
-		// TODO
+		ret = beetDebugger->Update();
 		break;
 	}
 	ImGui::PopStyleVar(); // WindowRounding
@@ -118,6 +124,18 @@ void BeeTGui::MenuBar()
 			if (ImGui::MenuItem("Output", NULL, g_output->windowOpen))
 			{
 				g_output->windowOpen = !g_output->windowOpen;
+			}
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Mode"))
+		{
+			if (ImGui::MenuItem("Editor###mode_editor"))
+			{
+				mode = BeeTMode::BEET_EDITOR;
+			}
+			if (ImGui::MenuItem("Debug###mode_debug"))
+			{
+				mode = BeeTMode::BEET_DEBUGGER;
 			}
 			ImGui::EndMenu();
 		}

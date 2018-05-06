@@ -26,6 +26,9 @@ void RunTest(int testId)
 	case 5:
 		Test5();
 		break;
+	case 6:
+		Test6();
+		break;
 	default:
 		cout << "There is no test num " << testId << endl;
 		break;
@@ -208,4 +211,14 @@ void Test5()
 	printf("Running Behavior Tree:\n-----------------------------------------\n");
 	BEET_ExecuteBehaviorTree(uid);
 	printf("BehaviorTree end\n");
+}
+
+void Test6()
+{
+	bool ret = BEET_InitDebugger(8080);
+	
+	if (ret)
+		printf("BeeT Debugger initialized successfuly\n");
+	else
+		printf("BeeT Debugger failed at initializing\n");
 }

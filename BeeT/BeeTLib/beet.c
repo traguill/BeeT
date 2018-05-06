@@ -1,9 +1,19 @@
 #include "beet.h"
 #include "BeeT_serializer.h"
 #include "BeeT_behaviortree.h"
+#include "BeeT_debugger.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+
+
+static BeetContext beetDefaultContext;
+#define BEET_GLOBAL_CONTEXT_PTR &beetDefaultContext;
+BeetContext* g_Beet = BEET_GLOBAL_CONTEXT_PTR;
+
+static BeeT_debugger beetDebugger;
+#define BEET_GLOBAL_DEBUGGER_PTR &beetDebugger;
+BeeT_debugger* g_Debug = BEET_GLOBAL_DEBUGGER_PTR;
 
 //-----------------------------------------------------------------
 // Helpers
@@ -51,10 +61,6 @@ void * LoadFile(const char * filename, int * outFileSize)
 // Context
 //-----------------------------------------------------------------
 
-static BeetContext beetDefaultContext;
-#define BEET_GLOBAL_CONTEXT_PTR &beetDefaultContext;
-BeetContext* g_Beet = BEET_GLOBAL_CONTEXT_PTR;
-
 void BeetContext__Init(BeetContext* ctx)
 {
 	ctx->initialized = BEET_FALSE;
@@ -89,6 +95,16 @@ BeeT_BehaviorTree* BeeTContext__GetTree(BeetContext* ctx, unsigned int btId)
 {
 	return (btId < ctx->numTreesLoaded) ? ctx->trees[btId] : NULL;
 }
+
+//-----------------------------------------------------------------
+// BeeT Debugger
+//-----------------------------------------------------------------
+
+BEET_bool BEET_InitDebugger(int port)
+{
+	return BeeT_Debugger_Init(g_Debug, port);
+}
+
 //-----------------------------------------------------------------
 // BeeT API
 //-----------------------------------------------------------------

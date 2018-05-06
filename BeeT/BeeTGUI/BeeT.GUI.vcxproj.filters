@@ -90,6 +90,9 @@
     <ClCompile Include="ThirdParty\ImGui\imgui_tabs.cpp">
       <Filter>ThirdParty\Imgui</Filter>
     </ClCompile>
+    <ClCompile Include="BeeTDebugger.cpp">
+      <Filter>Debugger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -207,6 +210,9 @@
     <ClInclude Include="ThirdParty\ImGui\imgui_tabs.h">
       <Filter>ThirdParty\Imgui</Filter>
     </ClInclude>
+    <ClInclude Include="BeeTDebugger.h">
+      <Filter>Debugger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
@@ -241,6 +247,9 @@
     </Filter>
     <Filter Include="Windows">
       <UniqueIdentifier>{04e16ff5-bb89-4071-9a32-ebfa4d0feadc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debugger">
+      <UniqueIdentifier>{f12b58ab-5442-4105-ab8f-922c20d045f8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

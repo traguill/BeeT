@@ -35,7 +35,7 @@ private:
 	SDLNet_SocketSet socketSet;
 	TCPsocket serverSocket;
 
-	bool listening = false;
+	bool listening = true;
 	int numClientsConnected = 0;
 
 	char* msgBuffer = nullptr; // Buffer to read incomming messages

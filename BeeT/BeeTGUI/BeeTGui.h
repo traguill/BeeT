@@ -13,6 +13,7 @@ enum BeeTMode {
 class BeeTEditor;
 class BTNodeTypes;
 class FileDialog;
+class BeeTDebugger;
 
 class BeeTGui : public Module
 {
@@ -49,6 +50,7 @@ private:
 
 	// Modes
 	BeeTEditor* beetEditor = nullptr;
+	BeeTDebugger* beetDebugger = nullptr;
 
 };
 #endif

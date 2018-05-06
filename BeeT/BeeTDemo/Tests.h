@@ -28,4 +28,7 @@ void Test4();
 // Blackboard decorators in nodes
 void Test5();
 
+// Debugger connection with editor
+void Test6();
+
 #endif // !__TESTS_H__
