@@ -105,6 +105,12 @@ BEET_bool BEET_InitDebugger(int port)
 	return BeeT_Debugger_Init(g_Debug, port);
 }
 
+void BEET_DebuggerSetActive(BEET_bool active)
+{
+	BEET_ASSERT(g_Debug->initialized);
+	g_Debug->enabled = active;
+}
+
 //-----------------------------------------------------------------
 // BeeT API
 //-----------------------------------------------------------------
@@ -121,6 +127,13 @@ void BEET_Shutdown()
 		return;
 
 	BeetContext__Destroy(g_Beet);
+}
+
+
+void BEET_Tick()
+{
+	if (g_Debug->enabled)
+		BeeT_Debugger_Tick(g_Debug);
 }
 
 unsigned int BEET_LoadBehaviorTree(const char * buffer, int size)

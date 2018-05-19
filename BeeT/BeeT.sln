@@ -22,6 +22,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BeeT.Demo", "BeeTDemo\BeeT.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysFS", "PhysFS\PhysFS.vcxproj", "{7FB6CEE7-28C6-4238-8F14-58EDCD82707D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extern", "Extern", "{DE0941AA-381D-4060-849F-AC365403C32C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -149,6 +151,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0D3003E7-D8DB-4907-B579-0E125E5A1437} = {DE0941AA-381D-4060-849F-AC365403C32C}
+		{4EE5DD5A-D157-4494-85EE-61A99DB17AF9} = {DE0941AA-381D-4060-849F-AC365403C32C}
+		{7FB6CEE7-28C6-4238-8F14-58EDCD82707D} = {DE0941AA-381D-4060-849F-AC365403C32C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99B946D1-F2AE-409B-A40A-D6EE6F6038EA}

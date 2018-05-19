@@ -154,7 +154,7 @@
     <ClInclude Include="BeeT_decorator.h" />
     <ClInclude Include="beet_end.h" />
     <ClInclude Include="BeeT_node.h" />
-    <ClInclude Include="beet_overrides.h" />
+    <ClInclude Include="BeeT_NW_packet.h" />
     <ClInclude Include="BeeT_serializer.h" />
     <ClInclude Include="beet_std.h" />
     <ClInclude Include="ThirdParty\begin_code.h" />
@@ -171,6 +171,7 @@
     <ClCompile Include="BeeT_decorator.c" />
     <ClCompile Include="BeeT_memory.c" />
     <ClCompile Include="BeeT_node.c" />
+    <ClCompile Include="BeeT_NW_packet.c" />
     <ClCompile Include="BeeT_serializer.c" />
     <ClCompile Include="beet_std.c" />
     <ClCompile Include="ThirdParty\parson.c" />

@@ -1,5 +1,6 @@
 #include "Network.h"
 #include "Log.h"
+#include "Application.h"
 
 #include "../SDL2/include/SDL.h"
 
@@ -45,7 +46,7 @@ bool Network::Init()
 
 	msgBuffer = new char[MESSAGE_MAX_SIZE];
 	ListenConnections();
-
+	g_app->AddModuleUpdate(this);
 	return true;
 }
 
@@ -106,7 +107,8 @@ void Network::StopListeningConnections()
 void Network::HandleNewConnections()
 {
 	int numActiveSockets = SDLNet_CheckSockets(socketSet, 0);
-
+	if (numActiveSockets == 0)
+		return;
 	int serverSocketReady = SDLNet_SocketReady(serverSocket);
 
 	if (serverSocketReady != 0)
@@ -119,9 +121,17 @@ void Network::HandleNewConnections()
 		
 		SDLNet_TCP_AddSocket(socketSet, clientSocket[index]);
 		numClientsConnected++;
-		//Send Acknowledgement for connection
 
-		//SDLNet_TCP_Send(clientSocket[index], (void*)buffer, length);
+		LOGI("New connection");
+		
+		//Send Acknowledgement for connection
+		int msg = 1;
+		int len = sizeof(msg);
+		int ret = SDLNet_TCP_Send(clientSocket[index], &msg, len);
+		if (ret < len)
+		{
+			LOGE("Error sending new connection acknowledgement: %s", SDLNet_GetError());
+		}
 	}
 	else // No space for new Clients
 	{

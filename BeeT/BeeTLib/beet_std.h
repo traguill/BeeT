@@ -2,6 +2,7 @@
 #define __beet_std_h__
 
 #include <stdio.h>
+#include <string.h>
 
 typedef enum {
 	BEET_FALSE = 0,
@@ -20,6 +21,8 @@ extern "C" {
 #endif
 
 // Memory ---------------------------------------------------------
+#define BEET_memcpy memcpy
+
 extern BEET_API void *BEET_malloc(size_t size);
 extern BEET_API void  BEET_free(void* mem);
 extern BEET_API void *BEET_realloc(void* mem, size_t size);

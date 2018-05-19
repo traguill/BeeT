@@ -25,6 +25,12 @@
     <Filter Include="SDL_net">
       <UniqueIdentifier>{098ec4ad-204c-4297-ab5f-0930d0cc328e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Network">
+      <UniqueIdentifier>{47e5d713-8648-44b7-94c2-ded67cb65d6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Network">
+      <UniqueIdentifier>{cccb4f63-ad1b-45de-968f-48486dc580f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="beet.h">
@@ -46,9 +52,6 @@
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="beet_std.h">
-      <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="beet_overrides.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="BeeT_serializer.h">
@@ -74,6 +77,9 @@
     </ClInclude>
     <ClInclude Include="ThirdParty\begin_code.h">
       <Filter>SDL_net</Filter>
+    </ClInclude>
+    <ClInclude Include="BeeT_NW_packet.h">
+      <Filter>Header Files\Network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="ThirdParty\SDLnetUDP.c">
       <Filter>SDL_net</Filter>
+    </ClCompile>
+    <ClCompile Include="BeeT_NW_packet.c">
+      <Filter>Source Files\Network</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

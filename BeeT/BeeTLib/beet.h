@@ -25,10 +25,13 @@ typedef struct
 // Main
 //--------------------------------------------------------------------------------
 
-BEET_API void	BEET_Init();
-BEET_API void	BEET_Shutdown();
+BEET_API void		BEET_Init();
+BEET_API void		BEET_Shutdown();
 
 BEET_API BEET_bool	BEET_InitDebugger(int port);
+BEET_API void		BEET_DebuggerSetActive(BEET_bool active); // Enable/Disable the debugger. Call BEET_InitDebugger before using this.
+
+BEET_API void		BEET_Tick();
 
 //--------------------------------------------------------------------------------
 // BehaviorTree

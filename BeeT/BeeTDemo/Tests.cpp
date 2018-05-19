@@ -221,4 +221,11 @@ void Test6()
 		printf("BeeT Debugger initialized successfuly\n");
 	else
 		printf("BeeT Debugger failed at initializing\n");
+
+	BEET_DebuggerSetActive(BEET_TRUE);
+	while (true)
+	{
+		BEET_Tick();
+	}
+	
 }
