@@ -14,7 +14,7 @@ struct BeeT_BehaviorTree
 	BeeT_Blackboard* bb;
 	dequeue* runningNodes;
 
-	void(*StartBehavior)(BeeT_BehaviorTree*, BeeT_Node*, ObserverFunc*);
+	void(*StartBehavior)(BeeT_BehaviorTree*, BeeT_Node*, ObserverFunc);
 	void(*StopBehavior)(BeeT_Node*, NodeStatus);
 	void(*Update)(BeeT_BehaviorTree*);
 	BEET_bool(*Step)(BeeT_BehaviorTree*);

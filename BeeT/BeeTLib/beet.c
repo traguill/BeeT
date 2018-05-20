@@ -93,7 +93,7 @@ unsigned int BeetContext__AddTree(BeetContext* ctx, BeeT_BehaviorTree* bt)
 
 BeeT_BehaviorTree* BeeTContext__GetTree(BeetContext* ctx, unsigned int btId)
 {
-	return (btId < ctx->numTreesLoaded) ? ctx->trees[btId] : NULL;
+	return ((int)btId < ctx->numTreesLoaded) ? ctx->trees[btId] : NULL;
 }
 
 //-----------------------------------------------------------------

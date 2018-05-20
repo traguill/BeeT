@@ -21,7 +21,7 @@ BeeT_Blackboard* BeeT_Blackboard_Init(const BeeT_Serializer * data)
 	
 		const char* name = BeeT_Serializer__GetString(varData, "name");
 		unsigned int length = strlen(name) + 1;
-		var->name = (const char*)BEET_malloc(length);
+		var->name = (char*)BEET_malloc(length);
 		strcpy(var->name, name);
 
 		var->type = (BBVarType)BeeT_Serializer__GetInt(varData, "type");

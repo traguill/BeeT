@@ -27,7 +27,8 @@ BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, BeeT_BehaviorTree* bt)
 	node->id = BeeT_Serializer__GetInt(data, "id");
 	node->type = (NodeType)BeeT_Serializer__GetInt(data, "type");
 	node->bt = bt;
-	node->observer = node->observerNode = NULL;
+	node->observer = NULL;
+	node->observerNode = NULL;
 	node->status = NS_INVALID;
 	node->Tick = &Tick;
 
@@ -125,7 +126,7 @@ BTN_Selector * BTN_Selector_Init(const BeeT_Serializer * data, BeeT_BehaviorTree
 	
 	btn->childs = InitDequeue();
 	unsigned int numChilds = BeeT_Serializer__GetArraySize(data, "childs");
-	for (int i = 0; i < numChilds; ++i)
+	for (unsigned int i = 0; i < numChilds; ++i)
 	{
 		BeeT_Node* child = BeeT_Node__Init(BeeT_Serializer__GetArray(data, "childs", i), bt);
 		dequeue_push_back(btn->childs, child);
@@ -143,7 +144,7 @@ BTN_Sequence * BTN_Sequence_Init(const BeeT_Serializer * data, BeeT_BehaviorTree
 
 	btn->childs = InitDequeue();
 	unsigned int numChilds = BeeT_Serializer__GetArraySize(data, "childs");
-	for (int i = 0; i < numChilds; ++i)
+	for (unsigned int i = 0; i < numChilds; ++i)
 	{
 		BeeT_Node* child = BeeT_Node__Init(BeeT_Serializer__GetArray(data, "childs", i), bt);
 		dequeue_push_back(btn->childs, child);
@@ -161,7 +162,7 @@ BTN_Task * BTN_Task_Init(const BeeT_Serializer * data)
 
 	const char* name = BeeT_Serializer__GetString(data, "name");
 	unsigned int length = strlen(name) + 1;
-	btn->name = (const char*)BEET_malloc(length);
+	btn->name = (char*)BEET_malloc(length);
 	strcpy(btn->name, name);
 
 	btn->node.OnInit = &BTN_Task_OnInit;
@@ -177,8 +178,8 @@ void BTN_Root_OnInit(BeeT_Node* self)
 	BTN_Root* btn = (BTN_Root*)self;
 	if (btn->startNode)
 	{
-		btn->startNode->observerNode = btn;
-		btn->node.bt->StartBehavior(btn->node.bt, btn->startNode, &BTN_Root_TreeFinish);
+		btn->startNode->observerNode = self;
+		btn->node.bt->StartBehavior(btn->node.bt, btn->startNode, BTN_Root_TreeFinish);
 	}
 }
 
@@ -187,8 +188,8 @@ void BTN_Selector_OnInit(BeeT_Node* self)
 	BTN_Selector* btn = (BTN_Selector*)self;
 	btn->current = dequeue_head(btn->childs);
 	BeeT_Node* current_node = (BeeT_Node*)dequeue_front(btn->childs);
-	current_node->observerNode = btn;
-	btn->node.bt->StartBehavior(btn->node.bt, current_node, &BTN_Selector_OnChildFinish);
+	current_node->observerNode = self;
+	btn->node.bt->StartBehavior(btn->node.bt, current_node, BTN_Selector_OnChildFinish);
 }
 
 void BTN_Sequence_OnInit(BeeT_Node* self)
@@ -196,8 +197,8 @@ void BTN_Sequence_OnInit(BeeT_Node* self)
 	BTN_Sequence* btn = (BTN_Sequence*)self;
 	btn->current = dequeue_head(btn->childs);
 	BeeT_Node* current_node = (BeeT_Node*)dequeue_front(btn->childs);
-	current_node->observerNode = btn;
-	btn->node.bt->StartBehavior(btn->node.bt, current_node, &BTN_Sequence_OnChildFinish);
+	current_node->observerNode = self;
+	btn->node.bt->StartBehavior(btn->node.bt, current_node, BTN_Sequence_OnChildFinish);
 }
 
 void BTN_Task_OnInit(BeeT_Node* self)
@@ -299,7 +300,7 @@ void BTN_Sequence_OnChildFinish(BeeT_Node* self, NodeStatus s)
 	BeeT_Node* child = (BeeT_Node*)btn->current->data;
 	if (child->status == NS_FAILURE)
 	{
-		btn->node.bt->StopBehavior(btn, NS_FAILURE);
+		btn->node.bt->StopBehavior(self, NS_FAILURE);
 		return;
 	}
 
@@ -307,12 +308,12 @@ void BTN_Sequence_OnChildFinish(BeeT_Node* self, NodeStatus s)
 	btn->current = btn->current->next;
 	if (btn->current == NULL)
 	{
-		btn->node.bt->StopBehavior(btn, NS_SUCCESS);
+		btn->node.bt->StopBehavior(self, NS_SUCCESS);
 	}
 	else
 	{
 		BeeT_Node* n_current = (BeeT_Node*)btn->current->data;
-		n_current->observerNode = btn;
+		n_current->observerNode = self;
 		btn->node.bt->StartBehavior(btn->node.bt, n_current, &BTN_Sequence_OnChildFinish);
 	}
 }

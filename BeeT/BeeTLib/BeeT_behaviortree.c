@@ -1,8 +1,8 @@
 #include "BeeT_behaviortree.h"
 
 // Forward delcarations
-void StartBehavior(BeeT_BehaviorTree*, BeeT_Node*, ObserverFunc*);
-void StopBehavior(BeeT_BehaviorTree*, BeeT_Node*, NodeStatus);
+void StartBehavior(BeeT_BehaviorTree*, BeeT_Node*, ObserverFunc);
+void StopBehavior(BeeT_Node*, NodeStatus);
 void Update(BeeT_BehaviorTree*);
 BEET_bool Step(BeeT_BehaviorTree*);
 
@@ -50,7 +50,7 @@ void BeeT_BehaviorTree__Destroy(BeeT_BehaviorTree * self)
 
 
 // Functions -----------------------------------------------------------------------------
-void StartBehavior(BeeT_BehaviorTree* bt, BeeT_Node* behavior, ObserverFunc* obsFunc)
+void StartBehavior(BeeT_BehaviorTree* bt, BeeT_Node* behavior, ObserverFunc obsFunc)
 {
 	if (obsFunc != NULL)
 		behavior->observer = obsFunc;

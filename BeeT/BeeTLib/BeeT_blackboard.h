@@ -16,7 +16,7 @@ enum BBVarType
 typedef struct BBVar BBVar;
 struct BBVar
 {
-	const char* name;
+	char* name;
 	BBVarType type;
 	void* data;
 };

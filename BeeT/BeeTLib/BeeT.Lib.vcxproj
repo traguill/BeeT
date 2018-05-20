@@ -153,6 +153,7 @@
     <ClInclude Include="BeeT_debugger.h" />
     <ClInclude Include="BeeT_decorator.h" />
     <ClInclude Include="beet_end.h" />
+    <ClInclude Include="BeeT_network.h" />
     <ClInclude Include="BeeT_node.h" />
     <ClInclude Include="BeeT_NW_packet.h" />
     <ClInclude Include="BeeT_serializer.h" />
@@ -170,6 +171,7 @@
     <ClCompile Include="BeeT_debugger.c" />
     <ClCompile Include="BeeT_decorator.c" />
     <ClCompile Include="BeeT_memory.c" />
+    <ClCompile Include="BeeT_network.c" />
     <ClCompile Include="BeeT_node.c" />
     <ClCompile Include="BeeT_NW_packet.c" />
     <ClCompile Include="BeeT_serializer.c" />

@@ -6,7 +6,7 @@
 #include "BeeT_decorator.h"
 
 // Forward declarations
-typedef struct BeeT_BehaviorTree;
+struct BeeT_BehaviorTree;
 
 typedef enum NodeStatus
 {
@@ -76,7 +76,7 @@ typedef NodeStatus(*beetCallbackFunc)(unsigned int btId, const char* taskId);
 typedef struct BTN_Task
 {
 	BeeT_Node node;
-	const char* name;
+	char* name;
 	beetCallbackFunc callbackFunc;
 }BTN_Task;
 

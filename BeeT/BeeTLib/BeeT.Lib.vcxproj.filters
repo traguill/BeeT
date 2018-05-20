@@ -81,6 +81,9 @@
     <ClInclude Include="BeeT_NW_packet.h">
       <Filter>Header Files\Network</Filter>
     </ClInclude>
+    <ClInclude Include="BeeT_network.h">
+      <Filter>Header Files\Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ThirdParty\parson.c">
@@ -126,6 +129,9 @@
       <Filter>SDL_net</Filter>
     </ClCompile>
     <ClCompile Include="BeeT_NW_packet.c">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="BeeT_network.c">
       <Filter>Source Files\Network</Filter>
     </ClCompile>
   </ItemGroup>
