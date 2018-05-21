@@ -31,6 +31,7 @@ BEET_bool BeeT_packet_Read(BeeT_packet * packet, TCPsocket * socket)
 
 				packet->data = BEET_malloc((numPackets * MAX_PACKET_SIZE) - offset);
 				pointer = packet->data;
+				initialized = BEET_TRUE;
 			}
 			packCount++;
 
@@ -44,7 +45,10 @@ BEET_bool BeeT_packet_Read(BeeT_packet * packet, TCPsocket * socket)
 				BEET_memcpy(pointer, tmp, MAX_PACKET_SIZE - offset); // Last packet. Do not copy the offset bytes
 			}
 		}
-	} while (packCount < numPackets || dataRecv > 0);
+	} while (packCount < numPackets && dataRecv > 0);
+
+	if (tmp)
+		BEET_free(tmp);
 	
 	return dataRecv > 0 ? BEET_TRUE : BEET_FALSE;
 }
@@ -56,7 +60,7 @@ BeeT_packet * BeeT_packet_Create(PacketType type, void * data, int size)
 
 	// Header: NumPackets + Type + Offset = sizeof(int * 3)
 	int totalDataSize = sizeof(int) * 3 + size;
-	int offset = totalDataSize % MAX_PACKET_SIZE;
+	int offset = (totalDataSize < MAX_PACKET_SIZE) ? MAX_PACKET_SIZE - totalDataSize : totalDataSize % MAX_PACKET_SIZE;
 	packet->size = totalDataSize + offset;
 	int numPackets = packet->size / MAX_PACKET_SIZE;
 
@@ -72,7 +76,8 @@ BeeT_packet * BeeT_packet_Create(PacketType type, void * data, int size)
 	BEET_memcpy(pointer, &offset, intSize);
 	pointer += intSize;
 
-	BEET_memcpy(pointer, data, size);
+	if(data != NULL)
+		BEET_memcpy(pointer, data, size);
 
 	return packet;
 }

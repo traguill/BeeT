@@ -5,8 +5,6 @@
 #include "../SDL2/include/SDL_net.h"
 #include <vector>
 
-#define MESSAGE_MAX_SIZE 512 // TODO: Change this
-
 class Network : public Module
 {
 public:
@@ -37,8 +35,6 @@ private:
 
 	bool listening = false;
 	int numClientsConnected = 0;
-
-	char* msgBuffer = nullptr; // Buffer to read incomming messages
 
 };
 #endif // !__NETWORK_H__

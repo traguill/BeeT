@@ -1,6 +1,7 @@
 #include "Network.h"
 #include "Log.h"
 #include "Application.h"
+#include "Packet.h"
 
 #include "../SDL2/include/SDL.h"
 
@@ -44,7 +45,6 @@ bool Network::Init()
 		return false;
 	}
 
-	msgBuffer = new char[MESSAGE_MAX_SIZE];
 	ListenConnections();
 	g_app->AddModuleUpdate(this);
 	return true;
@@ -58,8 +58,6 @@ bool Network::CleanUp()
 	if (listening)
 		SDLNet_TCP_Close(serverSocket);
 
-	if (msgBuffer)
-		delete[] msgBuffer;
 	SDLNet_Quit();
 	return true;
 }
@@ -124,14 +122,15 @@ void Network::HandleNewConnections()
 
 		LOGI("New connection");
 		
-		//Send Acknowledgement for connection
-		int msg = 1;
-		int len = sizeof(msg);
-		int ret = SDLNet_TCP_Send(clientSocket[index], &msg, len);
+		Packet* packet = new Packet(PacketType::PT_CONNECTION_ACK, NULL, 0);
+		int len = 0;
+		char* data = packet->PrepareToSend(len);
+		int ret = SDLNet_TCP_Send(clientSocket[index], data, len);
 		if (ret < len)
 		{
 			LOGE("Error sending new connection acknowledgement: %s", SDLNet_GetError());
 		}
+		delete packet;
 	}
 	else // No space for new Clients
 	{
@@ -150,13 +149,12 @@ void Network::HandleClientConnections()
 	for (int id = 0; id < maxClients; id++)
 	{
 		int clientSocketReady = SDLNet_SocketReady(clientSocket[id]);
-		if (clientSocketReady != 0)
+		if (clientSocketReady)
 		{
-
-			int dataRecv = SDLNet_TCP_Recv(clientSocket[id], msgBuffer, MESSAGE_MAX_SIZE);
+			Packet* packet = Packet::Read(&clientSocket[id]);
 
 			// Either the connection was closed or an error occurred
-			if (dataRecv <= 0)
+			if (packet == nullptr)
 			{
 				SDLNet_TCP_DelSocket(socketSet, clientSocket[id]);
 				SDLNet_TCP_Close(clientSocket[id]);
@@ -166,6 +164,7 @@ void Network::HandleClientConnections()
 			}
 			else // Data has been read successfully
 			{
+				//TODO: Switch by packet type: Now only stuff
 				// Send recv ack
 				//SDLNet_TCP_Send(clientSocket[id], (void*)buffer, length);
 			}

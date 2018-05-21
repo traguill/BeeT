@@ -6,7 +6,7 @@
 
 #define MAX_PACKET_SIZE 512
 
-typedef enum PacketType // Linked with BeeT.GUI Network.h enum
+typedef enum PacketType // Linked with BeeT.GUI Packet.h enum
 {
 	PT_CONNECTION_ACK,
 	PT_NULL_STATE

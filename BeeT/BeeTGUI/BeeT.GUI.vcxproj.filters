@@ -93,6 +93,9 @@
     <ClCompile Include="BeeTDebugger.cpp">
       <Filter>Debugger</Filter>
     </ClCompile>
+    <ClCompile Include="Packet.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -213,6 +216,9 @@
     <ClInclude Include="BeeTDebugger.h">
       <Filter>Debugger</Filter>
     </ClInclude>
+    <ClInclude Include="Packet.h">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
@@ -250,6 +256,9 @@
     </Filter>
     <Filter Include="Debugger">
       <UniqueIdentifier>{f12b58ab-5442-4105-ab8f-922c20d045f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{9e175612-5e7c-4280-81d8-82dc4c333f70}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

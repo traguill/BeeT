@@ -74,7 +74,10 @@ void BeeT_NW_Tick(BeeT_network* nw)
 				if (readRet)
 				{
 					if (packet->type == PT_CONNECTION_ACK)
+					{
+						printf("Connection established with Server\n");
 						sc->state++;
+					}
 				}
 				else
 				{
