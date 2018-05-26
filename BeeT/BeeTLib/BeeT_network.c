@@ -99,7 +99,10 @@ void BeeT_NW_Tick(BeeT_network* nw)
 
 		if (sc->state == WAITING_SEND_ACK)
 		{
-
+			if (BeeT_NW_SocketWaitingSendAck(sc))
+			{
+				sc->state = CLEANUP;
+			}
 		}
 
 		if (sc->state == CLEANUP)

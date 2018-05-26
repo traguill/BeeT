@@ -223,6 +223,13 @@ void Test6()
 		printf("BeeT Debugger failed at initializing\n");
 
 	BEET_DebuggerSetActive(BEET_TRUE);
+
+	unsigned int uid = BEET_LoadBehaviorTreeFromFile("blackboard.json");
+	printf("Behavior Tree loaded with id %u\n", uid);
+
+	BEET_SetTaskCallbackFunc(uid, "IsSeven", Test5IsSeven);
+	BEET_SetTaskCallbackFunc(uid, "Hello", Test5Hello);
+
 	while (true)
 	{
 		BEET_Tick();

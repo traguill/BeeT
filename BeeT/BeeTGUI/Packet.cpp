@@ -2,6 +2,7 @@
 #include <string.h>
 
 #define MESSAGE_MAX_SIZE 512 // TODO: Change this
+#define PACKET_HEADER_SIZE (sizeof(int)*3)
 
 Packet::Packet()
 {
@@ -10,7 +11,7 @@ Packet::Packet()
 Packet::Packet(PacketType type, void * data, int size) : type(type)
 {
 	totalSize = sizeof(int) * 3 + size;
-	int offset = (totalSize < MESSAGE_MAX_SIZE) ? MESSAGE_MAX_SIZE - totalSize : totalSize % MESSAGE_MAX_SIZE;
+	int offset = (totalSize < MESSAGE_MAX_SIZE) ? MESSAGE_MAX_SIZE - totalSize : MESSAGE_MAX_SIZE - (totalSize % MESSAGE_MAX_SIZE);
 	totalSize += offset;
 	int numPackets = totalSize / MESSAGE_MAX_SIZE;
 	outData = new char[totalSize];
@@ -32,6 +33,8 @@ Packet::~Packet()
 {
 	if (outData)
 		delete[] outData;
+	if (inData)
+		delete[] inData;
 }
 
 Packet * Packet::Read(TCPsocket * socket)
@@ -57,6 +60,7 @@ Packet * Packet::Read(TCPsocket * socket)
 				memcpy(&offset, tmp + (sizeof(int) * 2), sizeof(int));
 				packet->inData = new char[(numPackets * MESSAGE_MAX_SIZE) - offset];
 				pointer = packet->inData;
+				packet->totalSize = (numPackets * MESSAGE_MAX_SIZE) - offset;
 				initialized = true;
 			}
 			packCount++;
@@ -83,4 +87,19 @@ char * Packet::PrepareToSend(int & length)
 {
 	length = totalSize;
 	return outData;
+}
+
+PacketType Packet::GetType() const
+{
+	return type;
+}
+
+char * Packet::GetData(int & dataSize) const
+{
+	if (inData != nullptr)
+	{
+		dataSize = totalSize - PACKET_HEADER_SIZE;
+		return (inData + PACKET_HEADER_SIZE);
+	}
+	return nullptr;
 }

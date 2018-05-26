@@ -132,6 +132,8 @@ void BEET_Shutdown()
 
 void BEET_Tick()
 {
+	for (int i = 0; i < g_Beet->numTreesLoaded; i++)
+		g_Beet->trees[i]->Update(g_Beet->trees[i]);
 	if (g_Debug->enabled)
 		BeeT_Debugger_Tick(g_Debug);
 }
@@ -172,7 +174,6 @@ BEET_API void BEET_ExecuteBehaviorTree(unsigned int id)
 	BeeT_BehaviorTree* bt = BeeTContext__GetTree(g_Beet, id);
 	if (bt)
 	{
-		bt->StartBehavior(bt, bt->rootNode, NULL);
 		bt->Update(bt);
 	}
 }

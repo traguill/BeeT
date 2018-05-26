@@ -1,7 +1,9 @@
 #include "BeeTDebugger.h"
 #include "Application.h"
 #include "Window.h"
+#include "Network.h"
 #include "ThirdParty/ImGui/imgui.h"
+#include "Log.h"
 
 BeeTDebugger::BeeTDebugger()
 {
@@ -13,6 +15,7 @@ BeeTDebugger::~BeeTDebugger()
 
 void BeeTDebugger::Init()
 {
+	g_app->network->beetDebugger = this;
 }
 
 bool BeeTDebugger::Update()
@@ -35,4 +38,14 @@ bool BeeTDebugger::Update()
 
 void BeeTDebugger::CleanUp()
 {
+}
+
+void BeeTDebugger::HandleIncomingData(char * buf, int size, PacketType type)
+{
+	switch (type)
+	{
+	case PT_BT_FILE:
+		LOGI("BT Received: \n %s", buf);
+		break;
+	}
 }

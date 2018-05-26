@@ -33,6 +33,7 @@ BEET_bool BeeT_packet_Read(BeeT_packet * packet, TCPsocket * socket)
 
 				packet->data = BEET_malloc((numPackets * MAX_PACKET_SIZE) - offset);
 				pointer = packet->data;
+				packet->size = (numPackets * MAX_PACKET_SIZE) - offset;
 				initialized = BEET_TRUE;
 			}
 			packCount++;
@@ -62,7 +63,7 @@ BeeT_packet * BeeT_packet_Create(PacketType type, void * data, int size)
 
 	// Header: NumPackets + Type + Offset = sizeof(int * 3)
 	int totalDataSize = sizeof(int) * 3 + size;
-	int offset = (totalDataSize < MAX_PACKET_SIZE) ? MAX_PACKET_SIZE - totalDataSize : totalDataSize % MAX_PACKET_SIZE;
+	int offset = (totalDataSize < MAX_PACKET_SIZE) ? MAX_PACKET_SIZE - totalDataSize : MAX_PACKET_SIZE  - (totalDataSize % MAX_PACKET_SIZE);
 	packet->size = totalDataSize + offset;
 	int numPackets = packet->size / MAX_PACKET_SIZE;
 

@@ -2,6 +2,8 @@
 #include "Log.h"
 #include "Application.h"
 #include "Packet.h"
+#include "BeeTDebugger.h"
+#include "BeeTGui.h"
 
 #include "../SDL2/include/SDL.h"
 
@@ -164,11 +166,30 @@ void Network::HandleClientConnections()
 			}
 			else // Data has been read successfully
 			{
-				//HERE: Process the data
-				//SEND ACK
-				//TODO: Switch by packet type: Now only stuff
-				// Send recv ack
-				//SDLNet_TCP_Send(clientSocket[id], (void*)buffer, length);
+				// Get data
+				int recvDataSize = 0;
+				char* recvData = packet->GetData(recvDataSize);
+
+				// Send acknowledgement
+				switch (packet->GetType())
+				{
+					case PT_BT_FILE:
+					{
+						Packet * ackPacket = new Packet(PacketType::PT_BT_FILE_ACK, NULL, 0);
+						int len = 0;
+						char* data = ackPacket->PrepareToSend(len);
+						int ret = SDLNet_TCP_Send(clientSocket[id], data, len);
+						if (ret < len)
+						{
+							LOGE("Error sending Behavior Tree file acknowledgement: %s", SDLNet_GetError());
+						}
+						delete ackPacket;
+					}
+					break;
+				}
+				// Process data
+				beetDebugger->HandleIncomingData(recvData, recvDataSize, packet->GetType());
+				delete packet;
 			}
 		}
 	}

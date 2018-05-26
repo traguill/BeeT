@@ -8,5 +8,6 @@ BeeT_DBG_BT * BeeT_DGB_BT_Init(unsigned int uid, const char* buffer, unsigned in
 	bt->btBuffer = BEET_malloc(size);
 	BEET_memcpy(bt->btBuffer, buffer, size);
 	bt->dataToSendSize = size;
+	bt->initialized = BEET_FALSE;
 	return bt;
 }

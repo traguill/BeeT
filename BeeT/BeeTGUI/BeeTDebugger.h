@@ -1,6 +1,8 @@
 #ifndef __BEET_DEBUGGER_H__
 #define __BEET_DEBUGGER_H__
 
+#include "Packet.h"
+
 class BeeTDebugger
 {
 public:
@@ -10,6 +12,8 @@ public:
 	void Init();
 	bool Update();
 	void CleanUp();
+
+	void HandleIncomingData(char* buf, int size, PacketType type);
 
 private:
 

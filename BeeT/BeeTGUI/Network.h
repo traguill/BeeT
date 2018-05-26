@@ -5,6 +5,8 @@
 #include "../SDL2/include/SDL_net.h"
 #include <vector>
 
+class BeeTDebugger;
+
 class Network : public Module
 {
 public:
@@ -22,6 +24,9 @@ private:
 
 	void HandleNewConnections();
 	void HandleClientConnections();
+
+public:
+	BeeTDebugger* beetDebugger = nullptr; // Pointer to the debugger. It is automatically set once the debugger is created
 
 private:
 	IPaddress serverIP;

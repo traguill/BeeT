@@ -20,6 +20,8 @@ public:
 
 	static Packet* Read(TCPsocket* socket);
 	char* PrepareToSend(int& length);
+	char* GetData(int& dataSize) const;
+	PacketType GetType()const;
 
 private:
 	PacketType type;
