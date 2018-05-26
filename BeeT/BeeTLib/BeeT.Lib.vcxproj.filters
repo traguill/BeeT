@@ -31,6 +31,12 @@
     <Filter Include="Source Files\Network">
       <UniqueIdentifier>{cccb4f63-ad1b-45de-968f-48486dc580f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Debugger">
+      <UniqueIdentifier>{ceeec37c-8ceb-4f94-a63a-5c3564626fc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Debugger">
+      <UniqueIdentifier>{5f9d1295-b67a-44da-b210-598d54d3f28f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="beet.h">
@@ -84,6 +90,9 @@
     <ClInclude Include="BeeT_network.h">
       <Filter>Header Files\Network</Filter>
     </ClInclude>
+    <ClInclude Include="BeeT_DBG_behaviortree.h">
+      <Filter>Header Files\Debugger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ThirdParty\parson.c">
@@ -133,6 +142,9 @@
     </ClCompile>
     <ClCompile Include="BeeT_network.c">
       <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="BeeT_DBG_behaviortree.c">
+      <Filter>Source Files\Debugger</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

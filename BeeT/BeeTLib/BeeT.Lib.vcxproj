@@ -150,6 +150,7 @@
     <ClInclude Include="beet_begin.h" />
     <ClInclude Include="BeeT_behaviortree.h" />
     <ClInclude Include="BeeT_blackboard.h" />
+    <ClInclude Include="BeeT_DBG_behaviortree.h" />
     <ClInclude Include="BeeT_debugger.h" />
     <ClInclude Include="BeeT_decorator.h" />
     <ClInclude Include="beet_end.h" />
@@ -168,6 +169,7 @@
     <ClCompile Include="beet.c" />
     <ClCompile Include="BeeT_behaviortree.c" />
     <ClCompile Include="BeeT_blackboard.c" />
+    <ClCompile Include="BeeT_DBG_behaviortree.c" />
     <ClCompile Include="BeeT_debugger.c" />
     <ClCompile Include="BeeT_decorator.c" />
     <ClCompile Include="BeeT_memory.c" />

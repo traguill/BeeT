@@ -6,6 +6,8 @@
 enum PacketType // Linked with BeeT.Lib BeeT_NW_packet.h enum
 {
 	PT_CONNECTION_ACK,
+	PT_BT_FILE, // Contains the whole BT to be recreated in the Editor
+	PT_BT_FILE_ACK,
 	PT_NULL_STATE
 };
 

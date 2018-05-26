@@ -4,8 +4,10 @@
 
 void BeeT_packet_Cleanup(BeeT_packet * packet)
 {
+	BEET_ASSERT(packet != NULL);
 	if (packet->data)
 		BEET_free(packet->data);
+	BEET_free(packet);
 }
 
 BEET_bool BeeT_packet_Read(BeeT_packet * packet, TCPsocket * socket)

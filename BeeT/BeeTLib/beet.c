@@ -146,7 +146,8 @@ unsigned int BEET_LoadBehaviorTree(const char * buffer, int size)
 		return 0;
 	
 	unsigned int uid = BeetContext__AddTree(g_Beet, bt);
-
+	if (g_Debug->enabled)
+		BeeT_Debugger_LoadBT(g_Debug, buffer, size, uid);
 	BeeT_Serializer__Destroy(parser);
 
 	return uid;

@@ -164,6 +164,8 @@ void Network::HandleClientConnections()
 			}
 			else // Data has been read successfully
 			{
+				//HERE: Process the data
+				//SEND ACK
 				//TODO: Switch by packet type: Now only stuff
 				// Send recv ack
 				//SDLNet_TCP_Send(clientSocket[id], (void*)buffer, length);
