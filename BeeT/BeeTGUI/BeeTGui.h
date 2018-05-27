@@ -42,7 +42,7 @@ public:
 	BTNodeTypes* btNodeTypes = nullptr;
 
 private:
-	BeeTMode mode = BEET_EDITOR; // BeeTGui has two modes: Editor and Debugger. Only one of them can be enabled at the time
+	BeeTMode mode = BEET_DEBUGGER; // BeeTGui has two modes: Editor and Debugger. Only one of them can be enabled at the time
 
 	std::vector<ax::NodeEditor::EditorContext*> editorContextList; 
 	ax::NodeEditor::EditorContext* currentEditorContext = nullptr; // Context to handle the node graph editor
