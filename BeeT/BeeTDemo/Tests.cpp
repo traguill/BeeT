@@ -228,6 +228,11 @@ void Test6()
 	BEET_SetTaskCallbackFunc(uid, "IsSeven", Test5IsSeven);
 	BEET_SetTaskCallbackFunc(uid, "Hello", Test5Hello);
 
+	BEET_BBSetBool(uid, "mybool", BEET_FALSE);
+	//BEET_BBSetInt(uid, "myint", 4);
+	//BEET_BBSetFloat(uid, "myfloat", 123.456f);
+	//BEET_BBSetString(uid, "mystring", "Goodbye World");
+
 	while (true)
 	{
 		BEET_Tick();

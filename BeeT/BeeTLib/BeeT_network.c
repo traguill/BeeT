@@ -65,7 +65,7 @@ void BeeT_NW_Tick(BeeT_network* nw)
 			}
 			sc->socket = tcpsock;
 			SDLNet_TCP_AddSocket(nw->socketSet, sc->socket);
-			sc->state++;
+			sc->state = WAITING_CONNECTION_ACK;
 		}
 
 		if (sc->state == WAITING_CONNECTION_ACK)
@@ -79,7 +79,7 @@ void BeeT_NW_Tick(BeeT_network* nw)
 					if (packet->type == PT_CONNECTION_ACK)
 					{
 						printf("Connection established with Server\n");
-						sc->state++;
+						sc->state = READY_TO_SEND;
 					}
 				}
 				else
@@ -94,15 +94,12 @@ void BeeT_NW_Tick(BeeT_network* nw)
 		if (sc->state == READY_TO_SEND)
 		{
 			if (BeeT_NW_SocketReadyToSend(sc))
-				sc->state = WAITING_CONNECTION_ACK;
+				sc->state = WAITING_SEND_ACK;
 		}
 
 		if (sc->state == WAITING_SEND_ACK)
 		{
-			if (BeeT_NW_SocketWaitingSendAck(sc))
-			{
-				sc->state = CLEANUP;
-			}
+			BeeT_NW_SocketWaitingSendAck(sc);
 		}
 
 		if (sc->state == CLEANUP)
@@ -154,7 +151,18 @@ BEET_bool BeeT_NW_SocketReadyToSend(BeeT_socket * sc)
 	}
 	else     // Send bt update data
 	{
-
+		if (BeeT_dBT_HasDataToSend(sc->bt))
+		{
+			char* buf = NULL;
+			int size = BeeT_dBT_GetSampleData(sc->bt, &buf);
+			// create a packet with the buffer
+			// send data
+			// remove packet
+			printf("%s", buf);
+			if(buf)
+				BEET_free(buf);
+			return BEET_TRUE;
+		}
 	}
 	return BEET_FALSE;
 }

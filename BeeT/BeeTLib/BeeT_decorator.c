@@ -24,9 +24,9 @@ BeeT_decorator * BeeT_Decorator_Init(BeeT_Serializer * data, BeeT_Blackboard * b
 {
 	BeeT_decorator* dec = BEET_malloc(sizeof(BeeT_decorator));
 
-	const char* varAName = BeeT_Serializer__GetString(data, "var");
+	const char* varAName = BeeT_Serializer_GetString(data, "var");
 	dec->varA = bb->FindVar(bb, varAName);
-	int compareOption = BeeT_Serializer__GetInt(data, "option");
+	int compareOption = BeeT_Serializer_GetInt(data, "option");
 	if (dec->varA)
 	{
 		switch (dec->varA->type)
@@ -39,19 +39,19 @@ BeeT_decorator * BeeT_Decorator_Init(BeeT_Serializer * data, BeeT_Blackboard * b
 			break;
 		case BV_INT:
 			dec->varB = BEET_malloc(sizeof(int));
-			*((int*)dec->varB) = BeeT_Serializer__GetInt(data, "var2");
+			*((int*)dec->varB) = BeeT_Serializer_GetInt(data, "var2");
 			BEET_bool(*funcInt[6])(BeeT_decorator*) = { &Pass_IntEqual, &Pass_IntNotEqual, &Pass_IntGreater, &Pass_IntLess, &Pass_IntEqualGreater, &Pass_IntEqualLess };
 			dec->Pass = funcInt[compareOption];
 			break;
 		case BV_FLOAT:
 			dec->varB = BEET_malloc(sizeof(float));
-			*((float*)(dec->varB)) = BeeT_Serializer__GetFloat(data, "var2");
+			*((float*)(dec->varB)) = BeeT_Serializer_GetFloat(data, "var2");
 			BEET_bool(*funcFloat[6])(BeeT_decorator*) = { &Pass_FloatEqual, &Pass_FloatNotEqual, &Pass_FloatGreater, &Pass_FloatLess, &Pass_FloatEqualGreater, &Pass_FloatEqualLess };
 			dec->Pass = funcFloat[compareOption];
 			break;
 		case BV_STRING:
 		{
-			const char* bvName = BeeT_Serializer__GetString(data, "var2");
+			const char* bvName = BeeT_Serializer_GetString(data, "var2");
 			unsigned int bvLength = strlen(bvName) + 1;
 			dec->varB = BEET_malloc(bvLength);
 			strcpy(dec->varB, bvName);

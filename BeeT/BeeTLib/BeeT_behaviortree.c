@@ -11,15 +11,15 @@ BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 	BeeT_BehaviorTree* tree = (BeeT_BehaviorTree*)BEET_malloc(sizeof(BeeT_BehaviorTree));
 	tree->bb = BeeT_Blackboard_Init(data);
 
-	tree->uid = BeeT_Serializer__GetUInt(data, "uid");
-	int rootId = BeeT_Serializer__GetInt(data, "rootNodeId");
-	int numNodes = BeeT_Serializer__GetArraySize(data, "nodes");
+	tree->uid = BeeT_Serializer_GetUInt(data, "uid");
+	int rootId = BeeT_Serializer_GetInt(data, "rootNodeId");
+	int numNodes = BeeT_Serializer_GetArraySize(data, "nodes");
 	for (int i = 0; i < numNodes; ++i)
 	{
-		BeeT_Serializer* nodeData = BeeT_Serializer__GetArray(data, "nodes", i);
-		if (BeeT_Serializer__GetInt(nodeData, "id") == rootId)
+		BeeT_Serializer* nodeData = BeeT_Serializer_GetArray(data, "nodes", i);
+		if (BeeT_Serializer_GetInt(nodeData, "id") == rootId)
 		{
-			BeeT_Serializer* rootNodeData = BeeT_Serializer__GetArray(data, "nodes", i);
+			BeeT_Serializer* rootNodeData = BeeT_Serializer_GetArray(data, "nodes", i);
 			tree->rootNode = BeeT_Node__Init(rootNodeData, tree);
 			BEET_free(nodeData);
 			BEET_free(rootNodeData);

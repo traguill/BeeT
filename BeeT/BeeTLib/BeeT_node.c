@@ -6,7 +6,7 @@ BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, BeeT_BehaviorTree* bt)
 {
 	
 	BeeT_Node* node = NULL;
-	NodeType type = (NodeType)BeeT_Serializer__GetInt(data, "type");
+	NodeType type = (NodeType)BeeT_Serializer_GetInt(data, "type");
 	switch (type)
 	{
 	case NT_ROOT:
@@ -24,8 +24,8 @@ BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, BeeT_BehaviorTree* bt)
 		node = (BeeT_Node*)BTN_Task_Init(data);
 		break;
 	}
-	node->id = BeeT_Serializer__GetInt(data, "id");
-	node->type = (NodeType)BeeT_Serializer__GetInt(data, "type");
+	node->id = BeeT_Serializer_GetInt(data, "id");
+	node->type = (NodeType)BeeT_Serializer_GetInt(data, "type");
 	node->bt = bt;
 	node->observer = NULL;
 	node->observerNode = NULL;
@@ -33,10 +33,10 @@ BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, BeeT_BehaviorTree* bt)
 	node->Tick = &Tick;
 
 	node->decorators = InitDequeue();
-	int decSize = BeeT_Serializer__GetArraySize(data, "decorators");
+	int decSize = BeeT_Serializer_GetArraySize(data, "decorators");
 	for (int i = 0; i < decSize; ++i)
 	{
-		BeeT_Serializer* decData = BeeT_Serializer__GetArray(data, "decorators", i);
+		BeeT_Serializer* decData = BeeT_Serializer_GetArray(data, "decorators", i);
 		BeeT_decorator* dec = BeeT_Decorator_Init(decData, bt->bb);
 		dequeue_push_back(node->decorators, dec);
 		BEET_free(decData);
@@ -108,10 +108,10 @@ BTN_Root* BTN_Root_Init(const BeeT_Serializer* data, BeeT_BehaviorTree* bt)
 {
 	BTN_Root* btn = (BTN_Root*)BEET_malloc(sizeof(BTN_Root));
 
-	int size = BeeT_Serializer__GetArraySize(data, "childs");
-	if (BeeT_Serializer__GetArraySize(data, "childs") != 0)
+	int size = BeeT_Serializer_GetArraySize(data, "childs");
+	if (BeeT_Serializer_GetArraySize(data, "childs") != 0)
 	{
-		btn->startNode = BeeT_Node__Init(BeeT_Serializer__GetArray(data, "childs", 0), bt);
+		btn->startNode = BeeT_Node__Init(BeeT_Serializer_GetArray(data, "childs", 0), bt);
 	}
 
 	btn->node.OnInit = &BTN_Root_OnInit;
@@ -125,10 +125,10 @@ BTN_Selector * BTN_Selector_Init(const BeeT_Serializer * data, BeeT_BehaviorTree
 	BTN_Selector* btn = (BTN_Selector*)BEET_malloc(sizeof(BTN_Selector));
 	
 	btn->childs = InitDequeue();
-	unsigned int numChilds = BeeT_Serializer__GetArraySize(data, "childs");
+	unsigned int numChilds = BeeT_Serializer_GetArraySize(data, "childs");
 	for (unsigned int i = 0; i < numChilds; ++i)
 	{
-		BeeT_Node* child = BeeT_Node__Init(BeeT_Serializer__GetArray(data, "childs", i), bt);
+		BeeT_Node* child = BeeT_Node__Init(BeeT_Serializer_GetArray(data, "childs", i), bt);
 		dequeue_push_back(btn->childs, child);
 	}
 
@@ -143,10 +143,10 @@ BTN_Sequence * BTN_Sequence_Init(const BeeT_Serializer * data, BeeT_BehaviorTree
 	BTN_Sequence* btn = (BTN_Sequence*)BEET_malloc(sizeof(BTN_Sequence));
 
 	btn->childs = InitDequeue();
-	unsigned int numChilds = BeeT_Serializer__GetArraySize(data, "childs");
+	unsigned int numChilds = BeeT_Serializer_GetArraySize(data, "childs");
 	for (unsigned int i = 0; i < numChilds; ++i)
 	{
-		BeeT_Node* child = BeeT_Node__Init(BeeT_Serializer__GetArray(data, "childs", i), bt);
+		BeeT_Node* child = BeeT_Node__Init(BeeT_Serializer_GetArray(data, "childs", i), bt);
 		dequeue_push_back(btn->childs, child);
 	}
 
@@ -160,7 +160,7 @@ BTN_Task * BTN_Task_Init(const BeeT_Serializer * data)
 {
 	BTN_Task* btn = (BTN_Task*)BEET_malloc(sizeof(BTN_Task));
 
-	const char* name = BeeT_Serializer__GetString(data, "name");
+	const char* name = BeeT_Serializer_GetString(data, "name");
 	unsigned int length = strlen(name) + 1;
 	btn->name = (char*)BEET_malloc(length);
 	strcpy(btn->name, name);

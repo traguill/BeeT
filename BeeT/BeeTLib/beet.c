@@ -137,7 +137,7 @@ unsigned int BEET_LoadBehaviorTree(const char * buffer, int size, BEET_bool debu
 {
 	BEET_ASSERT(buffer != NULL);
 
-	BeeT_Serializer* parser = BeeT_Serializer__CreateFromBuffer(buffer);
+	BeeT_Serializer* parser = BeeT_Serializer_CreateFromBuffer(buffer);
 	BeeT_BehaviorTree* bt = BeeT_BehaviorTree__Init(parser);
 	if (bt == NULL)
 		return 0;
@@ -146,7 +146,7 @@ unsigned int BEET_LoadBehaviorTree(const char * buffer, int size, BEET_bool debu
 	if(debug)
 		bt->debug = BeeT_Debugger_LoadBT(g_Debug, buffer, size, uid);
 	
-	BeeT_Serializer__Destroy(parser);
+	BeeT_Serializer_Destroy(parser);
 	return uid;
 }
 
@@ -270,10 +270,11 @@ int BEET_SetTaskCallbackFunc(unsigned int btId, const char * task, beetCallbackF
 	return 0;
 }
 
-BBVar* BEET_QuickFindVar(unsigned int btId, const char* varName, BeeT_BehaviorTree* bt)
+BBVar* BEET_QuickFindVar(unsigned int btId, const char* varName, BeeT_BehaviorTree** bt)
 {
 	BeeT_BehaviorTree* foundBT = BeeTContext__GetTree(g_Beet, btId);
-	if (bt != NULL) bt = foundBT;
+	if(bt != NULL)
+		*bt = foundBT;
 	if (foundBT != NULL)
 		return foundBT->bb->FindVar(foundBT->bb, varName);
 	else
@@ -307,7 +308,7 @@ const char * BEET_BBGetString(unsigned int btId, const char * varName)
 BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool value)
 {
 	BeeT_BehaviorTree* bt = NULL;
-	BBVar* var = BEET_QuickFindVar(btId, varName, bt);
+	BBVar* var = BEET_QuickFindVar(btId, varName, &bt);
 	if (var)
 	{
 		if (bt->debug != NULL)
@@ -321,7 +322,7 @@ BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool valu
  BEET_bool BEET_BBSetInt(unsigned int btId, const char * varName, int value)
 {
 	BeeT_BehaviorTree* bt = NULL;
-	BBVar* var = BEET_QuickFindVar(btId, varName, bt);
+	BBVar* var = BEET_QuickFindVar(btId, varName, &bt);
 	if (var)
 	{
 		if (bt->debug != NULL)
@@ -335,7 +336,7 @@ BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool valu
  BEET_bool BEET_BBSetFloat(unsigned int btId, const char * varName, float value)
 {
 	 BeeT_BehaviorTree* bt = NULL;
-	 BBVar* var = BEET_QuickFindVar(btId, varName, bt);
+	 BBVar* var = BEET_QuickFindVar(btId, varName, &bt);
 	 if (var)
 	 {
 		 if (bt->debug != NULL)
@@ -349,7 +350,7 @@ BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool valu
  BEET_bool BEET_BBSetString(unsigned int btId, const char * varName, const char * value)
 {
 	 BeeT_BehaviorTree* bt = NULL;
-	 BBVar* var = BEET_QuickFindVar(btId, varName, bt);
+	 BBVar* var = BEET_QuickFindVar(btId, varName, &bt);
 	 if (var)
 	 {
 		 if (bt->debug != NULL)
