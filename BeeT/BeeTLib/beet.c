@@ -2,6 +2,7 @@
 #include "BeeT_serializer.h"
 #include "BeeT_behaviortree.h"
 #include "BeeT_debugger.h"
+#include "BeeT_DBG_behaviortree.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -105,12 +106,6 @@ BEET_bool BEET_InitDebugger(int port)
 	return BeeT_Debugger_Init(g_Debug, port);
 }
 
-void BEET_DebuggerSetActive(BEET_bool active)
-{
-	BEET_ASSERT(g_Debug->initialized);
-	g_Debug->enabled = active;
-}
-
 //-----------------------------------------------------------------
 // BeeT API
 //-----------------------------------------------------------------
@@ -134,11 +129,11 @@ void BEET_Tick()
 {
 	for (int i = 0; i < g_Beet->numTreesLoaded; i++)
 		g_Beet->trees[i]->Update(g_Beet->trees[i]);
-	if (g_Debug->enabled)
+	if(g_Debug->initialized)
 		BeeT_Debugger_Tick(g_Debug);
 }
 
-unsigned int BEET_LoadBehaviorTree(const char * buffer, int size)
+unsigned int BEET_LoadBehaviorTree(const char * buffer, int size, BEET_bool debug)
 {
 	BEET_ASSERT(buffer != NULL);
 
@@ -148,14 +143,14 @@ unsigned int BEET_LoadBehaviorTree(const char * buffer, int size)
 		return 0;
 	
 	unsigned int uid = BeetContext__AddTree(g_Beet, bt);
-	if (g_Debug->enabled)
-		BeeT_Debugger_LoadBT(g_Debug, buffer, size, uid);
+	if(debug)
+		bt->debug = BeeT_Debugger_LoadBT(g_Debug, buffer, size, uid);
+	
 	BeeT_Serializer__Destroy(parser);
-
 	return uid;
 }
 
-unsigned int BEET_LoadBehaviorTreeFromFile(const char * filename)
+unsigned int BEET_LoadBehaviorTreeFromFile(const char * filename, BEET_bool debug)
 {
 	BEET_ASSERT(filename != NULL);
 	int fileSize = 0;
@@ -163,7 +158,7 @@ unsigned int BEET_LoadBehaviorTreeFromFile(const char * filename)
 	unsigned int result = 0;
 	if (fileData != NULL)	// If fileData is NULL, the filename could not be found or loaded.
 	{
-		result = BEET_LoadBehaviorTree(fileData, fileSize);
+		result = BEET_LoadBehaviorTree(fileData, fileSize, debug);
 		BEET_free(fileData);
 	}
 	return result;
@@ -275,44 +270,48 @@ int BEET_SetTaskCallbackFunc(unsigned int btId, const char * task, beetCallbackF
 	return 0;
 }
 
-BBVar* BEET_QuickFindVar(unsigned int btId, const char* varName)
+BBVar* BEET_QuickFindVar(unsigned int btId, const char* varName, BeeT_BehaviorTree* bt)
 {
-	BeeT_BehaviorTree* bt = BeeTContext__GetTree(g_Beet, btId);
-	if (bt != NULL)
-		return bt->bb->FindVar(bt->bb, varName);
+	BeeT_BehaviorTree* foundBT = BeeTContext__GetTree(g_Beet, btId);
+	if (bt != NULL) bt = foundBT;
+	if (foundBT != NULL)
+		return foundBT->bb->FindVar(foundBT->bb, varName);
 	else
 		return NULL;
 }
 
 BEET_bool BEET_BBGetBool(unsigned int btId, const char * varName)
 {
-	BBVar* var = BEET_QuickFindVar(btId, varName);
+	BBVar* var = BEET_QuickFindVar(btId, varName, NULL);
 	return var ? *(BEET_bool*)var->data : BEET_FALSE;
 }
 
 int BEET_BBGetInt(unsigned int btId, const char * varName)
 {
-	BBVar* var = BEET_QuickFindVar(btId, varName);
+	BBVar* var = BEET_QuickFindVar(btId, varName, NULL);
 	return var ? *(int*)var->data : 0;
 }
 
 float BEET_BBGetFloat(unsigned int btId, const char * varName)
 {
-	BBVar* var = BEET_QuickFindVar(btId, varName);
+	BBVar* var = BEET_QuickFindVar(btId, varName, NULL);
 	return var ? *(float*)var->data : 0.0f;
 }
 
 const char * BEET_BBGetString(unsigned int btId, const char * varName)
 {
-	BBVar* var = BEET_QuickFindVar(btId, varName);
+	BBVar* var = BEET_QuickFindVar(btId, varName, NULL);
 	return var ? (const char*)var->data : "";
 }
 
 BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool value)
 {
-	BBVar* var = BEET_QuickFindVar(btId, varName);
+	BeeT_BehaviorTree* bt = NULL;
+	BBVar* var = BEET_QuickFindVar(btId, varName, bt);
 	if (var)
 	{
+		if (bt->debug != NULL)
+			BeeT_dBT_bbBool(bt->debug, var, value);
 		*((BEET_bool*)var->data) = value;
 		return BEET_TRUE;
 	}
@@ -321,9 +320,12 @@ BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool valu
 
  BEET_bool BEET_BBSetInt(unsigned int btId, const char * varName, int value)
 {
-	BBVar* var = BEET_QuickFindVar(btId, varName);
+	BeeT_BehaviorTree* bt = NULL;
+	BBVar* var = BEET_QuickFindVar(btId, varName, bt);
 	if (var)
 	{
+		if (bt->debug != NULL)
+			BeeT_dBT_bbInt(bt->debug, var, value);
 		*((int*)var->data) = value;
 		return BEET_TRUE;
 	}
@@ -332,9 +334,12 @@ BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool valu
 
  BEET_bool BEET_BBSetFloat(unsigned int btId, const char * varName, float value)
 {
-	 BBVar* var = BEET_QuickFindVar(btId, varName);
+	 BeeT_BehaviorTree* bt = NULL;
+	 BBVar* var = BEET_QuickFindVar(btId, varName, bt);
 	 if (var)
 	 {
+		 if (bt->debug != NULL)
+			 BeeT_dBT_bbFloat(bt->debug, var, value);
 		 *((float*)var->data) = value;
 		 return BEET_TRUE;
 	 }
@@ -343,9 +348,12 @@ BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool valu
 
  BEET_bool BEET_BBSetString(unsigned int btId, const char * varName, const char * value)
 {
-	 BBVar* var = BEET_QuickFindVar(btId, varName);
+	 BeeT_BehaviorTree* bt = NULL;
+	 BBVar* var = BEET_QuickFindVar(btId, varName, bt);
 	 if (var)
 	 {
+		 if (bt->debug != NULL)
+			 BeeT_dBT_bbString(bt->debug, var, value);
 		 BEET_free(var->data);
 		 unsigned int bvLength = strlen(value) + 1;
 		 var->data = BEET_malloc(bvLength);

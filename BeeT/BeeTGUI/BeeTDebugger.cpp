@@ -8,7 +8,11 @@
 #include "BeeTGui.h"
 #include "Data.h"
 #include "BehaviorTree.h"
+#include "Blackboard.h"
 
+#include <string>
+
+using namespace std;
 namespace ne = ax::NodeEditor;
 
 BeeTDebugger::BeeTDebugger()
@@ -58,8 +62,42 @@ void BeeTDebugger::BlackboardWin()
 	ImGui::SetNextWindowPos(ImVec2(debuggerSize.x - (debuggerSize.x * blackboardSize.x), ImGui::GetCursorPosY() - ImGui::GetCursorPosX()));
 	ImGui::SetNextWindowSize(ImVec2(debuggerSize.x * blackboardSize.x, debuggerSize.y * blackboardSize.y));
 	ImGui::Begin("Blackboard", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
-
-	ImGui::Text("This is the blackboard");
+	
+	if (bt)
+	{
+		for (auto var : bt->bb->variables)
+		{
+			ImGui::Text("%s ", var->name.data());
+			ImGui::SameLine();
+			switch (var->type)
+			{
+				case BV_BOOL:
+				{
+					bool valBool = boost::any_cast<bool>(var->value);
+					ImGui::Text("%s", valBool ? "true" : "false");
+				}
+					break;
+				case BV_INT:
+				{
+					int valInt = boost::any_cast<int>(var->value);
+					ImGui::Text("%i", valInt);
+				}
+					break;
+				case BV_FLOAT:
+				{
+					float valFloat = boost::any_cast<float>(var->value);
+					ImGui::Text("%.2f", valFloat);
+				}
+					break;
+				case BV_STRING:
+				{
+					string valString = boost::any_cast<string>(var->value);
+					ImGui::Text("%s", valString.data());
+				}
+					break;
+			}
+		}
+	}
 
 	ImGui::End();
 }

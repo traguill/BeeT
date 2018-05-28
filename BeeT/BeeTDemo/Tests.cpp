@@ -41,7 +41,7 @@ void RunTest(int testId)
 void Test1()
 {
 	printf("%i\n", BEET_BehaviorTreeCount());
-	unsigned int uid = BEET_LoadBehaviorTreeFromFile("bt.json");
+	unsigned int uid = BEET_LoadBehaviorTreeFromFile("bt.json", BEET_FALSE);
 	printf("BT: %u\n", uid);
 	printf("%i\n", BEET_BehaviorTreeCount());
 }
@@ -119,7 +119,7 @@ NodeStatus Test3DieFunc(unsigned int btUid, const char * taskId)
 
 void Test3()
 {
-	unsigned int uid = BEET_LoadBehaviorTreeFromFile("bt.json");
+	unsigned int uid = BEET_LoadBehaviorTreeFromFile("bt.json", BEET_FALSE);
 	printf("Behavior Tree loaded with id %u\n", uid);
 	
 	int result = 0;
@@ -148,7 +148,7 @@ void Test3()
 
 void Test4()
 {
-	unsigned int uid = BEET_LoadBehaviorTreeFromFile("blackboard.json");
+	unsigned int uid = BEET_LoadBehaviorTreeFromFile("blackboard.json", BEET_FALSE);
 	printf("Behavior Tree loaded with id %u\n", uid);
 
 	bool mybool;
@@ -202,7 +202,7 @@ NodeStatus Test5Hello(unsigned int btUid, const char * taskId)
 
 void Test5()
 {
-	unsigned int uid = BEET_LoadBehaviorTreeFromFile("blackboard.json");
+	unsigned int uid = BEET_LoadBehaviorTreeFromFile("blackboard.json", BEET_FALSE);
 	printf("Behavior Tree loaded with id %u\n", uid);
 
 	BEET_SetTaskCallbackFunc(uid, "IsSeven", Test5IsSeven);
@@ -222,9 +222,7 @@ void Test6()
 	else
 		printf("BeeT Debugger failed at initializing\n");
 
-	BEET_DebuggerSetActive(BEET_TRUE);
-
-	unsigned int uid = BEET_LoadBehaviorTreeFromFile("blackboard.json");
+	unsigned int uid = BEET_LoadBehaviorTreeFromFile("blackboard.json", BEET_TRUE);
 	printf("Behavior Tree loaded with id %u\n", uid);
 
 	BEET_SetTaskCallbackFunc(uid, "IsSeven", Test5IsSeven);

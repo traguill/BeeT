@@ -29,7 +29,6 @@ BEET_API void		BEET_Init();
 BEET_API void		BEET_Shutdown();
 
 BEET_API BEET_bool	BEET_InitDebugger(int port);
-BEET_API void		BEET_DebuggerSetActive(BEET_bool active); // Enable/Disable the debugger. Call BEET_InitDebugger before using this.
 
 BEET_API void		BEET_Tick();
 
@@ -37,14 +36,14 @@ BEET_API void		BEET_Tick();
 // BehaviorTree
 //--------------------------------------------------------------------------------
 
-BEET_API unsigned int BEET_LoadBehaviorTree(const char* buffer, int size);
+BEET_API unsigned int BEET_LoadBehaviorTree(const char* buffer, int size, BEET_bool debug);
 
 /*
 *	Loads a BehaviorTree from a file path.
 *	\param filename The file path
 *	\return The uid of the Behavior Tree on SUCCESS, -1 on FAIL.
 */
-BEET_API unsigned int BEET_LoadBehaviorTreeFromFile(const char* filename);
+BEET_API unsigned int BEET_LoadBehaviorTreeFromFile(const char* filename, BEET_bool debug);
 
 BEET_API void BEET_ExecuteBehaviorTree(unsigned int id);
 

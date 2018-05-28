@@ -94,7 +94,7 @@ void BeeT_NW_Tick(BeeT_network* nw)
 		if (sc->state == READY_TO_SEND)
 		{
 			if (BeeT_NW_SocketReadyToSend(sc))
-				sc->state == WAITING_CONNECTION_ACK;
+				sc->state = WAITING_CONNECTION_ACK;
 		}
 
 		if (sc->state == WAITING_SEND_ACK)
@@ -116,7 +116,7 @@ void BeeT_NW_Tick(BeeT_network* nw)
 	}
 }
 
-BEET_bool BeeT_NW_OpenSocket(BeeT_network* nw, BeeT_DBG_BT* bt)
+BEET_bool BeeT_NW_OpenSocket(BeeT_network* nw, BeeT_dBT* bt)
 {
 	BEET_bool ret = BEET_FALSE;
 	node_deq* it = dequeue_head(nw->socketList);

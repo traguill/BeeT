@@ -19,7 +19,7 @@ struct BeeT_socket
 {
 	TCPsocket socket;
 	SocketState state;
-	struct BeeT_DBG_BT* bt;
+	struct BeeT_dBT* bt;
 	unsigned int sentDataSize;
 };
 
@@ -38,7 +38,7 @@ struct BeeT_network
 BeeT_network*	BeeT_NW_Init(int port);
 void			BeeT_NW_Tick(BeeT_network* nw);
 
-BEET_bool		BeeT_NW_OpenSocket(BeeT_network* nw, struct BeeT_DBG_BT* bt);
+BEET_bool		BeeT_NW_OpenSocket(BeeT_network* nw, struct BeeT_dBT* bt);
 BEET_bool		BeeT_NW_SocketReadyToSend(BeeT_socket* sc); // Returns true if any data was sent
 BEET_bool		BeeT_NW_SocketWaitingSendAck(BeeT_socket* sc); // Returns true if ack was received
 

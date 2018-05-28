@@ -12,6 +12,7 @@ void BeeT_packet_Cleanup(BeeT_packet * packet)
 
 BEET_bool BeeT_packet_Read(BeeT_packet * packet, TCPsocket * socket)
 {
+	packet->data = NULL;
 	char* tmp = (char*)BEET_malloc(MAX_PACKET_SIZE);
 
 	BEET_bool initialized = BEET_FALSE;

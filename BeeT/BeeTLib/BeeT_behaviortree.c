@@ -36,7 +36,7 @@ BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 
 	if(tree->rootNode)
 		tree->StartBehavior(tree, tree->rootNode, NULL);
-
+	tree->debug = NULL;
 	return tree;
 }
 

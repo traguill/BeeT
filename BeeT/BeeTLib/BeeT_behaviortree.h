@@ -19,6 +19,8 @@ struct BeeT_BehaviorTree
 	void(*Update)(BeeT_BehaviorTree*);
 	BEET_bool(*Step)(BeeT_BehaviorTree*);
 
+	// Debug
+	struct BeeT_dBT* debug;
 };
 
 BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer* data);
