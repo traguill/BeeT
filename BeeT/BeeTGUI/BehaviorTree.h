@@ -38,7 +38,7 @@ public:
 
 	unsigned int GetUID()const;
 
-private:
+protected:
 	int GetNextId();
 
 	// Serialization
@@ -47,7 +47,7 @@ private:
 public:
 	Blackboard* bb = nullptr;
 	std::string filename;
-private:
+protected:
 	unsigned int uid = 0;
 	std::map<int, BTNode*> nodesList;
 	std::map<int, BTLink*> linksList;

@@ -78,7 +78,10 @@ void BeeT_NW_Tick(BeeT_network* nw)
 				{
 					if (packet->type == PT_CONNECTION_ACK)
 					{
-						printf("Connection established with Server\n");
+						int connectionUID = 0;
+						BEET_memcpy(&connectionUID, (char*)packet->data + PACKET_HEADER_SIZE, sizeof(int));
+						printf("Connection established with Server: %i\n", connectionUID);
+						sc->bt->uid = connectionUID;
 						sc->state = READY_TO_SEND;
 					}
 				}
@@ -155,10 +158,16 @@ BEET_bool BeeT_NW_SocketReadyToSend(BeeT_socket * sc)
 		{
 			char* buf = NULL;
 			int size = BeeT_dBT_GetSampleData(sc->bt, &buf);
-			// create a packet with the buffer
-			// send data
-			// remove packet
-			printf("%s", buf);
+			BeeT_packet* packet = BeeT_packet_Create(PT_BT_UPDATE, buf, size);
+			int dataSent = SDLNet_TCP_Send(sc->socket, packet->data, packet->size);
+			if (dataSent < (int)packet->size)
+			{
+				// An error has occurred or the connection has closed
+			}
+
+			sc->sentDataSize = dataSent;
+			BeeT_packet_Cleanup(packet);
+			BeeT_dBT_ClearSampleData(sc->bt);
 			if(buf)
 				BEET_free(buf);
 			return BEET_TRUE;
@@ -183,9 +192,12 @@ BEET_bool BeeT_NW_SocketWaitingSendAck(BeeT_socket * sc)
 				sc->bt->btBuffer = NULL;
 				sc->state = READY_TO_SEND;
 			}
-			else if (packet->type == PT_NULL_STATE) // TODO CHANGE THIS FOR ACK
+			else if (packet->type == PT_BT_UPDATE_ACK)
 			{
-
+				// TODO: Check if data received is equal to data sent
+				printf("Server has received BT update\n");
+				sc->sentDataSize = 0;
+				sc->state = READY_TO_SEND;
 			}
 		}
 		else

@@ -163,6 +163,9 @@
     <ClCompile Include="BTNodeTypes.cpp" />
     <ClCompile Include="BTPin.cpp" />
     <ClCompile Include="Data.cpp" />
+    <ClCompile Include="dBehaviorTree.cpp" />
+    <ClCompile Include="dSample.cpp" />
+    <ClCompile Include="dsBBVar.cpp" />
     <ClCompile Include="FileDialog.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -198,6 +201,9 @@
     <ClInclude Include="BTNodeTypes.h" />
     <ClInclude Include="BTPin.h" />
     <ClInclude Include="Data.h" />
+    <ClInclude Include="dBehaviorTree.h" />
+    <ClInclude Include="dSample.h" />
+    <ClInclude Include="dsBBVar.h" />
     <ClInclude Include="FileDialog.h" />
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="Input.h" />

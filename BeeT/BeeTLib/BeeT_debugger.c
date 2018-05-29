@@ -17,9 +17,9 @@ void BeeT_Debugger_Tick(BeeT_debugger * debugger)
 	BeeT_NW_Tick(debugger->nw);
 }
 
-BeeT_dBT* BeeT_Debugger_LoadBT(BeeT_debugger * debugger, const char * buffer, unsigned int bufSize, unsigned int uid)
+BeeT_dBT* BeeT_Debugger_LoadBT(BeeT_debugger * debugger, const char * buffer, unsigned int bufSize)
 {
-	BeeT_dBT* dbg_bt = BeeT_dBT_Init(uid, buffer, bufSize);
+	BeeT_dBT* dbg_bt = BeeT_dBT_Init(buffer, bufSize);
 
 	BEET_bool result = BeeT_NW_OpenSocket(debugger->nw, dbg_bt);
 	if (result == BEET_FALSE)

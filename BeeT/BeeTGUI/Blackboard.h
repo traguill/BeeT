@@ -5,16 +5,9 @@
 #include <vector>
 #include <boost/any.hpp>
 #include "Data.h"
+#include "../SharedData/SharedEnums.h"
 
 class BTDecorator;
-
-enum BBVarType
-{
-	BV_BOOL,
-	BV_INT,
-	BV_FLOAT,
-	BV_STRING,
-};
 
 struct BBVar
 {

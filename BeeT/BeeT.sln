@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BeeT.GUI", "BeeTGUI\BeeT.GUI.vcxproj", "{4E212529-FE31-40EE-9C0A-89A74404D637}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -23,6 +23,11 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysFS", "PhysFS\PhysFS.vcxproj", "{7FB6CEE7-28C6-4238-8F14-58EDCD82707D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extern", "Extern", "{DE0941AA-381D-4060-849F-AC365403C32C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedData", "SharedData", "{85D1ADCA-F075-4C49-BF42-900E5267C45A}"
+	ProjectSection(SolutionItems) = preProject
+		SharedData\SharedEnums.h = SharedData\SharedEnums.h
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

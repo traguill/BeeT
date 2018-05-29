@@ -1,9 +1,6 @@
 #include "Packet.h"
 #include <string.h>
 
-#define MESSAGE_MAX_SIZE 512 // TODO: Change this
-#define PACKET_HEADER_SIZE (sizeof(int)*3)
-
 Packet::Packet()
 {
 }
@@ -11,9 +8,9 @@ Packet::Packet()
 Packet::Packet(PacketType type, void * data, int size) : type(type)
 {
 	totalSize = sizeof(int) * 3 + size;
-	int offset = (totalSize < MESSAGE_MAX_SIZE) ? MESSAGE_MAX_SIZE - totalSize : MESSAGE_MAX_SIZE - (totalSize % MESSAGE_MAX_SIZE);
+	int offset = (totalSize < MAX_PACKET_SIZE) ? MAX_PACKET_SIZE - totalSize : MAX_PACKET_SIZE - (totalSize % MAX_PACKET_SIZE);
 	totalSize += offset;
-	int numPackets = totalSize / MESSAGE_MAX_SIZE;
+	int numPackets = totalSize / MAX_PACKET_SIZE;
 	outData = new char[totalSize];
 
 	char* pointer = outData;
@@ -41,7 +38,7 @@ Packet * Packet::Read(TCPsocket * socket)
 {
 	Packet* packet = nullptr;
 	bool initialized = false;
-	char* tmp = new char[MESSAGE_MAX_SIZE];
+	char* tmp = new char[MAX_PACKET_SIZE];
 	int packCount = 0;
 	int numPackets = 0;
 	int offset = 0;
@@ -49,7 +46,7 @@ Packet * Packet::Read(TCPsocket * socket)
 	int dataRecv;
 	do
 	{
-		dataRecv = SDLNet_TCP_Recv(*socket, tmp, MESSAGE_MAX_SIZE);
+		dataRecv = SDLNet_TCP_Recv(*socket, tmp, MAX_PACKET_SIZE);
 		if (dataRecv > 0)
 		{
 			if (!initialized)
@@ -58,21 +55,21 @@ Packet * Packet::Read(TCPsocket * socket)
 				memcpy(&numPackets, tmp, sizeof(int));
 				memcpy(&packet->type, tmp + sizeof(int), sizeof(int));
 				memcpy(&offset, tmp + (sizeof(int) * 2), sizeof(int));
-				packet->inData = new char[(numPackets * MESSAGE_MAX_SIZE) - offset];
+				packet->inData = new char[(numPackets * MAX_PACKET_SIZE) - offset];
 				pointer = packet->inData;
-				packet->totalSize = (numPackets * MESSAGE_MAX_SIZE) - offset;
+				packet->totalSize = (numPackets * MAX_PACKET_SIZE) - offset;
 				initialized = true;
 			}
 			packCount++;
 
 			if (packCount < numPackets)
 			{
-				memcpy(pointer, tmp, MESSAGE_MAX_SIZE);
-				pointer += MESSAGE_MAX_SIZE;
+				memcpy(pointer, tmp, MAX_PACKET_SIZE);
+				pointer += MAX_PACKET_SIZE;
 			}
 			else
 			{
-				memcpy(pointer, tmp, MESSAGE_MAX_SIZE - offset); // Last packet. Do not copy the offset data
+				memcpy(pointer, tmp, MAX_PACKET_SIZE - offset); // Last packet. Do not copy the offset data
 			}
 		}
 	} while (packCount < numPackets && dataRecv > 0);

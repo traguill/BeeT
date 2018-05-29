@@ -3,15 +3,7 @@
 
 #include "BeeT_serializer.h"
 #include "beet_std.h"
-
-typedef enum BBVarType BBVarType;
-enum BBVarType
-{
-	BV_BOOL,
-	BV_INT,
-	BV_FLOAT,
-	BV_STRING
-};
+#include "../SharedData/SharedEnums.h"
 
 typedef struct BBVar BBVar;
 struct BBVar

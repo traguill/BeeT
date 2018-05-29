@@ -4,6 +4,7 @@
 #include "Packet.h"
 #include "BeeTDebugger.h"
 #include "BeeTGui.h"
+#include "Random.h"
 
 #include "../SDL2/include/SDL.h"
 
@@ -122,9 +123,9 @@ void Network::HandleNewConnections()
 		SDLNet_TCP_AddSocket(socketSet, clientSocket[index]);
 		numClientsConnected++;
 
-		LOGI("New connection");
-		
-		Packet* packet = new Packet(PacketType::PT_CONNECTION_ACK, NULL, 0);
+		int connectionUID = g_rnd->RandomInt(); // Sent a unique ID for this connection
+		LOGI("New connection: %i", connectionUID);
+		Packet* packet = new Packet(PacketType::PT_CONNECTION_ACK, &connectionUID, sizeof(int));
 		int len = 0;
 		char* data = packet->PrepareToSend(len);
 		int ret = SDLNet_TCP_Send(clientSocket[index], data, len);
@@ -132,6 +133,7 @@ void Network::HandleNewConnections()
 		{
 			LOGE("Error sending new connection acknowledgement: %s", SDLNet_GetError());
 		}
+		beetDebugger->OpenNewConnection(connectionUID);
 		delete packet;
 	}
 	else // No space for new Clients
@@ -170,22 +172,27 @@ void Network::HandleClientConnections()
 				int recvDataSize = 0;
 				char* recvData = packet->GetData(recvDataSize);
 
+				Packet * ackPacket = nullptr;
 				// Send acknowledgement
 				switch (packet->GetType())
 				{
 					case PT_BT_FILE:
-					{
-						Packet * ackPacket = new Packet(PacketType::PT_BT_FILE_ACK, NULL, 0);
-						int len = 0;
-						char* data = ackPacket->PrepareToSend(len);
-						int ret = SDLNet_TCP_Send(clientSocket[id], data, len);
-						if (ret < len)
-						{
-							LOGE("Error sending Behavior Tree file acknowledgement: %s", SDLNet_GetError());
-						}
-						delete ackPacket;
-					}
+					ackPacket = new Packet(PacketType::PT_BT_FILE_ACK, NULL, 0);
 					break;
+					case PT_BT_UPDATE:
+						ackPacket = new Packet(PacketType::PT_BT_UPDATE_ACK, NULL, 0);
+						break;
+				}
+				if (ackPacket)
+				{
+					int len = 0;
+					char* data = ackPacket->PrepareToSend(len);
+					int ret = SDLNet_TCP_Send(clientSocket[id], data, len);
+					if (ret < len)
+					{
+						LOGE("Error sending  acknowledgement: %s", SDLNet_GetError());
+					}
+					delete ackPacket;
 				}
 				// Process data
 				beetDebugger->HandleIncomingData(recvData, recvDataSize, packet->GetType());

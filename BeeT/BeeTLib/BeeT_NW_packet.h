@@ -3,16 +3,7 @@
 
 #include "ThirdParty/SDL_net.h"
 #include "beet_std.h"
-
-#define MAX_PACKET_SIZE 512
-
-typedef enum PacketType // Linked with BeeT.GUI Packet.h enum
-{
-	PT_CONNECTION_ACK,
-	PT_BT_FILE, // Contains the whole BT to be recreated in the Editor
-	PT_BT_FILE_ACK,
-	PT_NULL_STATE
-}PacketType;
+#include "../SharedData/SharedEnums.h"
 
 typedef struct BeeT_packet BeeT_packet;
 struct BeeT_packet

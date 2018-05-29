@@ -7,8 +7,11 @@
 #include "Log.h"
 #include "BeeTGui.h"
 #include "Data.h"
-#include "BehaviorTree.h"
+#include "dBehaviorTree.h"
 #include "Blackboard.h"
+
+#include "dSample.h"
+#include "dsBBVar.h"
 
 #include <string>
 
@@ -47,12 +50,21 @@ void BeeTDebugger::CleanUp()
 {
 }
 
+void BeeTDebugger::OpenNewConnection(int uid)
+{
+	//TODO
+	btUID = uid;
+}
+
 void BeeTDebugger::HandleIncomingData(char * buf, int size, PacketType type)
 {
 	switch (type)
 	{
 	case PT_BT_FILE:
 		LoadBT(buf, size);
+		break;
+	case PT_BT_UPDATE:
+		UpdateBT(buf, size);
 		break;
 	}
 }
@@ -108,7 +120,10 @@ void BeeTDebugger::HistoryWin()
 	ImGui::SetNextWindowSize(ImVec2(debuggerSize.x * historySize.x, debuggerSize.y * historySize.y));
 	ImGui::Begin("History", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 
-	ImGui::Text("This is the history");
+	if (bt)
+	{
+		bt->PrintSamples();
+	}
 
 	ImGui::End();
 }
@@ -148,7 +163,73 @@ void BeeTDebugger::LoadBT(const char* buffer, int size)
 	g_app->beetGui->SetCurrentEditorContext(editorContextId);
 	Data btData(buffer);
 
-	bt = new BehaviorTree(btData); 
+	bt = new dBehaviorTree(btData); 
+	bt->debugUID = btUID; //TODO
 
 	g_app->beetGui->SetCurrentEditorContext(prevContext);
+}
+
+void BeeTDebugger::UpdateBT(const char * buf, int size)
+{
+	Data data(buf);
+	int btUID = data.GetInt("uid");
+	//TODO: Search bt for uid. Now is only the 'bt' variable
+		
+	int numSamples = data.GetArraySize("samples");
+	for (int i = 0; i < numSamples; i++)
+	{
+		Data sData = data.GetArray("samples", i);
+		SampleType sampleType = (SampleType)sData.GetInt("type");
+		dSample* sample = nullptr;
+		switch (sampleType)
+		{
+		case BBVAR_CHANGED:
+			sample = (dSample*)SampleBBVar(&sData);
+			break;
+		case NODE_RETURNS:
+			break;
+		case NEW_CURRENT_NODE:
+			break;
+		case DECORATOR_CONDITION:
+			break;
+		}
+		if (sample != nullptr)
+			bt->AddSample(sample);
+	}
+}
+
+dSample * BeeTDebugger::SampleBBVar(const Data * data)
+{
+	double timestamp = data->GetDouble("timestamp");
+	dsBBVar* sample = new dsBBVar(BBVAR_CHANGED, timestamp);
+
+	sample->name = data->GetString("name");
+	sample->varType = (BBVarType)data->GetInt("varType");
+
+	switch (sample->varType)
+	{
+		case BV_BOOL:
+			sample->newValue = new bool();
+			sample->oldValue = new bool();
+			*(bool*)sample->oldValue = data->GetBool("oldValue");
+			*(bool*)sample->newValue = data->GetBool("newValue");
+			break;
+		case BV_INT:
+			sample->newValue = new int();
+			sample->oldValue = new int();
+			*(int*)sample->oldValue = data->GetInt("oldValue");
+			*(int*)sample->newValue = data->GetInt("newValue");
+			break;
+		case BV_FLOAT:
+			sample->newValue = new float();
+			sample->oldValue = new float();
+			*(float*)sample->oldValue = data->GetFloat("oldValue");
+			*(float*)sample->newValue = data->GetFloat("newValue");
+			break;
+		case BV_STRING:
+			// TODO
+			break;
+	}
+
+	return sample;
 }

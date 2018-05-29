@@ -4,7 +4,9 @@
 #include "Packet.h"
 #include "ThirdParty/ImGui/imgui.h"
 
-class BehaviorTree;
+class dBehaviorTree;
+class Data;
+class dSample;
 
 class BeeTDebugger
 {
@@ -16,6 +18,7 @@ public:
 	bool Update();
 	void CleanUp();
 
+	void OpenNewConnection(int uid); // Prepares a new slot to receive a new BT
 	void HandleIncomingData(char* buf, int size, PacketType type);
 
 private:
@@ -28,6 +31,9 @@ private:
 
 	// Helpers
 	void LoadBT(const char* buf, int size);
+	void UpdateBT(const char* buf, int size);
+	
+	dSample* SampleBBVar(const Data* data);
 
 private:
 
@@ -47,7 +53,8 @@ private:
 
 	// Testing
 	int editorContextId = 0;
-	BehaviorTree* bt = nullptr;
+	dBehaviorTree* bt = nullptr;
+	int btUID = 0;
 };
 
 #endif // !__BEET_DEBUGGER_H__

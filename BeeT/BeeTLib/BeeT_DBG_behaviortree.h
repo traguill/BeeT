@@ -3,11 +3,12 @@
 
 #include "beet_std.h"
 #include <time.h>
+#include "../SharedData/SharedEnums.h"
 
 typedef struct BeeT_dBT BeeT_dBT;
 struct BeeT_dBT
 {
-	unsigned int uid;
+	int uid;
 	BEET_bool initialized;
 
 	void* btBuffer; // Only used at the beginning to send the BT structure
@@ -16,10 +17,10 @@ struct BeeT_dBT
 	clock_t startTime;
 };
 
-BeeT_dBT*		BeeT_dBT_Init			(unsigned int uid, const char* buffer, unsigned int size);		// Constructor
-BEET_bool		BeeT_dBT_HasDataToSend	(const BeeT_dBT* bt);											// Returns BEET_TRUE if there is new data to send, BEET_FALSE otherwise
-int				BeeT_dBT_GetSampleData	(BeeT_dBT* bt, char** buf);													// Returns a buffer with the data ready to be sent. After calling this, dataToSendSize contains the buffer size.
-
+BeeT_dBT*		BeeT_dBT_Init			(const char* buffer, unsigned int size);	// Constructor
+BEET_bool		BeeT_dBT_HasDataToSend	(const BeeT_dBT* bt);						// Returns BEET_TRUE if there is new data to send, BEET_FALSE otherwise
+int				BeeT_dBT_GetSampleData	(BeeT_dBT* bt, char** buf);					// Returns a buffer with the data ready to be sent. After calling this, dataToSendSize contains the buffer size.
+void			BeeT_dBT_ClearSampleData(BeeT_dBT* bt);
 double GetTimestamp(clock_t startTime); // Helper
 
 
@@ -33,15 +34,6 @@ void BeeT_dBT_bbString(BeeT_dBT* bt, struct BBVar* var, const char* newValue);
 // --------------------------------------------------------------------------------
 // Samples
 // --------------------------------------------------------------------------------
-
-typedef enum SampleType SampleType;
-enum SampleType
-{
-	BBVAR_CHANGED,
-	NODE_RETURNS,
-	NEW_CURRENT_NODE,
-	DECORATOR_CONDITION
-};
 
 typedef struct BeeT_dSample BeeT_dSample;
 struct BeeT_dSample

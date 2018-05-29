@@ -3,10 +3,10 @@
 #include "BeeT_blackboard.h"
 #include "BeeT_serializer.h"
 
-BeeT_dBT * BeeT_dBT_Init(unsigned int uid, const char* buffer, unsigned int size)
+BeeT_dBT * BeeT_dBT_Init(const char* buffer, unsigned int size)
 {
 	BeeT_dBT* dbg_bt = (BeeT_dBT*)BEET_malloc(sizeof(BeeT_dBT));
-	dbg_bt->uid = uid;
+	dbg_bt->uid = 0;
 
 	dbg_bt->btBuffer = BEET_malloc(size);
 	BEET_memcpy(dbg_bt->btBuffer, buffer, size);
@@ -25,7 +25,7 @@ BEET_bool BeeT_dBT_HasDataToSend(const BeeT_dBT * bt)
 int BeeT_dBT_GetSampleData(BeeT_dBT* bt, char** buf)
 {
 	BeeT_Serializer* data = BeeT_Serializer_Create();
-
+	BeeT_Serializer_AppendInt(data, "uid", bt->uid);
 	BeeT_Serializer_AppendArray(data, "samples");
 
 	node_deq* it = bt->samples->head;
@@ -38,6 +38,11 @@ int BeeT_dBT_GetSampleData(BeeT_dBT* bt, char** buf)
 	int size = BeeT_Serializer_Serialize(data, buf);
 	BeeT_Serializer_Destroy(data);
 	return size;
+}
+
+void BeeT_dBT_ClearSampleData(BeeT_dBT * bt)
+{
+	dequeue_clear(bt->samples); // TODO: Clear every sample individually
 }
 
 double GetTimestamp(clock_t startTime)

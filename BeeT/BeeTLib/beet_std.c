@@ -27,12 +27,14 @@ void dequeue_clear(dequeue * deq)
 {
 	node_deq* item = deq->head;
 	node_deq* nextItem = NULL;
-	while (item != deq->tail)
+	while (item != NULL)
 	{
 		nextItem = item->next;
 		BEET_free(item);
 		item = nextItem;
 	}
+	deq->head = NULL;
+	deq->tail = NULL;
 }
 
 size_t dequeue_size(dequeue * d)
