@@ -1,7 +1,7 @@
 #include "dBehaviorTree.h"
 #include "dSample.h"
 #include "ThirdParty/ImGui/imgui.h"
-
+#include "Log.h"
 using namespace std;
 
 dBehaviorTree::dBehaviorTree()
@@ -23,6 +23,8 @@ void dBehaviorTree::AddSample(dSample * sample)
 	if (changes.empty() || changes.back()->GetTimestamp() <= timestamp)
 	{
 		changes.push_back(sample);
+		if(sampleSelected == -1)
+			sample->Effect();
 		return;
 	}
 	// For some reason sample is not older than the last one. Insert in the correct position
@@ -31,6 +33,8 @@ void dBehaviorTree::AddSample(dSample * sample)
 		if (changes[i]->GetTimestamp() <= timestamp)
 		{
 			changes.insert(changes.begin()+i, sample);
+			if (sampleSelected == -1)
+				sample->Effect();
 			break;
 		}
 	}
@@ -38,10 +42,42 @@ void dBehaviorTree::AddSample(dSample * sample)
 
 void dBehaviorTree::PrintSamples()
 {
+	int counter = 0;
 	for (auto sample : changes)
 	{
+		ImGui::BeginGroup();
 		ImGui::Separator();
 		ImGui::Text("Time: %d", sample->GetTimestamp());
 		sample->Print();
+		ImGui::EndGroup();
+		if (ImGui::IsItemClicked())
+		{
+			ApplySampleEffect(counter);
+		}
+		counter++;
 	}
+}
+
+void dBehaviorTree::ApplySampleEffect(int newSample)
+{
+	if (newSample == sampleSelected)
+		return;
+
+	int sSample = sampleSelected == -1 ? changes.size() - 1 : sampleSelected;
+	int nSample = newSample == -1 ? changes.size() - 1 : newSample;
+	// Revert changes
+	if (nSample < sSample)
+	{
+		for (int i = sSample; i > nSample; i--)
+			changes[i]->CounterEffect();
+		
+	}
+	// Apply changes
+	if (nSample > sSample)
+	{
+		for (int i = sSample; i <= nSample; i++)
+			changes[i]->Effect();
+	}
+
+	sampleSelected = newSample;
 }

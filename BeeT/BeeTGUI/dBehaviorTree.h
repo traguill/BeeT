@@ -17,9 +17,12 @@ public:
 	void AddSample(dSample* sample);
 	void PrintSamples();
 
+private: 
+	void ApplySampleEffect(int newSample);
+
 public:
 	int debugUID = -1;
-	
+	int sampleSelected = -1;
 	std::vector<dSample*> changes;
 };
 #endif // !__DEBUG_BEHAVIOR_TREE_H__

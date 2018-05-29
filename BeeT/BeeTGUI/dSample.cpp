@@ -1,6 +1,7 @@
 #include "dSample.h"
+#include "dBehaviorTree.h"
 
-dSample::dSample(SampleType type, double timestamp) : type(type), timestamp(timestamp)
+dSample::dSample(dBehaviorTree* bt, SampleType type, double timestamp) : bt(bt), type(type), timestamp(timestamp)
 {
 }
 
@@ -19,5 +20,13 @@ double dSample::GetTimestamp() const
 }
 
 void dSample::Print() const
+{
+}
+
+void dSample::Effect()
+{
+}
+
+void dSample::CounterEffect()
 {
 }

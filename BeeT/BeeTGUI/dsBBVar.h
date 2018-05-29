@@ -5,13 +5,17 @@
 #include "../SharedData/SharedEnums.h"
 #include <string>
 
+class dBehaviorTree;
+
 class dsBBVar : public dSample
 {
 public:
-	dsBBVar(SampleType type, double timestamp);
+	dsBBVar(dBehaviorTree* bt, SampleType type, double timestamp);
 	~dsBBVar();
 
 	void Print()const;
+	void Effect();
+	void CounterEffect();
 
 public:
 	std::string name;

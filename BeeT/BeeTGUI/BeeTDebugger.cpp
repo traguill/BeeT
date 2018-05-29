@@ -184,7 +184,7 @@ void BeeTDebugger::UpdateBT(const char * buf, int size)
 		switch (sampleType)
 		{
 		case BBVAR_CHANGED:
-			sample = (dSample*)SampleBBVar(&sData);
+			sample = (dSample*)SampleBBVar(bt, &sData); // TODO;
 			break;
 		case NODE_RETURNS:
 			break;
@@ -194,14 +194,14 @@ void BeeTDebugger::UpdateBT(const char * buf, int size)
 			break;
 		}
 		if (sample != nullptr)
-			bt->AddSample(sample);
+			bt->AddSample(sample); // TODO
 	}
 }
 
-dSample * BeeTDebugger::SampleBBVar(const Data * data)
+dSample * BeeTDebugger::SampleBBVar(dBehaviorTree* bt, const Data * data)
 {
 	double timestamp = data->GetDouble("timestamp");
-	dsBBVar* sample = new dsBBVar(BBVAR_CHANGED, timestamp);
+	dsBBVar* sample = new dsBBVar(bt, BBVAR_CHANGED, timestamp);
 
 	sample->name = data->GetString("name");
 	sample->varType = (BBVarType)data->GetInt("varType");

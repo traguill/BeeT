@@ -33,7 +33,7 @@ private:
 	void LoadBT(const char* buf, int size);
 	void UpdateBT(const char* buf, int size);
 	
-	dSample* SampleBBVar(const Data* data);
+	dSample* SampleBBVar(dBehaviorTree* bt, const Data* data);
 
 private:
 

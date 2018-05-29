@@ -3,18 +3,23 @@
 
 #include "../SharedData/SharedEnums.h"
 
+class dBehaviorTree;
+
 class dSample
 {
 public:
-	dSample(SampleType type, double timestamp);
+	dSample(dBehaviorTree* bt, SampleType type, double timestamp);
 	~dSample();
 
 	SampleType GetType()const;
 	double GetTimestamp()const;
 
 	virtual void Print()const;
+	virtual void Effect();			// Modifies the BT applying this sample change
+	virtual void CounterEffect();	// Modifies the BT applying the inverse effect of this sample change.
 
 protected:
+	dBehaviorTree* bt;
 	SampleType type;
 	double timestamp;
 };
