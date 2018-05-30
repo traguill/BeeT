@@ -4,6 +4,7 @@
 #include "dSample.h"
 #include "../SharedData/SharedEnums.h"
 #include <string>
+#include <boost/any.hpp>
 
 class dBehaviorTree;
 
@@ -20,8 +21,8 @@ public:
 public:
 	std::string name;
 	BBVarType varType;
-	void* oldValue = nullptr;
-	void* newValue = nullptr;
+	boost::any oldValue;
+	boost::any newValue;
 };
 #endif // !__DEBUG_SAMPLE_BB_VAR_H__
 

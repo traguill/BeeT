@@ -2,6 +2,9 @@
 #include "ThirdParty/ImGui/imgui.h"
 #include "dBehaviorTree.h"
 #include "Blackboard.h"
+#include <string>
+
+using namespace std;
 
 dsBBVar::dsBBVar(dBehaviorTree* bt, SampleType type, double timestamp) : dSample(bt, type, timestamp)
 {
@@ -18,17 +21,18 @@ void dsBBVar::Print() const
 	switch (varType)
 	{
 	case BV_BOOL:
-		if (*(bool*)oldValue) ImGui::Text("From true to "); else ImGui::Text("From false to ");
+		if (boost::any_cast<bool>(oldValue)) ImGui::Text("From true to "); else ImGui::Text("From false to ");
 		ImGui::SameLine();
-		if (*(bool*)newValue) ImGui::Text("true"); else ImGui::Text("false");
+		if (boost::any_cast<bool>(newValue)) ImGui::Text("true"); else ImGui::Text("false");
 		break;
 	case BV_INT:
-		ImGui::Text("From %i to %i", *(int*)oldValue, *(int*)newValue);
+		ImGui::Text("From %i to %i", boost::any_cast<int>(oldValue), boost::any_cast<int>(newValue));
 		break;
 	case BV_FLOAT:
-		ImGui::Text("From %.2f to %.2f", *(float*)oldValue, *(float*)newValue);
+		ImGui::Text("From %.2f to %.2f", boost::any_cast<float>(oldValue), boost::any_cast<float>(newValue));
 		break;
 	case BV_STRING:
+		ImGui::Text("From %s to %s", boost::any_cast<string>(oldValue).data(), boost::any_cast<string>(newValue).data());
 		break;
 	}
 
@@ -39,20 +43,7 @@ void dsBBVar::Effect()
 	BBVar* var = bt->bb->FindVar(name);
 	if (var)
 	{
-		switch (varType)
-		{
-		case BV_BOOL:
-			var->value = *(bool*)newValue;
-			break;
-		case BV_INT:
-			var->value = *(int*)newValue;
-			break;
-		case BV_FLOAT:
-			var->value = *(float*)newValue;
-			break;
-		case BV_STRING:
-			break;
-		}
+		var->value = newValue;
 	}
 }
 
@@ -61,19 +52,6 @@ void dsBBVar::CounterEffect()
 	BBVar* var = bt->bb->FindVar(name);
 	if (var)
 	{
-		switch (varType)
-		{
-		case BV_BOOL:
-			var->value = *(bool*)oldValue;
-			break;
-		case BV_INT:
-			var->value = *(int*)oldValue;
-			break;
-		case BV_FLOAT:
-			var->value = *(float*)oldValue;
-			break;
-		case BV_STRING:
-			break;
-		}
+		var->value = oldValue;
 	}
 }

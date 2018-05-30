@@ -209,25 +209,20 @@ dSample * BeeTDebugger::SampleBBVar(dBehaviorTree* bt, const Data * data)
 	switch (sample->varType)
 	{
 		case BV_BOOL:
-			sample->newValue = new bool();
-			sample->oldValue = new bool();
-			*(bool*)sample->oldValue = data->GetBool("oldValue");
-			*(bool*)sample->newValue = data->GetBool("newValue");
+			sample->oldValue = data->GetBool("oldValue");
+			sample->newValue = data->GetBool("newValue");
 			break;
 		case BV_INT:
-			sample->newValue = new int();
-			sample->oldValue = new int();
-			*(int*)sample->oldValue = data->GetInt("oldValue");
-			*(int*)sample->newValue = data->GetInt("newValue");
+			sample->oldValue = data->GetInt("oldValue");
+			sample->newValue = data->GetInt("newValue");
 			break;
 		case BV_FLOAT:
-			sample->newValue = new float();
-			sample->oldValue = new float();
-			*(float*)sample->oldValue = data->GetFloat("oldValue");
-			*(float*)sample->newValue = data->GetFloat("newValue");
+			sample->oldValue = data->GetFloat("oldValue");
+			sample->newValue = data->GetFloat("newValue");
 			break;
 		case BV_STRING:
-			// TODO
+			sample->oldValue = string(data->GetString("oldValue"));
+			sample->newValue = string(data->GetString("newValue"));
 			break;
 	}
 
