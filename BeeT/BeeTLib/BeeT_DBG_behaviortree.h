@@ -15,6 +15,7 @@ struct BeeT_dBT
 	unsigned int dataToSendSize;
 	dequeue* samples; // Changes of the BT that will be sent this Tick
 	clock_t startTime;
+	struct BeeT_Node* currentNode;
 };
 
 BeeT_dBT*		BeeT_dBT_Init			(const char* buffer, unsigned int size);	// Constructor
@@ -29,6 +30,11 @@ void BeeT_dBT_bbBool(BeeT_dBT* bt, struct BBVar* var, BEET_bool newValue);
 void BeeT_dBT_bbInt(BeeT_dBT* bt, struct BBVar* var, int newValue);
 void BeeT_dBT_bbFloat(BeeT_dBT* bt, struct BBVar* var, float newValue);
 void BeeT_dBT_bbString(BeeT_dBT* bt, struct BBVar* var, const char* newValue);
+
+// New current node
+void BeeT_dBT_NewCurrentNode(BeeT_dBT* bt, struct BeeT_Node* newCurrent);
+// Node return status
+void BeeT_dBT_NodeReturnStatus(BeeT_dBT* bt, struct BeeT_Node* node, enum NodeStatus newStatus);
 
 // Information to send to the Editor
 // --------------------------------------------------------------------------------
@@ -59,5 +65,25 @@ typedef struct BeeT_sBBVar
 BeeT_sBBVar* BeeT_dBT_InitsBBVar(clock_t startTime);
 void BeeT_dBT_BBVarSerialize(struct BeeT_Serializer* data, BeeT_sBBVar* sample);
 
+typedef struct BeeT_sNewCurrent
+{
+	BeeT_dSample sample;
+	int oldCurrent;
+	int newCurrent;
+}BeeT_sNewCurrent;
+
+BeeT_sNewCurrent* BeeT_dBT_InitsNewCurrent(clock_t startTime, int oldCurrent, int newCurrent);
+void BeeT_dBT_sNewCurrentSerialize(struct BeeT_Serializer* data, BeeT_sNewCurrent* sample);
+
+typedef struct BeeT_sNodeReturn
+{
+	BeeT_dSample sample;
+	int nodeId;
+	enum NodeStatus oldStatus;
+	enum NodeStatus newStatus;
+}BeeT_sNodeReturn;
+
+BeeT_sNodeReturn* BeeT_dBT_InitsNodeReturn(clock_t startTime, int nodeId, enum NodeStatus oldStatus, enum NodeStatus newStatus);
+void BeeT_dBT_sNodeReturnSerialize(struct BeeT_Serializer* data, BeeT_sNodeReturn* sample);
 #endif // !__BEET_DBG_BEHAVIORTREE_H__
 

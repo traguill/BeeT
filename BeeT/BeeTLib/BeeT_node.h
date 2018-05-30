@@ -4,18 +4,10 @@
 #include "BeeT_serializer.h"
 #include "BeeT_std.h"
 #include "BeeT_decorator.h"
+#include "../SharedData/SharedEnums.h"
 
 // Forward declarations
 struct BeeT_BehaviorTree;
-
-typedef enum NodeStatus
-{
-		NS_INVALID,
-		NS_SUCCESS,
-		NS_FAILURE,
-		NS_RUNNING,
-		NS_SUSPENDED
-}NodeStatus;
 
 typedef enum NodeType // Careful! This types need to be sync with the ones in the file 'BTNodeTypes.cpp -> Init()'
 {

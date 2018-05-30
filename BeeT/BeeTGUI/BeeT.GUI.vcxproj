@@ -166,6 +166,8 @@
     <ClCompile Include="dBehaviorTree.cpp" />
     <ClCompile Include="dSample.cpp" />
     <ClCompile Include="dsBBVar.cpp" />
+    <ClCompile Include="dsNewCurrent.cpp" />
+    <ClCompile Include="dsReturnStatus.cpp" />
     <ClCompile Include="FileDialog.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -204,6 +206,8 @@
     <ClInclude Include="dBehaviorTree.h" />
     <ClInclude Include="dSample.h" />
     <ClInclude Include="dsBBVar.h" />
+    <ClInclude Include="dsNewCurrent.h" />
+    <ClInclude Include="dsReturnStatus.h" />
     <ClInclude Include="FileDialog.h" />
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="Input.h" />

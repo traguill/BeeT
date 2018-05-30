@@ -12,6 +12,8 @@
 
 #include "dSample.h"
 #include "dsBBVar.h"
+#include "dsNewCurrent.h"
+#include "dsReturnStatus.h"
 
 #include <string>
 
@@ -184,11 +186,13 @@ void BeeTDebugger::UpdateBT(const char * buf, int size)
 		switch (sampleType)
 		{
 		case BBVAR_CHANGED:
-			sample = (dSample*)SampleBBVar(bt, &sData); // TODO;
+			sample = (dSample*)new dsBBVar(bt, sData);
 			break;
 		case NODE_RETURNS:
+			sample = (dSample*)new dsReturnStatus(bt, sData);
 			break;
 		case NEW_CURRENT_NODE:
+			sample = (dSample*) new dsNewCurrent(bt, sData);
 			break;
 		case DECORATOR_CONDITION:
 			break;
@@ -196,35 +200,4 @@ void BeeTDebugger::UpdateBT(const char * buf, int size)
 		if (sample != nullptr)
 			bt->AddSample(sample); // TODO
 	}
-}
-
-dSample * BeeTDebugger::SampleBBVar(dBehaviorTree* bt, const Data * data)
-{
-	double timestamp = data->GetDouble("timestamp");
-	dsBBVar* sample = new dsBBVar(bt, BBVAR_CHANGED, timestamp);
-
-	sample->name = data->GetString("name");
-	sample->varType = (BBVarType)data->GetInt("varType");
-
-	switch (sample->varType)
-	{
-		case BV_BOOL:
-			sample->oldValue = data->GetBool("oldValue");
-			sample->newValue = data->GetBool("newValue");
-			break;
-		case BV_INT:
-			sample->oldValue = data->GetInt("oldValue");
-			sample->newValue = data->GetInt("newValue");
-			break;
-		case BV_FLOAT:
-			sample->oldValue = data->GetFloat("oldValue");
-			sample->newValue = data->GetFloat("newValue");
-			break;
-		case BV_STRING:
-			sample->oldValue = string(data->GetString("oldValue"));
-			sample->newValue = string(data->GetString("newValue"));
-			break;
-	}
-
-	return sample;
 }

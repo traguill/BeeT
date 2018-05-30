@@ -1,7 +1,7 @@
 #include "dSample.h"
 #include "dBehaviorTree.h"
 
-dSample::dSample(dBehaviorTree* bt, SampleType type, double timestamp) : bt(bt), type(type), timestamp(timestamp)
+dSample::dSample(dBehaviorTree* bt, SampleType type) : bt(bt), type(type)
 {
 }
 

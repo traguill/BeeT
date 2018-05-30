@@ -105,6 +105,12 @@
     <ClCompile Include="dsBBVar.cpp">
       <Filter>Debugger</Filter>
     </ClCompile>
+    <ClCompile Include="dsNewCurrent.cpp">
+      <Filter>Debugger</Filter>
+    </ClCompile>
+    <ClCompile Include="dsReturnStatus.cpp">
+      <Filter>Debugger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -235,6 +241,12 @@
       <Filter>Debugger</Filter>
     </ClInclude>
     <ClInclude Include="dsBBVar.h">
+      <Filter>Debugger</Filter>
+    </ClInclude>
+    <ClInclude Include="dsNewCurrent.h">
+      <Filter>Debugger</Filter>
+    </ClInclude>
+    <ClInclude Include="dsReturnStatus.h">
       <Filter>Debugger</Filter>
     </ClInclude>
   </ItemGroup>

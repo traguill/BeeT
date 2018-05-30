@@ -6,8 +6,31 @@
 
 using namespace std;
 
-dsBBVar::dsBBVar(dBehaviorTree* bt, SampleType type, double timestamp) : dSample(bt, type, timestamp)
+dsBBVar::dsBBVar(dBehaviorTree* bt, const Data& data) : dSample(bt, BBVAR_CHANGED)
 {
+	timestamp = data.GetDouble("timestamp");
+	name = data.GetString("name");
+	varType = (BBVarType)data.GetInt("varType");
+
+	switch (varType)
+	{
+	case BV_BOOL:
+		oldValue = data.GetBool("oldValue");
+		newValue = data.GetBool("newValue");
+		break;
+	case BV_INT:
+		oldValue = data.GetInt("oldValue");
+		newValue = data.GetInt("newValue");
+		break;
+	case BV_FLOAT:
+		oldValue = data.GetFloat("oldValue");
+		newValue = data.GetFloat("newValue");
+		break;
+	case BV_STRING:
+		oldValue = string(data.GetString("oldValue"));
+		newValue = string(data.GetString("newValue"));
+		break;
+	}
 }
 
 dsBBVar::~dsBBVar()

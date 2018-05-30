@@ -2,6 +2,7 @@
 #include "BeeT_behaviortree.h"
 #include "BeeT_blackboard.h"
 #include "BeeT_serializer.h"
+#include "BeeT_node.h"
 
 BeeT_dBT * BeeT_dBT_Init(const char* buffer, unsigned int size)
 {
@@ -14,6 +15,7 @@ BeeT_dBT * BeeT_dBT_Init(const char* buffer, unsigned int size)
 	dbg_bt->initialized = BEET_FALSE;
 	dbg_bt->samples = InitDequeue();
 	dbg_bt->startTime = clock();
+	dbg_bt->currentNode = NULL;
 	return dbg_bt;
 }
 
@@ -112,6 +114,21 @@ void BeeT_dBT_bbString(BeeT_dBT * bt, BBVar * var, const char * newValue)
 	dequeue_push_back(bt->samples, sample);
 }
 
+void BeeT_dBT_NewCurrentNode(BeeT_dBT * bt, BeeT_Node * newCurrent)
+{
+	int oldId = bt->currentNode ? bt->currentNode->id : -1;
+	int newId = newCurrent ? newCurrent->id : -1;
+	BeeT_sNewCurrent* sample = BeeT_dBT_InitsNewCurrent(bt->startTime, oldId, newId);
+	dequeue_push_back(bt->samples, sample);
+	bt->currentNode = newCurrent;
+}
+
+void BeeT_dBT_NodeReturnStatus(BeeT_dBT * bt, BeeT_Node * node, NodeStatus newStatus)
+{
+	BeeT_sNodeReturn* sample = BeeT_dBT_InitsNodeReturn(bt->startTime, node->id, node->status, newStatus);
+	dequeue_push_back(bt->samples, sample);
+}
+
 BeeT_Serializer * BeeT_dSample_Serialize(BeeT_dSample * sample)
 {
 	BeeT_Serializer* data = BeeT_Serializer_Create();
@@ -125,8 +142,10 @@ BeeT_Serializer * BeeT_dSample_Serialize(BeeT_dSample * sample)
 			BeeT_dBT_BBVarSerialize(data, (BeeT_sBBVar*)sample);
 			break;
 		case NODE_RETURNS:
+			BeeT_dBT_sNodeReturnSerialize(data, (BeeT_sNodeReturn*)sample);
 			break;
 		case NEW_CURRENT_NODE:
+			BeeT_dBT_sNewCurrentSerialize(data, (BeeT_sNewCurrent*)sample);
 			break;
 		case DECORATOR_CONDITION:
 			break;
@@ -167,4 +186,40 @@ void BeeT_dBT_BBVarSerialize(BeeT_Serializer * data, BeeT_sBBVar * sample)
 			BeeT_Serializer_AppendString(data, "newValue", (char*)sample->newValue);
 			break;
 	}
+}
+
+BeeT_sNewCurrent * BeeT_dBT_InitsNewCurrent(clock_t startTime, int oldCurrent, int newCurrent)
+{
+	BeeT_sNewCurrent* sNC = (BeeT_sNewCurrent*)BEET_malloc(sizeof(BeeT_sNewCurrent));
+	sNC->sample.type = NEW_CURRENT_NODE;
+	sNC->sample.time = GetTimestamp(startTime);
+
+	sNC->newCurrent = newCurrent;
+	sNC->oldCurrent = oldCurrent;
+
+	return sNC;
+}
+
+void BeeT_dBT_sNewCurrentSerialize(BeeT_Serializer * data, BeeT_sNewCurrent * sample)
+{
+	BeeT_Serializer_AppendInt(data, "oldCurrent", sample->oldCurrent);
+	BeeT_Serializer_AppendInt(data, "newCurrent", sample->newCurrent);
+}
+
+BeeT_sNodeReturn * BeeT_dBT_InitsNodeReturn(clock_t startTime, int nodeId, NodeStatus oldStatus, NodeStatus newStatus)
+{
+	BeeT_sNodeReturn* sNR = (BeeT_sNodeReturn*)BEET_malloc(sizeof(BeeT_sNodeReturn));
+	sNR->sample.type = NODE_RETURNS;
+	sNR->sample.time = GetTimestamp(startTime);
+	sNR->nodeId = nodeId;
+	sNR->newStatus = newStatus;
+	sNR->oldStatus = oldStatus;
+	return sNR;
+}
+
+void BeeT_dBT_sNodeReturnSerialize(BeeT_Serializer * data, BeeT_sNodeReturn * sample)
+{
+	BeeT_Serializer_AppendInt(data, "oldStatus", (int)sample->oldStatus);
+	BeeT_Serializer_AppendInt(data, "newStatus", (int)sample->newStatus);
+	BeeT_Serializer_AppendInt(data, "nodeId", sample->nodeId);
 }

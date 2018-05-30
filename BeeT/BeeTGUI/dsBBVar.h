@@ -5,13 +5,14 @@
 #include "../SharedData/SharedEnums.h"
 #include <string>
 #include <boost/any.hpp>
+#include "Data.h"
 
 class dBehaviorTree;
 
 class dsBBVar : public dSample
 {
 public:
-	dsBBVar(dBehaviorTree* bt, SampleType type, double timestamp);
+	dsBBVar(dBehaviorTree* bt, const Data& data);
 	~dsBBVar();
 
 	void Print()const;

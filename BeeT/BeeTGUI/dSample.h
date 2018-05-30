@@ -8,7 +8,7 @@ class dBehaviorTree;
 class dSample
 {
 public:
-	dSample(dBehaviorTree* bt, SampleType type, double timestamp);
+	dSample(dBehaviorTree* bt, SampleType type);
 	~dSample();
 
 	SampleType GetType()const;

@@ -1,4 +1,5 @@
 #include "BeeT_behaviortree.h"
+#include "BeeT_DBG_behaviortree.h"
 
 // Forward delcarations
 void StartBehavior(BeeT_BehaviorTree*, BeeT_Node*, ObserverFunc);
@@ -33,10 +34,10 @@ BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 	tree->StopBehavior = &StopBehavior;
 	tree->Update = &Update;
 	tree->Step = &Step;
+	tree->debug = NULL;
 
 	if(tree->rootNode)
 		tree->StartBehavior(tree, tree->rootNode, NULL);
-	tree->debug = NULL;
 	return tree;
 }
 
@@ -57,13 +58,16 @@ void StartBehavior(BeeT_BehaviorTree* bt, BeeT_Node* behavior, ObserverFunc obsF
 {
 	if (obsFunc != NULL)
 		behavior->observer = obsFunc;
-
+	if (bt->debug)
+		BeeT_dBT_NewCurrentNode(bt->debug, behavior);
 	dequeue_push_front(bt->runningNodes, behavior);
 }
 void StopBehavior(BeeT_Node* behavior, NodeStatus resultStatus)
 {
 	BEET_ASSERT(resultStatus != NS_RUNNING);
 	behavior->status = resultStatus;
+	if (behavior->bt->debug)
+		BeeT_dBT_NodeReturnStatus(behavior->bt->debug, behavior, resultStatus);
 	if (behavior->observer)
 	{
 		behavior->observer(behavior->observerNode, resultStatus);

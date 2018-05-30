@@ -33,8 +33,6 @@ private:
 	void LoadBT(const char* buf, int size);
 	void UpdateBT(const char* buf, int size);
 	
-	dSample* SampleBBVar(dBehaviorTree* bt, const Data* data);
-
 private:
 
 	ImGuiWindowFlags flags = ImGuiWindowFlags_::ImGuiWindowFlags_NoResize

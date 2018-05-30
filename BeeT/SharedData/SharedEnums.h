@@ -36,5 +36,14 @@ enum BBVarType
 	BV_STRING
 };
 
+typedef enum NodeStatus
+{
+	NS_INVALID,
+	NS_SUCCESS,
+	NS_FAILURE,
+	NS_RUNNING,
+	NS_SUSPENDED
+}NodeStatus;
+
 
 #endif // !__SHARED_ENUMS_H__
