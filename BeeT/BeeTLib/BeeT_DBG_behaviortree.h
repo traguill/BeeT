@@ -56,7 +56,7 @@ typedef struct BeeT_sBBVar
 	void* newValue;
 }BeeT_sBBVar;
 
-BeeT_sBBVar* BeeT_dBT_InitsBBVar();
+BeeT_sBBVar* BeeT_dBT_InitsBBVar(clock_t startTime);
 void BeeT_dBT_BBVarSerialize(struct BeeT_Serializer* data, BeeT_sBBVar* sample);
 
 #endif // !__BEET_DBG_BEHAVIORTREE_H__

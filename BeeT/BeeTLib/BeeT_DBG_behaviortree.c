@@ -47,12 +47,12 @@ void BeeT_dBT_ClearSampleData(BeeT_dBT * bt)
 
 double GetTimestamp(clock_t startTime)
 {
-	return (double)(clock() - startTime) / CLOCKS_PER_SEC;
+	return ((double)(clock() - startTime) / (double)CLOCKS_PER_SEC);
 }
 
 void BeeT_dBT_bbBool(BeeT_dBT * bt, BBVar * var, BEET_bool newValue)
 {
-	BeeT_sBBVar* sample = BeeT_dBT_InitsBBVar();
+	BeeT_sBBVar* sample = BeeT_dBT_InitsBBVar(bt->startTime);
 	sample->varType = var->type;
 	sample->oldValue = BEET_malloc(sizeof(BEET_bool));
 	sample->newValue = BEET_malloc(sizeof(BEET_bool));
@@ -66,7 +66,7 @@ void BeeT_dBT_bbBool(BeeT_dBT * bt, BBVar * var, BEET_bool newValue)
 
 void BeeT_dBT_bbInt(BeeT_dBT * bt, BBVar * var, int newValue)
 {
-	BeeT_sBBVar* sample = BeeT_dBT_InitsBBVar();
+	BeeT_sBBVar* sample = BeeT_dBT_InitsBBVar(bt->startTime);
 	sample->varType = var->type;
 	sample->oldValue = BEET_malloc(sizeof(int));
 	sample->newValue = BEET_malloc(sizeof(int));
@@ -80,7 +80,7 @@ void BeeT_dBT_bbInt(BeeT_dBT * bt, BBVar * var, int newValue)
 
 void BeeT_dBT_bbFloat(BeeT_dBT * bt, BBVar * var, float newValue)
 {
-	BeeT_sBBVar* sample = BeeT_dBT_InitsBBVar();
+	BeeT_sBBVar* sample = BeeT_dBT_InitsBBVar(bt->startTime);
 	sample->varType = var->type;
 	sample->oldValue = BEET_malloc(sizeof(float));
 	sample->newValue = BEET_malloc(sizeof(float));
@@ -94,7 +94,7 @@ void BeeT_dBT_bbFloat(BeeT_dBT * bt, BBVar * var, float newValue)
 
 void BeeT_dBT_bbString(BeeT_dBT * bt, BBVar * var, const char * newValue)
 {
-	BeeT_sBBVar* sample = BeeT_dBT_InitsBBVar();
+	BeeT_sBBVar* sample = BeeT_dBT_InitsBBVar(bt->startTime);
 	sample->varType = var->type;
 	unsigned int length;
 
@@ -117,7 +117,7 @@ BeeT_Serializer * BeeT_dSample_Serialize(BeeT_dSample * sample)
 	BeeT_Serializer* data = BeeT_Serializer_Create();
 
 	BeeT_Serializer_AppendInt(data, "type", (int)sample->type);
-	BeeT_Serializer_AppendDouble(data, "time", sample->time);
+	BeeT_Serializer_AppendDouble(data, "timestamp", sample->time);
 
 	switch (sample->type)
 	{
@@ -135,10 +135,10 @@ BeeT_Serializer * BeeT_dSample_Serialize(BeeT_dSample * sample)
 	return data;
 }
 
-BeeT_sBBVar * BeeT_dBT_InitsBBVar()
+BeeT_sBBVar * BeeT_dBT_InitsBBVar(clock_t startTime)
 {
 	BeeT_sBBVar* sVar = (BeeT_sBBVar*)BEET_malloc(sizeof(BeeT_sBBVar));
-	sVar->sample.time = clock();
+	sVar->sample.time = GetTimestamp(startTime);
 	sVar->sample.type = BBVAR_CHANGED;
 	return sVar;
 }
