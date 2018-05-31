@@ -16,6 +16,14 @@ class BTDecorator;
 class Blackboard;
 struct BBVar;
 
+enum NodeColor
+{
+	NC_IDLE,
+	NC_RUNNING,
+	NC_SUCCESS,
+	NC_FAILURE
+};
+
 class BTNode
 {
 public:
@@ -24,6 +32,7 @@ public:
 	~BTNode();
 
 	void Save(Data& file);
+	void PreDrawSetColor();
 	void PrepareToDraw();
 
 	// Edition
@@ -63,6 +72,8 @@ public:
 	bool saveFlag = false; // True when has been serialized
 	
 	std::vector<BTDecorator*> decorators; // Decorators attached to this node
+
+	NodeColor nodeColor = NC_IDLE;
 
 private:
 	BTNode* parent = nullptr;

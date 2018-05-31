@@ -65,9 +65,7 @@ void StartBehavior(BeeT_BehaviorTree* bt, BeeT_Node* behavior, ObserverFunc obsF
 void StopBehavior(BeeT_Node* behavior, NodeStatus resultStatus)
 {
 	BEET_ASSERT(resultStatus != NS_RUNNING);
-	behavior->status = resultStatus;
-	if (behavior->bt->debug)
-		BeeT_dBT_NodeReturnStatus(behavior->bt->debug, behavior, resultStatus);
+	BeeT_Node_ChangeStatus(behavior, resultStatus);
 	if (behavior->observer)
 	{
 		behavior->observer(behavior->observerNode, resultStatus);

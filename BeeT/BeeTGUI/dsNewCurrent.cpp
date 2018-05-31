@@ -5,7 +5,7 @@
 
 dsNewCurrent::dsNewCurrent(dBehaviorTree* bt, const Data& data) : dSample(bt, NEW_CURRENT_NODE)
 {
-	timestamp = data.GetDouble("timestamp");
+	timestamp = data.GetFloat("timestamp");
 	int oldId = data.GetInt("oldCurrent");
 	int newId = data.GetInt("newCurrent");
 

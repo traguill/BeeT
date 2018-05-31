@@ -18,6 +18,9 @@ public:
 	void CounterEffect();
 
 private:
+	void ChangeNodeColorByStatus(NodeStatus status);
+
+private:
 	BTNode * node;
 	NodeStatus oldStatus;
 	NodeStatus newStatus;

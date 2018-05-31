@@ -41,6 +41,7 @@ struct BeeT_Node{
 BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, struct BeeT_BehaviorTree* bt);
 void BeeT_Node__Destroy(BeeT_Node* self);
 
+void BeeT_Node_ChangeStatus(BeeT_Node* node, NodeStatus newStatus);
 
 // ---------------------------------------------------------------------------------
 // Basic Nodes

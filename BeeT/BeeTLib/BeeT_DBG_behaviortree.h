@@ -22,7 +22,7 @@ BeeT_dBT*		BeeT_dBT_Init			(const char* buffer, unsigned int size);	// Construct
 BEET_bool		BeeT_dBT_HasDataToSend	(const BeeT_dBT* bt);						// Returns BEET_TRUE if there is new data to send, BEET_FALSE otherwise
 int				BeeT_dBT_GetSampleData	(BeeT_dBT* bt, char** buf);					// Returns a buffer with the data ready to be sent. After calling this, dataToSendSize contains the buffer size.
 void			BeeT_dBT_ClearSampleData(BeeT_dBT* bt);
-double GetTimestamp(clock_t startTime); // Helper
+float GetTimestamp(clock_t startTime); // Helper
 
 
 // Blackboard variables change their value
@@ -45,7 +45,7 @@ typedef struct BeeT_dSample BeeT_dSample;
 struct BeeT_dSample
 {
 	SampleType type;
-	double time;
+	float time;
 };
 
 struct BeeT_Serializer* BeeT_dSample_Serialize(BeeT_dSample* sample);

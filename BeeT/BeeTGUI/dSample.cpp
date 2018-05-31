@@ -14,7 +14,7 @@ SampleType dSample::GetType() const
 	return type;
 }
 
-double dSample::GetTimestamp() const
+float dSample::GetTimestamp() const
 {
 	return timestamp;
 }

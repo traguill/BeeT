@@ -1,5 +1,6 @@
 #include "BeeT_node.h"
 #include "BeeT_behaviortree.h"
+#include "BeeT_DBG_behaviortree.h"
 #include <stdio.h>
 
 BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, BeeT_BehaviorTree* bt)
@@ -68,6 +69,16 @@ void BeeT_Node__Destroy(BeeT_Node * self)
 	BEET_free(self);
 }
 
+void BeeT_Node_ChangeStatus(BeeT_Node * node, NodeStatus newStatus)
+{
+	if (node->status == newStatus)
+		return;
+
+	if (node->bt->debug)
+		BeeT_dBT_NodeReturnStatus(node->bt->debug, node, newStatus);
+	node->status = newStatus;
+}
+
 NodeStatus Tick(BeeT_Node* n)
 {
 	//Check if all decorators return true
@@ -79,7 +90,7 @@ NodeStatus Tick(BeeT_Node* n)
 			BeeT_decorator* dec = (BeeT_decorator*)item->data;
 			if (dec->Pass(dec) == BEET_FALSE)
 			{
-				n->status = NS_FAILURE;		// Abort execution because a decorator failed
+				BeeT_Node_ChangeStatus(n, NS_FAILURE);		// Abort execution because a decorator failed
 				return n->status;
 			}
 			item = item->next;
@@ -89,11 +100,14 @@ NodeStatus Tick(BeeT_Node* n)
 	if (n->status == NS_INVALID)
 	{
 		n->OnInit(n);
-		n->status = NS_RUNNING;
+		BeeT_Node_ChangeStatus(n, NS_RUNNING);
 	}
 
-	n->status = n->Update(n);
-
+	if (n->status != NS_SUCCESS && n->status != NS_FAILURE)
+	{
+		NodeStatus status = n->Update(n);
+		BeeT_Node_ChangeStatus(n, status);
+	}
 	if (n->status != NS_RUNNING)
 	{
 		n->OnFinish(n, n->status);
@@ -209,17 +223,17 @@ void BTN_Task_OnInit(BeeT_Node* self)
 
 NodeStatus BTN_Root_Update(BeeT_Node* self)
 {
-	return self->status = NS_RUNNING;
+	return NS_RUNNING;
 }
 
 NodeStatus BTN_Selector_Update(BeeT_Node* self)
 {
-	return self->status = NS_RUNNING;
+	return NS_RUNNING;
 }
 
 NodeStatus BTN_Sequence_Update(BeeT_Node* self)
 {
-	return self->status = NS_RUNNING;
+	return NS_RUNNING;
 }
 
 NodeStatus BTN_Task_Update(BeeT_Node* self)
@@ -234,6 +248,7 @@ NodeStatus BTN_Task_Update(BeeT_Node* self)
 
 void BTN_Root_OnFinish(BeeT_Node* self, NodeStatus status)
 {
+
 }
 
 void BTN_Selector_OnFinish(BeeT_Node* self, NodeStatus status)

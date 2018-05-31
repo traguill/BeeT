@@ -5,7 +5,7 @@
 
 dsReturnStatus::dsReturnStatus(dBehaviorTree* bt, const Data& data) : dSample(bt, NODE_RETURNS)
 {
-	timestamp = data.GetDouble("timestamp");
+	timestamp = data.GetFloat("timestamp");
 	oldStatus = (NodeStatus)data.GetInt("oldStatus");
 	newStatus = (NodeStatus)data.GetInt("newStatus");
 	int nodeId = data.GetInt("nodeId");
@@ -41,8 +41,32 @@ void dsReturnStatus::Print() const
 
 void dsReturnStatus::Effect()
 {
+	ChangeNodeColorByStatus(newStatus);
 }
 
 void dsReturnStatus::CounterEffect()
 {
+	ChangeNodeColorByStatus(oldStatus);
+}
+
+void dsReturnStatus::ChangeNodeColorByStatus(NodeStatus status)
+{
+	switch (status)
+	{
+	case NS_INVALID:
+		node->nodeColor = NC_IDLE;
+		break;
+	case NS_SUCCESS:
+		node->nodeColor = NC_SUCCESS;
+		break;
+	case NS_FAILURE:
+		node->nodeColor = NC_FAILURE;
+		break;
+	case NS_RUNNING:
+		node->nodeColor = NC_RUNNING;
+		break;
+	case NS_SUSPENDED:
+		node->nodeColor = NC_IDLE;
+		break;
+	}
 }

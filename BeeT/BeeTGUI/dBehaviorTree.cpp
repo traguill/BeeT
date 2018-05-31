@@ -42,19 +42,19 @@ void dBehaviorTree::AddSample(dSample * sample)
 
 void dBehaviorTree::PrintSamples()
 {
-	int counter = 0;
-	for (auto sample : changes)
+	int counter = changes.size() - 1;
+	for (vector<dSample*>::reverse_iterator it = changes.rbegin(); it != changes.rend(); it++)
 	{
 		ImGui::BeginGroup();
 		ImGui::Separator();
-		ImGui::Text("Time: %d", sample->GetTimestamp());
-		sample->Print();
+		ImGui::Text("Time: %.2f", (*it)->GetTimestamp());
+		(*it)->Print();
 		ImGui::EndGroup();
 		if (ImGui::IsItemClicked())
 		{
 			ApplySampleEffect(counter);
 		}
-		counter++;
+		counter--;
 	}
 }
 

@@ -12,7 +12,7 @@ public:
 	~dSample();
 
 	SampleType GetType()const;
-	double GetTimestamp()const;
+	float GetTimestamp()const;
 
 	virtual void Print()const;
 	virtual void Effect();			// Modifies the BT applying this sample change
@@ -21,7 +21,7 @@ public:
 protected:
 	dBehaviorTree* bt;
 	SampleType type;
-	double timestamp;
+	float timestamp;
 };
 
 #endif // !__DEBUG_SAMPLE_H__

@@ -256,6 +256,29 @@ void BTNode::Save(Data& file)
 	saveFlag = true;
 }
 
+void BTNode::PreDrawSetColor()
+{
+	ImColor bg = ImColor(128, 128, 128, 200);
+	ImColor border = ImColor(32, 32, 32, 200);
+	switch (nodeColor)
+	{
+	case NC_RUNNING:
+		bg = ImColor(128, 128, 50, 200);
+		border = ImColor(32, 32, 32, 200);
+		break;
+	case NC_SUCCESS:
+		bg = ImColor(50, 128, 50, 200);
+		border = ImColor(32, 32, 32, 200);
+		break;
+	case NC_FAILURE:
+		bg = ImColor(128, 50, 50, 200);
+		border = ImColor(32, 32, 32, 200);
+		break;
+	}
+	ne::PushStyleColor(ne::StyleColor_NodeBg, bg);
+	ne::PushStyleColor(ne::StyleColor_NodeBorder, border);
+}
+
 void BTNode::ReloadSubtreeId()
 {
 	subtreeId = parent ? parent->subtreeId : g_rnd->RandomInt();

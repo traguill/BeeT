@@ -47,9 +47,9 @@ void BeeT_dBT_ClearSampleData(BeeT_dBT * bt)
 	dequeue_clear(bt->samples); // TODO: Clear every sample individually
 }
 
-double GetTimestamp(clock_t startTime)
+float GetTimestamp(clock_t startTime)
 {
-	return ((double)(clock() - startTime) / (double)CLOCKS_PER_SEC);
+	return ((float)(clock() - startTime) / (float)CLOCKS_PER_SEC);
 }
 
 void BeeT_dBT_bbBool(BeeT_dBT * bt, BBVar * var, BEET_bool newValue)
@@ -134,7 +134,7 @@ BeeT_Serializer * BeeT_dSample_Serialize(BeeT_dSample * sample)
 	BeeT_Serializer* data = BeeT_Serializer_Create();
 
 	BeeT_Serializer_AppendInt(data, "type", (int)sample->type);
-	BeeT_Serializer_AppendDouble(data, "timestamp", sample->time);
+	BeeT_Serializer_AppendFloat(data, "timestamp", sample->time);
 
 	switch (sample->type)
 	{

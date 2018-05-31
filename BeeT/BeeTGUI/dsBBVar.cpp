@@ -8,7 +8,7 @@ using namespace std;
 
 dsBBVar::dsBBVar(dBehaviorTree* bt, const Data& data) : dSample(bt, BBVAR_CHANGED)
 {
-	timestamp = data.GetDouble("timestamp");
+	timestamp = data.GetFloat("timestamp");
 	name = data.GetString("name");
 	varType = (BBVarType)data.GetInt("varType");
 

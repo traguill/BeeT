@@ -196,8 +196,7 @@ int BehaviorTree::Serialize(char** buffer) const
 void BehaviorTree::Draw()
 {
 	// Style Colors
-	ne::PushStyleColor(ne::StyleColor_NodeBg, ImColor(128, 128, 128, 200));
-	ne::PushStyleColor(ne::StyleColor_NodeBorder, ImColor(32, 32, 32, 200));
+	
 	ne::PushStyleColor(ne::StyleColor_PinRect, ImColor(60, 180, 255, 150));
 	ne::PushStyleColor(ne::StyleColor_PinRectBorder, ImColor(60, 180, 255, 150));
 
@@ -213,11 +212,13 @@ void BehaviorTree::Draw()
 	// Prepare the nodes to draw
 	for (auto node : nodesList)
 	{
+		node.second->PreDrawSetColor(); // Push 2 style colors
 		node.second->PrepareToDraw();
+		ne::PopStyleColor(2);
 	}
 
 	ne::PopStyleVar(7);
-	ne::PopStyleColor(4);
+	ne::PopStyleColor(2);
 
 	// Actually draw the nodes
 	int inputAlpha = 200;
