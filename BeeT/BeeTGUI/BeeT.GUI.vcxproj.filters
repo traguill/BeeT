@@ -249,6 +249,9 @@
     <ClInclude Include="dsReturnStatus.h">
       <Filter>Debugger</Filter>
     </ClInclude>
+    <ClInclude Include="IconsFont.h">
+      <Filter>ThirdParty\Imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">

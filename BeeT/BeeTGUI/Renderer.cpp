@@ -10,6 +10,8 @@
 #include "ThirdParty/ImGui/imgui.h"
 #include "ThirdParty/ImGui/imgui_impl_sdl_gl3.h"
 
+#include "IconsFont.h"
+
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
 
@@ -91,6 +93,15 @@ bool Renderer::Init()
 	LOGI("Init ImGui");
 	ImGui_ImplSdlGL3_Init(g_app->window->sdlWindow);
 	ImGui::GetIO().IniFilename = NULL; // Avoids creating the imgui.ini file
+
+	// Init fonts
+	ImGuiIO& io = ImGui::GetIO();
+	io.Fonts->AddFontDefault();
+	static const ImWchar icons_ranges[] = { 0xe000, 0xf3ff, 0 };
+	ImFontConfig icons_config; icons_config.MergeMode = true;
+	icons_config.PixelSnapH = true;
+	icons_config.MergeGlyphCenterV = true;
+	io.Fonts->AddFontFromFileTTF(FONT_ICON_FILE_NAME_FAR, 16.0f, &icons_config, icons_ranges);
 
 	// Add PreUpdate and PostUpdate to App steps
 	g_app->AddModulePreUpdate(this);

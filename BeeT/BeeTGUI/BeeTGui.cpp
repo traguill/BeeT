@@ -10,6 +10,7 @@
 #include "FileSystem.h" // Testing: To show the current directory path in MainMenuBar->File.
 
 #include "ThirdParty/ImGui/imgui.h"
+#include "IconsFont.h"
 
 namespace ne = ax::NodeEditor;
 
@@ -114,9 +115,6 @@ void BeeTGui::MenuBar()
 		}
 		if (ImGui::BeginMenu("Edit"))
 		{
-			ImGui::MenuItem("This is a placeholder");
-			ImGui::MenuItem("This is another placeholder");
-			ImGui::MenuItem("This is the last placeholder");
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window"))
@@ -129,11 +127,11 @@ void BeeTGui::MenuBar()
 		}
 		if (ImGui::BeginMenu("Mode"))
 		{
-			if (ImGui::MenuItem("Editor###mode_editor"))
+			if (ImGui::MenuItem(ICON_MODE_EDIT "Editor###mode_editor"))
 			{
 				mode = BeeTMode::BEET_EDITOR;
 			}
-			if (ImGui::MenuItem("Debug###mode_debug"))
+			if (ImGui::MenuItem(ICON_BUG "Debug###mode_debug"))
 			{
 				mode = BeeTMode::BEET_DEBUGGER;
 			}

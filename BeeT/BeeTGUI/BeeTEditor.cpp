@@ -13,8 +13,8 @@
 #include "BTDecorator.h"
 
 #include "ThirdParty/ImGui/imgui_tabs.h"
-
 #include <vector>
+
 
 namespace ne = ax::NodeEditor;
 using namespace std;
@@ -29,6 +29,7 @@ BeeTEditor::~BeeTEditor()
 
 bool BeeTEditor::Init()
 {
+
 	btCurrent = new BehaviorTree();
 	btList.push_back(btCurrent);
 
@@ -421,7 +422,7 @@ void BeeTEditor::Inspector()
 	ImGui::SetNextWindowPos(ImVec2(screenWidth * (blackboardSize.x + editorCanvasSize.x), ImGui::GetCursorPosY() - ImGui::GetCursorPosX()));
 	ImGui::SetNextWindowSize(ImVec2(editorSize.x * inspectorSize.x, editorSize.y * inspectorSize.y));
 	ImGui::Begin("Inspector", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
-	
+
 	if (selectedNodeId != -1)
 	{
 		BTNode* nodeSel = btCurrent->FindNode(selectedNodeId);

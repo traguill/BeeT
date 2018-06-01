@@ -1,6 +1,7 @@
 #include "BTNodeTypes.h"
 #include "Log.h"
 #include "ItemList.h"
+#include "IconsFont.h"
 
 using namespace std;
 
@@ -27,11 +28,11 @@ void BTNodeTypes::Init()
 	// Default node types
 	InsertType("", "Root", 1);
 	
-	InsertType("Composites", "Selector", -1);
-	InsertType("Composites", "Sequence", -1);
+	InsertType("Composites", ICON_QUESTION "Selector", -1);
+	InsertType("Composites", ICON_ARROW_FORWARD "Sequence", -1);
 	InsertType("Composites", "Parallel", -1);
 
-	InsertType("Tasks", "Custom Task", 0);
+	InsertType("Tasks", ICON_TASK"Custom Task", 0);
 }
 
 NodeType * BTNodeTypes::GetTypeById(int id)
