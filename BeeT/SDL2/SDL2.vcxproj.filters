@@ -951,6 +951,9 @@
     <ClInclude Include="include\SDLnetsys.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="include\SDL_image.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
