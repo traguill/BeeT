@@ -41,6 +41,8 @@ bool Input::Update()
 
 	if (keyboard[SDL_SCANCODE_ESCAPE] == KEY_UP)
 		return false;
+	if (keyboard[SDL_SCANCODE_F1] == KEY_UP)
+		debug = !debug;
 	SDL_GetMouseState(&mouseX, &mouseY);
 	//screen size = 3
 	mouseX /= 3;

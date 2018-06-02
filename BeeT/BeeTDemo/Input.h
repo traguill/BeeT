@@ -37,6 +37,9 @@ private:
 	int mouseX;
 	int mouseY;
 
+public:
+	bool debug = false;
+
 };
 extern Input* g_Input;
 #endif // !__INPUT_H__

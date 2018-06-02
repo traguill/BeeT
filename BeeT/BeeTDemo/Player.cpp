@@ -1,12 +1,15 @@
 #include "Input.h"
 #include "Player.h"
+#include "Bullet.h"
+#include "Physics.h"
 
-#define DEGTORAD 0.0174532925199432957f
-#define RADTODEG 57.295779513082320876f
-
-Player::Player(float posX, float posY) : Entity(posX, posY)
+Player::Player(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, posX, posY)
 {
+	type = PLAYER;
 	rotSpeed = 0.1f;
+	LoadSprite("Game/bee.bmp", 51, 74);
+
+	g_Physics->AddBody(this, 25);
 }
 
 Player::~Player()
@@ -32,5 +35,14 @@ void Player::UpdateLogic(float dt)
 		speed = 0.1f;
 	else
 		speed = 0.0f;
+	
+	if (g_Input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
+	{
+		Bullet* bullet = new Bullet(renderer, posX, posY);
+		bullet->dirX = dirX;
+		bullet->dirY = dirY;
+		bullet->speed = 0.5f;
+		g_GameManager->AddEntity(bullet);
+	}
 	
 }

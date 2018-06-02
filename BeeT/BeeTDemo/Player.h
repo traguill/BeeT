@@ -6,13 +6,12 @@
 class Player : public Entity
 {
 public:
-	Player(float posX, float posY);
+	Player(SDL_Renderer* renderer, float posX, float posY);
 	~Player();
 
 	void UpdateLogic(float dt);
 
-private:
+public:
 	float rotSpeed;
-
 };
 #endif // !__PLAYER_H__
