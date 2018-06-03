@@ -9,6 +9,8 @@
 #include "BTDecorator.h"
 #include "Blackboard.h"
 
+#include <algorithm>
+
 namespace ne = ax::NodeEditor;
 
 BTNode::BTNode(int id, int sourcePinId, int targetPinId, int typeId, BehaviorTree* bt, BTNode* parent) : id(id), bt(bt), parent(parent)
@@ -220,6 +222,24 @@ void BTNode::RemoveChild(BTNode * child)
 	std::vector<BTNode*>::iterator found = std::find(childs.begin(), childs.end(), child);
 	if (found != childs.end())
 		childs.erase(found);
+}
+
+void BTNode::MoveChild(int id, bool moveUp)
+{
+	if (moveUp)
+	{
+		if (id != 0)
+		{
+			std::iter_swap(childs.begin() + id, childs.begin() + id - 1);
+		}
+	}
+	else // Move down
+	{
+		if (id != childs.size() - 1)
+		{
+			std::iter_swap(childs.begin() + id, childs.begin() + id + 1);
+		}
+	}
 }
 
 void BTNode::ForceRoot()

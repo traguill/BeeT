@@ -51,6 +51,7 @@ public:
 	void RemoveParent();
 	void AddChild(BTNode* child);
 	void RemoveChild(BTNode* child);
+	void MoveChild(int id, bool moveUp);
 
 	// Utils
 	void ForceRoot(); // Forces the node to be the root node. DO NOT USE!

@@ -460,27 +460,34 @@ void BeeTEditor::Inspector()
 			ImGui::Spacing();
 			ImGui::Separator();
 
-			ImGui::Dummy(ImVec2(0.0f, 20.0f));
-			ImGui::Text("Debug: ");
-			ImGui::Spacing();
-			ImGui::Separator();
-			BTNode* parent = nodeSel->GetParent();
-			if (parent)
-				ImGui::Text("Parent: %i", parent->GetId());
-			else
-				ImGui::Text("Parent: -1");
-			vector<BTNode*> childs = nodeSel->GetChilds();
-			ImGui::Text("Childs: %i", childs.size());
-			ImGui::Spacing();
-			for (auto nodeChild : childs)
-			{
-				ImGui::Text("    * Node %i", nodeChild->GetId());
-			}
-			ImGui::Text("Subtree id: %i", nodeSel->GetSubtreeId());
-			ImGui::Separator();
 
-			ImGui::Text("Input: 0");
-			ImGui::Text("Outputs: 0");
+			vector<BTNode*> childs = nodeSel->GetChilds();
+			if (childs.empty() == false)
+			{
+				ImGui::Text("Execution order: ");
+				ImGui::Spacing();
+				for (int i = 0; i < childs.size(); i++)
+				{
+					
+					ImGui::Text("%i- %s", i+1, childs[i]->name.data());
+					ImGui::SameLine();
+					ImGui::PushID(childs[i]->GetId());
+					if (ImGui::Button("Up"))
+					{
+						nodeSel->MoveChild(i, true);
+						ImGui::PopID();
+						break;
+					}
+					ImGui::SameLine();
+					if (ImGui::Button("Down"))
+					{
+						nodeSel->MoveChild(i, false);
+						ImGui::PopID();
+						break;
+					}
+					ImGui::PopID();
+				}
+			}
 		}
 	}
 
