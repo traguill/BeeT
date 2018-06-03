@@ -95,6 +95,7 @@ BEET_bool Step(BeeT_BehaviorTree* bt)
 	{
 		if(current->observer)
 			current->observer(current->observerNode, current->status);
+		current->status = NS_INVALID;
 	}
 	else
 	{

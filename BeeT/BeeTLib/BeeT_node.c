@@ -302,6 +302,8 @@ void BTN_Task_OnDestroy(BTN_Task * self)
 void BTN_Root_TreeFinish(BeeT_Node * self, NodeStatus s)
 {
 	self->bt->StopBehavior(self, s);
+	self->status = NS_INVALID;
+	self->bt->StartBehavior(self->bt, self, NULL); // Restart the tree
 }
 
 void BTN_Selector_OnChildFinish(BeeT_Node* self, NodeStatus s)
