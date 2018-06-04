@@ -35,6 +35,9 @@ public:
 	void PreDrawSetColor();
 	void PrepareToDraw();
 
+	// Inspector
+	void InspectorInfo();
+
 	// Edition
 	void AddDecorator(Blackboard* bb, BBVar* var);
 	void RemoveDecorator(BTDecorator* dec);
@@ -58,6 +61,12 @@ public:
 
 private:
 	void ReloadSubtreeId(); // Sets the subtree id depending on the parent's
+
+	void InitExtraData();
+		
+	// Inspector
+	void InspectorComposite();
+	void InspectorWait();
 	
 public:
 	ax::rect inputsRect;
@@ -86,6 +95,7 @@ private:
 	int subtreeId = -1; // If this is 0 means that this node is inside the Root tree and will be executed. 
 	std::vector<BTDecorator*> decoratorsToRemove;
 
+	char* extraData = nullptr;
 };
 #endif
 

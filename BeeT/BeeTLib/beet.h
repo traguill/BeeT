@@ -19,8 +19,10 @@ typedef struct
 	struct BeeT_BehaviorTree** trees;
 	int numTreesLoaded;
 	int maxNumTreesLoaded;
+	float dt;
 }BeetContext;
 
+struct BeetContext* g_Beet;
 //--------------------------------------------------------------------------------
 // Main
 //--------------------------------------------------------------------------------
@@ -30,7 +32,7 @@ BEET_API void		BEET_Shutdown();
 
 BEET_API BEET_bool	BEET_InitDebugger(int port);
 
-BEET_API void		BEET_Tick();
+BEET_API void		BEET_Tick(float deltaTime);
 
 //--------------------------------------------------------------------------------
 // BehaviorTree
@@ -45,7 +47,7 @@ BEET_API unsigned int BEET_LoadBehaviorTree(const char* buffer, int size, BEET_b
 */
 BEET_API unsigned int BEET_LoadBehaviorTreeFromFile(const char* filename, BEET_bool debug);
 
-BEET_API void BEET_ExecuteBehaviorTree(unsigned int id);
+BEET_API void BEET_ExecuteBehaviorTree(unsigned int id); // DEPRECATED
 
 /*
 *	Get a list of all the nodes in a Behavior Tree of type 'Task' by their name. 

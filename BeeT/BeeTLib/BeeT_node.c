@@ -2,6 +2,7 @@
 #include "BeeT_behaviortree.h"
 #include "BeeT_DBG_behaviortree.h"
 #include <stdio.h>
+#include "beet.h"
 
 BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, BeeT_BehaviorTree* bt)
 {
@@ -63,6 +64,9 @@ void BeeT_Node__Destroy(BeeT_Node * self)
 		break;
 	case NT_TASK:
 		BTN_Task_OnDestroy((BTN_Task*)self);
+		break;
+	case NT_WAIT:
+		BTN_Wait_OnDestroy((BTN_Wait*)self);
 		break;
 	}
 	//TODO: Destroy dequeue decorators here
@@ -185,6 +189,19 @@ BTN_Task * BTN_Task_Init(const BeeT_Serializer * data)
 	return btn;
 }
 
+BTN_Wait * BTN_Wait_Init(const BeeT_Serializer * data)
+{
+	BTN_Wait* btn = (BTN_Wait*)BEET_malloc(sizeof(BTN_Wait));
+
+	btn->seconds = BeeT_Serializer_GetFloat(data, "extraData");
+	btn->timer = 0.0f;
+
+	btn->node.OnInit = &BTN_Wait_OnInit;
+	btn->node.Update = &BTN_Wait_Update;
+	btn->node.OnFinish = &BTN_Wait_OnFinish;
+	return btn;
+}
+
 // BeeT Node OnInit functions -------------------------------------------------------------
 
 void BTN_Root_OnInit(BeeT_Node* self)
@@ -218,6 +235,12 @@ void BTN_Sequence_OnInit(BeeT_Node* self)
 void BTN_Task_OnInit(BeeT_Node* self)
 {}
 
+void BTN_Wait_OnInit(BeeT_Node * self)
+{
+	BTN_Wait* btn = (BTN_Wait*)self;
+	btn->timer = 0.0f;
+}
+
 
 // BeeT Node Update functions --------------------------------------------------------------
 
@@ -243,6 +266,14 @@ NodeStatus BTN_Task_Update(BeeT_Node* self)
 	return btn->callbackFunc(btn->node.bt->uid, btn->name);
 }
 
+NodeStatus BTN_Wait_Update(BeeT_Node * self)
+{
+	BTN_Wait* btn = (BTN_Wait*)self;
+	btn->timer += g_Beet->dt;
+	if (btn->timer >= btn->seconds)
+		return NS_SUCCESS;
+	return NS_RUNNING;
+}
 
 // BeeT Node OnFinish functions -------------------------------------------------------------
 
@@ -262,6 +293,9 @@ void BTN_Sequence_OnFinish(BeeT_Node* self, NodeStatus status)
 void BTN_Task_OnFinish(BeeT_Node* self, NodeStatus status)
 {
 }
+
+void BTN_Wait_OnFinish(BeeT_Node * self, NodeStatus status)
+{}
 
 // BeeT Node OnDestroy functions ------------------------------------------------------------
 
@@ -295,6 +329,10 @@ void BTN_Task_OnDestroy(BTN_Task * self)
 	{
 		BEET_free(self->name);
 	}
+}
+
+void BTN_Wait_OnDestroy(BTN_Task * self)
+{
 }
 
 // BeeT Node Observer functions -------------------------------------------------------------

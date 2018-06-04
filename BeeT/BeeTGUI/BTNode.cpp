@@ -21,6 +21,9 @@ BTNode::BTNode(int id, int sourcePinId, int targetPinId, int typeId, BehaviorTre
 
 	inputPin = new BTPin(targetPinId, ne::PinKind::Target, this);
 	outputPin = new BTPin(sourcePinId, ne::PinKind::Source, this);
+
+	InitExtraData();
+
 	ReloadSubtreeId();
 }
 
@@ -44,6 +47,22 @@ BTNode::BTNode(BehaviorTree* bt, Data & data) : bt(bt)
 		decorators.push_back(dec);
 	}
 
+	switch (type->typeId)
+	{
+		//case 0: // Root
+		//case 1: // Selector
+		//case 2: // Sequence
+		//case 3: // Parallel
+		//case 4: // Custom Task
+	case 5: // Wait
+	{
+		extraData = new char[sizeof(float)];
+		float tmpExtraData = data.GetFloat("extraData");
+		memcpy(extraData, &tmpExtraData, sizeof(float));
+	}
+		break;
+	}
+
 	ReloadSubtreeId();
 }
 
@@ -53,6 +72,8 @@ BTNode::~BTNode()
 		delete dec;
 	delete inputPin;
 	delete outputPin;
+	if (extraData)
+		delete[] extraData;
 }
 
 std::vector<BTLink*> BTNode::GetAllLinks()
@@ -171,6 +192,28 @@ void BTNode::PrepareToDraw()
 	ne::EndNode();
 }
 
+void BTNode::InspectorInfo()
+{
+	switch (type->typeId) // See BTNodeTypes.cpp -> Init() to match the id with the type
+	{
+	case 0: // Root
+		break;
+	case 1: // Selector
+		InspectorComposite();
+		break;
+	case 2: // Sequence
+		InspectorComposite();
+		break;
+	case 3: // Parallel
+		break;
+	case 4: // Custom Task
+		break;
+	case 5: // Wait
+		InspectorWait();
+		break;
+	}
+}
+
 void BTNode::AddDecorator(Blackboard* bb, BBVar* var)
 {
 	BTDecorator* dec = new BTDecorator(this, bb, var);
@@ -272,6 +315,18 @@ void BTNode::Save(Data& file)
 	for (auto dec : decorators)
 		dec->Save(data);
 
+	switch (type->typeId)
+	{
+	//case 0: // Root
+	//case 1: // Selector
+	//case 2: // Sequence
+	//case 3: // Parallel
+	//case 4: // Custom Task
+	case 5: // Wait
+		data.AppendFloat("extraData", *(float*)extraData);
+		break;
+	}
+
 	file.AppendArrayValue(data);
 	saveFlag = true;
 }
@@ -304,4 +359,67 @@ void BTNode::ReloadSubtreeId()
 	subtreeId = parent ? parent->subtreeId : g_rnd->RandomInt();
 	for (auto child : childs)
 		child->ReloadSubtreeId();
+}
+
+void BTNode::InitExtraData()
+{
+	switch (type->typeId)
+	{
+	case 0: // Root
+		break;
+	case 1: // Selector
+		InspectorComposite();
+		break;
+	case 2: // Sequence
+		InspectorComposite();
+		break;
+	case 3: // Parallel
+		break;
+	case 4: // Custom Task
+		break;
+	case 5: // Wait
+		{
+			extraData = new char[sizeof(float)];
+			float zero = 0.0f;
+			memcpy(extraData, &zero, sizeof(float));
+		}
+		break;
+	}
+}
+
+void BTNode::InspectorComposite()
+{
+	ImGui::Text("Execution order:");
+	for (int i = 0; i < childs.size(); i++)
+	{
+		ImGui::PushID(childs[i]->GetId());
+		ImGui::Text("%i- %s", i, childs[i]->name.data());
+		ImGui::SameLine();
+		if (ImGui::Button("Up"))
+		{
+			MoveChild(i, true);
+			ImGui::PopID();
+			break;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Down"))
+		{
+			MoveChild(i, false);
+			ImGui::PopID();
+			break;
+		}
+		ImGui::PopID();
+	}
+}
+
+void BTNode::InspectorWait()
+{
+	ImGui::Text("Wait:");
+	float sec = *(float*)extraData;
+	if (ImGui::DragFloat("###waitNumSeconds", &sec, 1.0f, 0.0f))
+	{
+		memcpy(extraData, &sec, sizeof(float));
+	}
+	ImGui::SameLine();
+	ImGui::Text(" seconds");
 }

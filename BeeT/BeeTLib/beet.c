@@ -10,7 +10,7 @@
 
 static BeetContext beetDefaultContext;
 #define BEET_GLOBAL_CONTEXT_PTR &beetDefaultContext;
-BeetContext* g_Beet = BEET_GLOBAL_CONTEXT_PTR;
+g_Beet = BEET_GLOBAL_CONTEXT_PTR;
 
 static BeeT_debugger beetDebugger;
 #define BEET_GLOBAL_DEBUGGER_PTR &beetDebugger;
@@ -125,12 +125,13 @@ void BEET_Shutdown()
 }
 
 
-void BEET_Tick()
+void BEET_Tick(float deltaTime)
 {
 	for (int i = 0; i < g_Beet->numTreesLoaded; i++)
 		g_Beet->trees[i]->Update(g_Beet->trees[i]);
 	if(g_Debug->initialized)
 		BeeT_Debugger_Tick(g_Debug);
+	g_Beet->dt = deltaTime;
 }
 
 unsigned int BEET_LoadBehaviorTree(const char * buffer, int size, BEET_bool debug)

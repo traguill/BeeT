@@ -458,36 +458,8 @@ void BeeTEditor::Inspector()
 				ImGui::Separator();
 			}
 			ImGui::Spacing();
-			ImGui::Separator();
-
-
-			vector<BTNode*> childs = nodeSel->GetChilds();
-			if (childs.empty() == false)
-			{
-				ImGui::Text("Execution order: ");
-				ImGui::Spacing();
-				for (int i = 0; i < childs.size(); i++)
-				{
-					
-					ImGui::Text("%i- %s", i+1, childs[i]->name.data());
-					ImGui::SameLine();
-					ImGui::PushID(childs[i]->GetId());
-					if (ImGui::Button("Up"))
-					{
-						nodeSel->MoveChild(i, true);
-						ImGui::PopID();
-						break;
-					}
-					ImGui::SameLine();
-					if (ImGui::Button("Down"))
-					{
-						nodeSel->MoveChild(i, false);
-						ImGui::PopID();
-						break;
-					}
-					ImGui::PopID();
-				}
-			}
+			
+			nodeSel->InspectorInfo();
 		}
 	}
 
