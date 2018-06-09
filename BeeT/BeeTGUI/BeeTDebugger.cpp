@@ -17,6 +17,7 @@
 #include "dsBTEnd.h"
 
 #include <string>
+#include "ThirdParty/ImGui/imgui_tabs.h"
 
 using namespace std;
 namespace ne = ax::NodeEditor;
@@ -32,7 +33,7 @@ BeeTDebugger::~BeeTDebugger()
 void BeeTDebugger::Init()
 {
 	g_app->network->beetDebugger = this;
-	editorContextId = g_app->beetGui->CreateNodeEditorContext();
+	editorContextIDEmpty = g_app->beetGui->CreateNodeEditorContext();
 }
 
 bool BeeTDebugger::Update()
@@ -51,12 +52,13 @@ bool BeeTDebugger::Update()
 
 void BeeTDebugger::CleanUp()
 {
+	for (auto bt : btList)
+		delete bt;
 }
 
 void BeeTDebugger::OpenNewConnection(int uid)
 {
-	//TODO
-	btUID = uid;
+	btSlots.push(uid);
 }
 
 void BeeTDebugger::HandleIncomingData(char * buf, int size, PacketType type)
@@ -78,9 +80,9 @@ void BeeTDebugger::BlackboardWin()
 	ImGui::SetNextWindowSize(ImVec2(debuggerSize.x * blackboardSize.x, debuggerSize.y * blackboardSize.y));
 	ImGui::Begin("Blackboard", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 	
-	if (bt)
+	if (btCurrent)
 	{
-		for (auto var : bt->bb->variables)
+		for (auto var : btCurrent->bb->variables)
 		{
 			ImGui::Text("%s ", var->name.data());
 			ImGui::SameLine();
@@ -123,9 +125,9 @@ void BeeTDebugger::HistoryWin()
 	ImGui::SetNextWindowSize(ImVec2(debuggerSize.x * historySize.x, debuggerSize.y * historySize.y));
 	ImGui::Begin("History", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 
-	if (bt)
+	if (btCurrent)
 	{
-		bt->PrintSamples();
+		btCurrent->PrintSamples();
 	}
 
 	ImGui::End();
@@ -149,13 +151,37 @@ void BeeTDebugger::CanvasWin()
 	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 	ImGui::Begin("Canvas", nullptr, flags);
 
-	g_app->beetGui->SetCurrentEditorContext(editorContextId); // Testing
+	if (btList.size() == 0)
+	{
+		g_app->beetGui->SetCurrentEditorContext(editorContextIDEmpty);
+		ne::Begin("BeeT Node Editor");
+		ne::End();
+		ImGui::End();
+		ImGui::PopStyleVar();
+		return;
+	}
+	
+	ImGui::BeginTabBar("###btDebug_tab_bar");
+	ImGui::DrawTabsBackground();
+	ImGui::SetCursorPosX(0.0f);
 
-	ne::Begin("BeeT Node Editor");
-	if(bt)
-		bt->Draw();
+	for (auto bt : btList)
+	{
+		ImGui::PushID(bt->GetUID());
 
-	ne::End();
+		if (ImGui::AddTab(bt->filename.data()))
+		{
+			btCurrent = bt;
+			g_app->beetGui->SetCurrentEditorContext(bt->editorId);
+
+			ne::Begin("BeeT Node Editor");
+			bt->Draw();
+			ne::End();
+		}
+		ImGui::PopID();
+	}
+
+	ImGui::EndTabBar();
 	ImGui::End();
 	ImGui::PopStyleVar();
 }
@@ -163,11 +189,18 @@ void BeeTDebugger::CanvasWin()
 void BeeTDebugger::LoadBT(const char* buffer, int size)
 {
 	ax::NodeEditor::EditorContext* prevContext = g_app->beetGui->GetNodeEditorContext();
-	g_app->beetGui->SetCurrentEditorContext(editorContextId);
+	int editorId = g_app->beetGui->CreateNodeEditorContext();
+	g_app->beetGui->SetCurrentEditorContext(editorId);
 	Data btData(buffer);
 
-	bt = new dBehaviorTree(btData); 
-	bt->debugUID = btUID; //TODO
+	dBehaviorTree* bt = new dBehaviorTree(btData);
+	assert(btSlots.size() > 0); // OpenNewConnection should have been called first!
+	bt->debugUID = btSlots.top();
+	btSlots.pop();
+	bt->editorId = editorId;
+
+	btToDebugList.insert(std::pair<int, dBehaviorTree*>(bt->debugUID, bt));
+	btList.push_back(bt);
 
 	g_app->beetGui->SetCurrentEditorContext(prevContext);
 }
@@ -176,7 +209,16 @@ void BeeTDebugger::UpdateBT(const char * buf, int size)
 {
 	Data data(buf);
 	int btUID = data.GetInt("uid");
-	//TODO: Search bt for uid. Now is only the 'bt' variable
+	
+	auto btFound = btToDebugList.find(btUID);
+
+	if (btFound == btToDebugList.end())
+	{
+		LOGE("Debug BT with id %i not found", btUID);
+		return;
+	}
+
+	dBehaviorTree* bt = btFound->second;
 		
 	int numSamples = data.GetArraySize("samples");
 	for (int i = 0; i < numSamples; i++)
@@ -202,6 +244,6 @@ void BeeTDebugger::UpdateBT(const char * buf, int size)
 			break;
 		}
 		if (sample != nullptr)
-			bt->AddSample(sample); // TODO
+			bt->AddSample(sample);
 	}
 }
