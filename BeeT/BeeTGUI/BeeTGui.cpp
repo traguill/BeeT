@@ -127,11 +127,11 @@ void BeeTGui::MenuBar()
 		}
 		if (ImGui::BeginMenu("Mode"))
 		{
-			if (ImGui::MenuItem(ICON_MODE_EDIT "Editor###mode_editor"))
+			if (ImGui::MenuItem(ICON_MODE_EDIT " Editor###mode_editor"))
 			{
 				mode = BeeTMode::BEET_EDITOR;
 			}
-			if (ImGui::MenuItem(ICON_BUG "Debug###mode_debug"))
+			if (ImGui::MenuItem(ICON_BUG " Debug###mode_debug"))
 			{
 				mode = BeeTMode::BEET_DEBUGGER;
 			}
@@ -145,7 +145,7 @@ void BeeTGui::FileMenuBar()
 {
 	ImGui::Text(g_app->fileSystem->GetDirectory().data());
 	ImGui::Separator();
-	if (ImGui::MenuItem("New##menubar_file_new"))
+	if (ImGui::MenuItem(ICON_FILE " New##menubar_file_new"))
 	{
 		if (mode == BeeTMode::BEET_EDITOR)
 		{
@@ -153,7 +153,7 @@ void BeeTGui::FileMenuBar()
 			beetEditor->NewBehaviorTree();
 		}
 	}
-	if (ImGui::MenuItem("Open##menubar_file_open"))
+	if (ImGui::MenuItem(ICON_OPEN " Open##menubar_file_open"))
 	{
 		if (mode == BeeTMode::BEET_EDITOR)
 		{
@@ -161,7 +161,7 @@ void BeeTGui::FileMenuBar()
 			fileDialog->SetAcceptFunctionCallback(BeeTGui::LoadFile, this);
 		}
 	}
-	if (ImGui::MenuItem("Save##menubar_file_save"))
+	if (ImGui::MenuItem(ICON_SAVE " Save##menubar_file_save"))
 	{
 		if (mode == BeeTMode::BEET_EDITOR)
 		{
@@ -169,7 +169,7 @@ void BeeTGui::FileMenuBar()
 			fileDialog->SetAcceptFunctionCallback(BeeTGui::SaveFile, this);
 		}
 	}
-	if (ImGui::MenuItem("Quit"))
+	if (ImGui::MenuItem(ICON_BUG " Quit"))
 	{
 		g_app->RequestQuit();
 	}

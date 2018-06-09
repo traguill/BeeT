@@ -260,10 +260,14 @@ void BehaviorTree::Draw()
 	}
 
 	// Draw Links
+	ne::PushStyleColor(ne::StyleColor_Flow, ImVec4(255, 255, 255, 255));
 	for (auto link : linksList)
 	{
-		ne::Link(link.second->id, link.second->sourcePin->id, link.second->targetPin->id, link.second->color, 2.0f);
+		ne::Link(link.second->id, link.second->sourcePin->id, link.second->targetPin->id, link.second->GetColor(), 2.0f);
+		if (link.second->IsFlowing())
+			ne::Flow(link.second->id);
 	}
+	ne::PopStyleColor();
 }
 
 BTNode * BehaviorTree::FindNode(int id) const

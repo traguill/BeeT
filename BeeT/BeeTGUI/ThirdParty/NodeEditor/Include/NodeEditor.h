@@ -167,8 +167,8 @@ struct Style
         TargetDirection         = ImVec2(-1.0f, 0.0f);
         ScrollDuration          = 0.35f;
         FlowMarkerDistance      = 30.0f;
-        FlowSpeed               = 150.0f;
-        FlowDuration            = 2.0f;
+        FlowSpeed               = 120.0f;
+        FlowDuration            = 0.5f;
         PivotAlignment          = ImVec2(0.5f, 0.5f);
         PivotSize               = ImVec2(-1, -1);
         PivotScale              = ImVec2(1, 1);
@@ -193,8 +193,8 @@ struct Style
         Colors[StyleColor_LinkSelRectBorder]  = ImColor(  5, 130, 255, 128);
         Colors[StyleColor_PinRect]            = ImColor( 60, 180, 255, 100);
         Colors[StyleColor_PinRectBorder]      = ImColor( 60, 180, 255, 128);
-        Colors[StyleColor_Flow]               = ImColor(255, 128,  64, 255);
-        Colors[StyleColor_FlowMarker]         = ImColor(255, 128,  64, 255);
+        Colors[StyleColor_Flow]               = ImColor(255, 255,  0, 255);
+        Colors[StyleColor_FlowMarker]         = ImColor(255, 255,  0, 255);
         Colors[StyleColor_GroupBg]            = ImColor(  0,   0,   0, 160);
         Colors[StyleColor_GroupBorder]        = ImColor(255, 255, 255,  32);
     }

@@ -75,3 +75,28 @@ void BTLink::Save(Data & file) const
 	data.AppendInt("targetId", targetPin->id);
 	file.AppendArrayValue(data);
 }
+
+bool BTLink::IsFlowing()
+{
+	if (targetPin->node->highlightBorder || targetPin->node->nodeColor == NC_RUNNING)
+		return true;
+	else
+		return false;
+}
+
+ImVec4 BTLink::GetColor()
+{
+	NodeColor nc = targetPin->node->nodeColor;
+	switch (nc)
+	{
+	case NC_SUCCESS:
+		return ImVec4(0, 255, 0, 255);
+		break;
+	case NC_FAILURE:
+		return ImVec4(255, 0, 0, 255);
+		break;
+	default:
+		return ImVec4(255, 255, 255, 255);
+		break;
+	}
+}

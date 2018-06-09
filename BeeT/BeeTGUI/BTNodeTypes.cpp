@@ -33,7 +33,7 @@ void BTNodeTypes::Init()
 	InsertType("Composites", ICON_BUG, "Parallel", -1);
 
 	InsertType("Tasks", ICON_TASK, "Custom Task", 0);
-	InsertType("Tasks", ICON_BUG, "Wait", 0);
+	InsertType("Tasks", ICON_WAIT, "Wait", 0);
 }
 
 NodeType * BTNodeTypes::GetTypeById(int id)

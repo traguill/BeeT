@@ -255,9 +255,6 @@
     <ClInclude Include="IconsFont.h">
       <Filter>ThirdParty\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="FontsCustom.h">
-      <Filter>Helpers\Fonts</Filter>
-    </ClInclude>
     <ClInclude Include="dsBTEnd.h">
       <Filter>Debugger</Filter>
     </ClInclude>
@@ -301,9 +298,6 @@
     </Filter>
     <Filter Include="Network">
       <UniqueIdentifier>{9e175612-5e7c-4280-81d8-82dc4c333f70}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Helpers\Fonts">
-      <UniqueIdentifier>{de7f6b8e-daad-45aa-964b-fe2a59853c82}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

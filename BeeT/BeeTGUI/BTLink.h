@@ -16,13 +16,15 @@ public:
 
 	void CleanUp();
 	void Save(Data& file)const;
+	
+	bool IsFlowing();
+	ImVec4 GetColor();
 
 public:
 	int id = -1;
 	BTPin* sourcePin = nullptr;
 	BTPin* targetPin = nullptr;
 
-	ImVec4 color = ImVec4(255.0f, 255.0f, 255.0f, 255.0f); // TODO: Change the color of the Link depending on the state
 };
 #endif
 
