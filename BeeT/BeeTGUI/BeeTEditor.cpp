@@ -248,7 +248,8 @@ void BeeTEditor::BlackboardWindow()
 		
 			if (ImGui::InputText("###", varNameTmp, _MAX_PATH, inputFlags))
 			{
-				bbvar->name = varNameTmp;
+				if (bb->IsVarNameUnique(varNameTmp))
+					bbvar->name = varNameTmp;
 				bbvarSelected = -1;
 			}	
 			if (ImGui::IsItemActive() == false && bbvarSetFocus == false)

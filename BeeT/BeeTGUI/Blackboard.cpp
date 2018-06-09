@@ -125,6 +125,16 @@ BBVar * Blackboard::FindVar(const std::string & name)
 	return nullptr;
 }
 
+bool Blackboard::IsVarNameUnique(const std::string & name) const
+{
+	for (auto var : variables)
+	{
+		if (var->name.compare(name) == 0)
+			return false;
+	}
+	return true;
+}
+
 void Blackboard::SetDefaultTypeValue(BBVar * var)
 {
 	switch (var->type)

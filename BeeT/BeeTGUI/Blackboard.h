@@ -31,6 +31,7 @@ public:
 
 	void ChangeVarType(int varId, BBVarType type);
 	BBVar* FindVar(const std::string& name);
+	bool IsVarNameUnique(const std::string& name)const;
 
 private:
 
