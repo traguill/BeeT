@@ -51,11 +51,11 @@ int main(int argc, char* args[])
 	SDL_Rect bgRect = { 0, 0, 900, 640 };
 
 	// Player
-	Player* player = new Player(renderer, 0, 0);
+	Player* player = new Player(renderer, 400, 300);
 	g_GameManager->AddEntity(player);
 
 	// Enemies
-	Enemy* enemy = new Enemy(renderer, 300, 300);
+	Enemy* enemy = new Enemy(renderer, 300, 100);
 	g_GameManager->AddEntity(enemy);
 	
 	// Timer
