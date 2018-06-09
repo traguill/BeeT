@@ -47,6 +47,7 @@ protected:
 public:
 	Blackboard* bb = nullptr;
 	std::string filename;
+	int editorId = -1;
 protected:
 	unsigned int uid = 0;
 	std::map<int, BTNode*> nodesList;

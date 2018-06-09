@@ -137,8 +137,9 @@ void BeeTEditor::NewBehaviorTree(Data* data)
 	bbvarSelected = -1; 
 	bbvarSetFocus = false; 
 	bbvarValueSelected = -1; 
+	bt->editorId = editorId;
 
-	ne::CenterNodeOnScreen(0); // Root node has always id = 0. Careful! It may not work in the future.
+	//ne::CenterNodeOnScreen(0); // Root node has always id = 0. Careful! It may not work in the future.
 
 	// Reset the context to the old one
 	g_app->beetGui->SetCurrentEditorContext(prevContext);
@@ -373,7 +374,6 @@ void BeeTEditor::Editor()
 	ImGui::DrawTabsBackground();
 	ImGui::SetCursorPosX(0.0f);
 
-	int btIdCount = 0;
 	for (auto bt : btList)
 	{
 		ImGui::PushID(bt->GetUID());
@@ -381,7 +381,7 @@ void BeeTEditor::Editor()
 		if (ImGui::AddTab(bt->filename.data()))
 		{
 			btCurrent = bt;
-			g_app->beetGui->SetCurrentEditorContext(btIdCount);
+			g_app->beetGui->SetCurrentEditorContext(bt->editorId);
 			ne::Begin("BeeT Node Editor");
 
 			Menus();
@@ -410,8 +410,6 @@ void BeeTEditor::Editor()
 			ne::End(); // BeeT Node Editor
 		}
 		ImGui::PopID();
-
-		btIdCount++;
 	}
 	ImGui::EndTabBar();
 	ImGui::End();
