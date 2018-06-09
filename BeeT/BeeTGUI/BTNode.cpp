@@ -151,9 +151,7 @@ void BTNode::PrepareToDraw()
 	ImGui::Dummy(ImVec2(160, 0));
 
 	ImGui::Spring(1);
-	ImGui::Text("%s", name.data());
-	ImGui::Spring(1);
-	ImGui::Text("[%s]", type->name.data());
+	ImGui::Text("%s%s", type->icon.data(), name.data());
 	ImGui::Spring(1);
 
 	ImGui::EndVertical(); // 'content'

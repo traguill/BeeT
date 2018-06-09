@@ -8,7 +8,7 @@ using namespace std;
 NodeType::NodeType()
 {}
 
-NodeType::NodeType(int typeId, const std::string& category, const std::string& name, int maxOutputs) : typeId(typeId), category(category), name(name), maxOutputs(maxOutputs)
+NodeType::NodeType(int typeId, const std::string& category, const std::string& icon, const std::string& name, int maxOutputs) : typeId(typeId), category(category), icon(icon), name(name), maxOutputs(maxOutputs)
 {}
 
 BTNodeTypes::BTNodeTypes()
@@ -26,14 +26,14 @@ void BTNodeTypes::Init()
 	listObject = new ListObject(); // Container to display all types in the ItemList widget
 
 	// Default node types
-	InsertType("", "Root", 1);
+	InsertType("", ICON_BUG, "Root", 1);
 	
-	InsertType("Composites", ICON_QUESTION "Selector", -1);
-	InsertType("Composites", ICON_ARROW_FORWARD "Sequence", -1);
-	InsertType("Composites", "Parallel", -1);
+	InsertType("Composites", ICON_QUESTION, "Selector", -1);
+	InsertType("Composites", ICON_ARROW_FORWARD, "Sequence", -1);
+	InsertType("Composites", ICON_BUG, "Parallel", -1);
 
-	InsertType("Tasks", ICON_TASK"Custom Task", 0);
-	InsertType("Tasks", ICON_SYNC"Wait", 0);
+	InsertType("Tasks", ICON_TASK, "Custom Task", 0);
+	InsertType("Tasks", ICON_BUG, "Wait", 0);
 }
 
 NodeType * BTNodeTypes::GetTypeById(int id)
@@ -63,9 +63,9 @@ ListObject * BTNodeTypes::GetListObjectPtr() const
 	return listObject;
 }
 
-void BTNodeTypes::InsertType(const std::string& category, const std::string& name, int maxOutputs)
+void BTNodeTypes::InsertType(const std::string& category, const std::string& icon, const std::string& name, int maxOutputs)
 {
-	NodeType newNodeType((int)typesList.size(), category, name, maxOutputs);
+	NodeType newNodeType((int)typesList.size(), category, icon, name, maxOutputs);
 	typesList.push_back(newNodeType);
 
 	if(category.length() > 0)

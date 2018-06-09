@@ -20,9 +20,9 @@ typedef struct
 	int numTreesLoaded;
 	int maxNumTreesLoaded;
 	float dt;
+	beetCallbackFunc taskCallbackFunc;
 }BeetContext;
 
-struct BeetContext* g_Beet;
 //--------------------------------------------------------------------------------
 // Main
 //--------------------------------------------------------------------------------
@@ -56,16 +56,14 @@ BEET_API void BEET_ExecuteBehaviorTree(unsigned int id); // DEPRECATED
 *   \param2 Pointer to the dequeue list to be filled.
 *	\return Number of names found.
 */
-BEET_API int BEET_GetAllTasksNames(unsigned int btId, dequeue* listNames);
+BEET_API int BEET_GetAllTasksNames(unsigned int btId, dequeue* listNames); // DEPRECATED
 
 /*
 *	Sets the function to be used when the 'Task' node is running.
-*	\param1 Behavior Tree id.
-*	\param2 Task name identifier
-*	\param3 Function callback to be called.
+*	\param1 Function callback to be called.
 *	\return Non-zero on success. 0 on failure.
 */
-BEET_API int BEET_SetTaskCallbackFunc(unsigned int btId, const char* task, beetCallbackFunc callback);
+BEET_API int BEET_SetTaskCallbackFunc(beetCallbackFunc callback);
 
 //--------------------------------------------------------------------------------
 // Blackboard
@@ -87,6 +85,9 @@ BEET_API BEET_bool BEET_BBSetString(unsigned int btId, const char* varName, cons
 
 // Get the number of Behavior Trees loaded in memory.
 BEET_API size_t	BEET_BehaviorTreeCount();
+
+// Get the current context
+BEET_API BeetContext* BeeT_GetContext();
 
 //--------------------------------------------------------------------------------
 // Memory

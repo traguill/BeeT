@@ -2,6 +2,8 @@
 #define __ENEMY_H__
 
 #include "Entity.h"
+#include "../BeeTLib/beet.h"
+#include "../SharedData/SharedEnums.h"
 
 class Enemy : public Entity
 {
@@ -11,7 +13,7 @@ public:
 
 	void OnCollision(Entity* otherEntity);
 
-private:
+	NodeStatus Shoot(unsigned int btId, const char* taskId);
 
 };
 #endif // !__ENEMY_H__

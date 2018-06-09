@@ -71,7 +71,6 @@ typedef struct BTN_Task
 {
 	BeeT_Node node;
 	char* name;
-	beetCallbackFunc callbackFunc;
 }BTN_Task;
 
 typedef struct BTN_Wait
@@ -120,7 +119,7 @@ void BTN_Wait_OnFinish(BeeT_Node* self, NodeStatus status);
 void BTN_Root_OnDestroy(BTN_Root* self);
 void BTN_Composite_OnDestroy(BTN_Composite* self);
 void BTN_Task_OnDestroy(BTN_Task* self);
-void BTN_Wait_OnDestroy(BTN_Task* self);
+void BTN_Wait_OnDestroy(BTN_Wait* self);
 
 // Observer functions
 void BTN_Root_TreeFinish(BeeT_Node* self, NodeStatus s);

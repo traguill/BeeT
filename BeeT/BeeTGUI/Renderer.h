@@ -19,6 +19,8 @@ public:
 private:
 	bool CheckGLError()const;
 
+	void InitImGuiStyle();
+
 private:
 	SDL_GLContext context;
 };

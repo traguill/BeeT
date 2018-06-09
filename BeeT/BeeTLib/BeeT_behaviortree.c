@@ -76,6 +76,7 @@ void Update(BeeT_BehaviorTree* bt)
 	dequeue_push_back(bt->runningNodes, NULL); // Marks end of update
 	while (bt->Step(bt))
 	{
+		int count = dequeue_size(bt->runningNodes);
 		continue;
 	}
 }
@@ -89,13 +90,14 @@ BEET_bool Step(BeeT_BehaviorTree* bt)
 		return BEET_FALSE;
 	}
 
-	current->Tick(current);
+	NodeStatus tickRet = current->Tick(current);
+	BeeT_Node_ChangeStatus(current, tickRet);
 
 	if (current->status != NS_RUNNING)
 	{
 		if(current->observer)
 			current->observer(current->observerNode, current->status);
-		current->status = NS_INVALID;
+		BeeT_Node_ChangeStatus(current, NS_INVALID);
 	}
 	else
 	{

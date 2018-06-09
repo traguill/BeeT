@@ -8,13 +8,13 @@
 #include <stdlib.h>
 
 
-static BeetContext beetDefaultContext;
-#define BEET_GLOBAL_CONTEXT_PTR &beetDefaultContext;
-g_Beet = BEET_GLOBAL_CONTEXT_PTR;
-
 static BeeT_debugger beetDebugger;
 #define BEET_GLOBAL_DEBUGGER_PTR &beetDebugger;
 BeeT_debugger* g_Debug = BEET_GLOBAL_DEBUGGER_PTR;
+
+static BeetContext beetDefaultContext;
+#define BEET_GLOBAL_CONTEXT_PTR &beetDefaultContext;
+BeetContext* g_Beet = BEET_GLOBAL_CONTEXT_PTR;
 
 //-----------------------------------------------------------------
 // Helpers
@@ -256,19 +256,12 @@ BTN_Task* FindTaskByNameRecurisve(BeeT_Node* n, const char* name)
 	return result;
 }
 
-int BEET_SetTaskCallbackFunc(unsigned int btId, const char * task, beetCallbackFunc callback)
+int BEET_SetTaskCallbackFunc(beetCallbackFunc callback)
 {
-	BeeT_BehaviorTree* bt = BeeTContext__GetTree(g_Beet, btId);
-	if (bt != NULL)
-	{
-		BTN_Task* taskNode = FindTaskByNameRecurisve(bt->rootNode, task);
-		if (taskNode != NULL)
-		{
-			taskNode->callbackFunc = callback;
-			return 1;
-		}
-	}
-	return 0;
+	if (g_Beet == NULL)
+		return (int)BEET_FALSE;
+	g_Beet->taskCallbackFunc = callback;
+	return (int)BEET_TRUE;
 }
 
 BBVar* BEET_QuickFindVar(unsigned int btId, const char* varName, BeeT_BehaviorTree** bt)
@@ -368,4 +361,9 @@ BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool valu
 size_t BEET_BehaviorTreeCount()
 {
 	return g_Beet->numTreesLoaded;
+}
+
+BeetContext * BeeT_GetContext()
+{
+	return g_Beet;
 }

@@ -6,7 +6,7 @@
 Player::Player(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, posX, posY)
 {
 	type = PLAYER;
-	rotSpeed = 0.1f;
+	rotSpeed = 50.0f;
 	LoadSprite("Game/bee.bmp", 51, 74);
 
 	g_Physics->AddBody(this, 25);
@@ -32,7 +32,7 @@ void Player::UpdateLogic(float dt)
 	dirY = (float)sin((angle - 90) * DEGTORAD);
 
 	if (g_Input->GetKey(SDL_SCANCODE_W))
-		speed = 0.1f;
+		speed = 100.0f;
 	else
 		speed = 0.0f;
 	
@@ -41,7 +41,7 @@ void Player::UpdateLogic(float dt)
 		Bullet* bullet = new Bullet(renderer, posX, posY);
 		bullet->dirX = dirX;
 		bullet->dirY = dirY;
-		bullet->speed = 0.5f;
+		bullet->speed = 500.0f;
 		g_GameManager->AddEntity(bullet);
 	}
 	

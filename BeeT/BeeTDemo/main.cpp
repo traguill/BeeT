@@ -22,10 +22,15 @@ GameManager* g_GameManager = NULL;
 Physics * g_Physics = NULL;
 Uint64 frequency, timeStart;
 
-float LastFrameMs();
+float LastFrameSec();
+
+NodeStatus TaskCallbackFunc(unsigned int btId, const char* taskId);
 
 int main(int argc, char* args[])
 {
+	BEET_Init();
+	BEET_SetTaskCallbackFunc(TaskCallbackFunc);
+	BEET_InitDebugger(8080);
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	SDL_Window* window;
@@ -57,14 +62,20 @@ int main(int argc, char* args[])
 	frequency = SDL_GetPerformanceFrequency();
 	timeStart = SDL_GetPerformanceCounter();
 	
+	float time = 0.0f;
 	// Loop
 	while (g_Input->Update())
 	{
 		// Logic ------------------
-		float dt = LastFrameMs();
+		float dt = LastFrameSec();
+		BEET_Tick(dt);
 		g_Physics->Tick();
 		g_GameManager->Tick(dt);
 
+		time += dt;
+		char buffer[256];
+		size_t siz = sprintf_s(buffer, "Time: %.2f", time);
+		SDL_SetWindowTitle(window, buffer);
 		// Graphics ---------------
 
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -81,14 +92,19 @@ int main(int argc, char* args[])
 	delete g_GameManager;
 	delete g_Physics;
 	delete g_Input;
-
+	BEET_Shutdown();
 	SDL_Quit();
 	return(0);
 }
 
-float LastFrameMs()
+float LastFrameSec()
 {
-	float ret =  1000.0f * (double(SDL_GetPerformanceCounter() - timeStart) / double(frequency));
+	double ret = (double(SDL_GetPerformanceCounter() - timeStart) / double(frequency));
 	timeStart = SDL_GetPerformanceCounter();
 	return ret;
+}
+
+NodeStatus TaskCallbackFunc(unsigned int btId, const char* taskId)
+{
+	return g_GameManager->UpdateBTTask(btId, taskId);
 }

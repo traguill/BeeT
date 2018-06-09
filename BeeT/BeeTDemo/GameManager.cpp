@@ -47,3 +47,13 @@ void GameManager::RemoveEntity(Entity * entity)
 {
 	entitiesToRemove.push_back(entity);
 }
+
+NodeStatus GameManager::UpdateBTTask(unsigned int btId, const char * taskId)
+{
+	if (entities.size() > 0)
+	{
+		entities[1]->angle += 30;
+		return NS_SUCCESS;
+	}
+		return NS_RUNNING;
+}

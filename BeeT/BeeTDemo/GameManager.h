@@ -2,6 +2,7 @@
 #define __GAME_MANAGER_H__
 
 #include <vector>
+#include "../BeeTLib/beet.h"
 
 class Entity;
 
@@ -16,6 +17,8 @@ public:
 
 	void AddEntity(Entity* entity);
 	void RemoveEntity(Entity* entity);
+
+	NodeStatus UpdateBTTask(unsigned int btId, const char* taskId);
 
 private:
 	std::vector<Entity*> entities;

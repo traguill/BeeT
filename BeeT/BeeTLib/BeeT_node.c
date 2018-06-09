@@ -25,6 +25,9 @@ BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, BeeT_BehaviorTree* bt)
 	case NT_TASK:
 		node = (BeeT_Node*)BTN_Task_Init(data);
 		break;
+	case NT_WAIT:
+		node = (BeeT_Node*)BTN_Wait_Init(data);
+		break;
 	}
 	node->id = BeeT_Serializer_GetInt(data, "id");
 	node->type = (NodeType)BeeT_Serializer_GetInt(data, "type");
@@ -78,7 +81,7 @@ void BeeT_Node_ChangeStatus(BeeT_Node * node, NodeStatus newStatus)
 	if (node->status == newStatus)
 		return;
 
-	if (node->bt->debug)
+	if (node->bt->debug && node->bt->debug->initialized == BEET_TRUE)
 		BeeT_dBT_NodeReturnStatus(node->bt->debug, node, newStatus);
 	node->status = newStatus;
 }
@@ -262,14 +265,15 @@ NodeStatus BTN_Sequence_Update(BeeT_Node* self)
 NodeStatus BTN_Task_Update(BeeT_Node* self)
 {
 	BTN_Task* btn = (BTN_Task*)self;
-	BEET_ASSERT(btn->callbackFunc);
-	return btn->callbackFunc(btn->node.bt->uid, btn->name);
+	BeetContext* context = BeeT_GetContext();
+	BEET_ASSERT(context != NULL);
+	return context->taskCallbackFunc(btn->node.bt->uid, btn->name);
 }
 
 NodeStatus BTN_Wait_Update(BeeT_Node * self)
 {
 	BTN_Wait* btn = (BTN_Wait*)self;
-	btn->timer += g_Beet->dt;
+	btn->timer += BeeT_GetContext()->dt;
 	if (btn->timer >= btn->seconds)
 		return NS_SUCCESS;
 	return NS_RUNNING;
@@ -331,7 +335,7 @@ void BTN_Task_OnDestroy(BTN_Task * self)
 	}
 }
 
-void BTN_Wait_OnDestroy(BTN_Task * self)
+void BTN_Wait_OnDestroy(BTN_Wait * self)
 {
 }
 
@@ -341,7 +345,7 @@ void BTN_Root_TreeFinish(BeeT_Node * self, NodeStatus s)
 {
 	self->bt->StopBehavior(self, s);
 	self->status = NS_INVALID;
-	self->bt->StartBehavior(self->bt, self, NULL); // Restart the tree
+	//self->bt->StartBehavior(self->bt, self, NULL); // Restart the tree
 }
 
 void BTN_Selector_OnChildFinish(BeeT_Node* self, NodeStatus s)

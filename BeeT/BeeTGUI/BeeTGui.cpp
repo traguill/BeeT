@@ -59,7 +59,7 @@ bool BeeTGui::CleanUp()
 bool BeeTGui::Update()
 {
 	MenuBar();
-	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowRounding, 0.0f);
+	//ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowRounding, 0.0f);
 	OpenWindows(); // Draw currently open windows
 	fileDialog->Draw();
 	bool ret = false;
@@ -72,7 +72,7 @@ bool BeeTGui::Update()
 		ret = beetDebugger->Update();
 		break;
 	}
-	ImGui::PopStyleVar(); // WindowRounding
+	//ImGui::PopStyleVar(); // WindowRounding
 	return ret;
 }
 
