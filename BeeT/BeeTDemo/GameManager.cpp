@@ -50,10 +50,11 @@ void GameManager::RemoveEntity(Entity * entity)
 
 NodeStatus GameManager::UpdateBTTask(unsigned int btId, const char * taskId)
 {
-	if (entities.size() > 0)
+	auto task = taskFunctions.find(btId);
+	if (task != taskFunctions.end())
 	{
-		entities[1]->angle += 30;
-		return NS_SUCCESS;
+		return task->second(taskId);
 	}
-		return NS_RUNNING;
+
+	return NS_FAILURE;
 }

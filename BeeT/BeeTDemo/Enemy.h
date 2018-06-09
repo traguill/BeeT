@@ -13,7 +13,7 @@ public:
 
 	void OnCollision(Entity* otherEntity);
 
-	NodeStatus Shoot(unsigned int btId, const char* taskId);
+	NodeStatus BTTask(const char* taskId);
 
 };
 #endif // !__ENEMY_H__

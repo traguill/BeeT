@@ -94,7 +94,12 @@ unsigned int BeetContext__AddTree(BeetContext* ctx, BeeT_BehaviorTree* bt)
 
 BeeT_BehaviorTree* BeeTContext__GetTree(BeetContext* ctx, unsigned int btId)
 {
-	return ((int)btId < ctx->numTreesLoaded) ? ctx->trees[btId] : NULL;
+	for (int i = 0; i < ctx->numTreesLoaded; ++i)
+	{
+		if (ctx->trees[i]->uid == btId)
+			return ctx->trees[i];
+	}
+	return NULL;
 }
 
 //-----------------------------------------------------------------
@@ -143,12 +148,12 @@ unsigned int BEET_LoadBehaviorTree(const char * buffer, int size, BEET_bool debu
 	if (bt == NULL)
 		return 0;
 	
-	unsigned int uid = BeetContext__AddTree(g_Beet, bt);
+	BeetContext__AddTree(g_Beet, bt);
 	if(debug)
 		bt->debug = BeeT_Debugger_LoadBT(g_Debug, buffer, size);
 	
 	BeeT_Serializer_Destroy(parser);
-	return uid;
+	return bt->uid;
 }
 
 unsigned int BEET_LoadBehaviorTreeFromFile(const char * filename, BEET_bool debug)

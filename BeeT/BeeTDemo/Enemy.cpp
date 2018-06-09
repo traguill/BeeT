@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "Physics.h"
-
+#include <functional>
+#include "GameManager.h"
 
 Enemy::Enemy(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, posX, posY)
 {
@@ -9,6 +10,8 @@ Enemy::Enemy(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, 
 	g_Physics->AddBody(this, 50);
 
 	unsigned int btId = BEET_LoadBehaviorTreeFromFile("Enemy.json", BEET_TRUE);
+	std::function<NodeStatus(const char*)> btTasksFunc = std::bind(&Enemy::BTTask, this, std::placeholders::_1);
+	g_GameManager->taskFunctions.insert(std::pair<int, std::function<NodeStatus(const char*)>>(btId, btTasksFunc));
 }
 
 Enemy::~Enemy()
@@ -23,7 +26,9 @@ void Enemy::OnCollision(Entity * otherEntity)
 	}
 }
 
-NodeStatus Enemy::Shoot(unsigned int btId, const char * taskId)
+NodeStatus Enemy::BTTask(const char * taskId)
 {
-	return NS_RUNNING;
+	// TODO: Check for Task
+	angle += 45;
+	return NS_SUCCESS;
 }
