@@ -310,6 +310,11 @@ unsigned int BehaviorTree::GetUID() const
 	return uid;
 }
 
+BTNode * BehaviorTree::GetRootNode() const
+{
+	return rootNode;
+}
+
 int BehaviorTree::GetNextId()
 {
 	return nextId++;

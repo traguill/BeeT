@@ -37,6 +37,7 @@ public:
 	bool IsRoot(int id)const;
 
 	unsigned int GetUID()const;
+	BTNode* GetRootNode()const;
 
 protected:
 	int GetNextId();

@@ -33,8 +33,12 @@ void BeeT_dBT_bbString(BeeT_dBT* bt, struct BBVar* var, const char* newValue);
 
 // New current node
 void BeeT_dBT_NewCurrentNode(BeeT_dBT* bt, struct BeeT_Node* newCurrent);
+
 // Node return status
 void BeeT_dBT_NodeReturnStatus(BeeT_dBT* bt, struct BeeT_Node* node, enum NodeStatus newStatus);
+
+// Behavior Tree ended
+void BeeT_dBT_BTEnd(BeeT_dBT* bt);
 
 // Information to send to the Editor
 // --------------------------------------------------------------------------------
@@ -47,7 +51,7 @@ struct BeeT_dSample
 	SampleType type;
 	float time;
 };
-
+BeeT_dSample* BeeT_dBT_InitSample(SampleType type, float time);
 struct BeeT_Serializer* BeeT_dSample_Serialize(BeeT_dSample* sample);
 
 // Sample Types
@@ -85,5 +89,7 @@ typedef struct BeeT_sNodeReturn
 
 BeeT_sNodeReturn* BeeT_dBT_InitsNodeReturn(clock_t startTime, int nodeId, enum NodeStatus oldStatus, enum NodeStatus newStatus);
 void BeeT_dBT_sNodeReturnSerialize(struct BeeT_Serializer* data, BeeT_sNodeReturn* sample);
+
+typedef struct BeeT_dSample BeeT_sBTEnd;
 #endif // !__BEET_DBG_BEHAVIORTREE_H__
 

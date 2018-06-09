@@ -111,6 +111,9 @@
     <ClCompile Include="dsReturnStatus.cpp">
       <Filter>Debugger</Filter>
     </ClCompile>
+    <ClCompile Include="dsBTEnd.cpp">
+      <Filter>Debugger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -254,6 +257,9 @@
     </ClInclude>
     <ClInclude Include="FontsCustom.h">
       <Filter>Helpers\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="dsBTEnd.h">
+      <Filter>Debugger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

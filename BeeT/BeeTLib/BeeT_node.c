@@ -81,7 +81,7 @@ void BeeT_Node_ChangeStatus(BeeT_Node * node, NodeStatus newStatus)
 	if (node->status == newStatus)
 		return;
 
-	if (node->bt->debug && node->bt->debug->initialized == BEET_TRUE)
+	if (node->bt->debug)
 		BeeT_dBT_NodeReturnStatus(node->bt->debug, node, newStatus);
 	node->status = newStatus;
 }
@@ -345,7 +345,8 @@ void BTN_Root_TreeFinish(BeeT_Node * self, NodeStatus s)
 {
 	self->bt->StopBehavior(self, s);
 	self->status = NS_INVALID;
-	//self->bt->StartBehavior(self->bt, self, NULL); // Restart the tree
+	if (self->bt->debug)
+		BeeT_dBT_BTEnd(self->bt->debug);
 }
 
 void BTN_Selector_OnChildFinish(BeeT_Node* self, NodeStatus s)

@@ -19,15 +19,22 @@ dsNewCurrent::~dsNewCurrent()
 
 void dsNewCurrent::Print() const
 {
-	std::string oldName = oldCurrent ? oldCurrent->name.data() : "Root";
 	std::string newName = newCurrent ? newCurrent->name.data() : "Root";
-	ImGui::Text("%s -> %s", oldName.data(), newName.data());
+	ImGui::Text("-- %s --", newName.data());
 }
 
 void dsNewCurrent::Effect()
 {
+	if(newCurrent)
+		newCurrent->highlightBorder = true;
+	if(oldCurrent)
+		oldCurrent->highlightBorder = false;
 }
 
 void dsNewCurrent::CounterEffect()
 {
+	if(oldCurrent)
+		oldCurrent->highlightBorder = true;
+	if(newCurrent)
+		newCurrent->highlightBorder = false;
 }

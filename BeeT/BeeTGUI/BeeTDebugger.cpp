@@ -14,6 +14,7 @@
 #include "dsBBVar.h"
 #include "dsNewCurrent.h"
 #include "dsReturnStatus.h"
+#include "dsBTEnd.h"
 
 #include <string>
 
@@ -195,6 +196,9 @@ void BeeTDebugger::UpdateBT(const char * buf, int size)
 			sample = (dSample*) new dsNewCurrent(bt, sData);
 			break;
 		case DECORATOR_CONDITION:
+			break;
+		case BT_END:
+			sample = (dSample*) new dsBTEnd(bt, sData);
 			break;
 		}
 		if (sample != nullptr)

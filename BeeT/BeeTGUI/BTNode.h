@@ -84,7 +84,7 @@ public:
 	std::vector<BTDecorator*> decorators; // Decorators attached to this node
 
 	NodeColor nodeColor = NC_IDLE;
-
+	bool highlightBorder = false;
 private:
 	BTNode* parent = nullptr;
 	std::vector<BTNode*> childs;

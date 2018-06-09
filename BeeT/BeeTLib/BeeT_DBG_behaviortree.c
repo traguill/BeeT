@@ -129,6 +129,20 @@ void BeeT_dBT_NodeReturnStatus(BeeT_dBT * bt, BeeT_Node * node, NodeStatus newSt
 	dequeue_push_back(bt->samples, sample);
 }
 
+void BeeT_dBT_BTEnd(BeeT_dBT * bt)
+{
+	BeeT_sBTEnd* sample = BeeT_dBT_InitSample(BT_END, GetTimestamp(bt->startTime));
+	dequeue_push_back(bt->samples, sample);
+}
+
+BeeT_dSample * BeeT_dBT_InitSample(SampleType type, float time)
+{
+	BeeT_dSample* sample = (BeeT_dSample*)BEET_malloc(sizeof(BeeT_dSample));
+	sample->type = type;
+	sample->time = time;
+	return sample;
+}
+
 BeeT_Serializer * BeeT_dSample_Serialize(BeeT_dSample * sample)
 {
 	BeeT_Serializer* data = BeeT_Serializer_Create();
@@ -148,6 +162,9 @@ BeeT_Serializer * BeeT_dSample_Serialize(BeeT_dSample * sample)
 			BeeT_dBT_sNewCurrentSerialize(data, (BeeT_sNewCurrent*)sample);
 			break;
 		case DECORATOR_CONDITION:
+			break;
+		case BT_END:
+			// No need to do anything
 			break;
 	}
 
