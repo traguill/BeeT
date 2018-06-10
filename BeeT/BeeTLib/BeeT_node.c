@@ -115,7 +115,7 @@ NodeStatus Tick(BeeT_Node* n)
 		NodeStatus status = n->Update(n);
 		BeeT_Node_ChangeStatus(n, status);
 	}
-	if (n->status != NS_RUNNING)
+	if (n->status != NS_RUNNING && n->status != NS_SUSPENDED)
 	{
 		n->OnFinish(n, n->status);
 	}
@@ -264,17 +264,17 @@ void BTN_Wait_OnInit(BeeT_Node * self)
 
 NodeStatus BTN_Root_Update(BeeT_Node* self)
 {
-	return NS_RUNNING;
+	return NS_SUSPENDED;
 }
 
 NodeStatus BTN_Selector_Update(BeeT_Node* self)
 {
-	return NS_RUNNING;
+	return NS_SUSPENDED;
 }
 
 NodeStatus BTN_Sequence_Update(BeeT_Node* self)
 {
-	return NS_RUNNING;
+	return NS_SUSPENDED;
 }
 
 NodeStatus BTN_Task_Update(BeeT_Node* self)

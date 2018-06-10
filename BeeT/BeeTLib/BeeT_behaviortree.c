@@ -97,7 +97,7 @@ BEET_bool Step(BeeT_BehaviorTree* bt)
 	NodeStatus tickRet = current->Tick(current);
 	BeeT_Node_ChangeStatus(current, tickRet);
 
-	if (current->status != NS_RUNNING)
+	if (current->status != NS_RUNNING && current->status != NS_SUSPENDED)
 	{
 		if(current->observer)
 			current->observer(current->observerNode, current->status);
@@ -105,7 +105,8 @@ BEET_bool Step(BeeT_BehaviorTree* bt)
 	}
 	else
 	{
-		dequeue_push_back(bt->runningNodes, current);
+		if(current->status == NS_RUNNING)
+			dequeue_push_back(bt->runningNodes, current);
 	}
 
 	return BEET_TRUE;
