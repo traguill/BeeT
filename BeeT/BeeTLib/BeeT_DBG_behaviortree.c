@@ -44,7 +44,37 @@ int BeeT_dBT_GetSampleData(BeeT_dBT* bt, char** buf)
 
 void BeeT_dBT_ClearSampleData(BeeT_dBT * bt)
 {
-	dequeue_clear(bt->samples); // TODO: Clear every sample individually
+	node_deq* item = dequeue_head(bt->samples);
+	while (item)
+	{
+		BeeT_dSample* s = (BeeT_dSample*)item->data;
+		if (s->type == BBVAR_CHANGED)
+		{
+			BeeT_sBBVar* n = (BeeT_sBBVar*)item->data;
+			BEET_free(n->name);
+			switch (n->varType)
+			{
+				case BV_BOOL:
+					BEET_free((BEET_bool*)n->oldValue);
+					BEET_free((BEET_bool*)n->newValue);
+					break;
+				case BV_INT:
+					BEET_free((int*)n->oldValue);
+					BEET_free((int*)n->newValue);
+					break;
+				case BV_FLOAT:
+					BEET_free((float*)n->oldValue);
+					BEET_free((float*)n->newValue);
+					break;
+				case BV_STRING:
+					BEET_free((char*)n->oldValue);
+					BEET_free((char*)n->newValue);
+					break;
+			}
+		}
+		item = item->next;
+	}
+	dequeue_clear(bt->samples);
 }
 
 float GetTimestamp(clock_t startTime)
