@@ -28,7 +28,7 @@ public:
 	void SetCurrentEditorContext(int id);
 	void SetCurrentEditorContext(ax::NodeEditor::EditorContext* context);
 	ax::NodeEditor::EditorContext* GetNodeEditorContext()const;
-	int CreateNodeEditorContext(); //TODO: Re-do this to let each BT to have its own context.
+	int CreateNodeEditorContext(); 
 
 	static void LoadFile(void* obj, const char* filename);
 	static void SaveFile(void* obj, const char* filename);

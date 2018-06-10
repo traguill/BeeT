@@ -88,24 +88,26 @@ void BeeT_Node_ChangeStatus(BeeT_Node * node, NodeStatus newStatus)
 
 NodeStatus Tick(BeeT_Node* n)
 {
-	//Check if all decorators return true
-	if (!dequeue_is_empty(n->decorators))
-	{
-		node_deq* item = n->decorators->head;
-		while (item)
-		{
-			BeeT_decorator* dec = (BeeT_decorator*)item->data;
-			if (dec->Pass(dec) == BEET_FALSE)
-			{
-				BeeT_Node_ChangeStatus(n, NS_FAILURE);		// Abort execution because a decorator failed
-				return n->status;
-			}
-			item = item->next;
-		}
-	}
+
 
 	if (n->status == NS_INVALID)
 	{
+		//Check if all decorators return true
+		if (!dequeue_is_empty(n->decorators))
+		{
+			node_deq* item = n->decorators->head;
+			while (item)
+			{
+				BeeT_decorator* dec = (BeeT_decorator*)item->data;
+				if (dec->Pass(dec) == BEET_FALSE)
+				{
+					BeeT_Node_ChangeStatus(n, NS_FAILURE);		// Abort execution because a decorator failed
+					return n->status;
+				}
+				item = item->next;
+			}
+		}
+
 		n->OnInit(n);
 		BeeT_Node_ChangeStatus(n, NS_RUNNING);
 	}
@@ -155,7 +157,7 @@ BTN_Selector * BTN_Selector_Init(const BeeT_Serializer * data, BeeT_BehaviorTree
 
 	btn->node.OnInit = &BTN_Selector_OnInit;
 	btn->node.Update = &BTN_Selector_Update;
-	btn->node.observer = &BTN_Selector_OnFinish;
+	btn->node.OnFinish = &BTN_Selector_OnFinish;
 	return btn;
 }
 
@@ -212,6 +214,7 @@ void BTN_Root_OnInit(BeeT_Node* self)
 	BTN_Root* btn = (BTN_Root*)self;
 	if (btn->startNode)
 	{
+		btn->startNode->status = NS_INVALID;
 		btn->startNode->observerNode = self;
 		btn->node.bt->StartBehavior(btn->node.bt, btn->startNode, BTN_Root_TreeFinish);
 	}
@@ -220,6 +223,13 @@ void BTN_Root_OnInit(BeeT_Node* self)
 void BTN_Selector_OnInit(BeeT_Node* self)
 {
 	BTN_Selector* btn = (BTN_Selector*)self;
+	node_deq* item = dequeue_head(btn->childs);
+	while (item)
+	{
+		BeeT_Node* n = (BeeT_Node*)item->data;
+		n->status = NS_INVALID;
+		item = item->next;
+	}
 	btn->current = dequeue_head(btn->childs);
 	BeeT_Node* current_node = (BeeT_Node*)dequeue_front(btn->childs);
 	current_node->observerNode = self;
@@ -229,6 +239,13 @@ void BTN_Selector_OnInit(BeeT_Node* self)
 void BTN_Sequence_OnInit(BeeT_Node* self)
 {
 	BTN_Sequence* btn = (BTN_Sequence*)self;
+	node_deq* item = dequeue_head(btn->childs);
+	while (item)
+	{
+		BeeT_Node* n = (BeeT_Node*)item->data;
+		n->status = NS_INVALID;
+		item = item->next;
+	}
 	btn->current = dequeue_head(btn->childs);
 	BeeT_Node* current_node = (BeeT_Node*)dequeue_front(btn->childs);
 	current_node->observerNode = self;
@@ -345,13 +362,35 @@ void BTN_Root_TreeFinish(BeeT_Node * self, NodeStatus s)
 {
 	self->bt->StopBehavior(self, s);
 	self->status = NS_INVALID;
+	dequeue_clear(self->bt->runningNodes);	// Clear running nodes
+	dequeue_push_back(self->bt->runningNodes, NULL); // Push a NULL node to end the Tick
+	dequeue_push_back(self->bt->runningNodes, self); // Push Root node to start the next Tick
 	if (self->bt->debug)
 		BeeT_dBT_BTEnd(self->bt->debug);
 }
 
 void BTN_Selector_OnChildFinish(BeeT_Node* self, NodeStatus s)
 {
+	BTN_Selector* btn = (BTN_Selector*)self;
+	BeeT_Node* child = (BeeT_Node*)btn->current->data;
+	if (child->status == NS_SUCCESS)
+	{
+		btn->node.bt->StopBehavior(self, NS_FAILURE);
+		return;
+	}
 
+	BEET_ASSERT(child->status == NS_FAILURE);
+	btn->current = btn->current->next;
+	if (btn->current == NULL)
+	{
+		btn->node.bt->StopBehavior(self, NS_SUCCESS);
+	}
+	else
+	{
+		BeeT_Node* n_current = (BeeT_Node*)btn->current->data;
+		n_current->observerNode = self;
+		btn->node.bt->StartBehavior(btn->node.bt, n_current, &BTN_Selector_OnChildFinish);
+	}
 }
 
 void BTN_Sequence_OnChildFinish(BeeT_Node* self, NodeStatus s)

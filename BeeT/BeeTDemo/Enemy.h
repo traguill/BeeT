@@ -15,6 +15,9 @@ public:
 
 	NodeStatus BTTask(const char* taskId);
 
+private:
+	unsigned int btId;
+
 };
 #endif // !__ENEMY_H__
 

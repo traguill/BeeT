@@ -1,6 +1,9 @@
 #include "BeeT_behaviortree.h"
 #include "BeeT_DBG_behaviortree.h"
 
+// TO_DEBUG
+#include "DebugLibrary.h"
+
 // Forward delcarations
 void StartBehavior(BeeT_BehaviorTree*, BeeT_Node*, ObserverFunc);
 void StopBehavior(BeeT_Node*, NodeStatus);
@@ -74,10 +77,12 @@ void StopBehavior(BeeT_Node* behavior, NodeStatus resultStatus)
 void Update(BeeT_BehaviorTree* bt)
 {
 	dequeue_push_back(bt->runningNodes, NULL); // Marks end of update
+	TO_DEBUG_PrintRunningNodes(bt->runningNodes, 0);
 	while (bt->Step(bt))
 	{
 		continue;
 	}
+	TO_DEBUG_PrintRunningNodes(bt->runningNodes, 1);
 }
 BEET_bool Step(BeeT_BehaviorTree* bt)
 {

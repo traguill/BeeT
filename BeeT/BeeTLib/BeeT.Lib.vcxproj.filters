@@ -93,6 +93,9 @@
     <ClInclude Include="BeeT_DBG_behaviortree.h">
       <Filter>Header Files\Debugger</Filter>
     </ClInclude>
+    <ClInclude Include="DebugLibrary.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ThirdParty\parson.c">

@@ -159,6 +159,7 @@
     <ClInclude Include="BeeT_NW_packet.h" />
     <ClInclude Include="BeeT_serializer.h" />
     <ClInclude Include="beet_std.h" />
+    <ClInclude Include="DebugLibrary.h" />
     <ClInclude Include="ThirdParty\begin_code.h" />
     <ClInclude Include="ThirdParty\close_code.h" />
     <ClInclude Include="ThirdParty\parson.h" />
