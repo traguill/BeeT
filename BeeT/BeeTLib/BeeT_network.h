@@ -38,6 +38,7 @@ struct BeeT_network
 
 BeeT_network*	BeeT_NW_Init(const char* ip, int port);
 void			BeeT_NW_Tick(BeeT_network* nw);
+void			BeeT_NW_Cleanup(BeeT_network* nw);
 
 BEET_bool		BeeT_NW_OpenSocket(BeeT_network* nw, struct BeeT_dBT* bt);
 BEET_bool		BeeT_NW_SocketReadyToSend(BeeT_socket* sc); // Returns true if any data was sent

@@ -4,7 +4,7 @@
 #include "BeeT_behaviortree.h"
 
 
-BEET_bool BeeT_Debugger_Init(BeeT_debugger * debugger, const char* ip, int port) // TODO: Do clean up of socketList
+BEET_bool BeeT_Debugger_Init(BeeT_debugger * debugger, const char* ip, int port)
 {
 	debugger->initialized = BEET_TRUE;
 	debugger->nw = BeeT_NW_Init(ip, port);
@@ -30,6 +30,11 @@ void BeeT_Debugger_Cleanup(BeeT_debugger * debugger)
 			item = item->next;
 		}
 		DestroyDequeue(debugger->BTs);
+	}
+	if (debugger->nw)
+	{
+		BeeT_NW_Cleanup(debugger->nw);
+		BEET_free(debugger->nw);
 	}
 }
 

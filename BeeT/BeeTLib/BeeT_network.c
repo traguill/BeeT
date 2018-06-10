@@ -8,7 +8,7 @@ BeeT_network * BeeT_NW_Init(const char* ip, int port)
 {
 	BeeT_network* nw = (BeeT_network*)BEET_malloc(sizeof(BeeT_network));
 	nw->port = port;
-
+	nw->ip = ip;
 	if (SDLNet_Init() < 0)
 	{
 		printf("%s\n", SDLNet_GetError());
@@ -115,6 +115,14 @@ void BeeT_NW_Tick(BeeT_network* nw)
 
 		it = it->next;
 	}
+}
+
+void BeeT_NW_Cleanup(BeeT_network * nw)
+{
+	SDLNet_FreeSocketSet(nw->socketSet);
+	if(nw->socketList)
+		DestroyDequeue(nw->socketList);
+	SDLNet_Quit();
 }
 
 BEET_bool BeeT_NW_OpenSocket(BeeT_network* nw, BeeT_dBT* bt)
