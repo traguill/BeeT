@@ -58,8 +58,32 @@ BeeT_Blackboard* BeeT_Blackboard_Init(const BeeT_Serializer * data)
 
 void BeeT_Blackboard_Destroy(BeeT_Blackboard * self)
 {
-	if (self->vars) //TODO: remove inside content of var. Actual implementation has memory leaks
+	if (self->vars)
+	{
+		node_deq* item = dequeue_head(self->vars);
+		while (item)
+		{
+			BBVar* v = (BBVar*)item->data;
+			BEET_free(v->name);
+			switch (v->type)
+			{
+			case BV_BOOL:
+				BEET_free((BEET_bool*)v->data);
+				break;
+			case BV_INT:
+				BEET_free((int*)v->data);
+				break;
+			case BV_FLOAT:
+				BEET_free((float*)v->data);
+				break;
+			case BV_STRING:
+				BEET_free((char*)v->data);
+				break;
+			}
+			item = item->next;
+		}
 		DestroyDequeue(self->vars);
+	}
 	BEET_free(self);
 }
 
