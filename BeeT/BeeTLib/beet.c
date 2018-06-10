@@ -125,7 +125,8 @@ void BEET_Shutdown()
 {
 	if (g_Beet->initialized == BEET_FALSE)
 		return;
-
+	if (g_Debug->initialized)
+		BeeT_Debugger_Cleanup(g_Debug);
 	BeetContext__Destroy(g_Beet);
 }
 

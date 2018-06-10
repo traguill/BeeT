@@ -19,6 +19,7 @@ struct BeeT_dBT
 };
 
 BeeT_dBT*		BeeT_dBT_Init			(const char* buffer, unsigned int size);	// Constructor
+void			BeeT_dBT_Cleanup		(BeeT_dBT* bt);								// Destructor
 BEET_bool		BeeT_dBT_HasDataToSend	(const BeeT_dBT* bt);						// Returns BEET_TRUE if there is new data to send, BEET_FALSE otherwise
 int				BeeT_dBT_GetSampleData	(BeeT_dBT* bt, char** buf);					// Returns a buffer with the data ready to be sent. After calling this, dataToSendSize contains the buffer size.
 void			BeeT_dBT_ClearSampleData(BeeT_dBT* bt);

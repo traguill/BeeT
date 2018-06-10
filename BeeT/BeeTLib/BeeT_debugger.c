@@ -17,6 +17,22 @@ void BeeT_Debugger_Tick(BeeT_debugger * debugger)
 	BeeT_NW_Tick(debugger->nw);
 }
 
+void BeeT_Debugger_Cleanup(BeeT_debugger * debugger)
+{
+	if (debugger->BTs)
+	{
+		node_deq* item = dequeue_head(debugger->BTs);
+		while (item)
+		{
+			BeeT_dBT* dbt = (BeeT_dBT*)item->data;
+			BeeT_dBT_Cleanup(dbt);
+			BEET_free(dbt);
+			item = item->next;
+		}
+		DestroyDequeue(debugger->BTs);
+	}
+}
+
 BeeT_dBT* BeeT_Debugger_LoadBT(BeeT_debugger * debugger, const char * buffer, unsigned int bufSize)
 {
 	BeeT_dBT* dbg_bt = BeeT_dBT_Init(buffer, bufSize);

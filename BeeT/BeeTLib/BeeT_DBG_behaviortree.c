@@ -19,6 +19,16 @@ BeeT_dBT * BeeT_dBT_Init(const char* buffer, unsigned int size)
 	return dbg_bt;
 }
 
+void BeeT_dBT_Cleanup(BeeT_dBT * bt)
+{
+	BeeT_dBT_ClearSampleData(bt);
+	if (bt->btBuffer)
+	{
+		BEET_free(bt->btBuffer);
+		bt->btBuffer = NULL;
+	}
+}
+
 BEET_bool BeeT_dBT_HasDataToSend(const BeeT_dBT * bt)
 {
 	return !dequeue_is_empty(bt->samples);
