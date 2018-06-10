@@ -90,7 +90,7 @@ void BeeT_Node_ChangeStatus(BeeT_Node * node, NodeStatus newStatus)
 	if (node->status == newStatus)
 		return;
 
-	if (node->bt->debug)
+	if (node->bt->debug && !(node->status == NS_RUNNING && newStatus == NS_SUSPENDED) && !(node->status == NS_SUSPENDED && newStatus == NS_RUNNING)) // Consider RUNNING = SUSPENDED. Don't send as change status.
 		BeeT_dBT_NodeReturnStatus(node->bt->debug, node, newStatus);
 	node->status = newStatus;
 }
