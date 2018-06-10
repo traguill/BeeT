@@ -38,7 +38,7 @@ void Player::UpdateLogic(float dt)
 	
 	if (g_Input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
 	{
-		Bullet* bullet = new Bullet(renderer, posX, posY);
+		Bullet* bullet = new Bullet(renderer, posX, posY, true);
 		bullet->dirX = dirX;
 		bullet->dirY = dirY;
 		bullet->speed = 500.0f;

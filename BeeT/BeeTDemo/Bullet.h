@@ -6,7 +6,7 @@
 class Bullet : public Entity
 {
 public:
-	Bullet(SDL_Renderer* renderer, float posX, float posY);
+	Bullet(SDL_Renderer* renderer, float posX, float posY, bool fromPlayer);
 	~Bullet();
 
 	void UpdateLogic(float dt);

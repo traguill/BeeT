@@ -1,10 +1,18 @@
 #include "Bullet.h"
 #include "Physics.h"
 
-Bullet::Bullet(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, posX, posY)
+Bullet::Bullet(SDL_Renderer* renderer, float posX, float posY, bool fromPlayer) : Entity(renderer, posX, posY)
 {
- 	LoadSprite("Game/beeBullet.bmp", 32, 32);
-	type = PLAYER_BULLET;
+	if (fromPlayer)
+	{
+		type = PLAYER_BULLET;
+ 		LoadSprite("Game/beeBullet.bmp", 32, 32);
+	}
+	else
+	{
+		type = ENEMY_BULLET;
+		LoadSprite("Game/flowerBullet.bmp", 32, 32);
+	}
 	g_Physics->AddBody(this, 16);
 }
 
@@ -20,7 +28,11 @@ void Bullet::UpdateLogic(float dt)
 
 void Bullet::OnCollision(Entity * otherEntity)
 {
-	if (otherEntity->type == ENEMY)
+	if (otherEntity->type == ENEMY && type == PLAYER_BULLET)
+	{
+		g_GameManager->RemoveEntity(this);
+	}
+	else if (otherEntity->type == PLAYER && type == ENEMY_BULLET)
 	{
 		g_GameManager->RemoveEntity(this);
 	}
