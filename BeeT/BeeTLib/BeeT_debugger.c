@@ -4,10 +4,10 @@
 #include "BeeT_behaviortree.h"
 
 
-BEET_bool BeeT_Debugger_Init(BeeT_debugger * debugger, int port) // TODO: Do clean up of socketList
+BEET_bool BeeT_Debugger_Init(BeeT_debugger * debugger, const char* ip, int port) // TODO: Do clean up of socketList
 {
 	debugger->initialized = BEET_TRUE;
-	debugger->nw = BeeT_NW_Init(port);
+	debugger->nw = BeeT_NW_Init(ip, port);
 	debugger->BTs = InitDequeue();
 	return debugger->nw != NULL ? BEET_TRUE : BEET_FALSE;
 }

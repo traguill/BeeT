@@ -24,31 +24,7 @@ bool Network::Init()
 	}
 	LOGI("SDLNet initialized");
 
-	// Create a socket set
-	socketSet = SDLNet_AllocSocketSet(maxSockets);
-	if (socketSet == NULL)
-	{
-		LOGE("SDLNet create socket set: %s", SDLNet_GetError());
-		return false;
-	}
 
-	// Initialize all the clients sockets
-	maxClients = maxSockets - 1;
-	clientSocket.resize(maxClients);
-	std::fill(clientSocket.begin(), clientSocket.end(), nullptr);
-	freeSockets.resize(maxClients);
-	std::fill(freeSockets.begin(), freeSockets.end(), true);
-
-	
-	const unsigned short port = 8080;
-	int hostResolved = SDLNet_ResolveHost(&serverIP, NULL, port);
-	if (hostResolved == -1)
-	{
-		LOGE("SDLNet resolve host: %s", SDLNet_GetError());
-		return false;
-	}
-
-	ListenConnections();
 	g_app->AddModuleUpdate(this);
 	return true;
 }
@@ -75,23 +51,25 @@ bool Network::Update()
 	return true;
 }
 
+bool Network::IsListening() const
+{
+	return listening;
+}
+
 bool Network::ListenConnections()
 {
-	if (!listening)
+	// Open the server socket
+	serverSocket = SDLNet_TCP_Open(&serverIP);
+	if (!serverSocket)
 	{
-		// Open the server socket
-		serverSocket = SDLNet_TCP_Open(&serverIP);
-		if (!serverSocket)
-		{
-			LOGE("SDLNet failed to open Server socket %s", SDLNet_GetError());
-		}
-		else
-		{
-			SDLNet_TCP_AddSocket(socketSet, serverSocket);
-			listening = true;
-		}
+		LOGE("SDLNet failed to open Server socket %s", SDLNet_GetError());
+		return false;
 	}
-	return listening;
+	else
+	{
+		SDLNet_TCP_AddSocket(socketSet, serverSocket);
+	}
+	return true;
 }
 
 void Network::StopListeningConnections()
@@ -103,6 +81,58 @@ void Network::StopListeningConnections()
 		serverSocket = NULL;
 		listening = false;
 	}
+}
+
+bool Network::StartListenngConnections()
+{
+	// Create a socket set
+	socketSet = SDLNet_AllocSocketSet(maxSockets);
+	if (socketSet == NULL)
+	{
+		LOGE("SDLNet create socket set: %s", SDLNet_GetError());
+		return false;
+	}
+
+	// Initialize all the clients sockets
+	maxClients = maxSockets - 1;
+	clientSocket.resize(maxClients);
+	std::fill(clientSocket.begin(), clientSocket.end(), nullptr);
+	freeSockets.resize(maxClients);
+	std::fill(freeSockets.begin(), freeSockets.end(), true);
+
+	
+	int hostResolved = SDLNet_ResolveHost(&serverIP, ip.compare("127.0.0.1") ? ip.data() : NULL, port);
+	if (hostResolved == -1)
+	{
+		LOGE("SDLNet resolve host: %s", SDLNet_GetError());
+		return false;
+	}
+
+	bool ret = ListenConnections();
+	if (ret)
+	{
+		LOGI("Server initialized successfully at: %s:%i", ip.data(), port);
+	}
+	return ret;
+}
+
+void Network::ApplySettings()
+{
+	port = tmpPort;
+	ip = tmpIp;
+	if (listening)
+		StopListeningConnections();
+	listening = tmpListening;
+	if (listening)
+		listening = StartListenngConnections();
+	tmpListening = listening;
+}
+
+void Network::ResetSettings()
+{
+	tmpPort = port;
+	tmpIp = ip;
+	tmpListening = listening;
 }
 
 void Network::HandleNewConnections()

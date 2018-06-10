@@ -36,6 +36,7 @@ public:
 private:
 	void MenuBar();
 	void FileMenuBar();
+	void EditMenuBar();
 	void OpenWindows();
 
 public:

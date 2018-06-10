@@ -88,8 +88,6 @@ void BeeT_Node_ChangeStatus(BeeT_Node * node, NodeStatus newStatus)
 
 NodeStatus Tick(BeeT_Node* n)
 {
-
-
 	if (n->status == NS_INVALID)
 	{
 		//Check if all decorators return true

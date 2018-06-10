@@ -106,9 +106,9 @@ BeeT_BehaviorTree* BeeTContext__GetTree(BeetContext* ctx, unsigned int btId)
 // BeeT Debugger
 //-----------------------------------------------------------------
 
-BEET_bool BEET_InitDebugger(int port)
+BEET_bool BEET_InitDebugger(const char* ip, int port)
 {
-	return BeeT_Debugger_Init(g_Debug, port);
+	return BeeT_Debugger_Init(g_Debug, ip, port);
 }
 
 //-----------------------------------------------------------------

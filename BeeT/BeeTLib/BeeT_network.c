@@ -4,7 +4,7 @@
 
 #define BEET_DB_MAX_NUM_SOCKETS 3 //TODO: Change this
 
-BeeT_network * BeeT_NW_Init(int port)
+BeeT_network * BeeT_NW_Init(const char* ip, int port)
 {
 	BeeT_network* nw = (BeeT_network*)BEET_malloc(sizeof(BeeT_network));
 	nw->port = port;
@@ -14,7 +14,8 @@ BeeT_network * BeeT_NW_Init(int port)
 		printf("%s\n", SDLNet_GetError());
 		return NULL;
 	}
-	if (SDLNet_ResolveHost(&nw->ip, "localhost", port) == -1)
+
+	if (SDLNet_ResolveHost(&nw->ipAdr, strcmp(ip, "127.0.0.1") ? ip : "localhost", port) == -1)
 	{
 		printf("%s\n", SDLNet_GetError());
 		return NULL;
@@ -58,7 +59,7 @@ void BeeT_NW_Tick(BeeT_network* nw)
 
 		if (sc->state == OPEN)
 		{
-			TCPsocket tcpsock = SDLNet_TCP_Open(&nw->ip);
+			TCPsocket tcpsock = SDLNet_TCP_Open(&nw->ipAdr);
 			if (tcpsock == NULL)
 			{
 				// PRINT ERROR

@@ -30,7 +30,7 @@ int main(int argc, char* args[])
 {
 	BEET_Init();
 	BEET_SetTaskCallbackFunc(TaskCallbackFunc);
-	BEET_InitDebugger(8080);
+	BEET_InitDebugger("127.0.0.1", 8080);
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	SDL_Window* window;

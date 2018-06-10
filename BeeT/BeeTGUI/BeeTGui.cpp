@@ -8,6 +8,7 @@
 #include "BeeTDebugger.h"
 
 #include "FileSystem.h" // Testing: To show the current directory path in MainMenuBar->File.
+#include "Network.h"
 
 #include "ThirdParty/ImGui/imgui.h"
 #include "IconsFont.h"
@@ -115,8 +116,12 @@ void BeeTGui::MenuBar()
 		}
 		if (ImGui::BeginMenu("Edit"))
 		{
+			EditMenuBar();
 			ImGui::EndMenu();
 		}
+		else if (g_app->network->settingsDirty)
+			g_app->network->ResetSettings();
+
 		if (ImGui::BeginMenu("Window"))
 		{
 			if (ImGui::MenuItem("Output", NULL, g_output->windowOpen))
@@ -137,14 +142,28 @@ void BeeTGui::MenuBar()
 			}
 			ImGui::EndMenu();
 		}
+		
+		if (mode == BeeTMode::BEET_EDITOR)
+		{
+			ImGui::SetCursorPosX(ImGui::GetWindowWidth() - ImGui::CalcTextSize(ICON_MODE_EDIT "EDIT").x - 20);
+			ImGui::TextColored(ImVec4(0.0f, 0.75f, 0.2f, 1.0f), ICON_MODE_EDIT " EDIT");
+		}
+		else // Debug
+		{
+			ImGui::SetCursorPosX(ImGui::GetWindowWidth() - ImGui::CalcTextSize(ICON_BUG " DEBUG").x - 20);
+			if (g_app->network->IsListening())
+				ImGui::TextColored(ImVec4(0.0f, 0.75f, 0.2f, 1.0f), ICON_BUG);
+			else
+				ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), ICON_BUG);
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(0.0f, 0.75f, 0.2f, 1.0f), "DEBUG");
+		}
 		ImGui::EndMainMenuBar();
 	}
 }
 
 void BeeTGui::FileMenuBar()
 {
-	ImGui::Text(g_app->fileSystem->GetDirectory().data());
-	ImGui::Separator();
 	if (ImGui::MenuItem(ICON_FILE " New##menubar_file_new"))
 	{
 		if (mode == BeeTMode::BEET_EDITOR)
@@ -172,6 +191,47 @@ void BeeTGui::FileMenuBar()
 	if (ImGui::MenuItem(ICON_BUG " Quit"))
 	{
 		g_app->RequestQuit();
+	}
+	ImGui::Text("Working directory:");
+	ImGui::Separator();
+	ImGui::Text(g_app->fileSystem->GetDirectory().data());
+}
+
+void BeeTGui::EditMenuBar()
+{
+	Network* nw = g_app->network;
+
+	ImGui::Text("Settings");
+	ImGui::Separator();
+	// IP
+	ImGui::PushItemWidth(100);
+	ImGui::Text("Debug IP:"); ImGui::SameLine();
+	char buf[250];
+	strcpy_s(buf, nw->tmpIp.length() + 1, nw->tmpIp.data());
+	if (ImGui::InputText("###debug_ip_input", buf, 250))
+	{
+		nw->tmpIp = buf;
+		nw->settingsDirty = true;
+	}
+	// Port
+	ImGui::Text("Debug port:"); ImGui::SameLine();
+	if (ImGui::DragInt("###debug_port_input", &nw->tmpPort, 1, 0, 9999))
+		nw->settingsDirty = true;
+	ImGui::PopItemWidth();
+	// Active
+	if (nw->IsListening())
+		ImGui::TextColored(ImVec4(0.3f, 1.0f, 0.3f, 1.0f), ICON_BUG);
+	else
+		ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), ICON_BUG);
+	ImGui::SameLine();
+	ImGui::Text("Debug active: ");
+	ImGui::SameLine();
+	if (ImGui::Checkbox("###debug_is_enabled", &nw->tmpListening))
+		nw->settingsDirty = true;
+	
+	if (ImGui::Button("Apply Settings"))
+	{
+		nw->ApplySettings();
 	}
 }
 

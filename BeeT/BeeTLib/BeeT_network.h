@@ -29,13 +29,14 @@ typedef struct BeeT_network BeeT_network;
 struct BeeT_network
 {
 	int port;
-	IPaddress ip;
+	const char* ip;
+	IPaddress ipAdr;
 
 	SDLNet_SocketSet socketSet;
 	dequeue* socketList;
 };
 
-BeeT_network*	BeeT_NW_Init(int port);
+BeeT_network*	BeeT_NW_Init(const char* ip, int port);
 void			BeeT_NW_Tick(BeeT_network* nw);
 
 BEET_bool		BeeT_NW_OpenSocket(BeeT_network* nw, struct BeeT_dBT* bt);

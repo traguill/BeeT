@@ -17,10 +17,16 @@ public:
 	bool CleanUp();
 	bool Update();
 
-	bool ListenConnections();
-	void StopListeningConnections();
+	bool IsListening()const;
+
+	void ApplySettings(); // Turns all temporary settings into permanent and applies them
+	void ResetSettings();
 
 private:
+
+	void StopListeningConnections();
+	bool StartListenngConnections();
+	bool ListenConnections();
 
 	void HandleNewConnections();
 	void HandleClientConnections();
@@ -28,8 +34,16 @@ private:
 public:
 	BeeTDebugger* beetDebugger = nullptr; // Pointer to the debugger. It is automatically set once the debugger is created
 
+	// Settings
+	bool settingsDirty = false;
+	int tmpPort = 8080;
+	std::string tmpIp = "127.0.0.1";
+	bool tmpListening = false;
+
 private:
 	IPaddress serverIP;
+	int port = 8080;
+	std::string ip = "127.0.0.1";
 
 	unsigned short maxSockets = 4;
 	unsigned short maxClients;
