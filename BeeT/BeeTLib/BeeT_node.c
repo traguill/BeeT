@@ -72,7 +72,16 @@ void BeeT_Node__Destroy(BeeT_Node * self)
 		BTN_Wait_OnDestroy((BTN_Wait*)self);
 		break;
 	}
-	//TODO: Destroy dequeue decorators here
+	if (self->decorators)
+	{
+		node_deq* item = dequeue_head(self->decorators);
+		while (item)
+		{
+			BeeT_Decorator_Destroy((BeeT_decorator*)item->data);
+			item = item->next;
+		}
+		DestroyDequeue(self->decorators);
+	}
 	BEET_free(self);
 }
 

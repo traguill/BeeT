@@ -45,8 +45,10 @@ BeeT_dBT* BeeT_Debugger_LoadBT(BeeT_debugger * debugger, const char * buffer, un
 	BEET_bool result = BeeT_NW_OpenSocket(debugger->nw, dbg_bt);
 	if (result == BEET_FALSE)
 	{
-		// TODO: REMOVE THE BT CREATED
-		// print a error msg: "not enough sockets to load a new bt"
+		// TODO: print a error msg: "not enough sockets to load a new bt"
+		BeeT_dBT_Cleanup(dbg_bt);
+		BEET_free(dbg_bt);
+		return NULL;
 	}
 	dequeue_push_back(debugger->BTs, dbg_bt);
 	return dbg_bt;
