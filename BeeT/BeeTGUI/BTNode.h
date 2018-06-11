@@ -33,10 +33,10 @@ public:
 
 	void Save(Data& file);
 	void PreDrawSetColor();
-	void PrepareToDraw();
+	virtual void PrepareToDraw();
 
 	// Inspector
-	void InspectorInfo();
+	virtual void InspectorInfo();
 
 	// Edition
 	void AddDecorator(Blackboard* bb, BBVar* var);
@@ -59,7 +59,7 @@ public:
 	// Utils
 	void ForceRoot(); // Forces the node to be the root node. DO NOT USE!
 
-private:
+protected:
 	void ReloadSubtreeId(); // Sets the subtree id depending on the parent's
 
 	void InitExtraData();
@@ -85,7 +85,7 @@ public:
 
 	NodeColor nodeColor = NC_IDLE;
 	bool highlightBorder = false;
-private:
+protected:
 	BTNode* parent = nullptr;
 	std::vector<BTNode*> childs;
 	int id = -1;

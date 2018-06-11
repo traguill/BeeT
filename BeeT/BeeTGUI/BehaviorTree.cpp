@@ -8,6 +8,7 @@
 #include "Random.h"
 #include "Blackboard.h"
 #include "BTDecorator.h"
+#include "BTNodeParallel.h"
 
 #include "ThirdParty/NodeEditor/Include/NodeEditor.h"
 #include "ThirdParty/NodeEditor/Source/Shared/Interop.h"
@@ -75,9 +76,17 @@ int BehaviorTree::AddNode(float posX, float posY, int typeId)
 	int nodeId = GetNextId();
 	int inputId = GetNextId();
 	int outputId = GetNextId();
-	BTNode* node = new BTNode(nodeId, outputId, inputId, typeId, this);
 
-	nodesList.insert(pair<int, BTNode*>(nodeId, node));
+	if (typeId != 3) // Is not parallel
+	{
+		BTNode* node = new BTNode(nodeId, outputId, inputId, typeId, this);
+		nodesList.insert(pair<int, BTNode*>(nodeId, node));
+	}
+	else
+	{
+		BTNodeParallel* node = new BTNodeParallel(nodeId, outputId, inputId, GetNextId(), this);
+		nodesList.insert(pair<int, BTNode*>(nodeId, node));
+	}
 	
 	ne::SetNodePosition(nodeId, ImVec2(posX, posY));
 	LOGI("Node %i created", nodeId);
@@ -243,6 +252,17 @@ void BehaviorTree::Draw()
 		drawList->AddRect(to_imvec(node.second->outputsRect.top_left()), to_imvec(node.second->outputsRect.bottom_right()) - ImVec2(0, 1), IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), outputAlpha), 4.0f, 3);
 		ImGui::PopStyleVar();
 
+		// (Optional) Parallel
+		if (node.second->type->typeId == 3)
+		{
+			BTNodeParallel* nParallel = (BTNodeParallel*)node.second;
+			
+			drawList->AddRectFilled(to_imvec(nParallel->simpleOutputsRect.top_left()), to_imvec(nParallel->simpleOutputsRect.bottom_right()) - ImVec2(0, 1), IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), outputAlpha), 4.0f, 3);
+			ImGui::PushStyleVar(ImGuiStyleVar_AntiAliasFringeScale, 1.0f);
+			drawList->AddRect(to_imvec(nParallel->simpleOutputsRect.top_left()), to_imvec(nParallel->simpleOutputsRect.bottom_right()) - ImVec2(0, 1), IM_COL32((int)(255 * pinBackground.x), (int)(255 * pinBackground.y), (int)(255 * pinBackground.z), outputAlpha), 4.0f, 3);
+			ImGui::PopStyleVar();
+		}
+
 		// Draw Content
 		drawList->AddRectFilled(to_imvec(node.second->contentRect.top_left()), to_imvec(node.second->contentRect.bottom_right()), IM_COL32(24, 64, 128, 200), 0.0f);
 		ImGui::PushStyleVar(ImGuiStyleVar_AntiAliasFringeScale, 1.0f);
@@ -300,6 +320,8 @@ BTPin * BehaviorTree::FindPin(int id) const
 			return node.second->inputPin;
 		if (node.second->outputPin->id == id)
 			return node.second->outputPin;
+		if (node.second->type->typeId == 3 && ((BTNodeParallel*)node.second)->simplePin->id == id)
+			return ((BTNodeParallel*)node.second)->simplePin;
 	}
 	return nullptr;
 }

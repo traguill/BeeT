@@ -114,6 +114,9 @@
     <ClCompile Include="dsBTEnd.cpp">
       <Filter>Debugger</Filter>
     </ClCompile>
+    <ClCompile Include="BTNodeParallel.cpp">
+      <Filter>Editor\BehaviorTree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -257,6 +260,9 @@
     </ClInclude>
     <ClInclude Include="dsBTEnd.h">
       <Filter>Debugger</Filter>
+    </ClInclude>
+    <ClInclude Include="BTNodeParallel.h">
+      <Filter>Editor\BehaviorTree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

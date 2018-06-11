@@ -160,6 +160,7 @@
     <ClCompile Include="BTDecorator.cpp" />
     <ClCompile Include="BTLink.cpp" />
     <ClCompile Include="BTNode.cpp" />
+    <ClCompile Include="BTNodeParallel.cpp" />
     <ClCompile Include="BTNodeTypes.cpp" />
     <ClCompile Include="BTPin.cpp" />
     <ClCompile Include="Data.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="BTDecorator.h" />
     <ClInclude Include="BTLink.h" />
     <ClInclude Include="BTNode.h" />
+    <ClInclude Include="BTNodeParallel.h" />
     <ClInclude Include="BTNodeTypes.h" />
     <ClInclude Include="BTPin.h" />
     <ClInclude Include="Data.h" />
