@@ -12,7 +12,7 @@ class BTPin
 {
 public:
 	BTPin();
-	BTPin(int id, ax::NodeEditor::PinKind kind, BTNode* node, bool fromParallel = false);
+	BTPin(int id, ax::NodeEditor::PinKind kind, BTNode* node, bool isSimpleParallel);
 	BTPin(BTNode* node, Data& data);
 	~BTPin();
 
@@ -26,7 +26,7 @@ public:
 	ax::NodeEditor::PinKind kind;
 	std::vector<BTLink*> links;
 
-private:
 	bool isSimpleParallel = false;
+private:
 };
 #endif // !__BTPIN_H__

@@ -4,7 +4,7 @@
 BTPin::BTPin()
 {}
 
-BTPin::BTPin(int id, ax::NodeEditor::PinKind kind, BTNode * node, bool fromParallel) : id(id), kind(kind), node(node), isSimpleParallel(fromParallel)
+BTPin::BTPin(int id, ax::NodeEditor::PinKind kind, BTNode * node, bool isSimpleParallel) : id(id), kind(kind), node(node), isSimpleParallel(isSimpleParallel)
 {}
 
 BTPin::BTPin(BTNode* node, Data & data) : node(node)
@@ -26,10 +26,7 @@ bool BTPin::IsLinkAvailable() const
 		ret = (links.size() == 0);
 		break;
 	case ax::NodeEditor::PinKind::Source: //Output
-		if (isSimpleParallel == false)
 			ret = ((unsigned int)node->type->maxOutputs > links.size() || node->type->maxOutputs == -1);
-		else
-			ret = (1 > links.size());
 		break;
 	}
 	return ret;

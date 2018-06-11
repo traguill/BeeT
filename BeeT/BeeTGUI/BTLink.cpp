@@ -8,7 +8,7 @@
 
 BTLink::BTLink(int id, BTPin* sourcePin, BTPin* targetPin) : id(id), sourcePin(sourcePin), targetPin(targetPin)
 {
-	this->sourcePin->node->AddChild(targetPin->node);
+	this->sourcePin->node->AddChild(targetPin->node, !this->sourcePin->isSimpleParallel);
 	this->targetPin->node->SetParent(sourcePin->node);
 }
 
@@ -28,7 +28,7 @@ BTLink::BTLink(Data & data, const std::map<int, BTPin*>& pinsList)
 	{
 		sourcePin->links.push_back(this);
 		targetPin->links.push_back(this);
-		sourcePin->node->AddChild(targetPin->node);
+		sourcePin->node->AddChild(targetPin->node, !sourcePin->isSimpleParallel);
 		targetPin->node->SetParent(sourcePin->node);
 	}
 	else

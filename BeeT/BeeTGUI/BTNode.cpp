@@ -23,8 +23,8 @@ BTNode::BTNode(int id, int sourcePinId, int targetPinId, int typeId, BehaviorTre
 	if(type)
 		name = type->name;
 
-	inputPin = new BTPin(targetPinId, ne::PinKind::Target, this);
-	outputPin = new BTPin(sourcePinId, ne::PinKind::Source, this);
+	inputPin = new BTPin(targetPinId, ne::PinKind::Target, this, false);
+	outputPin = new BTPin(sourcePinId, ne::PinKind::Source, this, false);
 
 	InitExtraData();
 
@@ -256,10 +256,13 @@ void BTNode::RemoveParent()
 	ReloadSubtreeId();
 }
 
-void BTNode::AddChild(BTNode * child)
+void BTNode::AddChild(BTNode * child, bool pushToBack)
 {
-	if(std::find(childs.begin(), childs.end(), child) == childs.end())
-		childs.push_back(child);
+	if (std::find(childs.begin(), childs.end(), child) == childs.end())
+		if (pushToBack)
+			childs.push_back(child);
+		else
+			childs.insert(childs.begin(), child);
 }
 
 void BTNode::RemoveChild(BTNode * child)

@@ -105,7 +105,17 @@ void BTNodeParallel::Save(Data & file)
 
 void BTNodeParallel::InspectorInfo()
 {
-	ImGui::Text("hello im a parallel node");
+	ImGui::Text("Choose type:"); // TODO: set diferent break types
+	ImGui::Text("Abort when main node fails");
+	ImGui::Text("Wait until subtree finishes");
+
+	ImGui::Text("Execution order:");
+	for (int i = 0; i < childs.size(); i++)
+	{
+		ImGui::PushID(childs[i]->GetId());
+		ImGui::Text("%i- %s", i, childs[i]->name.data());
+		ImGui::PopID();
+	}
 }
 
 void BTNodeParallel::PrepareToDraw()

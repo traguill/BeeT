@@ -53,7 +53,7 @@ public:
 	// Hierarchy
 	void SetParent(BTNode* parent);
 	void RemoveParent();
-	void AddChild(BTNode* child);
+	void AddChild(BTNode* child, bool pushToBack);
 	void RemoveChild(BTNode* child);
 	void MoveChild(int id, bool moveUp);
 
