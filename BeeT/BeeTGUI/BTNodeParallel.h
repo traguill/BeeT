@@ -10,8 +10,8 @@ public:
 	BTNodeParallel(BehaviorTree* bt, Data& data);
 	~BTNodeParallel();
 
+	void Save(Data& file);
 	void InspectorInfo();
-
 	void PrepareToDraw();
 
 public:

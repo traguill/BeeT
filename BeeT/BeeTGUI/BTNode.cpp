@@ -13,6 +13,10 @@
 
 namespace ne = ax::NodeEditor;
 
+BTNode::BTNode()
+{
+}
+
 BTNode::BTNode(int id, int sourcePinId, int targetPinId, int typeId, BehaviorTree* bt, BTNode* parent) : id(id), bt(bt), parent(parent)
 {
 	type = g_app->beetGui->btNodeTypes->GetTypeById(typeId);

@@ -27,11 +27,12 @@ enum NodeColor
 class BTNode
 {
 public:
+	BTNode();
 	BTNode(int id, int sourcePinId, int targetPinId, int typeId, BehaviorTree* bt, BTNode* parent = nullptr);
 	BTNode(BehaviorTree* bt, Data& data);
 	~BTNode();
 
-	void Save(Data& file);
+	virtual void Save(Data& file);
 	void PreDrawSetColor();
 	virtual void PrepareToDraw();
 

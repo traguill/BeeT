@@ -11,6 +11,7 @@ BTPin::BTPin(BTNode* node, Data & data) : node(node)
 {
 	id = data.GetInt("id");
 	kind = (ax::NodeEditor::PinKind)data.GetInt("kind");
+	isSimpleParallel = data.GetBool("isSimpleParallel");
 }
 
 BTPin::~BTPin()
@@ -39,6 +40,6 @@ void BTPin::Save(Data & file) const
 	Data data;
 	data.AppendInt("id", id);
 	data.AppendInt("kind", static_cast<int>(kind));
-
+	data.AppendBool("isSimpleParallel", isSimpleParallel);
 	file.AppendArrayValue(data);
 }

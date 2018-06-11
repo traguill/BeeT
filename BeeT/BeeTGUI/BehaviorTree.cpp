@@ -348,14 +348,29 @@ int BehaviorTree::GetNextId()
 
 void BehaviorTree::AddNode(Data & data, map<int, BTPin*>& pinsList)
 {
-	BTNode* node = new BTNode(this, data);
-	nodesList.insert(pair<int, BTNode*>(node->GetId(), node));
-	pinsList.insert(pair<int, BTPin*>(node->inputPin->id, node->inputPin));
-	pinsList.insert(pair<int, BTPin*>(node->outputPin->id, node->outputPin));
+	int nodeId = -1;
+	if (data.GetInt("type") != 3)
+	{
+		BTNode* node = new BTNode(this, data);
+		nodesList.insert(pair<int, BTNode*>(node->GetId(), node));
+		pinsList.insert(pair<int, BTPin*>(node->inputPin->id, node->inputPin));
+		pinsList.insert(pair<int, BTPin*>(node->outputPin->id, node->outputPin));
+		nodeId = node->GetId();
+	}
+	else
+	{
+		BTNodeParallel* node = new BTNodeParallel(this, data);
+		nodesList.insert(pair<int, BTNode*>(node->GetId(), node));
+		pinsList.insert(pair<int, BTPin*>(node->inputPin->id, node->inputPin));
+		pinsList.insert(pair<int, BTPin*>(node->outputPin->id, node->outputPin));
+		pinsList.insert(pair<int, BTPin*>(node->simplePin->id, node->simplePin));
+		nodeId = node->GetId();
+	}
+
 	int numChilds = data.GetArraySize("childs");
 	for (int i = 0; i < numChilds; ++i)
 	{
 		AddNode(data.GetArray("childs", i), pinsList);
 	}
-	ne::SetNodePosition(node->GetId(), ImVec2(data.GetFloat("positionX"), data.GetFloat("positionY")));
+	ne::SetNodePosition(nodeId, ImVec2(data.GetFloat("positionX"), data.GetFloat("positionY")));
 }

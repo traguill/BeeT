@@ -1,5 +1,8 @@
 #include "BTNodeParallel.h"
 #include "BTDecorator.h"
+#include "BehaviorTree.h"
+#include "Application.h"
+#include "BeeTGui.h"
 
 #include "ThirdParty/NodeEditor/Include/NodeEditor.h"
 #include "ThirdParty/NodeEditor/Source/Shared/Interop.h"
@@ -12,12 +15,92 @@ BTNodeParallel::BTNodeParallel(int id, int sourcePinId, int targetPinId, int tar
 	simplePin = new BTPin(targetPinId, ne::PinKind::Source, this, true);
 }
 
-BTNodeParallel::BTNodeParallel(BehaviorTree * bt, Data & data) : BTNode(bt, data)
+BTNodeParallel::BTNodeParallel(BehaviorTree * bt, Data & data)
 {
+	this->bt = bt;
+	id = data.GetInt("id");
+	int parentId = data.GetInt("parentId");
+	parent = parentId > 0 ? bt->FindNode(parentId) : nullptr;
+	type = g_app->beetGui->btNodeTypes->GetTypeById(data.GetInt("type"));
+
+	inputPin = new BTPin(this, data.GetArray("pins", 0));
+	outputPin = new BTPin(this, data.GetArray("pins", 1));
+	simplePin = new BTPin(this, data.GetArray("pins", 2));
+
+	name = data.GetString("name");
+
+	int numDecorators = data.GetArraySize("decorators");
+
+	for (int i = 0; i < numDecorators; ++i)
+	{
+		BTDecorator* dec = new BTDecorator(this, bt->bb, data.GetArray("decorators", i));
+		decorators.push_back(dec);
+	}
+
+	switch (type->typeId)
+	{
+		//case 0: // Root
+		//case 1: // Selector
+		//case 2: // Sequence
+		//case 3: // Parallel
+		//case 4: // Custom Task
+	case 5: // Wait
+	{
+		extraData = new char[sizeof(float)];
+		float tmpExtraData = data.GetFloat("extraData");
+		memcpy(extraData, &tmpExtraData, sizeof(float));
+	}
+	break;
+	}
+
+	ReloadSubtreeId();
 }
 
 BTNodeParallel::~BTNodeParallel()
 {
+	delete simplePin;
+}
+
+void BTNodeParallel::Save(Data & file)
+{
+	Data data;
+	data.AppendInt("id", id);
+	data.AppendInt("parentId", (parent) ? parent->GetId() : -1);
+	data.AppendInt("type", type->typeId);
+
+	data.AppendArray("pins");
+	inputPin->Save(data);
+	outputPin->Save(data);
+	simplePin->Save(data);
+
+	ImVec2 nodePosition = ne::GetNodePosition(id);
+	data.AppendFloat("positionX", nodePosition.x);
+	data.AppendFloat("positionY", nodePosition.y);
+
+	data.AppendArray("childs");
+	for (auto child : childs)
+		child->Save(data);
+
+	data.AppendString("name", name.data());
+
+	data.AppendArray("decorators");
+	for (auto dec : decorators)
+		dec->Save(data);
+
+	switch (type->typeId)
+	{
+		//case 0: // Root
+		//case 1: // Selector
+		//case 2: // Sequence
+		//case 3: // Parallel
+		//case 4: // Custom Task
+	case 5: // Wait
+		data.AppendFloat("extraData", *(float*)extraData);
+		break;
+	}
+
+	file.AppendArrayValue(data);
+	saveFlag = true;
 }
 
 void BTNodeParallel::InspectorInfo()
