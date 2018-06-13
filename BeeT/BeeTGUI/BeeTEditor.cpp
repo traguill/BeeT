@@ -365,6 +365,7 @@ void BeeTEditor::BlackboardVarDetail()
 
 void BeeTEditor::Editor()
 {
+	ImGui::ShowTestWindow();
 	ImGui::SetNextWindowPos(ImVec2(screenWidth * blackboardSize.x, ImGui::GetCursorPosY() - ImGui::GetCursorPosX())); // The Y component substracts the cursorX position because imgui by default has margins
 	ImGui::SetNextWindowSize(ImVec2(editorSize.x * editorCanvasSize.x, editorSize.y * editorCanvasSize.y));
 	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));

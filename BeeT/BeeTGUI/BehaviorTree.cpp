@@ -264,15 +264,15 @@ void BehaviorTree::Draw()
 		}
 
 		// Draw Content
-		drawList->AddRectFilled(to_imvec(node.second->contentRect.top_left()), to_imvec(node.second->contentRect.bottom_right()), IM_COL32(24, 64, 128, 200), 0.0f);
+		drawList->AddRectFilled(to_imvec(node.second->contentRect.top_left()), to_imvec(node.second->contentRect.bottom_right()), IM_COL32(130, 210, 240, 200), 0.0f);
 		ImGui::PushStyleVar(ImGuiStyleVar_AntiAliasFringeScale, 1.0f);
-		drawList->AddRect(to_imvec(node.second->contentRect.top_left()), to_imvec(node.second->contentRect.bottom_right()), IM_COL32(48, 128, 255, 100), 0.0f);
+		drawList->AddRect(to_imvec(node.second->contentRect.top_left()), to_imvec(node.second->contentRect.bottom_right()), IM_COL32(160, 160, 160, 100), 0.0f);
 		ImGui::PopStyleVar();
 
 		// Draw Decorators (if any)
 		for (auto dec : node.second->decorators)
 		{
-			drawList->AddRectFilled(to_imvec(dec->contentRect.top_left()), to_imvec(dec->contentRect.bottom_right()), IM_COL32(255, 64, 128, 200), 0.0f);
+			drawList->AddRectFilled(to_imvec(dec->contentRect.top_left()), to_imvec(dec->contentRect.bottom_right()), IM_COL32(130, 240, 187, 200), 0.0f);
 			ImGui::PushStyleVar(ImGuiStyleVar_AntiAliasFringeScale, 1.0f);
 			drawList->AddRect(to_imvec(dec->contentRect.top_left()), to_imvec(dec->contentRect.bottom_right()), IM_COL32(255, 128, 255, 100), 0.0f);
 			ImGui::PopStyleVar();
