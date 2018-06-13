@@ -64,7 +64,14 @@ typedef struct BTN_Composite
 typedef BTN_Composite BTN_Selector;
 typedef BTN_Composite BTN_Sequence;
 
-// Parallel TODO
+typedef struct BTN_Parallel
+{
+	BeeT_Node node;
+	BeeT_Node* mainChild;
+	BeeT_Node* secondChild;
+	dequeue * runningChilds;
+	// TODO: Add break type
+}BTN_Parallel;
 
 typedef NodeStatus(*beetCallbackFunc)(unsigned int btId, const char* taskId);
 typedef struct BTN_Task
@@ -90,7 +97,7 @@ NodeStatus Tick(BeeT_Node* n);
 BTN_Root*		BTN_Root_Init(const BeeT_Serializer* data,struct BeeT_BehaviorTree* bt);
 BTN_Selector*	BTN_Selector_Init(const BeeT_Serializer* data, struct BeeT_BehaviorTree* bt);
 BTN_Sequence*	BTN_Sequence_Init(const BeeT_Serializer* data, struct BeeT_BehaviorTree* bt);
-// Parallel TODO: BTN_Root* BTN_Root_Init(BeeT_Node* n, const BeeT_Serializer* data);
+BTN_Parallel*	BTN_Parallel_Init(const BeeT_Serializer* data, struct BeeT_BehaviorTree* bt);
 BTN_Task*		BTN_Task_Init(const BeeT_Serializer* data);
 BTN_Wait*		BTN_Wait_Init(const BeeT_Serializer* data);
 
@@ -98,6 +105,7 @@ BTN_Wait*		BTN_Wait_Init(const BeeT_Serializer* data);
 void BTN_Root_OnInit(BeeT_Node* self);
 void BTN_Selector_OnInit(BeeT_Node* self);
 void BTN_Sequence_OnInit(BeeT_Node* self);
+void BTN_Parallel_OnInit(BeeT_Node* self);
 void BTN_Task_OnInit(BeeT_Node* self);
 void BTN_Wait_OnInit(BeeT_Node* self);
 
@@ -105,6 +113,7 @@ void BTN_Wait_OnInit(BeeT_Node* self);
 NodeStatus BTN_Root_Update(BeeT_Node* self);
 NodeStatus BTN_Selector_Update(BeeT_Node* self);
 NodeStatus BTN_Sequence_Update(BeeT_Node* self);
+NodeStatus BTN_Parallel_Update(BeeT_Node* self);
 NodeStatus BTN_Task_Update(BeeT_Node* self);
 NodeStatus BTN_Wait_Update(BeeT_Node* self);
 
@@ -112,19 +121,22 @@ NodeStatus BTN_Wait_Update(BeeT_Node* self);
 void BTN_Root_OnFinish(BeeT_Node* self, NodeStatus status);
 void BTN_Selector_OnFinish(BeeT_Node* self, NodeStatus status);
 void BTN_Sequence_OnFinish(BeeT_Node* self, NodeStatus status);
+void BTN_Parallel_OnFinish(BeeT_Node* self, NodeStatus status);
 void BTN_Task_OnFinish(BeeT_Node* self, NodeStatus status);
 void BTN_Wait_OnFinish(BeeT_Node* self, NodeStatus status);
 
 // OnDestroy functions
 void BTN_Root_OnDestroy(BTN_Root* self);
 void BTN_Composite_OnDestroy(BTN_Composite* self);
+void BTN_Parallel_OnDestroy(BTN_Parallel* self);
 void BTN_Task_OnDestroy(BTN_Task* self);
 void BTN_Wait_OnDestroy(BTN_Wait* self);
 
 // Observer functions
-void BTN_Root_TreeFinish(BeeT_Node* self, NodeStatus s);
-void BTN_Selector_OnChildFinish(BeeT_Node* self, NodeStatus s);
-void BTN_Sequence_OnChildFinish(BeeT_Node* self, NodeStatus s);
+void BTN_Root_TreeFinish(BeeT_Node* self, NodeStatus s);			// Root
+void BTN_Selector_OnChildFinish(BeeT_Node* self, NodeStatus s);		// Selector
+void BTN_Sequence_OnChildFinish(BeeT_Node* self, NodeStatus s);		// Sequence
+void BTN_Parallel_OnSecondFinish(BeeT_Node* self, NodeStatus s);	// Parallel
 
 // ---------------------------------------------------------------------------------
 #endif // !__BEET_NODE_H__

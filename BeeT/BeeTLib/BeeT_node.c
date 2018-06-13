@@ -21,6 +21,7 @@ BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, BeeT_BehaviorTree* bt)
 		node = (BeeT_Node*)BTN_Sequence_Init(data, bt);
 		break;
 	case NT_PARALLEL:
+		node = (BeeT_Node*)BTN_Parallel_Init(data, bt);
 		break;
 	case NT_TASK:
 		node = (BeeT_Node*)BTN_Task_Init(data);
@@ -64,6 +65,7 @@ void BeeT_Node__Destroy(BeeT_Node * self)
 		BTN_Composite_OnDestroy((BTN_Composite*)self);
 		break;
 	case NT_PARALLEL:
+		BTN_Parallel_OnDestroy((BTN_Parallel*)self);
 		break;
 	case NT_TASK:
 		BTN_Task_OnDestroy((BTN_Task*)self);
@@ -186,6 +188,26 @@ BTN_Sequence * BTN_Sequence_Init(const BeeT_Serializer * data, BeeT_BehaviorTree
 	return btn;
 }
 
+BTN_Parallel * BTN_Parallel_Init(const BeeT_Serializer * data, BeeT_BehaviorTree * bt)
+{
+	BTN_Parallel* btn = (BTN_Parallel*)BEET_malloc(sizeof(BTN_Parallel));
+	btn->runningChilds = InitDequeue();
+
+	unsigned int numChilds = BeeT_Serializer_GetArraySize(data, "childs"); // TODO: Save mode to handle errors here. This node should have EXACTLY two childs in order to work.
+	for (unsigned int i = 0; i < numChilds; ++i)
+	{
+		if (i == 0)
+			btn->mainChild = BeeT_Node__Init(BeeT_Serializer_GetArray(data, "childs", i), bt);
+		else if(i == 1)
+			btn->secondChild = BeeT_Node__Init(BeeT_Serializer_GetArray(data, "childs", i), bt);
+	}
+
+	btn->node.OnInit = &BTN_Parallel_OnInit;
+	btn->node.Update = &BTN_Parallel_Update;
+	btn->node.OnFinish = &BTN_Parallel_OnFinish;
+	return btn;
+}
+
 BTN_Task * BTN_Task_Init(const BeeT_Serializer * data)
 {
 	BTN_Task* btn = (BTN_Task*)BEET_malloc(sizeof(BTN_Task));
@@ -259,6 +281,16 @@ void BTN_Sequence_OnInit(BeeT_Node* self)
 	btn->node.bt->StartBehavior(btn->node.bt, current_node, BTN_Sequence_OnChildFinish);
 }
 
+void BTN_Parallel_OnInit(BeeT_Node * self)
+{
+	BTN_Parallel* btn = (BTN_Parallel*)self;
+	btn->mainChild->status = NS_INVALID;
+	btn->secondChild->status = NS_INVALID;
+	btn->secondChild->observerNode = self;
+	btn->secondChild->observer = BTN_Parallel_OnSecondFinish;
+	dequeue_push_front(btn->runningChilds, btn->secondChild);
+}
+
 void BTN_Task_OnInit(BeeT_Node* self)
 {}
 
@@ -284,6 +316,46 @@ NodeStatus BTN_Selector_Update(BeeT_Node* self)
 NodeStatus BTN_Sequence_Update(BeeT_Node* self)
 {
 	return NS_SUSPENDED;
+}
+
+NodeStatus BTN_Parallel_Update(BeeT_Node * self)
+{
+	BTN_Parallel* btn = (BTN_Parallel*)self;
+	NodeStatus tickRet = btn->mainChild->Tick(btn->mainChild);
+	// 	BeeT_Node_ChangeStatus(btn->mainChild, tickRet);
+	if (tickRet == NS_RUNNING)
+	{
+		dequeue_push_back(btn->runningChilds, NULL); // Marks end of this Tick
+		BEET_bool step = BEET_TRUE;
+		do
+		{
+			BeeT_Node* current = (BeeT_Node*)dequeue_front(btn->runningChilds);
+			dequeue_pop_front(btn->runningChilds);
+
+			if (current == NULL)
+			{
+				step = BEET_FALSE;
+				continue;
+			}
+
+			NodeStatus tickChildRet = current->Tick(current);
+			BeeT_Node_ChangeStatus(current, tickChildRet);
+
+			if (current->status != NS_RUNNING && current->status != NS_SUSPENDED)
+			{
+				if (current->observer)
+					current->observer(current->observerNode, current->status);
+				current->status = NS_INVALID; // Reset the node
+			}
+			else
+			{
+				if (current->status == NS_RUNNING)
+					dequeue_push_back(btn->runningChilds, current);
+			}
+		} while (step == BEET_TRUE);
+	}
+
+	return tickRet;
 }
 
 NodeStatus BTN_Task_Update(BeeT_Node* self)
@@ -318,6 +390,12 @@ void BTN_Sequence_OnFinish(BeeT_Node* self, NodeStatus status)
 {
 }
 
+void BTN_Parallel_OnFinish(BeeT_Node * self, NodeStatus status)
+{
+	BTN_Parallel* btn = (BTN_Parallel*)self;
+	dequeue_clear(btn->runningChilds);
+}
+
 void BTN_Task_OnFinish(BeeT_Node* self, NodeStatus status)
 {
 }
@@ -349,6 +427,15 @@ void BTN_Composite_OnDestroy(BTN_Composite * self)
 			}
 		} while (!dequeue_is_empty(self->childs));
 	}
+}
+
+void BTN_Parallel_OnDestroy(BTN_Parallel * self)
+{
+	if (self->mainChild)
+		BeeT_Node__Destroy(self->mainChild);
+	if (self->secondChild)
+		BeeT_Node__Destroy(self->secondChild);
+	dequeue_clear(self->runningChilds);
 }
 
 void BTN_Task_OnDestroy(BTN_Task * self)
@@ -422,4 +509,14 @@ void BTN_Sequence_OnChildFinish(BeeT_Node* self, NodeStatus s)
 		n_current->observerNode = self;
 		btn->node.bt->StartBehavior(btn->node.bt, n_current, &BTN_Sequence_OnChildFinish);
 	}
+}
+
+void BTN_Parallel_OnSecondFinish(BeeT_Node * self, NodeStatus s)
+{
+	// Restart?
+	BTN_Parallel* btn = (BTN_Parallel*)self;
+	dequeue_clear(btn->runningChilds);
+	btn->secondChild->status = NS_INVALID;
+	dequeue_push_back(btn->runningChilds, NULL); // Push NULL to end this tick. Avoids infinite loops
+	dequeue_push_back(btn->runningChilds, btn->secondChild);
 }
