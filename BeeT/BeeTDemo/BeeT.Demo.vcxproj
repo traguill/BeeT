@@ -153,6 +153,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Globals.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />

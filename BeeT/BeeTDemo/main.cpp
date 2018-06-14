@@ -14,8 +14,7 @@
 #include "Player.h"
 #include "Enemy.h"
 
-#define SCREEN_WIDTH 900
-#define SCREEN_HEIGHT 640
+#include "Globals.h"
 
 Input* g_Input = NULL;
 GameManager* g_GameManager = NULL;

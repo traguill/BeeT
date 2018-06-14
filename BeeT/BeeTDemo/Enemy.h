@@ -16,7 +16,16 @@ public:
 	NodeStatus BTTask(const char* taskId);
 
 private:
+
+	void Movement();
+	void Burst();
+
+	// Helpers
+	void ShootBullet(float posX, float posY, float dirX, float dirY, float speed);
+
+private:
 	unsigned int btId;
+	float enemySpeed;
 
 };
 #endif // !__ENEMY_H__
