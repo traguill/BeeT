@@ -1,6 +1,7 @@
 #ifndef __BTDECORATOR_H__
 #define __BTDECORATOR_H__
 
+#include "ThirdParty/ImGui/imgui.h"
 #include "ThirdParty/NodeEditor/Source/Shared/Math2D.h"
 #include "Data.h"
 #include <boost/any.hpp>
@@ -65,7 +66,7 @@ private:
 
 public:
 	ax::rect contentRect;
-
+	ImVec4 bgColor;
 private:
 	int uid;
 	BTNode* nodeAttachedTo = nullptr;
@@ -75,6 +76,6 @@ private:
 	boost::any var2;
 
 	int option = 0;
-
+	bool checkEveryFrame = false;
 };
 #endif // !__BTDECORATOR_H__

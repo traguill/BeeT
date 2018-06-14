@@ -4,6 +4,9 @@
 #include "Blackboard.h"
 #include "BTNode.h"
 
+#define DEC_TICK_ONCE_COLOR ImVec4(130, 240, 187, 200);
+#define DEC_TICK_ALWAYS_COLOR ImVec4(240, 187, 130, 200);
+
 BTDecorator::BTDecorator(BTNode* node, Blackboard* bb, BBVar* var) : nodeAttachedTo(node), bb(bb), var(var)
 {
 	uid = (int)g_rnd->RandomInt();
@@ -23,6 +26,7 @@ BTDecorator::BTDecorator(BTNode* node, Blackboard* bb, BBVar* var) : nodeAttache
 		var2 = std::string("");
 		break;
 	}
+	bgColor = DEC_TICK_ONCE_COLOR;
 }
 
 BTDecorator::BTDecorator(BTNode* node, Blackboard * bb, Data & data) : nodeAttachedTo(node), bb(bb)
@@ -54,6 +58,16 @@ BTDecorator::BTDecorator(BTNode* node, Blackboard * bb, Data & data) : nodeAttac
 			break;
 		}
 	}
+	checkEveryFrame = data.GetBool("checkEveryFrame");
+	if (checkEveryFrame)
+	{
+		bgColor = DEC_TICK_ALWAYS_COLOR;
+	}
+	else
+	{
+		bgColor = DEC_TICK_ONCE_COLOR;
+	}
+	
 }
 
 BTDecorator::~BTDecorator()
@@ -104,13 +118,14 @@ void BTDecorator::InspectorInfo()
 	{
 		Remove();
 	}
-	ImGui::PopID();
 	ImGui::SameLine();
 
 	PrintType();
 	ImGui::SameLine();
 	ImGui::Text("%s", var->name.data());
-	//ImGui::SameLine();
+	ImGui::SameLine();
+	
+	ImGui::PushItemWidth(50.0f);
 	switch (var->type)
 	{
 	case BV_BOOL:
@@ -126,6 +141,24 @@ void BTDecorator::InspectorInfo()
 		TypeStringOptions();
 		break;
 	}
+	ImGui::PopItemWidth();
+	ImGui::SameLine();
+
+	ImGui::Text("Check each frame: ");
+	ImGui::SameLine();
+	if (ImGui::Checkbox("###check_frame", &checkEveryFrame))
+	{
+		if (checkEveryFrame)
+		{
+			bgColor = DEC_TICK_ALWAYS_COLOR;
+		}
+		else
+		{
+			bgColor = DEC_TICK_ONCE_COLOR;
+		}
+	}
+	
+	ImGui::PopID();
 	ImGui::Spacing();
 }
 
@@ -157,7 +190,7 @@ void BTDecorator::Save(Data & file)
 			break;
 		}
 	}
-
+	data.AppendBool("checkEveryFrame", checkEveryFrame);
 	file.AppendArrayValue(data);
 }
 

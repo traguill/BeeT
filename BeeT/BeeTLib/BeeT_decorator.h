@@ -9,7 +9,7 @@ struct BeeT_decorator
 {
 	BBVar* varA;
 	void* varB;
-
+	BEET_bool checkAlways;
 	BEET_bool(*Pass)(BeeT_decorator*);
 };
 

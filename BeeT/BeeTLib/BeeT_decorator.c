@@ -26,6 +26,7 @@ BeeT_decorator * BeeT_Decorator_Init(BeeT_Serializer * data, BeeT_Blackboard * b
 
 	const char* varAName = BeeT_Serializer_GetString(data, "var");
 	dec->varA = bb->FindVar(bb, varAName);
+	dec->checkAlways = BeeT_Serializer_GetBool(data, "checkEveryFrame");
 	int compareOption = BeeT_Serializer_GetInt(data, "option");
 	if (dec->varA)
 	{

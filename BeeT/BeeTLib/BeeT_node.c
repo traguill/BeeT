@@ -38,6 +38,7 @@ BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, BeeT_BehaviorTree* bt)
 	node->status = NS_INVALID;
 	node->Tick = &Tick;
 
+	node->checkDecAlways = BEET_FALSE;
 	node->decorators = InitDequeue();
 	int decSize = BeeT_Serializer_GetArraySize(data, "decorators");
 	for (int i = 0; i < decSize; ++i)
@@ -45,6 +46,8 @@ BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, BeeT_BehaviorTree* bt)
 		BeeT_Serializer* decData = BeeT_Serializer_GetArray(data, "decorators", i);
 		BeeT_decorator* dec = BeeT_Decorator_Init(decData, bt->bb);
 		dequeue_push_back(node->decorators, dec);
+		if (dec->checkAlways)
+			node->checkDecAlways = BEET_TRUE;
 		BEET_free(decData);
 	}
 
@@ -99,24 +102,27 @@ void BeeT_Node_ChangeStatus(BeeT_Node * node, NodeStatus newStatus)
 
 NodeStatus Tick(BeeT_Node* n)
 {
-	if (n->status == NS_INVALID)
+	//Check if all decorators return true
+	if (!dequeue_is_empty(n->decorators))
 	{
-		//Check if all decorators return true
-		if (!dequeue_is_empty(n->decorators))
+		node_deq* item = n->decorators->head;
+		while (item)
 		{
-			node_deq* item = n->decorators->head;
-			while (item)
+			BeeT_decorator* dec = (BeeT_decorator*)item->data;
+			if (n->status == NS_INVALID || dec->checkAlways)
 			{
-				BeeT_decorator* dec = (BeeT_decorator*)item->data;
 				if (dec->Pass(dec) == BEET_FALSE)
 				{
 					BeeT_Node_ChangeStatus(n, NS_FAILURE);		// Abort execution because a decorator failed
 					return n->status;
 				}
-				item = item->next;
 			}
+			item = item->next;
 		}
+	}
 
+	if (n->status == NS_INVALID)
+	{
 		n->OnInit(n);
 		BeeT_Node_ChangeStatus(n, NS_RUNNING);
 	}
@@ -124,6 +130,8 @@ NodeStatus Tick(BeeT_Node* n)
 	if (n->status != NS_SUCCESS && n->status != NS_FAILURE)
 	{
 		NodeStatus status = n->Update(n);
+		if (status == NS_SUSPENDED && n->checkDecAlways) // Node must be in running nodes to check the decorator each tick
+			status = NS_RUNNING;
 		BeeT_Node_ChangeStatus(n, status);
 	}
 	if (n->status != NS_RUNNING && n->status != NS_SUSPENDED)

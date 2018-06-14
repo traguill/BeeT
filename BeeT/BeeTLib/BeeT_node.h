@@ -25,7 +25,7 @@ struct BeeT_Node{
 	int id;
 	NodeType type;
 	struct BeeT_BehaviorTree* bt;
-
+	BEET_bool checkDecAlways; // Whether or not this node needs to be executed each Tick. 
 	dequeue* decorators;
 
 	NodeStatus status;
