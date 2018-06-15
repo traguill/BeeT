@@ -47,6 +47,8 @@ private:
 	void Menus(); //Background/Node/Link/Pin
 	void Links();
 	void UpdateSelection();
+	void CloseBehaviorTree();
+	void ClearAllSelection();
 
 	void InitBBListCategories();
 	void ListAllBBVars();

@@ -30,8 +30,8 @@ BeeTEditor::~BeeTEditor()
 bool BeeTEditor::Init()
 {
 
-	btCurrent = new BehaviorTree();
-	btList.push_back(btCurrent);
+	//btCurrent = new BehaviorTree();
+	//btList.push_back(btCurrent);
 
 	ne::CenterNodeOnScreen(0); // Root node has always id = 0. Careful! It may not work in the future.
 	widgetItemList = new ItemList();
@@ -131,15 +131,12 @@ void BeeTEditor::NewBehaviorTree(Data* data)
 		bt = new BehaviorTree();
 	}
 	btList.push_back(bt);
-	selectedNodeId = -1;
-	selectedLinkId = -1;
-
-	bbvarSelected = -1; 
-	bbvarSetFocus = false; 
-	bbvarValueSelected = -1; 
+	ClearAllSelection();
 	bt->editorId = editorId;
 
-	//ne::CenterNodeOnScreen(0); // Root node has always id = 0. Careful! It may not work in the future.
+	if (btCurrent == nullptr)
+		btCurrent = bt;
+	ne::CenterNodeOnScreen(0); // Root node has always id = 0. Careful! It may not work in the future.
 
 	// Reset the context to the old one
 	g_app->beetGui->SetCurrentEditorContext(prevContext);
@@ -199,6 +196,12 @@ void BeeTEditor::BlackboardWindow()
 	
 	if (widgetBBList->IsVisible())
 		widgetBBList->Draw();
+
+	if (btCurrent == nullptr)
+	{
+		ImGui::End();
+		return;
+	}
 
 	Blackboard* bb = btCurrent->bb;
 
@@ -293,7 +296,11 @@ void BeeTEditor::BlackboardVarDetail()
 	ImGui::SetNextWindowPos(ImVec2(0.0f, (ImGui::GetCursorPosY() - ImGui::GetCursorPosX()) + (blackboardSize.y * editorSize.y)));
 	ImGui::SetNextWindowSize(ImVec2(editorSize.x * blackboardVarDetailSize.x, editorSize.y * blackboardVarDetailSize.y));
 	ImGui::Begin("BlackBoard Variable", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
-
+	if (btCurrent == nullptr)
+	{
+		ImGui::End();
+		return;
+	}
 	Blackboard* bb = btCurrent->bb;
 	if (bbvarValueSelected != -1)
 	{
@@ -367,9 +374,23 @@ void BeeTEditor::Editor()
 {
 	ImGui::SetNextWindowPos(ImVec2(screenWidth * blackboardSize.x, ImGui::GetCursorPosY() - ImGui::GetCursorPosX())); // The Y component substracts the cursorX position because imgui by default has margins
 	ImGui::SetNextWindowSize(ImVec2(editorSize.x * editorCanvasSize.x, editorSize.y * editorCanvasSize.y));
-	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 	
 	ImGui::Begin("BeeT Editor Window", &beetEditorWindowOpen, flags);
+
+	if (btCurrent == nullptr)
+	{
+		float w = ImGui::GetWindowWidth();
+		float h = ImGui::GetWindowHeight();
+		ImGui::SetCursorPosX(w*0.5f);
+		ImGui::SetCursorPosY(h*0.5f);
+		if (ImGui::Button("Create new"))
+		{
+			NewBehaviorTree();
+		}
+		ImGui::End();
+		return;
+	}
+
 	ImGui::BeginTabBar("###bt_tab_bar");
 	ImGui::DrawTabsBackground();
 	ImGui::SetCursorPosX(0.0f);
@@ -380,6 +401,8 @@ void BeeTEditor::Editor()
 		
 		if (ImGui::AddTab(bt->filename.data()))
 		{
+			if (btCurrent != bt)
+				ClearAllSelection();
 			btCurrent = bt;
 			g_app->beetGui->SetCurrentEditorContext(bt->editorId);
 			ne::Begin("BeeT Node Editor");
@@ -413,7 +436,6 @@ void BeeTEditor::Editor()
 	}
 	ImGui::EndTabBar();
 	ImGui::End();
-	ImGui::PopStyleVar(); // WindowPadding
 }
 
 void BeeTEditor::Inspector()
@@ -491,8 +513,17 @@ void BeeTEditor::BehaviortreeDetail()
 		
 		ImGui::SameLine();
 
-		ImGui::Button("Save and Close"); ImGui::SameLine();
-		ImGui::Button("Close"); ImGui::SameLine();
+		if (ImGui::Button("Save and Close"))
+		{
+			string filenamepath = btCurrent->filename + ".json";
+			g_app->beetGui->SaveFile(g_app->beetGui, filenamepath.data());
+			CloseBehaviorTree();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Close"))
+		{
+			CloseBehaviorTree();
+		}
 	}
 	ImGui::End();
 }
@@ -639,6 +670,29 @@ void BeeTEditor::UpdateSelection()
 		}
 	}
 
+}
+
+void BeeTEditor::CloseBehaviorTree()
+{
+	assert(btCurrent != nullptr);
+	auto btIt = std::find(btList.begin(), btList.end(), btCurrent);
+	assert(btIt != btList.end());
+	btList.erase(btIt);
+	delete btCurrent;
+	btCurrent = nullptr;
+	if(btList.size() > 0)
+		btCurrent = btList[0];
+	ClearAllSelection();
+}
+
+void BeeTEditor::ClearAllSelection()
+{
+	selectedNodeId = -1;
+	selectedLinkId = -1;
+	nodeAddedFlag = false;
+	bbvarSelected = -1;
+	bbvarSetFocus = false;
+	bbvarValueSelected = -1;
 }
 
 void BeeTEditor::InitBBListCategories()
