@@ -13,7 +13,9 @@ public:
 
 	void OnCollision(Entity* otherEntity);
 
-	NodeStatus BTTask(const char* taskId);
+	void BTTaskOnInit(const char* taskId);
+	NodeStatus BTTaskUpdate(const char* taskId);
+	void BTTaskOnFinish(const char* taskId);
 
 private:
 
@@ -22,6 +24,8 @@ private:
 
 	// Helpers
 	void ShootBullet(float posX, float posY, float dirX, float dirY, float speed);
+	void FindCover();
+	bool IsPlayerOnSight();
 
 private:
 	unsigned int btId;

@@ -1,8 +1,11 @@
 #include "Entity.h"
 #include "Physics.h"
 
-Entity::Entity(SDL_Renderer* renderer, float posX, float posY) : renderer(renderer), posX(posX), posY(posY)
-{}
+Entity::Entity(SDL_Renderer* renderer, float posX, float posY) : renderer(renderer)
+{
+	pos.x = posX;
+	pos.y = posY;
+}
 
 Entity::~Entity()
 {
@@ -21,7 +24,7 @@ bool Entity::LoadSprite(const char * path, int sizeX, int sizeY)
 		texture = SDL_CreateTextureFromSurface(renderer, surf);
 		if (texture)
 		{
-			rect = { int(posX - sizeX * 0.5f), int(posY - sizeY * 0.5f), sizeX, sizeY };
+			rect = { int(pos.x - sizeX * 0.5f), int(pos.y - sizeY * 0.5f), sizeX, sizeY };
 			ret = true;
 		}
 	}
@@ -49,9 +52,8 @@ void Entity::UpdateLogic(float dt)
 
 void Entity::Move(float dt)
 {
-	posX += speed * dt * dirX;
-	posY += speed * dt * dirY;
+	pos += dir * dt * speed;
 
-	rect.x = posX - (rect.w * 0.5f);
-	rect.y = posY - (rect.h * 0.5f);
+	rect.x = pos.x - (rect.w * 0.5f);
+	rect.y = pos.y - (rect.h * 0.5f);
 }

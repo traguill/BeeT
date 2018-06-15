@@ -36,8 +36,8 @@ void Physics::Tick()
 		{
 			if (bodyA == bodyB)
 				continue;
-			float vX = bodyB->entity->posX - bodyA->entity->posX;
-			float vY = bodyB->entity->posY - bodyA->entity->posY;
+			float vX = bodyB->entity->pos.x - bodyA->entity->pos.x;
+			float vY = bodyB->entity->pos.y - bodyA->entity->pos.y;
 			float dst = sqrtf(vX * vX + vY * vY);
 			if (dst <= bodyA->radius + bodyB->radius)
 				bodyA->entity->OnCollision(bodyB->entity);
@@ -79,8 +79,8 @@ void Physics::DrawColliders()
 	{
 		for (int i = 0; i < 720; i++)
 		{
-			points[i].x = b->entity->posX + b->radius * cos(i * factor);
-			points[i].y = b->entity->posY + b->radius * sin(i * factor);
+			points[i].x = b->entity->pos.x + b->radius * cos(i * factor);
+			points[i].y = b->entity->pos.y + b->radius * sin(i * factor);
 		}
 		SDL_RenderDrawPoints(renderer, points, 720);
 	}

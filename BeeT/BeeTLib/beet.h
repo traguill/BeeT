@@ -12,6 +12,14 @@ extern "C" {
 #endif
 
 // -----------------------------------------------------------------------------------
+typedef enum NodeFunction
+{
+	NF_ONINIT,
+	NF_UPDATE,
+	NF_ONFINISH
+}NodeFunction;
+
+typedef NodeStatus(*beetCallbackFunc)(unsigned int btId, const char* taskId, NodeFunction func);
 
 typedef struct
 {

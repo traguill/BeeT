@@ -73,7 +73,6 @@ typedef struct BTN_Parallel
 	// TODO: Add break type
 }BTN_Parallel;
 
-typedef NodeStatus(*beetCallbackFunc)(unsigned int btId, const char* taskId);
 typedef struct BTN_Task
 {
 	BeeT_Node node;

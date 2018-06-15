@@ -3,6 +3,7 @@
 #include <functional>
 #include "GameManager.h"
 #include "Bullet.h"
+#include "Block.h"
 #include "Globals.h"
 
 Enemy::Enemy(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, posX, posY)
@@ -12,12 +13,12 @@ Enemy::Enemy(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, 
 	g_Physics->AddBody(this, 50);
 
 	btId = BEET_LoadBehaviorTreeFromFile("Enemy.json", BEET_TRUE);
-	std::function<NodeStatus(const char*)> btTasksFunc = std::bind(&Enemy::BTTask, this, std::placeholders::_1);
-	g_GameManager->taskFunctions.insert(std::pair<int, std::function<NodeStatus(const char*)>>(btId, btTasksFunc));
+	std::function<NodeStatus(const char*)> btTasksFunc = std::bind(&Enemy::BTTaskUpdate, this, std::placeholders::_1);
+	g_GameManager->taskUpdateFunctions.insert(std::pair<int, std::function<NodeStatus(const char*)>>(btId, btTasksFunc));
 
 	enemySpeed = 350.0f;
-	dirX = 0.3f;
-	dirY = 0.67f; // Set a rnd
+	dir.x = 0.3f;
+	dir.y = 0.67f; // Set a rnd
 }
 
 Enemy::~Enemy()
@@ -36,7 +37,15 @@ void Enemy::OnCollision(Entity * otherEntity)
 	}
 }
 
-NodeStatus Enemy::BTTask(const char * taskId)
+void Enemy::BTTaskOnInit(const char * taskId)
+{
+	if (strcmp(taskId, "Hide") == 0)
+	{
+		FindCover();
+	}
+}
+
+NodeStatus Enemy::BTTaskUpdate(const char * taskId)
 {
 	if (BEET_BBGetInt(btId, "life") <= 0)
 		return NS_FAILURE;
@@ -48,9 +57,8 @@ NodeStatus Enemy::BTTask(const char * taskId)
 	}
 	else if (strcmp(taskId, "Shoot") == 0)
 	{
-		Bullet* bullet = new Bullet(renderer, posX + 60, posY, false);
-		bullet->dirX = dirX;
-		bullet->dirY = dirY;
+		Bullet* bullet = new Bullet(renderer, pos.x + 60, pos.y, false);
+		bullet->dir = dir;
 		bullet->speed = 600.0f;
 		g_GameManager->AddEntity(bullet);
 		return NS_SUCCESS;
@@ -68,6 +76,10 @@ NodeStatus Enemy::BTTask(const char * taskId)
 	return NS_SUSPENDED;
 }
 
+void Enemy::BTTaskOnFinish(const char * taskId)
+{
+}
+
 void Enemy::Movement()
 {
 	if (speed == 0)
@@ -76,41 +88,54 @@ void Enemy::Movement()
 	}
 
 	float halfSize = 50.0f;
-	if (posX - halfSize < 0.0f)
+	if (pos.x - halfSize < 0.0f)
 	{
-		posX = 0.0f + halfSize;
-		dirX *= -1;
+		pos.x = 0.0f + halfSize;
+		dir.x *= -1;
 	}
-	if (posX + halfSize > SCREEN_WIDTH)
+	if (pos.x + halfSize > SCREEN_WIDTH)
 	{
-		posX = SCREEN_WIDTH - halfSize;
-		dirX *= -1;
+		pos.x = SCREEN_WIDTH - halfSize;
+		dir.x *= -1;
 	}
-	if (posY - halfSize < 0.0f)
+	if (pos.y - halfSize < 0.0f)
 	{
-		posY = 0.0f + halfSize;
-		dirY *= -1;
+		pos.y = 0.0f + halfSize;
+		dir.y *= -1;
 	}
-	if (posY + halfSize > SCREEN_HEIGHT)
+	if (pos.y + halfSize > SCREEN_HEIGHT)
 	{
-		posY = SCREEN_HEIGHT - halfSize;
-		dirY *= -1;
+		pos.y = SCREEN_HEIGHT - halfSize;
+		dir.y *= -1;
 	}
 }
 
 void Enemy::Burst()
 {
-	ShootBullet(posX + 60, posY, 1.0f, 0.0f, 600.0f); // Right
-	ShootBullet(posX - 60, posY, -1.0f, 0.0f, 600.0f); // Left
-	ShootBullet(posX, posY + 60, 0.0f, 1.0f, 600.0f); // Down
-	ShootBullet(posX, posY - 60, 0.0f, -1.0f, 600.0f); // Up
+	ShootBullet(pos.x + 60, pos.y, 1.0f, 0.0f, 600.0f); // Right
+	ShootBullet(pos.x - 60, pos.y, -1.0f, 0.0f, 600.0f); // Left
+	ShootBullet(pos.x, pos.y + 60, 0.0f, 1.0f, 600.0f); // Down
+	ShootBullet(pos.x, pos.y - 60, 0.0f, -1.0f, 600.0f); // Up
 }
 
 void Enemy::ShootBullet(float posX, float posY, float dirX, float dirY, float speed)
 {
 	Bullet* bullet = new Bullet(renderer, posX, posY, false);
-	bullet->dirX = dirX;
-	bullet->dirY = dirY;
+	bullet->dir.x = dirX;
+	bullet->dir.y = dirY;
 	bullet->speed = speed;
 	g_GameManager->AddEntity(bullet);
+}
+
+void Enemy::FindCover()
+{
+
+}
+
+bool Enemy::IsPlayerOnSight()
+{
+	Entity* player = (Entity*)g_GameManager->player;
+	Block* block = g_GameManager->block;
+
+	return block->IsBlockingSight(pos, player->pos);
 }

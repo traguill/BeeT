@@ -3,6 +3,7 @@
 
 #include "SDL/include/SDL.h"
 #include "GameManager.h"
+#include "Math2D.h"
 
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
@@ -12,7 +13,8 @@ enum CLASS_TYPE
 	PLAYER,
 	ENEMY,
 	PLAYER_BULLET,
-	ENEMY_BULLET
+	ENEMY_BULLET,
+	BLOCK
 };
 
 class Entity
@@ -35,15 +37,13 @@ private:
 
 public:
 	// Position
-	float posX = 0.0f;
-	float posY = 0.0f;
+	fPoint pos;
+	
 	// Rotation
-	float rotX = 0.0f;
-	float rotY = 0.0f;
+	fVec rot;
 	// Speed & Direction
 	float speed = 0.0f;
-	float dirX = 0.0f;
-	float dirY = 0.0f;
+	fVec dir;
 
 	double angle = 0.0;
 

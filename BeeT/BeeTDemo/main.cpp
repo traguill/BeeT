@@ -11,8 +11,6 @@
 #include "Input.h"
 #include "GameManager.h"
 #include "Physics.h"
-#include "Player.h"
-#include "Enemy.h"
 
 #include "Globals.h"
 
@@ -23,7 +21,7 @@ Uint64 frequency, timeStart;
 
 float LastFrameSec();
 
-NodeStatus TaskCallbackFunc(unsigned int btId, const char* taskId);
+NodeStatus TaskCallbackFunc(unsigned int btId, const char* taskId, NodeFunction func);
 
 int main(int argc, char* args[])
 {
@@ -43,19 +41,13 @@ int main(int argc, char* args[])
 	g_Physics = new Physics();
 	g_Physics->renderer = renderer;
 	// Create Game Manager
-	g_GameManager = new GameManager();
+	g_GameManager = new GameManager(renderer);
+	g_GameManager->Init();
 
 	// Background
 	SDL_Texture* bg = SDL_CreateTextureFromSurface(renderer, SDL_LoadBMP("Game/background.bmp"));
 	SDL_Rect bgRect = { 0, 0, 900, 640 };
 
-	// Player
-	Player* player = new Player(renderer, 400, 300);
-	g_GameManager->AddEntity(player);
-
-	// Enemies
-	Enemy* enemy = new Enemy(renderer, 300, 100);
-	g_GameManager->AddEntity(enemy);
 	
 	// Timer
 	frequency = SDL_GetPerformanceFrequency();
@@ -103,7 +95,20 @@ float LastFrameSec()
 	return ret;
 }
 
-NodeStatus TaskCallbackFunc(unsigned int btId, const char* taskId)
+NodeStatus TaskCallbackFunc(unsigned int btId, const char* taskId, NodeFunction func)
 {
-	return g_GameManager->UpdateBTTask(btId, taskId);
+	NodeStatus ret = NS_INVALID;
+	switch (func)
+	{
+	case NF_ONINIT:
+		g_GameManager->OnInitBTTask(btId, taskId);
+		break;
+	case NF_UPDATE:
+		ret = g_GameManager->UpdateBTTask(btId, taskId);
+		break;
+	case NF_ONFINISH:
+		g_GameManager->OnFinishBTTask(btId, taskId);
+		break;
+	}
+	return ret;
 }

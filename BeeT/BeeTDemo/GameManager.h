@@ -7,12 +7,18 @@
 #include "../BeeTLib/beet.h"
 
 class Entity;
+class Player;
+class Enemy;
+class Block;
+struct SDL_Renderer;
 
 class GameManager
 {
 public:
-	GameManager();
+	GameManager(SDL_Renderer* renderer);
 	~GameManager();
+
+	void Init();
 
 	void Tick(float dt);
 	void Draw();
@@ -20,16 +26,31 @@ public:
 	void AddEntity(Entity* entity);
 	void RemoveEntity(Entity* entity);
 
+	void OnInitBTTask(unsigned int btId, const char* taskId);
 	NodeStatus UpdateBTTask(unsigned int btId, const char* taskId);
+	void OnFinishBTTask(unsigned int btId, const char* taskId);
 
 private:
 	std::vector<Entity*> entities;
 	std::vector<Entity*> entitiesToAdd;
 	std::vector<Entity*> entitiesToRemove;
 
+	SDL_Renderer* renderer;
+
 public:
-	// TODO: Make it private
-	std::map<int, std::function<NodeStatus(const char*)>> taskFunctions;
+	std::map<int, std::function<void(const char*)>> taskOnInitFunctions; // Update
+	std::map<int, std::function<NodeStatus(const char*)>> taskUpdateFunctions; // Update
+	std::map<int, std::function<void(const char*)>> taskOnFinishFunctions; // Update
+
+	// Player
+	Player* player;
+
+	// Enemies
+	Enemy* enemy;
+
+	// Blocks
+	Block* block;
+
 };
 extern GameManager* g_GameManager;
 #endif // !__GAME_MANAGER_H__

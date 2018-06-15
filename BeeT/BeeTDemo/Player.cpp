@@ -28,8 +28,8 @@ void Player::UpdateLogic(float dt)
 		angle -= rotSpeed * dt;
 	}
 
-	dirX = (float)cos((angle - 90)* DEGTORAD);
-	dirY = (float)sin((angle - 90) * DEGTORAD);
+	dir.x = (float)cos((angle - 90)* DEGTORAD);
+	dir.y = (float)sin((angle - 90) * DEGTORAD);
 
 	if (g_Input->GetKey(SDL_SCANCODE_W))
 		speed = 100.0f;
@@ -38,9 +38,8 @@ void Player::UpdateLogic(float dt)
 	
 	if (g_Input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
 	{
-		Bullet* bullet = new Bullet(renderer, posX, posY, true);
-		bullet->dirX = dirX;
-		bullet->dirY = dirY;
+		Bullet* bullet = new Bullet(renderer, pos.x, pos.y, true);
+		bullet->dir = dir;
 		bullet->speed = 500.0f;
 		g_GameManager->AddEntity(bullet);
 	}
