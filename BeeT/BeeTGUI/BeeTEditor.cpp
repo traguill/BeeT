@@ -33,7 +33,6 @@ bool BeeTEditor::Init()
 	//btCurrent = new BehaviorTree();
 	//btList.push_back(btCurrent);
 
-	ne::CenterNodeOnScreen(0); // Root node has always id = 0. Careful! It may not work in the future.
 	widgetItemList = new ItemList();
 	widgetBBList = new ItemList();
 	InitBBListCategories();
@@ -136,7 +135,6 @@ void BeeTEditor::NewBehaviorTree(Data* data)
 
 	if (btCurrent == nullptr)
 		btCurrent = bt;
-	ne::CenterNodeOnScreen(0); // Root node has always id = 0. Careful! It may not work in the future.
 
 	// Reset the context to the old one
 	g_app->beetGui->SetCurrentEditorContext(prevContext);
@@ -186,6 +184,22 @@ void BeeTEditor::CallBackBBVarList(void * obj, const std::string & category, con
 		// TODO: For now only Blackboard comparisons
 		editor->btCurrent->AddDecorator(editor->selectedNodeId, var); // TODO: SEND DECORATOR NAME
 	}
+}
+
+bool BeeTEditor::FoucsNodeById(int nodeId)
+{
+	if (btCurrent)
+	{
+		if (btCurrent->FindNode(nodeId))
+		{
+			selectedNodeId = nodeId;
+			ne::ClearSelection();
+			ne::SelectNode(nodeId);
+			ne::NavigateToSelection();
+			return true;
+		}
+	}
+	return false;
 }
 
 void BeeTEditor::BlackboardWindow()

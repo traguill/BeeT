@@ -119,8 +119,7 @@ void BeeTGui::MenuBar()
 			EditMenuBar();
 			ImGui::EndMenu();
 		}
-		else if (g_app->network->settingsDirty)
-			g_app->network->ResetSettings();
+		
 
 		if (ImGui::BeginMenu("Window"))
 		{
@@ -147,6 +146,13 @@ void BeeTGui::MenuBar()
 			ShowMenuBar();
 			ImGui::EndMenu();
 		}
+		if (ImGui::BeginMenu("Debug Options"))
+		{
+			DebugMenuBar();
+			ImGui::EndMenu();
+		}
+		else if (g_app->network->settingsDirty)
+			g_app->network->ResetSettings();
 		
 		if (mode == BeeTMode::BEET_EDITOR)
 		{
@@ -204,6 +210,29 @@ void BeeTGui::FileMenuBar()
 
 void BeeTGui::EditMenuBar()
 {
+	ImGui::PushItemWidth(100);
+	ImGui::Text("Find Node:");
+	ImGui::SameLine();
+	if (ImGui::DragInt("ID###find_node_input", &findNodeId))
+	{
+		if (mode == BEET_EDITOR)
+		{
+			bool success = beetEditor->FoucsNodeById(findNodeId);
+			if (!success)
+				findNodeId = -1;
+		}
+		else
+		{
+			bool success = beetDebugger->FocusNodeById(findNodeId);
+			if (!success)
+				findNodeId = -1;
+		}
+	}
+	ImGui::PopItemWidth();
+}
+
+void BeeTGui::DebugMenuBar()
+{
 	Network* nw = g_app->network;
 
 	ImGui::Text("Settings");
@@ -222,7 +251,6 @@ void BeeTGui::EditMenuBar()
 	ImGui::Text("Debug port:"); ImGui::SameLine();
 	if (ImGui::DragInt("###debug_port_input", &nw->tmpPort, 1, 0, 9999))
 		nw->settingsDirty = true;
-	ImGui::PopItemWidth();
 	// Active
 	if (nw->IsListening())
 		ImGui::TextColored(ImVec4(0.3f, 1.0f, 0.3f, 1.0f), ICON_BUG);
@@ -233,11 +261,12 @@ void BeeTGui::EditMenuBar()
 	ImGui::SameLine();
 	if (ImGui::Checkbox("###debug_is_enabled", &nw->tmpListening))
 		nw->settingsDirty = true;
-	
+
 	if (ImGui::Button("Apply Settings"))
 	{
 		nw->ApplySettings();
 	}
+	ImGui::PopItemWidth();
 }
 
 void BeeTGui::OpenWindows()

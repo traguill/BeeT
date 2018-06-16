@@ -74,6 +74,21 @@ void BeeTDebugger::HandleIncomingData(char * buf, int size, PacketType type)
 	}
 }
 
+bool BeeTDebugger::FocusNodeById(int nodeId)
+{
+	if (btCurrent)
+	{
+		if (btCurrent->FindNode(nodeId))
+		{
+			ne::ClearSelection();
+			ne::SelectNode(nodeId);
+			ne::NavigateToSelection();
+			return true;
+		}
+	}
+	return false;
+}
+
 void BeeTDebugger::BlackboardWin()
 {
 	ImGui::SetNextWindowPos(ImVec2(debuggerSize.x - (debuggerSize.x * blackboardSize.x), ImGui::GetCursorPosY() - ImGui::GetCursorPosX()));

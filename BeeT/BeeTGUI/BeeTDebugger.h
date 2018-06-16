@@ -24,6 +24,7 @@ public:
 	void OpenNewConnection(int uid); // Prepares a new slot to receive a new BT
 	void HandleIncomingData(char* buf, int size, PacketType type);
 
+	bool FocusNodeById(int nodeId);
 private:
 
 	// Windows

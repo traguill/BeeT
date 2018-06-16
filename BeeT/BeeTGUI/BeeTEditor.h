@@ -32,6 +32,8 @@ public:
 	static void CallBackBBVarType(void* obj, const std::string& category, const std::string& item, int additionalData);
 	static void CallBackBBVarList(void* obj, const std::string& category, const std::string& item, int additionalData);
 
+	bool FoucsNodeById(int nodeId);
+
 private:
 
 	void BlackboardWindow();

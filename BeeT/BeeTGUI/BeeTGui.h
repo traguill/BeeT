@@ -37,6 +37,7 @@ private:
 	void MenuBar();
 	void FileMenuBar();
 	void EditMenuBar();
+	void DebugMenuBar();
 	void OpenWindows();
 	void ShowMenuBar();
 
@@ -56,6 +57,9 @@ private:
 	// Modes
 	BeeTEditor* beetEditor = nullptr;
 	BeeTDebugger* beetDebugger = nullptr;
+
+	// Edit
+	int findNodeId = -1;
 
 };
 #endif
