@@ -354,6 +354,9 @@ void BTNode::PreDrawSetColor()
 	case NC_FAILURE:
 		bg = ImColor(128, 50, 50, 200);
 		break;
+	case NC_SUSPENDED:
+		bg = ImColor(50, 50, 50, 200);
+		break;
 	}
 	ne::PushStyleColor(ne::StyleColor_NodeBg, bg);
 	ne::PushStyleColor(ne::StyleColor_NodeBorder, border);

@@ -277,8 +277,8 @@ BeeT_sNodeReturn * BeeT_dBT_InitsNodeReturn(clock_t startTime, int nodeId, NodeS
 	sNR->sample.type = NODE_RETURNS;
 	sNR->sample.time = GetTimestamp(startTime);
 	sNR->nodeId = nodeId;
-	sNR->newStatus = newStatus != NS_SUSPENDED ? newStatus : NS_RUNNING;
-	sNR->oldStatus = oldStatus != NS_SUSPENDED ? oldStatus : NS_RUNNING;
+	sNR->newStatus = newStatus != NS_WAITING ? newStatus : NS_RUNNING;
+	sNR->oldStatus = oldStatus != NS_WAITING ? oldStatus : NS_RUNNING;
 	return sNR;
 }
 

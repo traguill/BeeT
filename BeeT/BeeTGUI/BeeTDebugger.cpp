@@ -202,7 +202,7 @@ void BeeTDebugger::MediPlayerWin()
 	ImGui::SetNextWindowSize(ImVec2(debuggerSize.x * mediaplayerSize.x, debuggerSize.y * mediaplayerSize.y));
 	ImGui::Begin("MediaPlayer", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar);
 
-	if (btCurrent == nullptr)
+	if (btCurrent == nullptr || btCurrent->changes.size() == 0)
 	{
 		ImGui::End();
 		return;

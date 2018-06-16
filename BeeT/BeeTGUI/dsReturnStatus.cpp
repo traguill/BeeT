@@ -66,7 +66,10 @@ void dsReturnStatus::ChangeNodeColorByStatus(NodeStatus status)
 		node->nodeColor = NC_RUNNING;
 		break;
 	case NS_SUSPENDED:
-		node->nodeColor = NC_IDLE;
+		node->nodeColor = NC_SUSPENDED;
+		break;
+	case NS_WAITING:
+		node->nodeColor = NC_RUNNING;
 		break;
 	}
 }

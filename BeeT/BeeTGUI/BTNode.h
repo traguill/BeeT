@@ -21,7 +21,8 @@ enum NodeColor
 	NC_IDLE,
 	NC_RUNNING,
 	NC_SUCCESS,
-	NC_FAILURE
+	NC_FAILURE,
+	NC_SUSPENDED
 };
 
 class BTNode
