@@ -20,10 +20,11 @@ BEET_bool Pass_StringNotEqual(BeeT_decorator* dec);
 BEET_bool Pass_StringContains(BeeT_decorator* dec);
 BEET_bool Pass_StringNotContains(BeeT_decorator* dec);
 
-BeeT_decorator * BeeT_Decorator_Init(BeeT_Serializer * data, BeeT_Blackboard * bb)
+BeeT_decorator * BeeT_Decorator_Init(BeeT_Serializer * data, BeeT_Blackboard * bb, int nodeId)
 {
 	BeeT_decorator* dec = BEET_malloc(sizeof(BeeT_decorator));
-
+	dec->id = BeeT_Serializer_GetInt(data, "uid");
+	dec->nodeId = nodeId;
 	const char* varAName = BeeT_Serializer_GetString(data, "var");
 	dec->varA = bb->FindVar(bb, varAName);
 	dec->checkAlways = BeeT_Serializer_GetBool(data, "checkEveryFrame");

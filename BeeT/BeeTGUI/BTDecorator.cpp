@@ -4,9 +4,6 @@
 #include "Blackboard.h"
 #include "BTNode.h"
 
-#define DEC_TICK_ONCE_COLOR ImVec4(130, 240, 187, 200);
-#define DEC_TICK_ALWAYS_COLOR ImVec4(240, 187, 130, 200);
-
 BTDecorator::BTDecorator(BTNode* node, Blackboard* bb, BBVar* var) : nodeAttachedTo(node), bb(bb), var(var)
 {
 	uid = (int)g_rnd->RandomInt();
@@ -207,6 +204,16 @@ void BTDecorator::CleanUp()
 	{
 		var->decorators.erase(std::find(var->decorators.begin(), var->decorators.end(), this));
 	}
+}
+
+int BTDecorator::GetUID() const
+{
+	return uid;
+}
+
+bool BTDecorator::IsCheckedEveryFrame() const
+{
+	return checkEveryFrame;
 }
 
 void BTDecorator::PrintType() const

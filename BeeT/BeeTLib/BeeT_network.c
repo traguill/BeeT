@@ -100,8 +100,6 @@ void BeeT_NW_Tick(BeeT_network* nw)
 			if (BeeT_NW_SocketReadyToSend(sc))
 			{
 				sc->state = WAITING_SEND_ACK;
-				sc->sentDataSize = 0;
-				sc->state = READY_TO_SEND; // HACK
 			}
 		}
 

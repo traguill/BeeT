@@ -3,6 +3,7 @@
 #include "BeeT_blackboard.h"
 #include "BeeT_serializer.h"
 #include "BeeT_node.h"
+#include "BeeT_decorator.h"
 
 BeeT_dBT * BeeT_dBT_Init(const char* buffer, unsigned int size)
 {
@@ -175,6 +176,12 @@ void BeeT_dBT_BTEnd(BeeT_dBT * bt)
 	dequeue_push_back(bt->samples, sample);
 }
 
+void BeeT_dBT_DecoratorCondition(BeeT_dBT * bt, BeeT_decorator* dec, BEET_bool pass)
+{
+	BeeT_sDecoratorCondition* sample = BeeT_dBT_InitsDecoratorCondition(bt->startTime, dec->id, pass, dec->nodeId);
+	dequeue_push_back(bt->samples, sample);
+}
+
 BeeT_dSample * BeeT_dBT_InitSample(SampleType type, float time)
 {
 	BeeT_dSample* sample = (BeeT_dSample*)BEET_malloc(sizeof(BeeT_dSample));
@@ -202,6 +209,7 @@ BeeT_Serializer * BeeT_dSample_Serialize(BeeT_dSample * sample)
 			BeeT_dBT_sNewCurrentSerialize(data, (BeeT_sNewCurrent*)sample);
 			break;
 		case DECORATOR_CONDITION:
+			BeeT_dBT_sDecoratorConditionSerialize(data, (BeeT_sDecoratorCondition*)sample);
 			break;
 		case BT_END:
 			// No need to do anything
@@ -278,5 +286,23 @@ void BeeT_dBT_sNodeReturnSerialize(BeeT_Serializer * data, BeeT_sNodeReturn * sa
 {
 	BeeT_Serializer_AppendInt(data, "oldStatus", (int)sample->oldStatus);
 	BeeT_Serializer_AppendInt(data, "newStatus", (int)sample->newStatus);
+	BeeT_Serializer_AppendInt(data, "nodeId", sample->nodeId);
+}
+
+BeeT_sDecoratorCondition* BeeT_dBT_InitsDecoratorCondition(clock_t startTime, int decoratorId, BEET_bool pass, int nodeId)
+{
+	BeeT_sDecoratorCondition* sDC = (BeeT_sDecoratorCondition*)BEET_malloc(sizeof(BeeT_sDecoratorCondition));
+	sDC->sample.type = DECORATOR_CONDITION;
+	sDC->sample.time = GetTimestamp(startTime);
+	sDC->decoratorId = decoratorId;
+	sDC->pass = pass;
+	sDC->nodeId = nodeId;
+	return sDC;
+}
+
+void BeeT_dBT_sDecoratorConditionSerialize(BeeT_Serializer * data, BeeT_sDecoratorCondition * sample)
+{
+	BeeT_Serializer_AppendInt(data, "decoratorId", sample->decoratorId);
+	BeeT_Serializer_AppendBool(data, "pass", sample->pass);
 	BeeT_Serializer_AppendInt(data, "nodeId", sample->nodeId);
 }

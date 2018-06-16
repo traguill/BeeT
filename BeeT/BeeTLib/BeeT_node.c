@@ -44,7 +44,7 @@ BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, BeeT_BehaviorTree* bt)
 	for (int i = 0; i < decSize; ++i)
 	{
 		BeeT_Serializer* decData = BeeT_Serializer_GetArray(data, "decorators", i);
-		BeeT_decorator* dec = BeeT_Decorator_Init(decData, bt->bb);
+		BeeT_decorator* dec = BeeT_Decorator_Init(decData, bt->bb, node->id);
 		dequeue_push_back(node->decorators, dec);
 		if (dec->checkAlways)
 			node->checkDecAlways = BEET_TRUE;
@@ -111,7 +111,10 @@ NodeStatus Tick(BeeT_Node* n)
 			BeeT_decorator* dec = (BeeT_decorator*)item->data;
 			if (n->status == NS_INVALID || dec->checkAlways)
 			{
-				if (dec->Pass(dec) == BEET_FALSE)
+				BEET_bool pass = dec->Pass(dec);
+				if (n->bt->debug)
+					BeeT_dBT_DecoratorCondition(n->bt->debug, dec, pass);
+				if (pass == BEET_FALSE)
 				{
 					if (n->status == NS_INVALID)
 						n->OnInit(n);
@@ -325,7 +328,7 @@ NodeStatus BTN_Parallel_Update(BeeT_Node * self)
 {
 	BTN_Parallel* btn = (BTN_Parallel*)self;
 	NodeStatus tickRet = btn->mainChild->Tick(btn->mainChild);
-	// 	BeeT_Node_ChangeStatus(btn->mainChild, tickRet);
+	BeeT_Node_ChangeStatus(btn->mainChild, tickRet);
 	if (tickRet == NS_RUNNING)
 	{
 		dequeue_push_back(btn->runningChilds, NULL); // Marks end of this Tick

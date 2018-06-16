@@ -15,6 +15,7 @@
 #include "dsNewCurrent.h"
 #include "dsReturnStatus.h"
 #include "dsBTEnd.h"
+#include "dsDecoratorCondition.h"
 
 #include <string>
 #include "ThirdParty/ImGui/imgui_tabs.h"
@@ -253,6 +254,7 @@ void BeeTDebugger::UpdateBT(const char * buf, int size)
 			sample = (dSample*) new dsNewCurrent(bt, sData);
 			break;
 		case DECORATOR_CONDITION:
+			sample = (dSample*) new dsDecoratorCondition(bt, sData);
 			break;
 		case BT_END:
 			sample = (dSample*) new dsBTEnd(bt, sData);

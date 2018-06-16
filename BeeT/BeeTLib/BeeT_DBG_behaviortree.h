@@ -41,6 +41,9 @@ void BeeT_dBT_NodeReturnStatus(BeeT_dBT* bt, struct BeeT_Node* node, enum NodeSt
 // Behavior Tree ended
 void BeeT_dBT_BTEnd(BeeT_dBT* bt);
 
+// Decorator pass
+void BeeT_dBT_DecoratorCondition(BeeT_dBT* bt, struct BeeT_decorator* dec, BEET_bool pass);
+
 // Information to send to the Editor
 // --------------------------------------------------------------------------------
 // Samples
@@ -90,6 +93,17 @@ typedef struct BeeT_sNodeReturn
 
 BeeT_sNodeReturn* BeeT_dBT_InitsNodeReturn(clock_t startTime, int nodeId, enum NodeStatus oldStatus, enum NodeStatus newStatus);
 void BeeT_dBT_sNodeReturnSerialize(struct BeeT_Serializer* data, BeeT_sNodeReturn* sample);
+
+typedef struct BeeT_sDecoratorCondition
+{
+	BeeT_dSample sample;
+	int decoratorId;
+	int nodeId;
+	BEET_bool pass;
+}BeeT_sDecoratorCondition;
+
+BeeT_sDecoratorCondition* BeeT_dBT_InitsDecoratorCondition(clock_t startTime, int decoratorId, BEET_bool pass, int nodeId);
+void BeeT_dBT_sDecoratorConditionSerialize(struct BeeT_Serializer* data, BeeT_sDecoratorCondition* sample);
 
 typedef struct BeeT_dSample BeeT_sBTEnd;
 #endif // !__BEET_DBG_BEHAVIORTREE_H__

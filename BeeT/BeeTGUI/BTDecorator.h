@@ -6,6 +6,11 @@
 #include "Data.h"
 #include <boost/any.hpp>
 
+#define DEC_TICK_ONCE_COLOR ImVec4(192, 160, 239, 200)
+#define DEC_TICK_ALWAYS_COLOR ImVec4(79, 134, 242, 200)
+#define DEC_PASS_COLOR ImVec4(30, 104, 52, 200)
+#define DEC_NO_PASS_COLOR ImVec4(104, 30, 30, 200)
+
 // TODO: Different types of decorators. For now only Blackboard comparisons
 class BTNode;
 class Blackboard;
@@ -49,6 +54,9 @@ public:
 
 	void Remove(bool isBBVarRemoved = false);
 	void CleanUp();
+
+	int GetUID()const;
+	bool IsCheckedEveryFrame()const;
 
 private:
 	void PrintType()const;

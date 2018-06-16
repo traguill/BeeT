@@ -45,14 +45,17 @@ void dBehaviorTree::PrintSamples()
 	int counter = changes.size() - 1;
 	for (vector<dSample*>::reverse_iterator it = changes.rbegin(); it != changes.rend(); it++)
 	{
-		ImGui::BeginGroup();
-		ImGui::Separator();
-		ImGui::Text("Time: %.2f", (*it)->GetTimestamp());
-		(*it)->Print();
-		ImGui::EndGroup();
-		if (ImGui::IsItemClicked())
+		if ((*it)->GetType() != DECORATOR_CONDITION)
 		{
-			ApplySampleEffect(counter);
+			ImGui::BeginGroup();
+			ImGui::Separator();
+			ImGui::Text("Time: %.2f", (*it)->GetTimestamp());
+			(*it)->Print();
+			ImGui::EndGroup();
+			if (ImGui::IsItemClicked())
+			{
+				ApplySampleEffect(counter);
+			}
 		}
 		counter--;
 		//if (counter <= changes.size() - 10)
