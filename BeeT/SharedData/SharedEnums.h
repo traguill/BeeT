@@ -43,7 +43,8 @@ typedef enum NodeStatus
 	NS_SUCCESS,
 	NS_FAILURE,
 	NS_RUNNING,
-	NS_SUSPENDED
+	NS_SUSPENDED,
+	NS_WAITING
 }NodeStatus;
 
 

@@ -95,7 +95,7 @@ void BeeT_Node_ChangeStatus(BeeT_Node * node, NodeStatus newStatus)
 	if (node->status == newStatus)
 		return;
 
-	if (node->bt->debug && !(node->status == NS_RUNNING && newStatus == NS_SUSPENDED) && !(node->status == NS_SUSPENDED && newStatus == NS_RUNNING)) // Consider RUNNING = SUSPENDED. Don't send as change status.
+	if (node->bt->debug && !(node->status == NS_RUNNING && newStatus == NS_WAITING) && !(node->status == NS_WAITING && newStatus == NS_RUNNING)) // Consider RUNNING = WAITING. Don't send as change status.
 		BeeT_dBT_NodeReturnStatus(node->bt->debug, node, newStatus);
 	node->status = newStatus;
 }
@@ -129,18 +129,18 @@ NodeStatus Tick(BeeT_Node* n)
 
 	if (n->status == NS_INVALID)
 	{
-		n->OnInit(n);
 		BeeT_Node_ChangeStatus(n, NS_RUNNING);
+		n->OnInit(n);
 	}
 
-	if (n->status != NS_SUCCESS && n->status != NS_FAILURE)
+	if (n->status != NS_SUCCESS && n->status != NS_FAILURE) // Maybe this check is unnecessary, but I'm afraid to remove it :S 
 	{
 		NodeStatus status = n->Update(n);
-		if (status == NS_SUSPENDED && n->checkDecAlways) // Node must be in running nodes to check the decorator each tick
+		if (status == NS_WAITING && n->checkDecAlways) // Node must be in running nodes to check the decorator each tick
 			status = NS_RUNNING;
 		BeeT_Node_ChangeStatus(n, status);
 	}
-	if (n->status != NS_RUNNING && n->status != NS_SUSPENDED)
+	if (n->status != NS_RUNNING && n->status != NS_WAITING)
 	{
 		n->OnFinish(n, n->status);
 	}
@@ -257,7 +257,7 @@ void BTN_Root_OnInit(BeeT_Node* self)
 	BTN_Root* btn = (BTN_Root*)self;
 	if (btn->startNode)
 	{
-		btn->startNode->status = NS_INVALID;
+		BeeT_Node_ChangeStatus(btn->startNode, NS_INVALID);
 		btn->startNode->observerNode = self;
 		btn->node.bt->StartBehavior(btn->node.bt, btn->startNode, BTN_Root_TreeFinish);
 	}
@@ -267,6 +267,16 @@ void BTN_Selector_OnInit(BeeT_Node* self)
 {
 	BTN_Selector* btn = (BTN_Selector*)self;
 	btn->current = dequeue_head(btn->childs);
+	node_deq* item = btn->current;
+	while (item)
+	{
+		BeeT_Node* n = (BeeT_Node*)item->data;
+		if (n != NULL)
+		{
+			BeeT_Node_ChangeStatus(n, NS_INVALID);
+		}
+		item = item->next;
+	}
 	BeeT_Node* current_node = (BeeT_Node*)dequeue_front(btn->childs);
 	current_node->observerNode = self;
 	btn->node.bt->StartBehavior(btn->node.bt, current_node, BTN_Selector_OnChildFinish);
@@ -275,8 +285,17 @@ void BTN_Selector_OnInit(BeeT_Node* self)
 void BTN_Sequence_OnInit(BeeT_Node* self)
 {
 	BTN_Sequence* btn = (BTN_Sequence*)self;
-
 	btn->current = dequeue_head(btn->childs);
+	node_deq* item = btn->current;
+	while (item)
+	{
+		BeeT_Node* n = (BeeT_Node*)item->data;
+		if (n != NULL)
+		{
+			BeeT_Node_ChangeStatus(n, NS_INVALID);
+		}
+		item = item->next;
+	}
 	BeeT_Node* current_node = (BeeT_Node*)dequeue_front(btn->childs);
 	current_node->observerNode = self;
 	btn->node.bt->StartBehavior(btn->node.bt, current_node, BTN_Sequence_OnChildFinish);
@@ -285,8 +304,8 @@ void BTN_Sequence_OnInit(BeeT_Node* self)
 void BTN_Parallel_OnInit(BeeT_Node * self)
 {
 	BTN_Parallel* btn = (BTN_Parallel*)self;
-	btn->mainChild->status = NS_INVALID;
-	btn->secondChild->status = NS_INVALID;
+	BeeT_Node_ChangeStatus(btn->mainChild, NS_INVALID);
+	BeeT_Node_ChangeStatus(btn->secondChild, NS_INVALID);
 	btn->secondChild->observerNode = self;
 	btn->secondChild->observer = BTN_Parallel_OnSecondFinish;
 	dequeue_push_front(btn->runningChilds, btn->secondChild);
@@ -311,17 +330,17 @@ void BTN_Wait_OnInit(BeeT_Node * self)
 
 NodeStatus BTN_Root_Update(BeeT_Node* self)
 {
-	return NS_SUSPENDED;
+	return NS_WAITING;
 }
 
 NodeStatus BTN_Selector_Update(BeeT_Node* self)
 {
-	return NS_SUSPENDED;
+	return NS_WAITING;
 }
 
 NodeStatus BTN_Sequence_Update(BeeT_Node* self)
 {
-	return NS_SUSPENDED;
+	return NS_WAITING;
 }
 
 NodeStatus BTN_Parallel_Update(BeeT_Node * self)
@@ -343,21 +362,23 @@ NodeStatus BTN_Parallel_Update(BeeT_Node * self)
 				step = BEET_FALSE;
 				continue;
 			}
-
-			NodeStatus tickChildRet = current->Tick(current);
-			BeeT_Node_ChangeStatus(current, tickChildRet);
-
-			if (current->status != NS_RUNNING && current->status != NS_SUSPENDED)
+			if (current->status == NS_INVALID || current->status == NS_RUNNING) // DON'T TICK: SUCCESS/FAILURE/SUSPEND/WAITING
 			{
-				if (current->observer)
-					current->observer(current->observerNode, current->status);
-				current->status = NS_INVALID; // Reset the node
+				NodeStatus tickChildRet = current->Tick(current);
+				BeeT_Node_ChangeStatus(current, tickChildRet);
+
+				if (current->status == NS_SUCCESS || current->status == NS_FAILURE || current->status == NS_SUSPENDED) // Node status resolved
+				{
+					if (current->observer)
+						current->observer(current->observerNode, current->status);
+				}
+				else // Left cases: RUNNING/WAITING
+				{
+					if (current->status == NS_RUNNING)
+						dequeue_push_back(btn->runningChilds, current); // Only tick RUNNING nodes
+				}
 			}
-			else
-			{
-				if (current->status == NS_RUNNING)
-					dequeue_push_back(btn->runningChilds, current);
-			}
+		
 		} while (step == BEET_TRUE);
 	}
 
@@ -395,7 +416,8 @@ void BTN_Selector_OnFinish(BeeT_Node* self, NodeStatus status)
 	while (item)
 	{
 		BeeT_Node* n = (BeeT_Node*)item->data;
-		n->status = NS_INVALID;
+		if(n != NULL)
+			n->bt->StopBehavior(n, NS_SUSPENDED);
 		item = item->next;
 	}
 }
@@ -407,7 +429,8 @@ void BTN_Sequence_OnFinish(BeeT_Node* self, NodeStatus status)
 	while (item)
 	{
 		BeeT_Node* n = (BeeT_Node*)item->data;
-		n->status = NS_INVALID;
+		if(n != NULL)
+		n->bt->StopBehavior(n, NS_SUSPENDED);
 		item = item->next;
 	}
 }
@@ -416,8 +439,8 @@ void BTN_Parallel_OnFinish(BeeT_Node * self, NodeStatus status)
 {
 	BTN_Parallel* btn = (BTN_Parallel*)self;
 
-	btn->node.bt->StopBehavior(btn->mainChild, NS_INVALID);
-	btn->node.bt->StopBehavior(btn->secondChild, NS_INVALID);
+	btn->node.bt->StopBehavior(btn->mainChild, NS_SUSPENDED);
+	btn->node.bt->StopBehavior(btn->secondChild, NS_SUSPENDED);
 
 	dequeue_clear(btn->runningChilds);
 }
@@ -485,7 +508,7 @@ void BTN_Wait_OnDestroy(BTN_Wait * self)
 void BTN_Root_TreeFinish(BeeT_Node * self, NodeStatus s)
 {
 	self->bt->StopBehavior(self, s);
-	self->status = NS_INVALID;
+	BeeT_Node_ChangeStatus(self, NS_INVALID);
 	dequeue_clear(self->bt->runningNodes);	// Clear running nodes
 	dequeue_push_back(self->bt->runningNodes, NULL); // Push a NULL node to end the Tick
 	dequeue_push_back(self->bt->runningNodes, self); // Push Root node to start the next Tick
@@ -542,11 +565,10 @@ void BTN_Sequence_OnChildFinish(BeeT_Node* self, NodeStatus s)
 }
 
 void BTN_Parallel_OnSecondFinish(BeeT_Node * self, NodeStatus s)
-{
-	// Restart?
+{	
 	BTN_Parallel* btn = (BTN_Parallel*)self;
 	dequeue_clear(btn->runningChilds);
-	btn->secondChild->status = NS_INVALID;
+	BeeT_Node_ChangeStatus(btn->secondChild, NS_INVALID);// Restart?
 	dequeue_push_back(btn->runningChilds, NULL); // Push NULL to end this tick. Avoids infinite loops
 	dequeue_push_back(btn->runningChilds, btn->secondChild);
 }

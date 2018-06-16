@@ -296,7 +296,7 @@ void BeeTDebugger::UpdateBT(const char * buf, int size)
 			sample = (dSample*) new dsNewCurrent(bt, sData);
 			break;
 		case DECORATOR_CONDITION:
-			sample = (dSample*) new dsDecoratorCondition(bt, sData);
+			//sample = (dSample*) new dsDecoratorCondition(bt, sData); TODO:IGNORE FOR NOW. TOO MUCH SPAM. FIX THIS!!!
 			break;
 		case BT_END:
 			sample = (dSample*) new dsBTEnd(bt, sData);

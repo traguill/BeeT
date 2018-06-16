@@ -64,9 +64,9 @@ void StartBehavior(BeeT_BehaviorTree* bt, BeeT_Node* behavior, ObserverFunc obsF
 }
 void StopBehavior(BeeT_Node* behavior, NodeStatus resultStatus)
 {
-	BEET_ASSERT(resultStatus != NS_RUNNING);
+	BEET_ASSERT(resultStatus != NS_RUNNING && resultStatus != NS_INVALID);
 	BeeT_Node_ChangeStatus(behavior, resultStatus);
-	if (behavior->observer && resultStatus != NS_INVALID)
+	if (behavior->observer && resultStatus != NS_SUSPENDED)
 	{
 		behavior->observer(behavior->observerNode, resultStatus);
 	}
@@ -89,22 +89,21 @@ BEET_bool Step(BeeT_BehaviorTree* bt)
 	{
 		return BEET_FALSE;
 	}
-	if (current->status == NS_SUCCESS || current->status == NS_FAILURE) // Aready solved
-		return BEET_TRUE;
-
-	NodeStatus tickRet = current->Tick(current);
-	BeeT_Node_ChangeStatus(current, tickRet);
-
-	if (current->status != NS_RUNNING && current->status != NS_SUSPENDED)
+	if (current->status == NS_INVALID || current->status == NS_RUNNING) // DON'T TICK: SUCCESS/FAILURE/SUSPEND/WAITING
 	{
-		if(current->observer)
-			current->observer(current->observerNode, current->status);
-		current->status = NS_INVALID; // Reset the node
-	}
-	else
-	{
-		if(current->status == NS_RUNNING)
-			dequeue_push_back(bt->runningNodes, current);
+		NodeStatus tickRet = current->Tick(current);
+		BeeT_Node_ChangeStatus(current, tickRet);
+
+		if (current->status == NS_SUCCESS || current->status == NS_FAILURE || current->status == NS_SUSPENDED) // Node status resolved
+		{
+			if (current->observer)
+				current->observer(current->observerNode, current->status);
+		}
+		else // Left cases: RUNNING/WAITING
+		{
+			if (current->status == NS_RUNNING)
+				dequeue_push_back(bt->runningNodes, current); // Only tick RUNNING nodes
+		}
 	}
 
 	return BEET_TRUE;
