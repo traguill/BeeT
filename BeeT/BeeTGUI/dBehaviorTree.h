@@ -17,7 +17,6 @@ public:
 	void AddSample(dSample* sample);
 	void PrintSamples();
 
-private: 
 	void ApplySampleEffect(int newSample);
 
 public:

@@ -29,9 +29,10 @@ private:
 
 	// Windows
 	void BlackboardWin();
-	void HistoryWin();
-	void InspectorWin();
 	void CanvasWin();
+	void MediPlayerWin();
+	void HistoryWin(); // Deprecated
+	void InspectorWin(); // Deprecated
 
 	// Helpers
 	void LoadBT(const char* buf, int size);
@@ -49,10 +50,11 @@ private:
 	int screenHeight = 0;
 
 	ImVec2 debuggerSize;
-	ImVec2 CanvasSize = ImVec2(0.6f, 1.0f);
-	ImVec2 inspectorSize = ImVec2(0.2f, 0.6f);
-	ImVec2 blackboardSize = ImVec2(0.2f, 0.4f);
-	ImVec2 historySize = ImVec2(0.2f, 1.0f);
+	ImVec2 CanvasSize = ImVec2(0.8f, 0.9f);
+	ImVec2 blackboardSize = ImVec2(0.2f, 0.9f);
+	ImVec2 mediaplayerSize = ImVec2(1.0f, 0.1f);
+	ImVec2 inspectorSize = ImVec2(0.2f, 0.6f); // Deprecated
+	ImVec2 historySize = ImVec2(0.2f, 1.0f); // Deprecated
 
 
 	std::vector<dBehaviorTree*> btList; // List of behavior trees opened

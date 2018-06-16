@@ -2,8 +2,6 @@
 #include "Application.h"
 #include "Window.h"
 #include "Network.h"
-#include "ThirdParty/ImGui/imgui.h"
-#include "ThirdParty/NodeEditor/Include/NodeEditor.h"
 #include "Log.h"
 #include "BeeTGui.h"
 #include "Data.h"
@@ -18,6 +16,9 @@
 #include "dsDecoratorCondition.h"
 
 #include <string>
+#include "ThirdParty/ImGui/imgui.h"
+#include "ThirdParty/NodeEditor/Include/NodeEditor.h"
+#include "IconsFont.h"
 #include "ThirdParty/ImGui/imgui_tabs.h"
 
 using namespace std;
@@ -43,10 +44,9 @@ bool BeeTDebugger::Update()
 	debuggerSize.x = (float)screenWidth;
 	debuggerSize.y = screenHeight - (ImGui::GetCursorPosY() - ImGui::GetCursorPosX());
 
-	HistoryWin();
 	CanvasWin();
 	BlackboardWin();
-	InspectorWin();
+	MediPlayerWin();
 	
 	return true;
 }
@@ -151,18 +151,12 @@ void BeeTDebugger::HistoryWin()
 
 void BeeTDebugger::InspectorWin()
 {
-	ImGui::SetNextWindowPos(ImVec2(debuggerSize.x - (debuggerSize.x * inspectorSize.x), ImGui::GetCursorPosY() - ImGui::GetCursorPosX() + (blackboardSize.y * debuggerSize.y)));
-	ImGui::SetNextWindowSize(ImVec2(debuggerSize.x * inspectorSize.x, debuggerSize.y * inspectorSize.y));
-	ImGui::Begin("Inspector", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 
-	ImGui::Text("This is the inspector");
-
-	ImGui::End();
 }
 
 void BeeTDebugger::CanvasWin()
 {
-	ImGui::SetNextWindowPos(ImVec2(debuggerSize.x * historySize.x, ImGui::GetCursorPosY() - ImGui::GetCursorPosX()));
+	ImGui::SetNextWindowPos(ImVec2(0, ImGui::GetCursorPosY() - ImGui::GetCursorPosX()));
 	ImGui::SetNextWindowSize(ImVec2(debuggerSize.x * CanvasSize.x, debuggerSize.y * CanvasSize.y));
 	ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 	ImGui::Begin("Canvas", nullptr, flags);
@@ -200,6 +194,54 @@ void BeeTDebugger::CanvasWin()
 	ImGui::EndTabBar();
 	ImGui::End();
 	ImGui::PopStyleVar();
+}
+
+void BeeTDebugger::MediPlayerWin()
+{
+	ImGui::SetNextWindowPos(ImVec2(0, ImGui::GetCursorPosY() - ImGui::GetCursorPosX() + (blackboardSize.y * debuggerSize.y)));
+	ImGui::SetNextWindowSize(ImVec2(debuggerSize.x * mediaplayerSize.x, debuggerSize.y * mediaplayerSize.y));
+	ImGui::Begin("MediaPlayer", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar);
+
+	if (btCurrent == nullptr)
+	{
+		ImGui::End();
+		return;
+	}
+	if (btCurrent->sampleSelected == -1)
+	{
+		btCurrent->ApplySampleEffect(0);
+	}
+
+	if (ImGui::Button("Prev###media_prev"))
+	{
+		if (btCurrent->sampleSelected > 0)
+		{
+			btCurrent->ApplySampleEffect(btCurrent->sampleSelected - 1);
+		}		
+	}
+	ImGui::SameLine();
+	if(ImGui::Button(ICON_PLAY))
+	{
+
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Next###media_next"))
+	{
+		if (btCurrent->sampleSelected < btCurrent->changes.size() - 1)
+		{
+			btCurrent->ApplySampleEffect(btCurrent->sampleSelected + 1);
+		}				
+	}
+
+	int tmpInt = btCurrent->sampleSelected;
+	if (ImGui::SliderInt("###timeline", &tmpInt, 0, btCurrent->changes.size() - 1))
+	{
+		btCurrent->ApplySampleEffect(tmpInt);
+	}
+	ImGui::SameLine();
+	ImGui::Text(" %i of %i", tmpInt, btCurrent->changes.size() - 1);
+
+	ImGui::End();
 }
 
 void BeeTDebugger::LoadBT(const char* buffer, int size)
