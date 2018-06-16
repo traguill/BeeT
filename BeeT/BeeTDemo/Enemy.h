@@ -4,12 +4,15 @@
 #include "Entity.h"
 #include "../BeeTLib/beet.h"
 #include "../SharedData/SharedEnums.h"
+#include <vector>
 
 class Enemy : public Entity
 {
 public:
 	Enemy(SDL_Renderer* renderer, float posX, float posY);
 	~Enemy();
+
+	void UpdateLogic(float dt);
 
 	void OnCollision(Entity* otherEntity);
 
@@ -21,15 +24,19 @@ private:
 
 	void Movement();
 	void Burst();
+	void Chase();
 
 	// Helpers
 	void ShootBullet(float posX, float posY, float dirX, float dirY, float speed);
 	void FindCover();
 	bool IsPlayerOnSight();
+	bool FollowRoute();
 
 private:
 	unsigned int btId;
-	float enemySpeed;
+	std::vector<fPoint> route;
+	fPoint destination;
+	bool hasDestination = false;
 
 };
 #endif // !__ENEMY_H__

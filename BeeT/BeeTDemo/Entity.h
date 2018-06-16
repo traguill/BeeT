@@ -44,6 +44,7 @@ public:
 	// Speed & Direction
 	float speed = 0.0f;
 	fVec dir;
+	bool isStop = true;
 
 	double angle = 0.0;
 

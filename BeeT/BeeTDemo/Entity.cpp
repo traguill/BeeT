@@ -34,7 +34,8 @@ bool Entity::LoadSprite(const char * path, int sizeX, int sizeY)
 void Entity::Tick(float dt)
 {
 	UpdateLogic(dt);
-	Move(dt);
+	if(!isStop)
+		Move(dt);
 }
 
 void Entity::Draw()

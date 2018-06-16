@@ -55,8 +55,8 @@ void dBehaviorTree::PrintSamples()
 			ApplySampleEffect(counter);
 		}
 		counter--;
-		if (counter <= changes.size() - 10)
-			break;
+		//if (counter <= changes.size() - 10)
+			//break;
 	}
 }
 

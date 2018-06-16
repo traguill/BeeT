@@ -107,6 +107,13 @@ public:
 		return result;
 	}
 
+	float DistanceTo(const Point<T>& p) const
+	{
+		float a = p.x - this->x;
+		float b = p.y - this->y;
+		return sqrt(a * a + b * b);
+	}
+
 };
 
 typedef Point<int> iPoint;

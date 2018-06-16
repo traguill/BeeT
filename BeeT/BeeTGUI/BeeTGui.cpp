@@ -142,6 +142,11 @@ void BeeTGui::MenuBar()
 			}
 			ImGui::EndMenu();
 		}
+		if (ImGui::BeginMenu("Show"))
+		{
+			ShowMenuBar();
+			ImGui::EndMenu();
+		}
 		
 		if (mode == BeeTMode::BEET_EDITOR)
 		{
@@ -239,6 +244,14 @@ void BeeTGui::OpenWindows()
 {
 	if (g_output->windowOpen)
 		g_output->Draw();
+}
+
+void BeeTGui::ShowMenuBar()
+{
+	if (ImGui::MenuItem("Node ID", NULL, showNodeId))
+	{
+		showNodeId = !showNodeId;
+	}
 }
 
 void BeeTGui::LoadFile(void* obj, const char* filename)

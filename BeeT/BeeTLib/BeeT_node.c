@@ -113,7 +113,10 @@ NodeStatus Tick(BeeT_Node* n)
 			{
 				if (dec->Pass(dec) == BEET_FALSE)
 				{
+					if (n->status == NS_INVALID)
+						n->OnInit(n);
 					BeeT_Node_ChangeStatus(n, NS_FAILURE);		// Abort execution because a decorator failed
+					n->OnFinish(n, n->status);
 					return n->status;
 				}
 			}
@@ -260,13 +263,6 @@ void BTN_Root_OnInit(BeeT_Node* self)
 void BTN_Selector_OnInit(BeeT_Node* self)
 {
 	BTN_Selector* btn = (BTN_Selector*)self;
-	node_deq* item = dequeue_head(btn->childs);
-	while (item)
-	{
-		BeeT_Node* n = (BeeT_Node*)item->data;
-		n->status = NS_INVALID;
-		item = item->next;
-	}
 	btn->current = dequeue_head(btn->childs);
 	BeeT_Node* current_node = (BeeT_Node*)dequeue_front(btn->childs);
 	current_node->observerNode = self;
@@ -276,13 +272,7 @@ void BTN_Selector_OnInit(BeeT_Node* self)
 void BTN_Sequence_OnInit(BeeT_Node* self)
 {
 	BTN_Sequence* btn = (BTN_Sequence*)self;
-	node_deq* item = dequeue_head(btn->childs);
-	while (item)
-	{
-		BeeT_Node* n = (BeeT_Node*)item->data;
-		n->status = NS_INVALID;
-		item = item->next;
-	}
+
 	btn->current = dequeue_head(btn->childs);
 	BeeT_Node* current_node = (BeeT_Node*)dequeue_front(btn->childs);
 	current_node->observerNode = self;
@@ -397,15 +387,35 @@ void BTN_Root_OnFinish(BeeT_Node* self, NodeStatus status)
 
 void BTN_Selector_OnFinish(BeeT_Node* self, NodeStatus status)
 {
+	BTN_Selector* btn = (BTN_Selector*)self;
+	node_deq* item = dequeue_head(btn->childs);
+	while (item)
+	{
+		BeeT_Node* n = (BeeT_Node*)item->data;
+		n->status = NS_INVALID;
+		item = item->next;
+	}
 }
 
 void BTN_Sequence_OnFinish(BeeT_Node* self, NodeStatus status)
 {
+	BTN_Sequence* btn = (BTN_Sequence*)self;
+	node_deq* item = dequeue_head(btn->childs);
+	while (item)
+	{
+		BeeT_Node* n = (BeeT_Node*)item->data;
+		n->status = NS_INVALID;
+		item = item->next;
+	}
 }
 
 void BTN_Parallel_OnFinish(BeeT_Node * self, NodeStatus status)
 {
 	BTN_Parallel* btn = (BTN_Parallel*)self;
+
+	btn->node.bt->StopBehavior(btn->mainChild, NS_INVALID);
+	btn->node.bt->StopBehavior(btn->secondChild, NS_INVALID);
+
 	dequeue_clear(btn->runningChilds);
 }
 

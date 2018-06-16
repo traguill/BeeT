@@ -25,7 +25,7 @@ void GameManager::Init()
 	AddEntity(enemy);
 
 	// Block
-	block = new Block(renderer, 100, 100);
+	block = new Block(renderer, 600, 400);
 	AddEntity(block);
 }
 

@@ -59,6 +59,8 @@ int main(int argc, char* args[])
 	{
 		// Logic ------------------
 		float dt = LastFrameSec();
+		if (dt > 0.1)
+			dt = 0.00016;
 		BEET_Tick(dt);
 		g_Physics->Tick();
 		g_GameManager->Tick(dt);

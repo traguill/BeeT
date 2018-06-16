@@ -311,7 +311,7 @@ BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool valu
 	BBVar* var = BEET_QuickFindVar(btId, varName, &bt);
 	if (var)
 	{
-		if (bt->debug != NULL)
+		if (bt->debug != NULL && *((BEET_bool*)var->data) != value)
 			BeeT_dBT_bbBool(bt->debug, var, value);
 		*((BEET_bool*)var->data) = value;
 		return BEET_TRUE;
@@ -325,7 +325,7 @@ BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool valu
 	BBVar* var = BEET_QuickFindVar(btId, varName, &bt);
 	if (var)
 	{
-		if (bt->debug != NULL)
+		if (bt->debug != NULL && *((int*)var->data) != value)
 			BeeT_dBT_bbInt(bt->debug, var, value);
 		*((int*)var->data) = value;
 		return BEET_TRUE;
@@ -339,7 +339,7 @@ BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool valu
 	 BBVar* var = BEET_QuickFindVar(btId, varName, &bt);
 	 if (var)
 	 {
-		 if (bt->debug != NULL)
+		 if (bt->debug != NULL && *((float*)var->data) != value)
 			 BeeT_dBT_bbFloat(bt->debug, var, value);
 		 *((float*)var->data) = value;
 		 return BEET_TRUE;
@@ -353,7 +353,7 @@ BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool valu
 	 BBVar* var = BEET_QuickFindVar(btId, varName, &bt);
 	 if (var)
 	 {
-		 if (bt->debug != NULL)
+		 if (bt->debug != NULL && strcmp((char*)var->data, value) != 0)
 			 BeeT_dBT_bbString(bt->debug, var, value);
 		 BEET_free(var->data);
 		 unsigned int bvLength = strlen(value) + 1;

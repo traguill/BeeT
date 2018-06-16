@@ -38,9 +38,13 @@ private:
 	void FileMenuBar();
 	void EditMenuBar();
 	void OpenWindows();
+	void ShowMenuBar();
 
 public:
 	BTNodeTypes* btNodeTypes = nullptr;
+
+	// Show Options
+	bool showNodeId = false;
 
 private:
 	BeeTMode mode = BEET_EDITOR; // BeeTGui has two modes: Editor and Debugger. Only one of them can be enabled at the time

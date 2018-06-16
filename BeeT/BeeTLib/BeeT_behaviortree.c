@@ -66,10 +66,11 @@ void StopBehavior(BeeT_Node* behavior, NodeStatus resultStatus)
 {
 	BEET_ASSERT(resultStatus != NS_RUNNING);
 	BeeT_Node_ChangeStatus(behavior, resultStatus);
-	if (behavior->observer)
+	if (behavior->observer && resultStatus != NS_INVALID)
 	{
 		behavior->observer(behavior->observerNode, resultStatus);
 	}
+	behavior->OnFinish(behavior, resultStatus);
 }
 void Update(BeeT_BehaviorTree* bt)
 {
@@ -88,6 +89,8 @@ BEET_bool Step(BeeT_BehaviorTree* bt)
 	{
 		return BEET_FALSE;
 	}
+	if (current->status == NS_SUCCESS || current->status == NS_FAILURE) // Aready solved
+		return BEET_TRUE;
 
 	NodeStatus tickRet = current->Tick(current);
 	BeeT_Node_ChangeStatus(current, tickRet);

@@ -14,6 +14,7 @@ Bullet::Bullet(SDL_Renderer* renderer, float posX, float posY, bool fromPlayer) 
 		LoadSprite("Game/flowerBullet.bmp", 32, 32);
 	}
 	g_Physics->AddBody(this, 16);
+	isStop = false;
 }
 
 Bullet::~Bullet()

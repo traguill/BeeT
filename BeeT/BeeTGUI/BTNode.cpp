@@ -155,7 +155,10 @@ void BTNode::PrepareToDraw()
 	ImGui::Dummy(ImVec2(160, 0));
 
 	ImGui::Spring(1);
-	ImGui::Text("%s%s", type->icon.data(), name.data());
+	if(g_app->beetGui->showNodeId)
+		ImGui::Text("(%i)%s%s", id, type->icon.data(), name.data());
+	else
+		ImGui::Text("%s%s", type->icon.data(), name.data());
 	ImGui::Spring(1);
 
 	ImGui::EndVertical(); // 'content'
