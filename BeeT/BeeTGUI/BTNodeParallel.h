@@ -13,6 +13,7 @@ public:
 	void Save(Data& file);
 	void InspectorInfo();
 	void PrepareToDraw();
+	std::vector<BTLink*> GetAllLinks();
 
 public:
 	ax::rect simpleOutputsRect;

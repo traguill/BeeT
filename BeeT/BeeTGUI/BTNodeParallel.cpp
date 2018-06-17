@@ -226,3 +226,18 @@ void BTNodeParallel::PrepareToDraw()
 	ImGui::EndVertical(); // nodeId
 	ne::EndNode();
 }
+
+std::vector<BTLink*> BTNodeParallel::GetAllLinks()
+{
+	std::vector<BTLink*> linkList;
+	for (std::vector<BTLink*>::iterator link = inputPin->links.begin(); link != inputPin->links.end(); ++link)
+		linkList.push_back(*link);
+
+	for (std::vector<BTLink*>::iterator link = outputPin->links.begin(); link != outputPin->links.end(); ++link)
+		linkList.push_back(*link);
+
+	for (std::vector<BTLink*>::iterator link = simplePin->links.begin(); link != simplePin->links.end(); ++link)
+		linkList.push_back(*link);
+
+	return linkList;
+}

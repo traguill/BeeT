@@ -48,7 +48,7 @@ public:
 	int GetId()const;
 	BTNode* GetParent()const;
 	std::vector<BTNode*> GetChilds()const;	// Use for Debug
-	std::vector<BTLink*> GetAllLinks();
+	virtual std::vector<BTLink*> GetAllLinks();
 	int GetSubtreeId()const;
 
 	// Hierarchy
