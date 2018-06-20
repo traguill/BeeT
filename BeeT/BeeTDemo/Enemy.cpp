@@ -6,13 +6,15 @@
 #include "Block.h"
 #include "Globals.h"
 
+#include <stdlib.h>
+
 Enemy::Enemy(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, posX, posY)
 {
 	type = ENEMY;
-	LoadSprite("Game/flower.bmp", 100, 100);
-	g_Physics->AddBody(this, 50);
+	LoadSprite("Game/flower.bmp", 10, 10);
+	g_Physics->AddBody(this, 5);
 
-	btId = BEET_LoadBehaviorTreeFromFile("Enemy.json", BEET_TRUE);
+	btId = BEET_LoadBehaviorTreeFromFile("Enemy.json", BEET_FALSE);
 	// OnInit
 	std::function<void(const char*)> btTasksOnInitFunc = std::bind(&Enemy::BTTaskOnInit, this, std::placeholders::_1);
 	g_GameManager->taskOnInitFunctions.insert(std::pair<int, std::function<void(const char*)>>(btId, btTasksOnInitFunc));
@@ -25,8 +27,8 @@ Enemy::Enemy(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, 
 	g_GameManager->taskOnFinishFunctions.insert(std::pair<int, std::function<void(const char*)>>(btId, btTasksOnFinishFunc));
 
 	speed = 150.0f;
-	dir.x = 0.3f;
-	dir.y = 0.67f; // Set a rnd
+	dir.x = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+	dir.y = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
 }
 
 Enemy::~Enemy()
@@ -141,7 +143,7 @@ void Enemy::BTTaskOnFinish(const char * taskId)
 void Enemy::Movement()
 {
 
-	float halfSize = 50.0f;
+	float halfSize = 5.0f;
 	if (pos.x - halfSize < 0.0f)
 	{
 		pos.x = 0.0f + halfSize;
@@ -214,6 +216,11 @@ bool Enemy::FollowRoute()
 {
 	if (!hasDestination)
 	{
+		if (route.size() == 0)
+		{
+			isStop = true;
+			return true;
+		}
 		destination = route[0];
 		route.erase(route.begin());
 		dir = destination - pos;

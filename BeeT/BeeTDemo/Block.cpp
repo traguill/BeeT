@@ -4,8 +4,8 @@
 Block::Block(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, posX, posY)
 {
 	type = BLOCK;
-	LoadSprite("Game/block.bmp", 200, 200);
-	g_Physics->AddBody(this, 100);
+	LoadSprite("Game/block.bmp", 20, 20);
+	g_Physics->AddBody(this, 10);
 
 	CalculateCorners();
 }
@@ -75,13 +75,13 @@ void Block::CalculateCorners()
 		  6   5    4
 	
 	*/
-	float size = 100;
+	float size = 10;
 	cornerA = fPoint(pos.x - size, pos.y - size);
 	cornerB = fPoint(pos.x + size, pos.y - size);
 	cornerC = fPoint(pos.x - size, pos.y + size);
 	cornerD = fPoint(pos.x + size, pos.y + size);
 
-	float dst = 20;
+	float dst = 2;
 	hideSpots.resize(8);
 	hideSpots[0] = fPoint(cornerA.x - dst, cornerA.y - dst);
 	hideSpots[1] = fPoint(pos.x, cornerA.y - dst);

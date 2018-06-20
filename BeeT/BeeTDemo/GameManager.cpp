@@ -5,6 +5,9 @@
 #include "Block.h"
 #include "SDL/include/SDL.h"
 
+
+#include <stdlib.h> // TEST RND
+#include "Globals.h"
 GameManager::GameManager(SDL_Renderer* renderer) : renderer(renderer)
 {
 }
@@ -21,8 +24,14 @@ void GameManager::Init()
 	AddEntity(player);
 
 	// Enemies
-	enemy = new Enemy(renderer, 300, 100);
-	AddEntity(enemy);
+	//enemy = new Enemy(renderer, 300, 100);
+	//AddEntity(enemy);
+
+	for (int i = 0; i < 200; i++)
+	{
+		Enemy* tst = new Enemy(renderer, rand() % SCREEN_WIDTH + 1, rand() % SCREEN_HEIGHT + 1);
+		AddEntity(tst);
+	}
 
 	// Block
 	block = new Block(renderer, 600, 400);
@@ -63,7 +72,9 @@ void GameManager::AddEntity(Entity * entity)
 
 void GameManager::RemoveEntity(Entity * entity)
 {
-	entitiesToRemove.push_back(entity);
+	auto found = std::find(entitiesToRemove.begin(), entitiesToRemove.end(), entity);
+	if(found == entitiesToRemove.end())
+		entitiesToRemove.push_back(entity);
 }
 
 void GameManager::OnInitBTTask(unsigned int btId, const char * taskId)

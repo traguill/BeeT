@@ -14,6 +14,8 @@
 
 #include "Globals.h"
 
+#include <stdlib.h>     // TEST RND
+
 Input* g_Input = NULL;
 GameManager* g_GameManager = NULL;
 Physics * g_Physics = NULL;
@@ -27,7 +29,7 @@ int main(int argc, char* args[])
 {
 	BEET_Init();
 	BEET_SetTaskCallbackFunc(TaskCallbackFunc);
-	BEET_InitDebugger("127.0.0.1", 8080);
+	//BEET_InitDebugger("127.0.0.1", 8080);
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	SDL_Window* window;
@@ -53,22 +55,25 @@ int main(int argc, char* args[])
 	frequency = SDL_GetPerformanceFrequency();
 	timeStart = SDL_GetPerformanceCounter();
 	
+	srand(timeStart);
+
 	float time = 0.0f;
 	// Loop
 	while (g_Input->Update())
 	{
 		// Logic ------------------
 		float dt = LastFrameSec();
-		if (dt > 0.1)
-			dt = 0.00016;
+		time += dt;
+		char buffer[256];
+		size_t siz = sprintf_s(buffer, "Time: %f", dt*1000.0f);
+		SDL_SetWindowTitle(window, buffer);
+
+		//if (dt > 0.5)
+			//dt = 0.00016;
 		BEET_Tick(dt);
 		g_Physics->Tick();
 		g_GameManager->Tick(dt);
 
-		time += dt;
-		char buffer[256];
-		size_t siz = sprintf_s(buffer, "Time: %.2f", time);
-		SDL_SetWindowTitle(window, buffer);
 		// Graphics ---------------
 
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);

@@ -23,7 +23,7 @@ Bullet::~Bullet()
 void Bullet::UpdateLogic(float dt)
 {
 	timer += dt;
-	if (timer >= 3000.0f)
+	if (timer >= 3.0f)
 		g_GameManager->RemoveEntity(this);
 }
 

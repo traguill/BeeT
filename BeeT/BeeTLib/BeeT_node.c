@@ -316,7 +316,7 @@ void BTN_Task_OnInit(BeeT_Node* self)
 	BTN_Task* btn = (BTN_Task*)self;
 	BeetContext* context = BeeT_GetContext();
 	BEET_ASSERT(context != NULL);
-	context->taskCallbackFunc(btn->node.bt->uid, btn->name, NF_ONINIT);
+	context->taskCallbackFunc(btn->node.bt->instanceUID, btn->name, NF_ONINIT);
 }
 
 void BTN_Wait_OnInit(BeeT_Node * self)
@@ -390,7 +390,7 @@ NodeStatus BTN_Task_Update(BeeT_Node* self)
 	BTN_Task* btn = (BTN_Task*)self;
 	BeetContext* context = BeeT_GetContext();
 	BEET_ASSERT(context != NULL);
-	return context->taskCallbackFunc(btn->node.bt->uid, btn->name, NF_UPDATE);
+	return context->taskCallbackFunc(btn->node.bt->instanceUID, btn->name, NF_UPDATE);
 }
 
 NodeStatus BTN_Wait_Update(BeeT_Node * self)
@@ -450,7 +450,7 @@ void BTN_Task_OnFinish(BeeT_Node* self, NodeStatus status)
 	BTN_Task* btn = (BTN_Task*)self;
 	BeetContext* context = BeeT_GetContext();
 	BEET_ASSERT(context != NULL);
-	context->taskCallbackFunc(btn->node.bt->uid, btn->name, NF_ONFINISH);
+	context->taskCallbackFunc(btn->node.bt->instanceUID, btn->name, NF_ONFINISH);
 }
 
 void BTN_Wait_OnFinish(BeeT_Node * self, NodeStatus status)

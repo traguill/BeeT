@@ -9,7 +9,8 @@
 typedef struct BeeT_BehaviorTree BeeT_BehaviorTree;
 struct BeeT_BehaviorTree
 {
-	unsigned int uid;
+	unsigned int instanceUID; // Unique BT id. Same copies of this BT have the uid shared but not the instanceUID
+	unsigned int uid;	
 	BeeT_Node* rootNode;
 	BeeT_Blackboard* bb;
 	dequeue* runningNodes;
