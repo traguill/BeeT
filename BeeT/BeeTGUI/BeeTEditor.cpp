@@ -206,7 +206,7 @@ void BeeTEditor::BlackboardWindow()
 {
 	ImGui::SetNextWindowPos(ImVec2(0.0f, ImGui::GetCursorPosY() - ImGui::GetCursorPosX()));
 	ImGui::SetNextWindowSize(ImVec2(editorSize.x * blackboardSize.x, editorSize.y * blackboardSize.y));
-	ImGui::Begin("BlackBoard", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+	ImGui::Begin("   BlackBoard", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 	
 	if (widgetBBList->IsVisible())
 		widgetBBList->Draw();
@@ -309,7 +309,7 @@ void BeeTEditor::BlackboardVarDetail()
 {
 	ImGui::SetNextWindowPos(ImVec2(0.0f, (ImGui::GetCursorPosY() - ImGui::GetCursorPosX()) + (blackboardSize.y * editorSize.y)));
 	ImGui::SetNextWindowSize(ImVec2(editorSize.x * blackboardVarDetailSize.x, editorSize.y * blackboardVarDetailSize.y));
-	ImGui::Begin("BlackBoard Variable", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+	ImGui::Begin("   BlackBoard Variable", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 	if (btCurrent == nullptr)
 	{
 		ImGui::End();
@@ -456,7 +456,7 @@ void BeeTEditor::Inspector()
 {
 	ImGui::SetNextWindowPos(ImVec2(screenWidth * (blackboardSize.x + editorCanvasSize.x), ImGui::GetCursorPosY() - ImGui::GetCursorPosX()));
 	ImGui::SetNextWindowSize(ImVec2(editorSize.x * inspectorSize.x, editorSize.y * inspectorSize.y));
-	ImGui::Begin("Inspector", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+	ImGui::Begin("   Inspector", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 
 	if (selectedNodeId != -1)
 	{
@@ -505,7 +505,7 @@ void BeeTEditor::BehaviortreeDetail()
 {
 	ImGui::SetNextWindowPos(ImVec2(screenWidth * (blackboardSize.x + editorCanvasSize.x), (ImGui::GetCursorPosY() - ImGui::GetCursorPosX()) + (inspectorSize.y * editorSize.y)));
 	ImGui::SetNextWindowSize(ImVec2(editorSize.x * btDetailSize.x, editorSize.y * btDetailSize.y));
-	ImGui::Begin("Behavior Tree Details", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+	ImGui::Begin("   Behavior Tree Details", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 
 	if (btCurrent) // This should never be null, but just in case
 	{

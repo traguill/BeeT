@@ -11,6 +11,7 @@
 #include "Input.h"
 #include "GameManager.h"
 #include "Physics.h"
+#include "Timer.h"
 
 #include "Globals.h"
 
@@ -20,6 +21,7 @@ Input* g_Input = NULL;
 GameManager* g_GameManager = NULL;
 Physics * g_Physics = NULL;
 Uint64 frequency, timeStart;
+Timer* g_Timer = NULL;
 
 float LastFrameSec();
 
@@ -27,6 +29,9 @@ NodeStatus TaskCallbackFunc(unsigned int btId, const char* taskId, NodeFunction 
 
 int main(int argc, char* args[])
 {
+	// Create Timer
+	g_Timer = new Timer();
+
 	BEET_Init();
 	BEET_SetTaskCallbackFunc(TaskCallbackFunc);
 	//BEET_InitDebugger("127.0.0.1", 8080);
@@ -70,7 +75,9 @@ int main(int argc, char* args[])
 
 		//if (dt > 0.5)
 			//dt = 0.00016;
+		g_Timer->Start();
 		BEET_Tick(dt);
+		g_Timer->End();
 		g_Physics->Tick();
 		g_GameManager->Tick(dt);
 
@@ -86,10 +93,13 @@ int main(int argc, char* args[])
 			g_Physics->DrawColliders();
 		SDL_RenderPresent(renderer);
 	}
+	
+	g_Timer->Save();
 
 	delete g_GameManager;
 	delete g_Physics;
 	delete g_Input;
+	delete g_Timer;
 	BEET_Shutdown();
 	SDL_Quit();
 	return(0);
@@ -104,6 +114,7 @@ float LastFrameSec()
 
 NodeStatus TaskCallbackFunc(unsigned int btId, const char* taskId, NodeFunction func)
 {
+	g_Timer->Pause();
 	NodeStatus ret = NS_INVALID;
 	switch (func)
 	{
@@ -117,5 +128,6 @@ NodeStatus TaskCallbackFunc(unsigned int btId, const char* taskId, NodeFunction 
 		g_GameManager->OnFinishBTTask(btId, taskId);
 		break;
 	}
+	g_Timer->Resume();
 	return ret;
 }

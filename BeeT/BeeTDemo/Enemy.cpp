@@ -11,8 +11,8 @@
 Enemy::Enemy(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, posX, posY)
 {
 	type = ENEMY;
-	LoadSprite("Game/flower.bmp", 10, 10);
-	g_Physics->AddBody(this, 5);
+	LoadSprite("Game/flower.bmp", 50, 50);
+	g_Physics->AddBody(this, 25);
 
 	btId = BEET_LoadBehaviorTreeFromFile("Enemy.json", BEET_FALSE);
 	// OnInit

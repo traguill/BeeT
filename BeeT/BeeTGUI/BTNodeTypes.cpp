@@ -26,11 +26,11 @@ void BTNodeTypes::Init()
 	listObject = new ListObject(); // Container to display all types in the ItemList widget
 
 	// Default node types
-	InsertType("", ICON_BUG, "Root", 1);
+	InsertType("", ICON_ROOT, "Root", 1);
 	
 	InsertType("Composites", ICON_QUESTION, "Selector", -1);
 	InsertType("Composites", ICON_ARROW_FORWARD, "Sequence", -1);
-	InsertType("Composites", ICON_BUG, "Parallel", 1);
+	InsertType("Composites", ICON_PARALLEL, "Parallel", 1);
 
 	InsertType("Tasks", ICON_TASK, "Custom Task", 0);
 	InsertType("Tasks", ICON_WAIT, "Wait", 0);

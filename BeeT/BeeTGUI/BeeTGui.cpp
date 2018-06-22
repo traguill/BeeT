@@ -60,7 +60,6 @@ bool BeeTGui::CleanUp()
 bool BeeTGui::Update()
 {
 	MenuBar();
-	//ImGui::PushStyleVar(ImGuiStyleVar_::ImGuiStyleVar_WindowRounding, 0.0f);
 	OpenWindows(); // Draw currently open windows
 	fileDialog->Draw();
 	bool ret = false;
@@ -73,7 +72,6 @@ bool BeeTGui::Update()
 		ret = beetDebugger->Update();
 		break;
 	}
-	//ImGui::PopStyleVar(); // WindowRounding
 	return ret;
 }
 
@@ -199,7 +197,7 @@ void BeeTGui::FileMenuBar()
 			fileDialog->SetAcceptFunctionCallback(BeeTGui::SaveFile, this);
 		}
 	}
-	if (ImGui::MenuItem(ICON_BUG " Quit"))
+	if (ImGui::MenuItem(ICON_EXIT " Quit"))
 	{
 		g_app->RequestQuit();
 	}
