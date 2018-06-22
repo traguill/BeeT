@@ -26,10 +26,12 @@ extern "C" {
 extern BEET_API void *BEET_malloc(size_t size);
 extern BEET_API void  BEET_free(void* mem);
 extern BEET_API void *BEET_realloc(void* mem, size_t size);
+extern BEET_API void *BEET_calloc(size_t num, size_t size);
 
 typedef void * (*BeeT_Malloc_Function)(size_t);
 typedef void(*BeeT_Free_Function)(void*);
 typedef void * (*BeeT_Realloc_Function)(void* mem, size_t size);
+typedef void * (*BeeT_Calloc_Function)(size_t, size_t);
 //------------------------------------------------------------------
 
 

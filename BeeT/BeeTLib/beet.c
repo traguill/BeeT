@@ -65,37 +65,51 @@ void * LoadFile(const char * filename, int * outFileSize)
 void BeetContext__Init(BeetContext* ctx)
 {
 	ctx->initialized = BEET_FALSE;
-	ctx->maxNumTreesLoaded = 32;
-	ctx->numTreesLoaded = 0;
-	ctx->trees = (BeeT_BehaviorTree**)BEET_malloc(ctx->maxNumTreesLoaded * sizeof(BeeT_BehaviorTree*));
+	ctx->treesCapacity = 32;
+	ctx->treesSize = 0;
+	ctx->treesToRemove = InitDequeue();
+	ctx->trees = (BeeT_BehaviorTree**)BEET_calloc(ctx->treesCapacity, sizeof(BeeT_BehaviorTree*));
 }
 
 void BeetContext__Destroy(BeetContext* ctx)
 {
-	for (int i = 0; i < ctx->numTreesLoaded; ++i)
-		BeeT_BehaviorTree__Destroy(ctx->trees[i]);
+	for (int i = 0; i < ctx->treesCapacity; ++i)
+		if(ctx->trees[i])
+			BeeT_BehaviorTree__Destroy(ctx->trees[i]);
 	BEET_free(ctx->trees);
 	ctx->trees = NULL;
-	ctx->numTreesLoaded = 0;
+	ctx->treesSize = 0;
 	ctx->initialized = BEET_FALSE;
+	DestroyDequeue(ctx->treesToRemove);
 }
 
 unsigned int BeetContext__AddTree(BeetContext* ctx, BeeT_BehaviorTree* bt)
 {
-	if (ctx->numTreesLoaded == ctx->maxNumTreesLoaded)
+	if (ctx->treesSize == ctx->treesCapacity)
 	{
-		ctx->maxNumTreesLoaded += 32;
-		ctx->trees = (BeeT_BehaviorTree*)BEET_realloc(ctx->trees, sizeof(BeeT_BehaviorTree*) * ctx->maxNumTreesLoaded);
+		ctx->treesCapacity += 32;
+		ctx->trees = (BeeT_BehaviorTree*)BEET_realloc(ctx->trees, sizeof(BeeT_BehaviorTree*) * ctx->treesCapacity);
 	}
-
-	ctx->trees[ctx->numTreesLoaded++] = bt;
-	bt->instanceUID = ctx->numTreesLoaded - 1;
+	int id = ctx->treesSize;
+	for (int i = 0; i < ctx->treesCapacity; i++)
+	{
+		id += i;
+		if (id >= ctx->treesCapacity)
+			id = 0;
+		if(ctx->trees[id] == NULL)
+		{
+			ctx->trees[id] = bt;
+			bt->instanceUID = id;
+			ctx->treesSize++;
+			break;
+		}
+	}
 	return bt->instanceUID;
 }
 
 BeeT_BehaviorTree* BeeTContext__GetTree(BeetContext* ctx, unsigned int btId)
 {
-	return ((int)btId < ctx->numTreesLoaded) ? ctx->trees[btId] : NULL;
+	return ((int)btId < ctx->treesCapacity) ? ctx->trees[btId] : NULL;
 }
 
 //-----------------------------------------------------------------
@@ -129,11 +143,30 @@ void BEET_Shutdown()
 
 void BEET_Tick(float deltaTime)
 {
-	for (int i = 0; i < g_Beet->numTreesLoaded; i++)
-		g_Beet->trees[i]->Update(g_Beet->trees[i]);
+	g_Beet->dt = deltaTime;
+
+	if (dequeue_is_empty(g_Beet->treesToRemove) == BEET_FALSE)
+	{
+		node_deq* item = dequeue_head(g_Beet->treesToRemove);
+		while (item)
+		{
+			BeeT_BehaviorTree* bt = BeeTContext__GetTree(g_Beet, (unsigned int)item->data);
+			if (bt)
+			{
+				BeeT_BehaviorTree__Destroy(bt);
+				g_Beet->trees[(unsigned int)item->data] = NULL;
+			}
+			item = item->next;
+		}
+		dequeue_clear(g_Beet->treesToRemove);
+	}
+	
+	for (int i = 0; i < g_Beet->treesCapacity; i++)
+		if(g_Beet->trees[i] && g_Beet->trees[i]->paused == BEET_FALSE)
+			g_Beet->trees[i]->Update(g_Beet->trees[i]);
+	
 	if(g_Debug->initialized)
 		BeeT_Debugger_Tick(g_Debug);
-	g_Beet->dt = deltaTime;
 }
 
 unsigned int BEET_LoadBehaviorTree(const char * buffer, int size, BEET_bool debug)
@@ -165,60 +198,6 @@ unsigned int BEET_LoadBehaviorTreeFromFile(const char * filename, BEET_bool debu
 		BEET_free(fileData);
 	}
 	return result;
-}
-
-BEET_API void BEET_ExecuteBehaviorTree(unsigned int id)
-{
-	BeeT_BehaviorTree* bt = BeeTContext__GetTree(g_Beet, id);
-	if (bt)
-	{
-		bt->Update(bt);
-	}
-}
-
-void BEET_GetAllTasksNamesRecursive(BeeT_Node* n, dequeue* listNames)
-{
-	if (n != NULL)
-	{
-		switch (n->type)
-		{
-		case NT_ROOT:
-			BEET_GetAllTasksNamesRecursive(((BTN_Root*)n)->startNode, listNames);
-			break;
-		case NT_SELECTOR:
-		case NT_SEQUENCE:
-		{
-			dequeue* childs = ((BTN_Composite*)n)->childs;
-			node_deq* it = childs->head;
-			while (it != NULL)
-			{
-				BEET_GetAllTasksNamesRecursive((BeeT_Node*)it->data, listNames);
-				it = it->next;
-			}
-		}
-		break;
-		case NT_PARALLEL:
-			break;
-		case NT_TASK:
-			dequeue_push_back(listNames, ((BTN_Task*)n)->name);
-			break;
-		}
-	}
-}
-
-int BEET_GetAllTasksNames(unsigned int btId, dequeue * listNames)
-{
-	BEET_ASSERT(listNames != NULL);
-	int size = 0;
-	BeeT_BehaviorTree* bt = BeeTContext__GetTree(g_Beet, btId);
-	if(!dequeue_is_empty(listNames))
-		dequeue_clear(listNames);
-	if (bt != NULL)
-	{
-		BEET_GetAllTasksNamesRecursive(bt->rootNode, listNames);
-		size = (int)dequeue_size(listNames);
-	}
-	return size;
 }
 
 BTN_Task* FindTaskByNameRecurisve(BeeT_Node* n, const char* name)
@@ -264,6 +243,45 @@ int BEET_SetTaskCallbackFunc(beetCallbackFunc callback)
 		return (int)BEET_FALSE;
 	g_Beet->taskCallbackFunc = callback;
 	return (int)BEET_TRUE;
+}
+
+BEET_API int BEET_PauseBehaviorTree(unsigned int btId)
+{
+	BeeT_BehaviorTree* foundBT = BeeTContext__GetTree(g_Beet, btId);
+	if (foundBT == NULL)
+		return BEET_FALSE;
+	foundBT->paused = BEET_TRUE;
+	return BEET_TRUE;
+}
+
+BEET_API int BEET_ResumeBehaviorTree(unsigned int btId)
+{
+	BeeT_BehaviorTree* foundBT = BeeTContext__GetTree(g_Beet, btId);
+	if (foundBT == NULL)
+		return BEET_FALSE;
+	foundBT->paused = BEET_FALSE;
+	return BEET_TRUE;
+}
+
+BEET_API int BEET_CloseBehaviorTree(unsigned int btId)
+{
+	BeeT_BehaviorTree* bt = BeeTContext__GetTree(g_Beet, btId);
+	if (bt != NULL)
+	{
+		bt->paused = BEET_TRUE;
+		dequeue_push_back(g_Beet->treesToRemove, btId);
+		return BEET_TRUE;
+	}
+	else
+		return BEET_FALSE;
+}
+
+BEET_API BEET_bool BEET_BehaviorTreeIsPaused(unsigned int btId)
+{
+	BeeT_BehaviorTree* foundBT = BeeTContext__GetTree(g_Beet, btId);
+	if (foundBT == NULL)
+		return BEET_FALSE;
+	return foundBT->paused;
 }
 
 BBVar* BEET_QuickFindVar(unsigned int btId, const char* varName, BeeT_BehaviorTree** bt)
@@ -362,7 +380,7 @@ BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool valu
 
 size_t BEET_BehaviorTreeCount()
 {
-	return g_Beet->numTreesLoaded;
+	return g_Beet->treesSize;
 }
 
 BeetContext * BeeT_GetContext()

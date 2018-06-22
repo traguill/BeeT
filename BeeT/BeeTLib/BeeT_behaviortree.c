@@ -28,7 +28,7 @@ BeeT_BehaviorTree* BeeT_BehaviorTree__Init(const BeeT_Serializer * data)
 		}
 		BEET_free(nodeData);
 	}
-
+	tree->paused = BEET_FALSE;
 	tree->runningNodes = InitDequeue();
 	tree->StartBehavior = &StartBehavior;
 	tree->StopBehavior = &StopBehavior;

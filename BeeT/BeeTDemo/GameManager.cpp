@@ -27,7 +27,7 @@ void GameManager::Init()
 	//enemy = new Enemy(renderer, 300, 100);
 	//AddEntity(enemy);
 
-	for (int i = 0; i < 2000; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		Enemy* tst = new Enemy(renderer, rand() % SCREEN_WIDTH + 1, rand() % SCREEN_HEIGHT + 1);
 		AddEntity(tst);
@@ -50,8 +50,13 @@ void GameManager::Tick(float dt)
 	{
 		for (auto e : entitiesToRemove)
 		{
-			entities.erase(std::find(entities.begin(), entities.end(), e));
+			if (e->type == ENEMY)
+			{
+				int a = 2;
+			}
+  			entities.erase(std::find(entities.begin(), entities.end(), e));
 			delete e;
+			e = NULL;
 		}
 		entitiesToRemove.clear();
 	}

@@ -33,6 +33,7 @@ Enemy::Enemy(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, 
 
 Enemy::~Enemy()
 {
+	BEET_CloseBehaviorTree(btId);
 }
 
 void Enemy::UpdateLogic(float dt)

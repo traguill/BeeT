@@ -25,10 +25,11 @@ typedef struct
 {
 	BEET_bool initialized;
 	struct BeeT_BehaviorTree** trees;
-	int numTreesLoaded;
-	int maxNumTreesLoaded;
+	int treesSize;
+	int treesCapacity;
 	float dt;
 	beetCallbackFunc taskCallbackFunc;
+	dequeue* treesToRemove;
 }BeetContext;
 
 //--------------------------------------------------------------------------------
@@ -55,23 +56,25 @@ BEET_API unsigned int BEET_LoadBehaviorTree(const char* buffer, int size, BEET_b
 */
 BEET_API unsigned int BEET_LoadBehaviorTreeFromFile(const char* filename, BEET_bool debug);
 
-BEET_API void BEET_ExecuteBehaviorTree(unsigned int id); // DEPRECATED
-
-/*
-*	Get a list of all the nodes in a Behavior Tree of type 'Task' by their name. 
-*	IMPORTANT! DestroyDequeue when finish to free the buffer memory.
-*	\param1 Behavior Tree id.
-*   \param2 Pointer to the dequeue list to be filled.
-*	\return Number of names found.
-*/
-BEET_API int BEET_GetAllTasksNames(unsigned int btId, dequeue* listNames); // DEPRECATED
-
 /*
 *	Sets the function to be used when the 'Task' node is running.
 *	\param1 Function callback to be called.
 *	\return Non-zero on success. 0 on failure.
 */
 BEET_API int BEET_SetTaskCallbackFunc(beetCallbackFunc callback);
+
+// Pauses the execution of a behavior tree. Returns non-zero on success, otherwise returns 0.
+// If the behavior tree was already paused this will return success.
+BEET_API int BEET_PauseBehaviorTree(unsigned int btId);
+
+// Resumes the execution of a behavior tree. Returns non-zero on success, otherwise returns 0
+// If the behavior tree was already running this will return success.
+BEET_API int BEET_ResumeBehaviorTree(unsigned int btId);
+
+// Stops the execution of a behavior tree and cleans it from memory. Returns non-zero on success, otherwise returns 0
+BEET_API int BEET_CloseBehaviorTree(unsigned int btId);
+
+BEET_API BEET_bool BEET_BehaviorTreeIsPaused(unsigned int btId);
 
 //--------------------------------------------------------------------------------
 // Blackboard
@@ -103,7 +106,7 @@ BEET_API BeetContext* BeeT_GetContext();
 
 // Call this before anything else.
 // Returns 1 on sucess and 0 on failure.
-BEET_API int BEET_SetMemoryFunctions(BeeT_Malloc_Function malloc_func, BeeT_Free_Function free_func, BeeT_Realloc_Function realloc_func);
+BEET_API int BEET_SetMemoryFunctions(BeeT_Malloc_Function malloc_func, BeeT_Free_Function free_func, BeeT_Realloc_Function realloc_func, BeeT_Calloc_Function calloc_func);
 
 #ifdef __cplusplus
 }

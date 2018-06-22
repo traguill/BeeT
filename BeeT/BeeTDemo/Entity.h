@@ -21,7 +21,7 @@ class Entity
 {
 public:
 	Entity(SDL_Renderer* renderer, float posX, float posY);
-	~Entity();
+	virtual ~Entity();
 	
 	void Tick(float dt);
 	void Draw();
