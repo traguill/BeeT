@@ -3,7 +3,7 @@
 
 #include "ThirdParty/Json/parson.h"
 #include "Point.h"
-
+#include "BasicStructs.h"
 //Wrapper for Parson (JSON) library
 
 class Data
@@ -24,8 +24,10 @@ public:
 	//bool AppendMatrix(const char* name, const math::float4x4& matrix);
 	bool AppendFloat(const char* name, float value);
 	bool AppendFloat2(const char * name, const float * value);
+	bool AppendFloat2(const char* name, const float2& value);
 	bool AppendInt2(const char* name, const int* value);
 	bool AppendFloat3(const char* name, const float* value);
+	bool AppendFloat3(const char* name, const float3& value);
 	bool AppendFloat4(const char* name, const float* value);
 	bool AppendDouble(const char* name, double value);
 	Data AppendJObject(const char* name);
@@ -41,8 +43,9 @@ public:
 	//float4x4 GetMatrix(const char* name)const;
 	float GetFloat(const char* name)const;
 	Point<int> GetInt2(const char* name) const;
-	Point<float> GetFloat2(const char* name) const;
-	//float3 GetFloat3(const char* name)const;
+	
+	float2 GetFloat2(const char* name) const;
+	float3 GetFloat3(const char* name)const;
 	//float4 GetFloat4(const char* name)const;
 	double GetDouble(const char* name)const;
 

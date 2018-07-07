@@ -21,6 +21,11 @@ BTDecorator::BTDecorator(BTNode* node, Blackboard* bb, BBVar* var) : nodeAttache
 		break;
 	case BV_STRING:
 		var2 = std::string("");
+	case BV_VECTOR2:
+		var2 = float2();
+		break;
+	case BV_VECTOR3:
+		var2 = float3();
 		break;
 	}
 	bgColor = DEC_TICK_ONCE_COLOR;
@@ -52,6 +57,12 @@ BTDecorator::BTDecorator(BTNode* node, Blackboard * bb, Data & data) : nodeAttac
 			break;
 		case BV_STRING:
 			var2 = std::string(data.GetString("var2"));
+			break;
+		case BV_VECTOR2:
+			var2 = data.GetFloat2("var2");
+			break;
+		case BV_VECTOR3:
+			var2 = data.GetFloat3("var2");
 			break;
 		}
 	}
@@ -97,6 +108,12 @@ void BTDecorator::PrepareToDraw()
 	case BV_STRING:
 		PrepDrawString();
 		break;
+	case BV_VECTOR2:
+		PrepDrawVector2();
+		break;
+	case BV_VECTOR3:
+		PrepDrawVector3();
+		break;
 	}
 	ImGui::Spring(1);
 
@@ -136,6 +153,12 @@ void BTDecorator::InspectorInfo()
 		break;
 	case BV_STRING:
 		TypeStringOptions();
+		break;
+	case BV_VECTOR2:
+		TypeVector2Options();
+		break;
+	case BV_VECTOR3:
+		TypeVector3Options();
 		break;
 	}
 	ImGui::PopItemWidth();
@@ -185,6 +208,12 @@ void BTDecorator::Save(Data & file)
 		case BV_STRING:
 			data.AppendString("var2", boost::any_cast<std::string>(var2).data());
 			break;
+		case BV_VECTOR2:
+			data.AppendFloat2("var2", boost::any_cast<float2>(var2));
+			break;
+		case BV_VECTOR3:
+			data.AppendFloat3("var2", boost::any_cast<float3>(var2));
+			break;
 		}
 	}
 	data.AppendBool("checkEveryFrame", checkEveryFrame);
@@ -231,6 +260,12 @@ void BTDecorator::PrintType() const
 		break;
 	case BV_STRING:
 		ImGui::Text("string ");
+		break;
+	case BV_VECTOR2:
+		ImGui::Text("vector2 ");
+		break;
+	case BV_VECTOR3:
+		ImGui::Text("vector3 ");
 		break;
 	}
 }
@@ -312,6 +347,32 @@ void BTDecorator::PrepDrawString()
 		break;
 	case NOT_CONTAINS:
 		ImGui::Text("%s Not Contains %s", var->name.data(), boost::any_cast<std::string>(var2).data());
+		break;
+	}
+}
+
+void BTDecorator::PrepDrawVector2()
+{
+	switch ((DecNumberOpt)option)
+	{
+	case IS_EQUAL:
+		ImGui::Text("%s is Equal to (%.2f, %.2f)", var->name.data(), boost::any_cast<float2>(var2).x, boost::any_cast<float2>(var2).y);
+		break;
+	case IS_NOT_EQUAL:
+		ImGui::Text("%s is Not Equal to (%.2f, %.2f)", var->name.data(), boost::any_cast<float2>(var2).x, boost::any_cast<float2>(var2).y);
+		break;
+	}
+}
+
+void BTDecorator::PrepDrawVector3()
+{
+	switch ((DecNumberOpt)option)
+	{
+	case IS_EQUAL:
+		ImGui::Text("%s is Equal to (%.2f, %.2f, %.2f)", var->name.data(), boost::any_cast<float3>(var2).x, boost::any_cast<float3>(var2).y, boost::any_cast<float3>(var2).z);
+		break;
+	case IS_NOT_EQUAL:
+		ImGui::Text("%s is Not Equal to (%.2f, %.2f, %.2f)", var->name.data(), boost::any_cast<float3>(var2).x, boost::any_cast<float3>(var2).y, boost::any_cast<float3>(var2).z);
 		break;
 	}
 }
@@ -444,5 +505,77 @@ void BTDecorator::TypeStringOptions()
 	if (ImGui::InputText("###DecStringCompare", varNameTmp, _MAX_PATH))
 	{
 		var2 = std::string(varNameTmp);
+	}
+}
+
+void BTDecorator::TypeVector2Options()
+{
+	const char* optText;
+	switch ((DecNumberOpt)option)
+	{
+	case IS_EQUAL:
+		optText = "IS EQUAL to ";
+		break;
+	case IS_NOT_EQUAL:
+		optText = "IS NOT EQUAL to ";
+		break;
+	default:
+		optText = "This should not be here";
+		break;
+	}
+
+	if (ImGui::Selectable(optText))
+	{
+		ImGui::OpenPopup("DecNumOptions");
+	}
+
+	if (ImGui::BeginPopup("DecNumOptions"))
+	{
+		if (ImGui::MenuItem("IS EQUAL")) option = (int)DecNumberOpt::IS_EQUAL;
+		if (ImGui::MenuItem("IS NOT EQUAL")) option = (int)DecNumberOpt::IS_NOT_EQUAL;
+		ImGui::EndPopup();
+	}
+
+	//ImGui::SameLine();
+	float2 tmp = boost::any_cast<float2>(var2);
+	if(ImGui::DragFloat2("###DecFloatCompare", (float*)&tmp))
+	{
+		var2 = tmp;
+	}
+}
+
+void BTDecorator::TypeVector3Options()
+{
+	const char* optText;
+	switch ((DecNumberOpt)option)
+	{
+	case IS_EQUAL:
+		optText = "IS EQUAL to ";
+		break;
+	case IS_NOT_EQUAL:
+		optText = "IS NOT EQUAL to ";
+		break;
+	default:
+		optText = "This should not be here";
+		break;
+	}
+
+	if (ImGui::Selectable(optText))
+	{
+		ImGui::OpenPopup("DecNumOptions");
+	}
+
+	if (ImGui::BeginPopup("DecNumOptions"))
+	{
+		if (ImGui::MenuItem("IS EQUAL")) option = (int)DecNumberOpt::IS_EQUAL;
+		if (ImGui::MenuItem("IS NOT EQUAL")) option = (int)DecNumberOpt::IS_NOT_EQUAL;
+		ImGui::EndPopup();
+	}
+
+	//ImGui::SameLine();
+	float3 tmp = boost::any_cast<float3>(var2);
+	if (ImGui::DragFloat3("###DecFloatCompare", (float*)&tmp))
+	{
+		var2 = tmp;
 	}
 }

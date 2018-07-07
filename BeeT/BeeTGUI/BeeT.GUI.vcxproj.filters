@@ -270,6 +270,9 @@
     <ClInclude Include="dsDecoratorCondition.h">
       <Filter>Debugger</Filter>
     </ClInclude>
+    <ClInclude Include="BasicStructs.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">

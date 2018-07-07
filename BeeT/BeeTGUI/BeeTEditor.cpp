@@ -237,6 +237,12 @@ void BeeTEditor::BlackboardWindow()
 		case BV_STRING:
 			ImGui::Text("string ");
 			break;
+		case BV_VECTOR2:
+			ImGui::Text("vector2 ");
+			break;
+		case BV_VECTOR3:
+			ImGui::Text("vector3 ");
+			break;
 		default:
 			ImGui::Text("Error  ");
 			break;
@@ -364,6 +370,26 @@ void BeeTEditor::BlackboardVarDetail()
 				if (ImGui::InputText("###bvstringinput", varNameTmp, _MAX_PATH))
 				{
 					var->value = string(varNameTmp);
+				}
+			}
+			break;
+		case BV_VECTOR2:
+			{
+				ImGui::Text("vector2  "); ImGui::SameLine();
+				float2 tmp = boost::any_cast<float2>(var->value);
+				if (ImGui::DragFloat2("###bvfloat2input", (float*)&tmp))
+				{
+					var->value = tmp;
+				}
+			}
+			break;
+		case BV_VECTOR3:
+			{
+				ImGui::Text("vector3  "); ImGui::SameLine();
+				float3 tmp = boost::any_cast<float3>(var->value);
+				if (ImGui::DragFloat3("###bvfloat3input", (float*)&tmp))
+				{
+					var->value = tmp;
 				}
 			}
 			break;
@@ -713,6 +739,7 @@ void BeeTEditor::InitBBListCategories()
 {
 	bbVarTypeObj = new ListObject();
 
+	// Basic
 	bbVarTypeObj->AddItemInCategory("Basic", "Boolean");
 	bbVarTypeConversor.insert(pair<string, BBVarType>("Boolean", BV_BOOL));
 	bbVarTypeObj->AddItemInCategory("Basic", "Integer");
@@ -721,6 +748,12 @@ void BeeTEditor::InitBBListCategories()
 	bbVarTypeConversor.insert(pair<string, BBVarType>("Float", BV_FLOAT));
 	bbVarTypeObj->AddItemInCategory("Basic", "String");
 	bbVarTypeConversor.insert(pair<string, BBVarType>("String", BV_STRING));
+
+	// Vector
+	bbVarTypeObj->AddItemInCategory("Vector", "Vector2");
+	bbVarTypeConversor.insert(pair<string, BBVarType>("Vector2", BV_VECTOR2));
+	bbVarTypeObj->AddItemInCategory("Vector", "Vector3");
+	bbVarTypeConversor.insert(pair<string, BBVarType>("Vector3", BV_VECTOR3));
 
 	bbVarTypeObj->SortAll();
 }

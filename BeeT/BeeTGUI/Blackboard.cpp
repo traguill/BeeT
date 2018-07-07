@@ -1,5 +1,6 @@
 #include "Blackboard.h"
 #include "BTDecorator.h"
+#include "BasicStructs.h"
 
 using namespace std;
 
@@ -30,6 +31,12 @@ Blackboard::Blackboard(Data & data)
 			break;
 		case BV_STRING:
 			var->value = string(varData.GetString("value"));
+			break;
+		case BV_VECTOR2:
+			var->value = varData.GetFloat2("value");
+			break;
+		case BV_VECTOR3:
+			var->value = varData.GetFloat3("value");
 			break;
 		default:
 			var->value = NULL;
@@ -72,6 +79,12 @@ void Blackboard::Serialize(Data & data) const
 			break;
 		case BV_STRING:
 			varData.AppendString("value", boost::any_cast<string>(var->value).data());
+			break;
+		case BV_VECTOR2:
+			varData.AppendFloat2("value", boost::any_cast<float2>(var->value));
+			break;
+		case BV_VECTOR3:
+			varData.AppendFloat3("value", boost::any_cast<float3>(var->value));
 			break;
 		}
 
@@ -150,6 +163,12 @@ void Blackboard::SetDefaultTypeValue(BBVar * var)
 		break;
 	case BV_STRING:
 		var->value = string("");
+		break;
+	case BV_VECTOR2:
+		var->value = float2();
+		break;
+	case BV_VECTOR3:
+		var->value = float3();
 		break;
 	default:
 		var->value = NULL;

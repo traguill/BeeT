@@ -82,6 +82,17 @@ bool Data::AppendFloat2(const char * name, const float * value)
 	return json_object_set_value(root, name, j_value) == JSONSuccess;
 }
 
+bool Data::AppendFloat2(const char * name, const float2 & value)
+{
+	JSON_Value* j_value = json_value_init_array();
+	JSON_Array* array = json_value_get_array(j_value);
+
+	json_array_append_number(array, value.x);
+	json_array_append_number(array, value.y);
+
+	return json_object_set_value(root, name, j_value) == JSONSuccess;
+}
+
 bool Data::AppendInt2(const char * name, const int * value)
 {
 	JSON_Value* j_value = json_value_init_array();
@@ -101,6 +112,18 @@ bool Data::AppendFloat3(const char * name, const float * value)
 
 	for (int i = 0; i < 3; i++)
 		json_array_append_number(array, value[i]);
+
+	return json_object_set_value(root, name, j_value) == JSONSuccess;
+}
+
+bool Data::AppendFloat3(const char * name, const float3 & value)
+{
+	JSON_Value* j_value = json_value_init_array();
+	JSON_Array* array = json_value_get_array(j_value);
+
+	json_array_append_number(array, value.x);
+	json_array_append_number(array, value.y);
+	json_array_append_number(array, value.z);
 
 	return json_object_set_value(root, name, j_value) == JSONSuccess;
 }
@@ -204,17 +227,17 @@ float Data::GetFloat(const char * name) const
 	return (float)json_object_get_number(root, name);
 }
 
-Point<float> Data::GetFloat2(const char * name) const
+float2 Data::GetFloat2(const char * name) const
 {
 	JSON_Array* j_array = json_object_get_array(root, name);
 	if (j_array)
 	{
-		Point<float> ret((float)json_array_get_number(j_array, 0),
+		float2 ret((float)json_array_get_number(j_array, 0),
 			(float)json_array_get_number(j_array, 1));
 
 		return ret;
 	}
-	return Point<float>(0,0);
+	return float2(0,0);
 }
 
 Point<int> Data::GetInt2(const char * name) const
@@ -230,7 +253,7 @@ Point<int> Data::GetInt2(const char * name) const
 	return Point<int>(0, 0);
 }
 
-/*float3 Data::GetFloat3(const char * name) const
+float3 Data::GetFloat3(const char * name) const
 {
 	JSON_Array* j_array = json_object_get_array(root, name);
 	if (j_array)
@@ -241,8 +264,9 @@ Point<int> Data::GetInt2(const char * name) const
 
 		return ret;
 	}
-	return float3::zero;
+	return float3();
 }
+/*
 
 float4 Data::GetFloat4(const char * name) const
 {

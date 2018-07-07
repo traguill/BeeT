@@ -34,7 +34,9 @@ enum BBVarType
 	BV_BOOL,
 	BV_INT,
 	BV_FLOAT,
-	BV_STRING
+	BV_STRING,
+	BV_VECTOR2,
+	BV_VECTOR3
 };
 
 typedef enum NodeStatus

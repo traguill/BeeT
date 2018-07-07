@@ -66,11 +66,15 @@ private:
 	void PrepDrawInt();
 	void PrepDrawFloat();
 	void PrepDrawString();
+	void PrepDrawVector2();
+	void PrepDrawVector3();
 
 	// Type Options
 	void TypeBoolOptions();
 	void TypeNumberOptions(int numType); // 0-int 1-float
 	void TypeStringOptions();
+	void TypeVector2Options();
+	void TypeVector3Options();
 
 public:
 	ax::rect contentRect;

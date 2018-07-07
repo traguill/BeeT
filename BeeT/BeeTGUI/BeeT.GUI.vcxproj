@@ -195,6 +195,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="BasicStructs.h" />
     <ClInclude Include="BeeTDebugger.h" />
     <ClInclude Include="BeeTEditor.h" />
     <ClInclude Include="BeeTGui.h" />
