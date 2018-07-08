@@ -122,4 +122,17 @@ node_deq * dequeue_tail(dequeue * d)
 {
 	return d->tail;
 }
+
+BEET_bool Float2Equal(const float2 * a, const float2 * b)
+{
+	BEET_ASSERT(a && b);
+	
+	return (a->x == b->x && a->y == b->y) ? BEET_TRUE : BEET_FALSE;
+}
+
+BEET_bool Float3Equal(const float3 * a, const float3 * b)
+{
+	BEET_ASSERT(a && b);
+	return (a->x == b->x && a->y == b->y && a->z == b->z) ? BEET_TRUE : BEET_FALSE;
+}
 // -----------------------------------------------------------------------------------------

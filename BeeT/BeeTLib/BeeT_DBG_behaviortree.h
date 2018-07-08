@@ -31,6 +31,8 @@ void BeeT_dBT_bbBool(BeeT_dBT* bt, struct BBVar* var, BEET_bool newValue);
 void BeeT_dBT_bbInt(BeeT_dBT* bt, struct BBVar* var, int newValue);
 void BeeT_dBT_bbFloat(BeeT_dBT* bt, struct BBVar* var, float newValue);
 void BeeT_dBT_bbString(BeeT_dBT* bt, struct BBVar* var, const char* newValue);
+void BeeT_dBT_bbVector2(BeeT_dBT* bt, struct BBVar* var, const float2* newValue);
+void BeeT_dBT_bbVector3(BeeT_dBT* bt, struct BBVar* var, const float3* newValue);
 
 // New current node
 void BeeT_dBT_NewCurrentNode(BeeT_dBT* bt, struct BeeT_Node* newCurrent);

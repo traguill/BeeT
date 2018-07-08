@@ -128,6 +128,18 @@ void BeeTDebugger::BlackboardWin()
 					ImGui::Text("%s", valString.data());
 				}
 					break;
+				case BV_VECTOR2:
+				{
+					float2 valVec2 = boost::any_cast<float2>(var->value);
+					ImGui::Text("x: %.2f y: %.2f", valVec2.x, valVec2.y);
+				}
+					break;
+				case BV_VECTOR3:
+				{
+					float3 valVec3 = boost::any_cast<float3>(var->value);
+					ImGui::Text("x: %.2f y: %.2f z: %.2f", valVec3.x, valVec3.y, valVec3.z);
+				}
+					break;
 			}
 		}
 	}

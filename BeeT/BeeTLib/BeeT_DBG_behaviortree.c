@@ -81,6 +81,14 @@ void BeeT_dBT_ClearSampleData(BeeT_dBT * bt)
 					BEET_free((char*)n->oldValue);
 					BEET_free((char*)n->newValue);
 					break;
+				case BV_VECTOR2:
+					BEET_free((float2*)n->oldValue);
+					BEET_free((float2*)n->newValue);
+					break;
+				case BV_VECTOR3:
+					BEET_free((float3*)n->oldValue);
+					BEET_free((float3*)n->newValue);
+					break;
 			}
 		}
 		item = item->next;
@@ -150,6 +158,34 @@ void BeeT_dBT_bbString(BeeT_dBT * bt, BBVar * var, const char * newValue)
 	strcpy((char*)sample->newValue, (const char*)newValue);
 
 	length = strlen(var->name) + 1;
+	sample->name = (char*)BEET_malloc(length);
+	strcpy(sample->name, var->name);
+	dequeue_push_back(bt->samples, sample);
+}
+
+void BeeT_dBT_bbVector2(BeeT_dBT * bt, BBVar * var, const float2 * newValue)
+{
+	BeeT_sBBVar* sample = BeeT_dBT_InitsBBVar(bt->startTime);
+	sample->varType = var->type;
+	sample->oldValue = BEET_malloc(sizeof(float2));
+	sample->newValue = BEET_malloc(sizeof(float2));
+	BEET_memcpy(sample->oldValue, var->data, sizeof(float2));
+	BEET_memcpy(sample->newValue, newValue, sizeof(float2));
+	unsigned int length = strlen(var->name) + 1;
+	sample->name = (char*)BEET_malloc(length);
+	strcpy(sample->name, var->name);
+	dequeue_push_back(bt->samples, sample);
+}
+
+void BeeT_dBT_bbVector3(BeeT_dBT * bt, BBVar * var, const float3 * newValue)
+{
+	BeeT_sBBVar* sample = BeeT_dBT_InitsBBVar(bt->startTime);
+	sample->varType = var->type;
+	sample->oldValue = BEET_malloc(sizeof(float3));
+	sample->newValue = BEET_malloc(sizeof(float3));
+	BEET_memcpy(sample->oldValue, var->data, sizeof(float3));
+	BEET_memcpy(sample->newValue, newValue, sizeof(float3));
+	unsigned int length = strlen(var->name) + 1;
 	sample->name = (char*)BEET_malloc(length);
 	strcpy(sample->name, var->name);
 	dequeue_push_back(bt->samples, sample);
@@ -249,6 +285,14 @@ void BeeT_dBT_BBVarSerialize(BeeT_Serializer * data, BeeT_sBBVar * sample)
 		case BV_STRING:
 			BeeT_Serializer_AppendString(data, "oldValue", (char*)sample->oldValue);
 			BeeT_Serializer_AppendString(data, "newValue", (char*)sample->newValue);
+			break;
+		case BV_VECTOR2:
+			BeeT_Serializer_AppendFloat2(data, "oldValue", (float*)sample->oldValue);
+			BeeT_Serializer_AppendFloat2(data, "newValue", (float*)sample->newValue);
+			break;
+		case BV_VECTOR3:
+			BeeT_Serializer_AppendFloat3(data, "oldValue", (float*)sample->oldValue);
+			BeeT_Serializer_AppendFloat3(data, "newValue", (float*)sample->newValue);
 			break;
 	}
 }

@@ -30,6 +30,14 @@ dsBBVar::dsBBVar(dBehaviorTree* bt, const Data& data) : dSample(bt, BBVAR_CHANGE
 		oldValue = string(data.GetString("oldValue"));
 		newValue = string(data.GetString("newValue"));
 		break;
+	case BV_VECTOR2:
+		oldValue = data.GetFloat2("oldValue");
+		newValue = data.GetFloat2("newValue");
+		break;
+	case BV_VECTOR3:
+		oldValue = data.GetFloat3("oldValue");
+		newValue = data.GetFloat3("newValue");
+		break;
 	}
 }
 
@@ -56,6 +64,20 @@ void dsBBVar::Print() const
 		break;
 	case BV_STRING:
 		ImGui::Text("From %s to %s", boost::any_cast<string>(oldValue).data(), boost::any_cast<string>(newValue).data());
+		break;
+	case BV_VECTOR2:
+	{
+		float2 vold = boost::any_cast<float2>(oldValue);
+		float2 vnew = boost::any_cast<float2>(newValue);
+		ImGui::Text("From (%.2f, %.2f) to (%.2f, %.2f)", vold.x, vold.y, vnew.x, vnew.y);
+	}
+		break;
+	case BV_VECTOR3:
+	{
+		float3 vold = boost::any_cast<float3>(oldValue);
+		float3 vnew = boost::any_cast<float3>(newValue);
+		ImGui::Text("From (%.2f, %.2f, %.2f) to (%.2f, %.2f, %.2f)", vold.x, vold.y, vold.z, vnew.x, vnew.y, vnew.z);
+	}
 		break;
 	}
 

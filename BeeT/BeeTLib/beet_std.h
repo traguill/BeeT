@@ -71,7 +71,24 @@ BEET_API node_deq* dequeue_head(dequeue* d);
 BEET_API node_deq* dequeue_tail(dequeue* d);
 
 // ------------------------------------------------------------------
+typedef struct float2 float2;
+struct float2
+{
+	float x;
+	float y;
+};
 
+BEET_API BEET_bool Float2Equal(const float2* a, const float2* b);
+
+typedef struct float3 float3;
+struct float3
+{
+	float x;
+	float y;
+	float z;
+};
+
+BEET_API BEET_bool Float3Equal(const float3* a, const float3* b);
 // Map --------------------------------------------------------------
 
 

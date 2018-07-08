@@ -48,6 +48,14 @@ BeeT_Blackboard* BeeT_Blackboard_Init(const BeeT_Serializer * data)
 				strcpy(var->data, bvName);
 			}	
 			break;
+		case BV_VECTOR2:
+			var->data = BEET_malloc(sizeof(float2));
+			*(float2*)(var->data) = BeeT_Serializer_GetFloat2(varData, "value");
+			break;
+		case BV_VECTOR3:
+			var->data = BEET_malloc(sizeof(float3));
+			*(float3*)var->data = BeeT_Serializer_GetFloat3(varData, "value");
+			break;
 		}
 		BEET_free(varData);
 		dequeue_push_back(bb->vars, var);
@@ -78,6 +86,12 @@ void BeeT_Blackboard_Destroy(BeeT_Blackboard * self)
 				break;
 			case BV_STRING:
 				BEET_free((char*)v->data);
+				break;
+			case BV_VECTOR2:
+				BEET_free((float2*)v->data);
+				break;
+			case BV_VECTOR3:
+				BEET_free((float3*)v->data);
 				break;
 			}
 			item = item->next;

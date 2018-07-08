@@ -40,6 +40,8 @@ BEET_bool			BeeT_Serializer_GetBool(const BeeT_Serializer* self, const char* nam
 unsigned int		BeeT_Serializer_GetUInt(const BeeT_Serializer* self, const char* name);
 float				BeeT_Serializer_GetFloat(const BeeT_Serializer* self, const char* name);
 double				BeeT_Serializer_GetDouble(const BeeT_Serializer* self, const char* name);
+float2				BeeT_Serializer_GetFloat2(const BeeT_Serializer* self, const char* name);
+float3				BeeT_Serializer_GetFloat3(const BeeT_Serializer* self, const char* name);
 
 //Loading an array into the data
 void BeeT_Serializer_LoadArray(BeeT_Serializer* self, const char* name);

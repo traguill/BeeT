@@ -81,14 +81,25 @@ BEET_API BEET_bool BEET_BehaviorTreeIsPaused(unsigned int btId);
 //--------------------------------------------------------------------------------
 
 BEET_API BEET_bool		BEET_BBGetBool(unsigned int btId, const char* varName);
-BEET_API int			BEET_BBGetInt(unsigned int btId, const char* varName);
-BEET_API float			BEET_BBGetFloat(unsigned int btId, const char* varName);
-BEET_API const char*	BEET_BBGetString(unsigned int btId, const char* varName);
+BEET_API BEET_bool		BEET_BBSetBool(unsigned int btId, const char* varName, BEET_bool value);
 
-BEET_API BEET_bool BEET_BBSetBool(unsigned int btId, const char* varName, BEET_bool value);
-BEET_API BEET_bool BEET_BBSetInt(unsigned int btId, const char* varName, int value);
-BEET_API BEET_bool BEET_BBSetFloat(unsigned int btId, const char* varName, float value);
-BEET_API BEET_bool BEET_BBSetString(unsigned int btId, const char* varName, const char* value);
+BEET_API int			BEET_BBGetInt(unsigned int btId, const char* varName);
+BEET_API BEET_bool		BEET_BBSetInt(unsigned int btId, const char* varName, int value);
+
+BEET_API float			BEET_BBGetFloat(unsigned int btId, const char* varName);
+BEET_API BEET_bool		BEET_BBSetFloat(unsigned int btId, const char* varName, float value);
+
+BEET_API const char*	BEET_BBGetString(unsigned int btId, const char* varName);
+BEET_API BEET_bool		BEET_BBSetString(unsigned int btId, const char* varName, const char* value);
+
+BEET_API float2			BEET_BBGetVector2(unsigned int btId, const char* varName);
+BEET_API BEET_bool		BEET_BBSetVector2(unsigned int btId, const char* varName, const float2* value);
+BEET_API BEET_bool		BEET_BBSetVector2Param(unsigned int btId, const char* varName, float x, float y);
+
+BEET_API float3			BEET_BBGetVector3(unsigned int btId, const char* varName);
+BEET_API BEET_bool		BEET_BBSetVector3(unsigned int btId, const char* varName, const float3* value);
+BEET_API BEET_bool		BEET_BBSetVector3Param(unsigned int btId, const char* varName, float x, float y, float z);
+
 
 //--------------------------------------------------------------------------------
 // Utils

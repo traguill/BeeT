@@ -319,6 +319,93 @@ const char * BEET_BBGetString(unsigned int btId, const char * varName)
 	return var ? (const char*)var->data : "";
 }
 
+float2 BEET_BBGetVector2(unsigned int btId, const char * varName)
+{
+	BBVar* var = BEET_QuickFindVar(btId, varName, NULL);
+	float2 ret;
+	if (var)
+		ret = *(float2*)var->data;
+	else
+		ret.x = ret.y = 0.0f;
+	return ret;
+}
+
+BEET_bool BEET_BBSetVector2(unsigned int btId, const char * varName, const float2 * value)
+{
+	BeeT_BehaviorTree* bt = NULL;
+	BBVar* var = BEET_QuickFindVar(btId, varName, &bt);
+	if (var)
+	{
+
+		if (bt->debug != NULL && !Float2Equal((float2*)var->data, value))
+			BeeT_dBT_bbVector2(bt->debug, var, value);
+		*(float2*)var->data = *value;
+		return BEET_TRUE;
+	}
+	return  BEET_FALSE;
+}
+
+BEET_bool BEET_BBSetVector2Param(unsigned int btId, const char * varName, float x, float y)
+{
+	BeeT_BehaviorTree* bt = NULL;
+	BBVar* var = BEET_QuickFindVar(btId, varName, &bt);
+	if (var)
+	{
+		float2 value;
+		value.x = x;
+		value.y = y;
+		if (bt->debug != NULL && !Float2Equal((float2*)var->data, &value))
+			BeeT_dBT_bbVector2(bt->debug, var, &value);
+		*(float2*)var->data = value;
+		return BEET_TRUE;
+	}
+	return  BEET_FALSE;
+}
+
+float3 BEET_BBGetVector3(unsigned int btId, const char * varName)
+{
+	BBVar* var = BEET_QuickFindVar(btId, varName, NULL);
+	float3 ret;
+	if (var)
+		ret = *(float3*)var->data;
+	else
+		ret.x = ret.y = ret.z = 0.0f;
+	return ret;
+}
+
+BEET_bool BEET_BBSetVector3(unsigned int btId, const char * varName, const float3 * value)
+{
+	BeeT_BehaviorTree* bt = NULL;
+	BBVar* var = BEET_QuickFindVar(btId, varName, &bt);
+	if (var)
+	{
+
+		if (bt->debug != NULL && !Float3Equal((float3*)var->data, value))
+			BeeT_dBT_bbVector3(bt->debug, var, value);
+		*(float3*)var->data = *value;
+		return BEET_TRUE;
+	}
+	return  BEET_FALSE;
+}
+
+BEET_bool BEET_BBSetVector3Param(unsigned int btId, const char * varName, float x, float y, float z)
+{
+	BeeT_BehaviorTree* bt = NULL;
+	BBVar* var = BEET_QuickFindVar(btId, varName, &bt);
+	if (var)
+	{
+		float3 value;
+		value.x = x;
+		value.y = y;
+		value.z = z;
+		if (bt->debug != NULL && !Float2Equal((float3*)var->data, &value))
+			BeeT_dBT_bbVector3(bt->debug, var, &value);
+		*(float3*)var->data = value;
+		return BEET_TRUE;
+	}
+	return  BEET_FALSE;
+}
+
 BEET_bool BEET_BBSetBool(unsigned int btId, const char * varName, BEET_bool value)
 {
 	BeeT_BehaviorTree* bt = NULL;

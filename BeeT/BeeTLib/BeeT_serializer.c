@@ -188,6 +188,39 @@ double BeeT_Serializer_GetDouble(const BeeT_Serializer* self, const char * name)
 	return json_object_get_number(self->root, name);
 }
 
+float2 BeeT_Serializer_GetFloat2(const BeeT_Serializer * self, const char * name)
+{
+	float2 ret;
+	JSON_Array* j_array = json_object_get_array(self->root, name);
+	if (j_array)
+	{
+		ret.x = (float)json_array_get_number(j_array, 0);
+		ret.y = (float)json_array_get_number(j_array, 1);
+	}
+	else
+	{
+		ret.x = ret.y = 0.0f;
+	}
+	return ret;
+}
+
+float3 BeeT_Serializer_GetFloat3(const BeeT_Serializer * self, const char * name)
+{
+	float3 ret;
+	JSON_Array* j_array = json_object_get_array(self->root, name);
+	if (j_array)
+	{
+		ret.x = (float)json_array_get_number(j_array, 0);
+		ret.y = (float)json_array_get_number(j_array, 1);
+		ret.z = (float)json_array_get_number(j_array, 2);
+	}
+	else
+	{
+		ret.x = ret.y = ret.z = 0.0f;
+	}
+	return ret;
+}
+
 void BeeT_Serializer_LoadArray(BeeT_Serializer* self, const char* name)
 {
 	JSON_Array* j_array = json_object_get_array(self->root, name);
