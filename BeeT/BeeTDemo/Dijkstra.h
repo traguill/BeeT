@@ -10,7 +10,9 @@
 struct DNode
 {
 	bool visited = false;
-	int dst = 99999;
+	int dst = -1;
+	DNode* parent = nullptr;
+	iPoint pos;
 };
 
 class Dijkstra
@@ -23,7 +25,6 @@ class Dijkstra
 
 private:
 	bool isWalkable[NUM_TILES_X][NUM_TILES_Y];
-	std::vector<iPoint> basicMap;
 };
 
 #endif
