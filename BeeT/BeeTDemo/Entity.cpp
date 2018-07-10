@@ -48,6 +48,26 @@ void Entity::OnCollision(Entity * otherEntity)
 {
 }
 
+void Entity::SetDestination(const fPoint destination)
+{
+	this->destination = destination;
+	isStop = false;
+	dir = destination - pos;
+	dir.normalize();
+}
+
+bool Entity::HasArrived()
+{
+	fPoint cDir = destination - pos;
+	if (GetSign(cDir.x) != GetSign(dir.x) || GetSign(cDir.y) != GetSign(dir.y))
+	{
+		pos = destination;
+		isStop = true;
+		return true;
+	}
+	return false;
+}
+
 void Entity::UpdateLogic(float dt)
 {}
 

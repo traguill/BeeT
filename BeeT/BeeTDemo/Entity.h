@@ -28,6 +28,9 @@ public:
 
 	virtual void OnCollision(Entity* otherEntity);
 
+	void SetDestination(const fPoint destination);
+	bool HasArrived();
+
 protected:
 	bool LoadSprite(const char* path, int sizeX, int sizeY);
 	virtual void UpdateLogic(float dt);
@@ -56,6 +59,8 @@ protected:
 	SDL_Renderer* renderer;
 	SDL_Rect rect;
 	SDL_Texture* texture = NULL;
+
+	fPoint destination;
 
 };
 #endif // !__ENTITY_H__

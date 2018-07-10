@@ -34,7 +34,7 @@ int main(int argc, char* args[])
 
 	BEET_Init();
 	BEET_SetTaskCallbackFunc(TaskCallbackFunc);
-	//BEET_InitDebugger("127.0.0.1", 8080);
+	BEET_InitDebugger("127.0.0.1", 8080);
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	SDL_Window* window;
@@ -53,7 +53,7 @@ int main(int argc, char* args[])
 
 	// Background
 	SDL_Texture* bg = SDL_CreateTextureFromSurface(renderer, SDL_LoadBMP("Game/background.bmp"));
-	SDL_Rect bgRect = { 0, 0, 900, 640 };
+	SDL_Rect bgRect = { 0, 0, 800, 640 };
 
 	
 	// Timer
@@ -89,8 +89,11 @@ int main(int argc, char* args[])
 		SDL_RenderCopy(renderer, bg, NULL, &bgRect);
 	
 		g_GameManager->Draw();
-		if(g_Input->debug)
+		if (g_Input->debug)
+		{
 			g_Physics->DrawColliders();
+			g_GameManager->DrawGridDebug(renderer);
+		}
 		SDL_RenderPresent(renderer);
 	}
 	

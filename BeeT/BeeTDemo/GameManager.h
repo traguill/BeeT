@@ -30,6 +30,9 @@ public:
 	NodeStatus UpdateBTTask(unsigned int btId, const char* taskId);
 	void OnFinishBTTask(unsigned int btId, const char* taskId);
 
+	// Debug
+	void DrawGridDebug(SDL_Renderer* renderer);
+
 private:
 	std::vector<Entity*> entities;
 	std::vector<Entity*> entitiesToAdd;

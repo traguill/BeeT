@@ -19,7 +19,7 @@ public:
 		this->y = y;
 	}
 
-	Point<T> operator+ (const Point& p)const
+	Point<T> operator+ (const Point<T>& p)const
 	{
 		Point<T> result;
 		result.x = this->x + p.x;
@@ -27,7 +27,7 @@ public:
 		return result;
 	}
 
-	Point<T> operator- (const Point& p)const
+	Point<T> operator- (const Point<T>& p)const
 	{
 		Point<T> result;
 		result.x = this->x - p.x;
@@ -35,7 +35,7 @@ public:
 		return result;
 	}
 
-	Point<T> operator* (const Point& p)const
+	Point<T> operator* (const Point<T>& p)const
 	{
 		Point<T> result;
 		result.x = this->x * p.x;
@@ -43,7 +43,7 @@ public:
 		return result;
 	}
 
-	Point<T> operator/ (const Point& p)const
+	Point<T> operator/ (const Point<T>& p)const
 	{
 		Point<T> result;
 		result.x = this->x / p.x;
@@ -83,11 +83,16 @@ public:
 		return result;
 	}
 
-	Point<T> operator+= (const Point& p)
+	Point<T> operator+= (const Point<T>& p)
 	{
 		this->x += p.x;
 		this->y += p.y;
 		return *this;
+	}
+
+	bool operator== (const Point<T>& p)
+	{
+		return (this->x == p.x && this->y == p->y);
 	}
 
 	Point<T> normalize()
@@ -126,6 +131,13 @@ template <class T>
 int PointInLine(const Point<T>& p, const Point<T>& a, const Point<T>& b)
 {
 	return (b.y - a.y) * p.x + (a.x - b.x) * p.y + (b.x * a.y - a.x * b.y);
+}
+
+// Sign
+template <class T>
+int GetSign(const T& number)
+{
+	return number >= 0.0f ? 1.0f : -1.0f;
 }
 #endif // !__MATH_2D_H__
 

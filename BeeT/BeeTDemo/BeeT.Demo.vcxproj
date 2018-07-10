@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Dijkstra.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="..\BeeTLib\beet.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Dijkstra.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameManager.h" />

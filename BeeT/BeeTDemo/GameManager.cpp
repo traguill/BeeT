@@ -24,18 +24,13 @@ void GameManager::Init()
 	AddEntity(player);
 
 	// Enemies
-	//enemy = new Enemy(renderer, 300, 100);
-	//AddEntity(enemy);
-
-	for (int i = 0; i < 20; i++)
+	Enemy* tst = new Enemy(renderer, rand() % SCREEN_WIDTH + 1, rand() % SCREEN_HEIGHT + 1);
+	AddEntity(tst);
+	/*for (int i = 0; i < 20; i++)
 	{
 		Enemy* tst = new Enemy(renderer, rand() % SCREEN_WIDTH + 1, rand() % SCREEN_HEIGHT + 1);
 		AddEntity(tst);
-	}
-
-	// Block
-	block = new Block(renderer, 600, 400);
-	AddEntity(block);
+	}*/
 }
 
 void GameManager::Tick(float dt)
@@ -105,4 +100,17 @@ void GameManager::OnFinishBTTask(unsigned int btId, const char * taskId)
 	auto task = taskOnFinishFunctions.find(btId);
 	if (task != taskOnFinishFunctions.end())
 		task->second(taskId);
+}
+
+void GameManager::DrawGridDebug(SDL_Renderer* renderer)
+{
+	int gridSize = 32;
+	for (int x = 0; x < SCREEN_WIDTH; x += gridSize)
+	{
+		SDL_RenderDrawLine(renderer, x, 0, x, SCREEN_HEIGHT);
+	}
+	for (int y = 0; y < SCREEN_HEIGHT; y += gridSize)
+	{
+		SDL_RenderDrawLine(renderer, 0, y, SCREEN_WIDTH, y);
+	}
 }

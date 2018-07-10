@@ -12,6 +12,6 @@ public:
 	void UpdateLogic(float dt);
 
 public:
-	float rotSpeed;
+
 };
 #endif // !__PLAYER_H__

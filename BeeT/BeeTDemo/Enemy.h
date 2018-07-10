@@ -22,15 +22,6 @@ public:
 
 private:
 
-	void Movement();
-	void Burst();
-	void Chase();
-
-	// Helpers
-	void ShootBullet(float posX, float posY, float dirX, float dirY, float speed);
-	void FindCover();
-	bool IsPlayerOnSight();
-	bool FollowRoute();
 
 private:
 	unsigned int btId;
