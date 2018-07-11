@@ -24,7 +24,7 @@ void GameManager::Init()
 	AddEntity(player);
 
 	// Enemies
-	Enemy* tst = new Enemy(renderer, rand() % SCREEN_WIDTH + 1, rand() % SCREEN_HEIGHT + 1);
+	Enemy* tst = new Enemy(renderer, 16*32, 5*32);
 	AddEntity(tst);
 	/*for (int i = 0; i < 20; i++)
 	{

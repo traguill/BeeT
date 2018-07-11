@@ -18,6 +18,7 @@ public:
 		this->x = x;
 		this->y = y;
 	}
+	~Point(){}
 
 	Point<T> operator+ (const Point<T>& p)const
 	{

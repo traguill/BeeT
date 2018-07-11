@@ -1,26 +1,30 @@
 #include "Dijkstra.h"
 
-#include <list>
-
 using namespace std;
 
 Dijkstra::Dijkstra()
 {
 	for (int x = 0; x < NUM_TILES_X; x++)
 		for (int y = 0; y < NUM_TILES_Y; y++)
-			isWalkable[x][y] = true;
+			isWalkable[x][y] = false;
 	
 }
 
 Dijkstra::~Dijkstra()
 {}
 
-void Dijkstra::SetWalkableMap(const std::vector<iPoint>& walkableTiles)
+
+void Dijkstra::SetWalkableMap(std::vector<iPoint*>* walkableTiles)
 {
-	for (auto tile : walkableTiles)
+	for (auto tile : *walkableTiles)
 	{
-		isWalkable[tile.x][tile.y] = true;
+		isWalkable[tile->x][tile->y] = true;
 	}
+}
+
+bool CompareNodes(const DNode* a, const DNode* b)
+{
+	return a->dstToEnd < b->dstToEnd;
 }
 
 bool Dijkstra::FindPath(const iPoint& tileStart, const iPoint & tileEnd, vector<iPoint>& path) const
@@ -57,19 +61,13 @@ bool Dijkstra::FindPath(const iPoint& tileStart, const iPoint & tileEnd, vector<
 
 		current->visited = true;
 		// push all neighbours
-		for (int x = current->pos.x -1; x <= current->pos.x + 1; x++)
-		{
-			for (int y = current->pos.y -1; y <= current->pos.y + 1; y++)
-			{
-				if (isWalkable[x][y] && grid[x][y].visited == false)
-				{
-					DNode* child = &grid[x][y];
-					child->parent = current;
-					child->pos = iPoint(x, y);
-					toVisit.push_back(child);
-				}
-			}
-		}
+
+		AddNeighbour(current, current->pos.x - 1, current->pos.y, &grid[current->pos.x - 1][current->pos.y], toVisit, tileEnd);
+		AddNeighbour(current, current->pos.x + 1, current->pos.y, &grid[current->pos.x + 1][current->pos.y], toVisit, tileEnd);
+		AddNeighbour(current, current->pos.x, current->pos.y + 1, &grid[current->pos.x][current->pos.y + 1], toVisit, tileEnd);
+		AddNeighbour(current, current->pos.x, current->pos.y - 1, &grid[current->pos.x][current->pos.y - 1], toVisit, tileEnd);
+		
+		toVisit.sort(CompareNodes);
 	}
 
 	if (found)
@@ -84,4 +82,67 @@ bool Dijkstra::FindPath(const iPoint& tileStart, const iPoint & tileEnd, vector<
 	}
 
 	return found;
+}
+
+int Dijkstra::CalculateDistance(const iPoint & start, const iPoint & end) const
+{
+	iPoint v = end - start;
+	return sqrt(v.x * v.x + v.y * v.y);
+}
+
+void Dijkstra::AddNeighbour(DNode* current, int x, int y, DNode*child, list<DNode*>& toVisit, const iPoint& tileEnd)const
+{
+	if (isWalkable[x][y] && child->visited == false)
+	{
+		if (child->candidate == false)
+		{
+			child->parent = current;
+			child->pos = iPoint(x, y);
+			child->dstToEnd = CalculateDistance(child->pos, tileEnd);
+			child->candidate = true;
+			toVisit.push_back(child);
+		}
+	}
+}
+
+
+
+void Dijkstra::WalkableTiles()
+{
+	vector<iPoint*> t;
+	for (int i = 0; i <= 20; i++)
+	{
+		t.push_back(new iPoint(i, 4));
+		t.push_back(new iPoint(i, 5));
+	}
+
+	for (int i = 6; i <= 14; i++)
+	{
+		t.push_back(new iPoint(18, i));
+		t.push_back(new iPoint(19, i));
+		t.push_back(new iPoint(20, i));
+	}
+
+	for (int i = 5; i <= 17; i++)
+	{
+		t.push_back(new iPoint(i, 8));
+	}
+
+	for (int x = 5; x <= 11; x++)
+		for (int y = 9; y <= 14; y++)
+			t.push_back(new iPoint(x, y));
+
+	for (int x = 12; x <= 16; x++)
+		for (int y = 11; y <= 14; y++)
+			t.push_back(new iPoint(x, y));
+
+	for (int i = 15; i <= 19; i++)
+	{
+		t.push_back(new iPoint(6, i));
+		t.push_back(new iPoint(7, i));
+	}
+	SetWalkableMap(&t);
+	for (auto tile : t)
+		delete tile;
+	t.clear();
 }

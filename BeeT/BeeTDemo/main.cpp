@@ -45,6 +45,7 @@ int main(int argc, char* args[])
 	SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, 0, &window, &renderer);
 
 	g_dijkstra = new Dijkstra();
+	g_dijkstra->WalkableTiles();
 	// Create Input
 	g_Input = new Input();
 	// Create Physics

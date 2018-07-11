@@ -26,7 +26,7 @@ Enemy::Enemy(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, 
 	std::function<void(const char*)> btTasksOnFinishFunc = std::bind(&Enemy::BTTaskOnFinish, this, std::placeholders::_1);
 	g_GameManager->taskOnFinishFunctions.insert(std::pair<int, std::function<void(const char*)>>(btId, btTasksOnFinishFunc));
 
-	speed = 150.0f;
+	speed = 50.0f;
 	dir.x = 0;
 	dir.y = 0;
 }
@@ -73,7 +73,7 @@ NodeStatus Enemy::BTTaskUpdate(const char * taskId)
 	{
 		if (!hasDestination)
 		{
-			SetDestination(fPoint(route[routeIdx].x * 16, route[routeIdx].y * 16));
+			SetDestination(fPoint(route[routeIdx].x * 32 + 16, route[routeIdx].y * 32 + 16));
 			hasDestination = true;
 			routeIdx++;
 		}
@@ -91,7 +91,7 @@ NodeStatus Enemy::BTTaskUpdate(const char * taskId)
 	{
 		if (!hasDestination)
 		{
-			SetDestination(fPoint(route[routeIdx].x * 32, route[routeIdx].y * 32));
+			SetDestination(fPoint(route[routeIdx].x * 32 + 16, route[routeIdx].y * 32 + 16));
 			hasDestination = true;
 			routeIdx++;
 		}
