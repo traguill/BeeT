@@ -17,6 +17,7 @@ struct DNode
 
 class Dijkstra
 {
+public:
 	Dijkstra();
 	~Dijkstra();
 
@@ -26,5 +27,5 @@ class Dijkstra
 private:
 	bool isWalkable[NUM_TILES_X][NUM_TILES_Y];
 };
-
+extern Dijkstra* g_dijkstra;
 #endif

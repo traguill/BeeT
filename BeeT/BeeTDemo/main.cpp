@@ -12,6 +12,7 @@
 #include "GameManager.h"
 #include "Physics.h"
 #include "Timer.h"
+#include "Dijkstra.h"
 
 #include "Globals.h"
 
@@ -22,6 +23,7 @@ GameManager* g_GameManager = NULL;
 Physics * g_Physics = NULL;
 Uint64 frequency, timeStart;
 Timer* g_Timer = NULL;
+Dijkstra* g_dijkstra = NULL;
 
 float LastFrameSec();
 
@@ -42,6 +44,7 @@ int main(int argc, char* args[])
 
 	SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, 0, &window, &renderer);
 
+	g_dijkstra = new Dijkstra();
 	// Create Input
 	g_Input = new Input();
 	// Create Physics
@@ -102,6 +105,7 @@ int main(int argc, char* args[])
 	delete g_GameManager;
 	delete g_Physics;
 	delete g_Input;
+	delete g_dijkstra;
 	delete g_Timer;
 	BEET_Shutdown();
 	SDL_Quit();

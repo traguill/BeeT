@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "Physics.h"
+#include "Globals.h"
 
 Entity::Entity(SDL_Renderer* renderer, float posX, float posY) : renderer(renderer)
 {
@@ -70,6 +71,13 @@ bool Entity::HasArrived()
 
 void Entity::UpdateLogic(float dt)
 {}
+
+iPoint Entity::GetTile() const
+{
+	fPoint tile = pos / 32.0f;
+
+	return iPoint(tile.x, tile.y);
+}
 
 void Entity::Move(float dt)
 {

@@ -8,7 +8,7 @@ Dijkstra::Dijkstra()
 {
 	for (int x = 0; x < NUM_TILES_X; x++)
 		for (int y = 0; y < NUM_TILES_Y; y++)
-			isWalkable[x][y] = false;
+			isWalkable[x][y] = true;
 	
 }
 
@@ -36,7 +36,7 @@ bool Dijkstra::FindPath(const iPoint& tileStart, const iPoint & tileEnd, vector<
 	toVisit.front()->pos = tileStart;
 	DNode* current = nullptr;
 	bool found = false;
-	while (!found || toVisit.size() > 0)
+	while (!found && toVisit.size() > 0)
 	{
 		current = toVisit.front();
 		toVisit.pop_front();

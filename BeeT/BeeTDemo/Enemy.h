@@ -25,10 +25,10 @@ private:
 
 private:
 	unsigned int btId;
-	std::vector<fPoint> route;
-	fPoint destination;
+	std::vector<iPoint> route;
+	int routeIdx = 0;
+	iPoint destination;
 	bool hasDestination = false;
-
 };
 #endif // !__ENEMY_H__
 

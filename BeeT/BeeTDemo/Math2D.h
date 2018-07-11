@@ -90,9 +90,9 @@ public:
 		return *this;
 	}
 
-	bool operator== (const Point<T>& p)
+	bool operator== (const Point<T>& b) const
 	{
-		return (this->x == p.x && this->y == p->y);
+		return (this->x == b.x && this->y == b.y);
 	}
 
 	Point<T> normalize()

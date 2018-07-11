@@ -4,7 +4,7 @@
 #include "GameManager.h"
 #include "Bullet.h"
 #include "Block.h"
-#include "Globals.h"
+#include "Dijkstra.h"
 
 #include <stdlib.h>
 
@@ -14,7 +14,7 @@ Enemy::Enemy(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, 
 	LoadSprite("Game/Panda.bmp", 32, 52);
 	g_Physics->AddBody(this, 16);
 
-	btId = BEET_LoadBehaviorTreeFromFile("Enemy.json", BEET_FALSE);
+	btId = BEET_LoadBehaviorTreeFromFile("Enemy.json", BEET_TRUE);
 	// OnInit
 	std::function<void(const char*)> btTasksOnInitFunc = std::bind(&Enemy::BTTaskOnInit, this, std::placeholders::_1);
 	g_GameManager->taskOnInitFunctions.insert(std::pair<int, std::function<void(const char*)>>(btId, btTasksOnInitFunc));
@@ -48,12 +48,22 @@ void Enemy::BTTaskOnInit(const char * taskId)
 	if (strcmp(taskId, "Move1") == 0)
 	{
 		float2 dst = BEET_BBGetVector2(btId, "Point1");
-		SetDestination(fPoint(dst.x * 32.0f, dst.y * 32.0f));
+		routeIdx = 0;
+		destination = iPoint(dst.x, dst.y);
+		hasDestination = false;
+		bool found = g_dijkstra->FindPath(GetTile(), destination, route);
+		if (found == false)
+			printf("Path not found");
 	}
 	else
 	{
 		float2 dst = BEET_BBGetVector2(btId, "Point2");
-		SetDestination(fPoint(dst.x * 32.0f, dst.y * 32.0f));
+		routeIdx = 0;
+		destination = iPoint(dst.x, dst.y);
+		hasDestination = false;
+		bool found = g_dijkstra->FindPath(GetTile(), destination, route);
+		if (found == false)
+			printf("Path not found");
 	}
 }
 
@@ -61,11 +71,39 @@ NodeStatus Enemy::BTTaskUpdate(const char * taskId)
 {
 	if (strcmp(taskId, "Move1") == 0)
 	{
-		return HasArrived() ? NS_SUCCESS : NS_RUNNING;
+		if (!hasDestination)
+		{
+			SetDestination(fPoint(route[routeIdx].x * 16, route[routeIdx].y * 16));
+			hasDestination = true;
+			routeIdx++;
+		}
+		if (HasArrived())
+		{
+			hasDestination = false;
+			if (routeIdx == route.size())
+			{
+				return NS_SUCCESS;
+			}
+		}
+		return NS_RUNNING;
 	}
 	else
 	{
-		return HasArrived() ? NS_SUCCESS : NS_RUNNING;
+		if (!hasDestination)
+		{
+			SetDestination(fPoint(route[routeIdx].x * 32, route[routeIdx].y * 32));
+			hasDestination = true;
+			routeIdx++;
+		}
+		if (HasArrived())
+		{
+			hasDestination = false;
+			if (routeIdx == route.size())
+			{
+				return NS_SUCCESS;
+			}
+		}
+		return NS_RUNNING;
 	}
 
 	return NS_FAILURE;

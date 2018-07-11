@@ -35,6 +35,8 @@ protected:
 	bool LoadSprite(const char* path, int sizeX, int sizeY);
 	virtual void UpdateLogic(float dt);
 
+	iPoint GetTile()const;
+
 private:
 	void Move(float dt);
 
