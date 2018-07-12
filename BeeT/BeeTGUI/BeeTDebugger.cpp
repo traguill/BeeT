@@ -221,7 +221,7 @@ void BeeTDebugger::MediPlayerWin()
 	}
 	if (btCurrent->sampleSelected == -1)
 	{
-		btCurrent->ApplySampleEffect(0);
+		btCurrent->ApplySampleEffect(btCurrent->changes.size() - 1);
 	}
 
 	if (ImGui::Button("Prev###media_prev"))
