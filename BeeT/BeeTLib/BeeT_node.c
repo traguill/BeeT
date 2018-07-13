@@ -24,7 +24,7 @@ BeeT_Node* BeeT_Node__Init(const BeeT_Serializer* data, BeeT_BehaviorTree* bt)
 		node = (BeeT_Node*)BTN_Parallel_Init(data, bt);
 		break;
 	case NT_TASK:
-		node = (BeeT_Node*)BTN_Task_Init(data);
+		node = (BeeT_Node*)BTN_Task_Init(data, bt);
 		break;
 	case NT_WAIT:
 		node = (BeeT_Node*)BTN_Wait_Init(data);
@@ -222,7 +222,7 @@ BTN_Parallel * BTN_Parallel_Init(const BeeT_Serializer * data, BeeT_BehaviorTree
 	return btn;
 }
 
-BTN_Task * BTN_Task_Init(const BeeT_Serializer * data)
+BTN_Task * BTN_Task_Init(const BeeT_Serializer * data, struct BeeT_BehaviorTree* bt)
 {
 	BTN_Task* btn = (BTN_Task*)BEET_malloc(sizeof(BTN_Task));
 
@@ -234,7 +234,7 @@ BTN_Task * BTN_Task_Init(const BeeT_Serializer * data)
 	const char* extraDataName = BeeT_Serializer_GetString(data, "extraData");
 	if (extraDataName)
 	{
-		btn->extraData = btn->node.bt->bb->FindVar(btn->node.bt->bb, extraDataName);
+		btn->extraData = bt->bb->FindVar(bt->bb, extraDataName);
 	}
 	else
 		btn->extraData = NULL;
