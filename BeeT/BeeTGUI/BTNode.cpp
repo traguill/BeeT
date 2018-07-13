@@ -58,7 +58,13 @@ BTNode::BTNode(BehaviorTree* bt, Data & data) : bt(bt)
 		//case 1: // Selector
 		//case 2: // Sequence
 		//case 3: // Parallel
-		//case 4: // Custom Task
+	case 4: // Custom Task
+	{
+		const char* s = data.GetString("extraData");
+		if(s)
+			extraData = bt->bb->FindVar(s);
+	}
+		break;
 	case 5: // Wait
 	{
 		extraData = new char[sizeof(float)];
@@ -372,7 +378,10 @@ void BTNode::Save(Data& file)
 	//case 1: // Selector
 	//case 2: // Sequence
 	//case 3: // Parallel
-	//case 4: // Custom Task
+	case 4: // Custom Task
+		if (extraData)
+			data.AppendString("extraData", ((BBVar*)extraData)->name.data());
+		break;
 	case 5: // Wait
 		data.AppendFloat("extraData", *(float*)extraData);
 		break;
