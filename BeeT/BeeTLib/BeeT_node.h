@@ -99,7 +99,7 @@ BTN_Root*		BTN_Root_Init(const BeeT_Serializer* data,struct BeeT_BehaviorTree* b
 BTN_Selector*	BTN_Selector_Init(const BeeT_Serializer* data, struct BeeT_BehaviorTree* bt);
 BTN_Sequence*	BTN_Sequence_Init(const BeeT_Serializer* data, struct BeeT_BehaviorTree* bt);
 BTN_Parallel*	BTN_Parallel_Init(const BeeT_Serializer* data, struct BeeT_BehaviorTree* bt);
-BTN_Task*		BTN_Task_Init(const BeeT_Serializer* data);
+BTN_Task*		BTN_Task_Init(const BeeT_Serializer* data, struct BeeT_BehaviorTree* bt);
 BTN_Wait*		BTN_Wait_Init(const BeeT_Serializer* data);
 
 // OnInit functions
