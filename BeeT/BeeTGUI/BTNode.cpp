@@ -8,6 +8,7 @@
 #include "Random.h"
 #include "BTDecorator.h"
 #include "Blackboard.h"
+#include "BeeTEditor.h"
 
 #include <algorithm>
 
@@ -77,7 +78,14 @@ BTNode::~BTNode()
 	delete inputPin;
 	delete outputPin;
 	if (extraData)
-		delete[] extraData;
+		if(type->typeId == 5) // Wait node
+			delete[] extraData;
+		else if (type->typeId == 6)
+		{
+			BBVar* var = (BBVar*)extraData;
+			var->nodes.erase(std::find(var->nodes.begin(), var->nodes.end(), this));
+		}
+			
 }
 
 std::vector<BTLink*> BTNode::GetAllLinks()
@@ -155,10 +163,19 @@ void BTNode::PrepareToDraw()
 	ImGui::Dummy(ImVec2(160, 0));
 
 	ImGui::Spring(1);
-	if(g_app->beetGui->showNodeId)
-		ImGui::Text("(%i)%s%s", id, type->icon.data(), name.data());
+	BBVar* data = (BBVar*)extraData;
+	if (type->typeId == 5)
+		PrepToDrawWait();
+	else if (type->typeId == 4 && extraData != nullptr)
+		PrepToDrawTask();
 	else
-		ImGui::Text("%s%s", type->icon.data(), name.data());
+	{
+		if (g_app->beetGui->showNodeId)
+			ImGui::Text("(%i)%s%s", id, type->icon.data(), name.data());
+		else
+			ImGui::Text("%s%s", type->icon.data(), name.data());
+	}
+	
 	ImGui::Spring(1);
 
 	ImGui::EndVertical(); // 'content'
@@ -212,6 +229,7 @@ void BTNode::InspectorInfo()
 	case 3: // Parallel
 		break;
 	case 4: // Custom Task
+		InspectorTask();
 		break;
 	case 5: // Wait
 		InspectorWait();
@@ -229,6 +247,14 @@ void BTNode::RemoveDecorator(BTDecorator * dec)
 {
 	assert(std::find(decorators.begin(), decorators.end(), dec) != decorators.end());
 	decoratorsToRemove.push_back(dec);
+}
+
+void BTNode::RemoveBBVarLinked()
+{
+	if (extraData)
+	{
+		extraData = nullptr;
+	}
 }
 
 int BTNode::GetId() const
@@ -298,6 +324,23 @@ void BTNode::ForceRoot()
 	subtreeId = 0;
 }
 
+void BTNode::CallbackBBVarList(void * obj, const std::string & category, const std::string & item, int additionalData)
+{
+	BeeTEditor* editor = g_app->beetGui->beetEditor;
+	if (editor->bbVarListObj)
+	{
+		delete editor->bbVarListObj;
+		editor->bbVarListObj = nullptr;
+	}
+	BTNode* node = (BTNode*)obj;
+	if (node)
+	{
+		BBVar* var = editor->btCurrent->bb->FindVar(item);
+		var->nodes.push_back(node);
+		node->extraData = var;
+	}
+}
+
 void BTNode::Save(Data& file)
 {
 	Data data;
@@ -343,23 +386,23 @@ void BTNode::PreDrawSetColor()
 {
 	ImColor bg = ImColor(128, 128, 128, 200);
 	ImColor border = highlightBorder ? ImColor(255, 0, 0, 255) : ImColor(32, 32, 32, 200);
-	switch (nodeColor)
-	{
-	case NC_RUNNING:
-		bg = ImColor(128, 128, 50, 200);
-		break;
-	case NC_SUCCESS:
-		bg = ImColor(50, 128, 50, 200);
-		break;
-	case NC_FAILURE:
-		bg = ImColor(128, 50, 50, 200);
-		break;
-	case NC_SUSPENDED:
-		bg = ImColor(50, 50, 50, 200);
-		break;
-	}
-	ne::PushStyleColor(ne::StyleColor_NodeBg, bg);
-	ne::PushStyleColor(ne::StyleColor_NodeBorder, border);
+switch (nodeColor)
+{
+case NC_RUNNING:
+	bg = ImColor(128, 128, 50, 200);
+	break;
+case NC_SUCCESS:
+	bg = ImColor(50, 128, 50, 200);
+	break;
+case NC_FAILURE:
+	bg = ImColor(128, 50, 50, 200);
+	break;
+case NC_SUSPENDED:
+	bg = ImColor(50, 50, 50, 200);
+	break;
+}
+ne::PushStyleColor(ne::StyleColor_NodeBg, bg);
+ne::PushStyleColor(ne::StyleColor_NodeBorder, border);
 }
 
 void BTNode::ReloadSubtreeId()
@@ -376,22 +419,20 @@ void BTNode::InitExtraData()
 	case 0: // Root
 		break;
 	case 1: // Selector
-		InspectorComposite();
 		break;
 	case 2: // Sequence
-		InspectorComposite();
 		break;
 	case 3: // Parallel
 		break;
 	case 4: // Custom Task
 		break;
 	case 5: // Wait
-		{
-			extraData = new char[sizeof(float)];
-			float zero = 0.0f;
-			memcpy(extraData, &zero, sizeof(float));
-		}
-		break;
+	{
+		extraData = new char[sizeof(float)];
+		float zero = 0.0f;
+		memcpy(extraData, &zero, sizeof(float));
+	}
+	break;
 	}
 }
 
@@ -430,4 +471,75 @@ void BTNode::InspectorWait()
 	}
 	ImGui::SameLine();
 	ImGui::Text(" seconds");
+}
+
+void BTNode::InspectorTask()
+{
+	// Additional data
+	if (extraData == nullptr)
+	{
+		if (ImGui::Button("Add data"))
+		{
+			g_app->beetGui->beetEditor->ListAllBBVars(BTNode::CallbackBBVarList, this);
+		}
+	}
+	else
+	{
+		BBVar* var = (BBVar*)extraData;		
+		switch (var->type)
+		{
+			case BV_BOOL:
+				ImGui::Text("Bool: %i", boost::any_cast<bool>(var->value));
+				break;
+			case BV_INT:
+				ImGui::Text("Int: %i", boost::any_cast<int>(var->value));
+				break;
+			case BV_FLOAT:
+				ImGui::Text("Float: %.2f", boost::any_cast<float>(var->value));
+				break;
+			case BV_STRING:
+			{
+				std::string s = boost::any_cast<std::string> (var->value);
+				ImGui::Text("String: %s", s.data());
+			}
+				break;
+			case BV_VECTOR2:
+			{
+				float2 val = boost::any_cast<float2>(var->value);
+				ImGui::Text("Vector2: x: %.2f y: %.2f", val.x, val.y);
+			}
+				break;
+			case BV_VECTOR3:
+			{
+				float3 val = boost::any_cast<float3>(var->value);
+				ImGui::Text("Vector3: x: %.2f y: %.2f z: %.2f", val.x, val.y, val.z);
+			}
+				break;
+		}
+
+		if (ImGui::Button("Change data"))
+		{
+			var->nodes.erase(std::find(var->nodes.begin(), var->nodes.end(), this));
+			extraData = nullptr;
+			g_app->beetGui->beetEditor->ListAllBBVars(BTNode::CallbackBBVarList, this);
+		}
+	}
+}
+
+void BTNode::PrepToDrawTask() const
+{
+	BBVar* data = (BBVar*)extraData;
+	if (g_app->beetGui->showNodeId)
+		ImGui::Text("(%i)%s%s(%s)", id, type->icon.data(), name.data(), data->name.data());
+	else
+		ImGui::Text("%s%s(%s)", type->icon.data(), name.data(), data->name.data());
+}
+
+void BTNode::PrepToDrawWait() const
+{
+	float data = *(float*)extraData;
+	if (g_app->beetGui->showNodeId)
+		ImGui::Text("(%i)%s%s(%.2f)", id, type->icon.data(), name.data(), data);
+	else
+		ImGui::Text("%s%s(%.2f)", type->icon.data(), name.data(), data);
 }

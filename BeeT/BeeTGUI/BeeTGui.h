@@ -47,6 +47,10 @@ public:
 	// Show Options
 	bool showNodeId = false;
 
+	// Modes
+	BeeTEditor* beetEditor = nullptr;
+	BeeTDebugger* beetDebugger = nullptr;
+
 private:
 	BeeTMode mode = BEET_EDITOR; // BeeTGui has two modes: Editor and Debugger. Only one of them can be enabled at the time
 
@@ -54,9 +58,6 @@ private:
 	ax::NodeEditor::EditorContext* currentEditorContext = nullptr; // Context to handle the node graph editor
 	FileDialog* fileDialog = nullptr;
 
-	// Modes
-	BeeTEditor* beetEditor = nullptr;
-	BeeTDebugger* beetDebugger = nullptr;
 
 	// Edit
 	int findNodeId = -1;
