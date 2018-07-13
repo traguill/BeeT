@@ -25,7 +25,7 @@ Timer* g_Timer = NULL;
 
 float LastFrameSec();
 
-NodeStatus TaskCallbackFunc(unsigned int btId, const char* taskId, NodeFunction func);
+NodeStatus TaskCallbackFunc(unsigned int btId, const char* taskId, NodeFunction func, const BBVar* extraData);
 
 int main(int argc, char* args[])
 {
@@ -112,7 +112,7 @@ float LastFrameSec()
 	return ret;
 }
 
-NodeStatus TaskCallbackFunc(unsigned int btId, const char* taskId, NodeFunction func)
+NodeStatus TaskCallbackFunc(unsigned int btId, const char* taskId, NodeFunction func, const BBVar* extraData)
 {
 	g_Timer->Pause();
 	NodeStatus ret = NS_INVALID;

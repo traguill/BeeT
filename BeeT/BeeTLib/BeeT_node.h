@@ -8,6 +8,7 @@
 
 // Forward declarations
 struct BeeT_BehaviorTree;
+struct BBVar;
 
 typedef enum NodeType // Careful! This types need to be sync with the ones in the file 'BTNodeTypes.cpp -> Init()'
 {
@@ -77,6 +78,7 @@ typedef struct BTN_Task
 {
 	BeeT_Node node;
 	char* name;
+	BBVar* extraData;
 }BTN_Task;
 
 typedef struct BTN_Wait

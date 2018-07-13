@@ -19,7 +19,7 @@ typedef enum NodeFunction
 	NF_ONFINISH
 }NodeFunction;
 
-typedef NodeStatus(*beetCallbackFunc)(unsigned int btId, const char* taskId, NodeFunction func);
+typedef NodeStatus(*beetCallbackFunc)(unsigned int btId, const char* taskId, NodeFunction func, const BBVar* extraData);
 
 typedef struct
 {

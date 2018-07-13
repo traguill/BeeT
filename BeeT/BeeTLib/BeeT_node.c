@@ -231,6 +231,14 @@ BTN_Task * BTN_Task_Init(const BeeT_Serializer * data)
 	btn->name = (char*)BEET_malloc(length);
 	strcpy(btn->name, name);
 
+	const char* extraDataName = BeeT_Serializer_GetString(data, "extraData");
+	if (extraDataName)
+	{
+		btn->extraData = btn->node.bt->bb->FindVar(btn->node.bt->bb, extraDataName);
+	}
+	else
+		btn->extraData = NULL;
+
 	btn->node.OnInit = &BTN_Task_OnInit;
 	btn->node.Update = &BTN_Task_Update;
 	btn->node.OnFinish = &BTN_Task_OnFinish;
@@ -316,7 +324,7 @@ void BTN_Task_OnInit(BeeT_Node* self)
 	BTN_Task* btn = (BTN_Task*)self;
 	BeetContext* context = BeeT_GetContext();
 	BEET_ASSERT(context != NULL);
-	context->taskCallbackFunc(btn->node.bt->instanceUID, btn->name, NF_ONINIT);
+	context->taskCallbackFunc(btn->node.bt->instanceUID, btn->name, NF_ONINIT, btn->extraData);
 }
 
 void BTN_Wait_OnInit(BeeT_Node * self)
@@ -390,7 +398,7 @@ NodeStatus BTN_Task_Update(BeeT_Node* self)
 	BTN_Task* btn = (BTN_Task*)self;
 	BeetContext* context = BeeT_GetContext();
 	BEET_ASSERT(context != NULL);
-	return context->taskCallbackFunc(btn->node.bt->instanceUID, btn->name, NF_UPDATE);
+	return context->taskCallbackFunc(btn->node.bt->instanceUID, btn->name, NF_UPDATE, btn->extraData);
 }
 
 NodeStatus BTN_Wait_Update(BeeT_Node * self)
@@ -450,7 +458,7 @@ void BTN_Task_OnFinish(BeeT_Node* self, NodeStatus status)
 	BTN_Task* btn = (BTN_Task*)self;
 	BeetContext* context = BeeT_GetContext();
 	BEET_ASSERT(context != NULL);
-	context->taskCallbackFunc(btn->node.bt->instanceUID, btn->name, NF_ONFINISH);
+	context->taskCallbackFunc(btn->node.bt->instanceUID, btn->name, NF_ONFINISH, btn->extraData);
 }
 
 void BTN_Wait_OnFinish(BeeT_Node * self, NodeStatus status)
