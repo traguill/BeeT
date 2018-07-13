@@ -21,7 +21,7 @@ public:
 	void BTTaskOnFinish(const char* taskId);
 
 private:
-
+	bool IsPlayerVisible()const;
 
 private:
 	unsigned int btId;

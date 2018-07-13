@@ -8,6 +8,8 @@
 
 #include <stdlib.h>
 
+#include <iostream>
+
 Enemy::Enemy(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, posX, posY)
 {
 	type = ENEMY;
@@ -37,7 +39,9 @@ Enemy::~Enemy()
 }
 
 void Enemy::UpdateLogic(float dt)
-{}
+{
+	IsPlayerVisible();
+}
 
 void Enemy::OnCollision(Entity * otherEntity)
 {
@@ -112,4 +116,17 @@ NodeStatus Enemy::BTTaskUpdate(const char * taskId)
 void Enemy::BTTaskOnFinish(const char * taskId)
 {
 
+}
+
+bool Enemy::IsPlayerVisible() const
+{
+	fPoint playerPosition = ((Entity*)g_GameManager->player)->pos;
+	fVec playerVec = playerPosition - pos;
+	float angle = dir.AngleBetween(playerVec);
+
+	if (fabs(angle) < 90.0f)
+		printf("true\n");
+	else
+		printf("false\n");
+	return true;
 }

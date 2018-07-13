@@ -3,6 +3,8 @@
 
 #include <math.h>
 
+#define PI 3.14159265f
+
 template<class T>
 class Point
 {
@@ -118,6 +120,13 @@ public:
 		float a = p.x - this->x;
 		float b = p.y - this->y;
 		return sqrt(a * a + b * b);
+	}
+
+	float AngleBetween(const Point<T>& p) const
+	{
+		float dot = x * p.x + y * p.y;
+		float det = x * p.y - y * p.x;
+		return atan2(det, dot) * 180.0f / PI;
 	}
 
 };
