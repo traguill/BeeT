@@ -8,6 +8,7 @@
 #include "../SharedData/SharedEnums.h"
 
 class BTDecorator;
+class BTNode;
 
 struct BBVar
 {
@@ -15,6 +16,7 @@ struct BBVar
 	std::string name;
 	boost::any value;
 	std::vector<BTDecorator*> decorators; // Decorators this BBVar is linked to
+	std::vector<BTNode*> nodes; // Nodes this BBVar is linked to as extra data
 };
 
 class Blackboard

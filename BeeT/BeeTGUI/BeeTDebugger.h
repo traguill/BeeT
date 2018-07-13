@@ -62,6 +62,8 @@ private:
 	std::stack<int> btSlots; // BT uids ready to handle connections
 
 	std::map<int, dBehaviorTree*> btToDebugList;
+
+	bool isPlaying = true;
 };
 
 #endif // !__BEET_DEBUGGER_H__

@@ -43,6 +43,7 @@ public:
 	// Edition
 	void AddDecorator(Blackboard* bb, BBVar* var);
 	void RemoveDecorator(BTDecorator* dec);
+	void RemoveBBVarLinked();
 	
 	// Getters
 	int GetId()const;
@@ -61,6 +62,8 @@ public:
 	// Utils
 	void ForceRoot(); // Forces the node to be the root node. DO NOT USE!
 
+	static void CallbackBBVarList(void* obj, const std::string& category, const std::string& item, int additionalData);
+
 protected:
 	void ReloadSubtreeId(); // Sets the subtree id depending on the parent's
 
@@ -69,6 +72,11 @@ protected:
 	// Inspector
 	void InspectorComposite();
 	void InspectorWait();
+	void InspectorTask();
+
+	//Prepare to draw
+	void PrepToDrawTask()const;
+	void PrepToDrawWait()const;
 	
 public:
 	ax::rect inputsRect;
@@ -97,7 +105,7 @@ protected:
 	int subtreeId = -1; // If this is 0 means that this node is inside the Root tree and will be executed. 
 	std::vector<BTDecorator*> decoratorsToRemove;
 
-	char* extraData = nullptr;
+	void* extraData = nullptr;
 };
 #endif
 

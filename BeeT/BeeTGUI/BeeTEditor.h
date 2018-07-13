@@ -34,6 +34,8 @@ public:
 
 	bool FoucsNodeById(int nodeId);
 
+	void ListAllBBVars(void(*fc)(void *, const std::string &, const std::string &, int), void * obj);
+
 private:
 
 	void BlackboardWindow();
@@ -53,12 +55,14 @@ private:
 	void ClearAllSelection();
 
 	void InitBBListCategories();
-	void ListAllBBVars();
 
 private:
 	std::vector<BehaviorTree*> btList; // List of behavior trees opened
+
+public:
 	BehaviorTree* btCurrent; // Current bt selected
 
+private:
 	bool beetEditorWindowOpen = true;
 	ImGuiWindowFlags flags =  ImGuiWindowFlags_::ImGuiWindowFlags_NoResize
 							| ImGuiWindowFlags_::ImGuiWindowFlags_NoTitleBar
@@ -81,8 +85,9 @@ private:
 	std::map<std::string, BBVarType> bbVarTypeConversor;
 
 	ItemList* widgetBBVars = nullptr;
+public:
 	ListObject* bbVarListObj = nullptr;
-
+private:
 	// Inspector
 	int selectedNodeId = -1;
 	int selectedLinkId = -1;

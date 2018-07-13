@@ -586,7 +586,7 @@ void BeeTEditor::ShowPopUps()
 		{
 			if(ImGui::MenuItem("Add Decorator")) // Add Decorator
 			{
-				ListAllBBVars();
+				ListAllBBVars(BeeTEditor::CallBackBBVarList, this);
 			}
 		}
 		ImGui::EndPopup();
@@ -758,7 +758,7 @@ void BeeTEditor::InitBBListCategories()
 	bbVarTypeObj->SortAll();
 }
 
-void BeeTEditor::ListAllBBVars()
+void BeeTEditor::ListAllBBVars(void(*fc)(void *, const std::string &, const std::string &, int), void * obj)
 {
 	if (bbVarListObj == nullptr)
 	{
@@ -768,7 +768,7 @@ void BeeTEditor::ListAllBBVars()
 			bbVarListObj->AddItemInCategory("Blackboard", var->name.data());
 		}
 		widgetBBVars->SetWidgetPosition(ImGui::GetMousePos().x, ImGui::GetMousePos().y);
-		widgetBBVars->SetSelFunctionCallback(BeeTEditor::CallBackBBVarList, this);
+		widgetBBVars->SetSelFunctionCallback(fc, obj);
 		widgetBBVars->SetVisible(true, bbVarListObj);
 	}
 }

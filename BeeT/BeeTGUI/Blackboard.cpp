@@ -1,6 +1,7 @@
 #include "Blackboard.h"
 #include "BTDecorator.h"
 #include "BasicStructs.h"
+#include "BTNode.h"
 
 using namespace std;
 
@@ -113,6 +114,10 @@ void Blackboard::RemoveVar(int id)
 	for (auto dec : var->decorators)
 	{
 		dec->Remove(true);
+	}
+	for (auto node : var->nodes)
+	{
+		node->RemoveBBVarLinked();
 	}
 	delete var;
 	variables.erase(variables.begin() + id);

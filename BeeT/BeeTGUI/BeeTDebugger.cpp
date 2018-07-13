@@ -232,10 +232,22 @@ void BeeTDebugger::MediPlayerWin()
 		}		
 	}
 	ImGui::SameLine();
-	if(ImGui::Button(ICON_PLAY))
+	if (isPlaying)
 	{
-
+		if (ImGui::Button(ICON_PAUSE))
+		{
+			isPlaying = false;
+		}
+		btCurrent->ApplySampleEffect(btCurrent->changes.size() - 1);
 	}
+	else
+	{
+		if (ImGui::Button(ICON_PLAY))
+		{
+			isPlaying = true;
+		}
+	}
+
 	ImGui::SameLine();
 	if (ImGui::Button("Next###media_next"))
 	{
