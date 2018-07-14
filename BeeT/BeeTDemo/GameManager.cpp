@@ -77,29 +77,29 @@ void GameManager::RemoveEntity(Entity * entity)
 		entitiesToRemove.push_back(entity);
 }
 
-void GameManager::OnInitBTTask(unsigned int btId, const char * taskId)
+void GameManager::OnInitBTTask(unsigned int btId, const char * taskId, const BBVar* extraData)
 {
 	auto task = taskOnInitFunctions.find(btId);
 	if (task != taskOnInitFunctions.end())
-		task->second(taskId);
+		task->second(taskId, extraData);
 }
 
-NodeStatus GameManager::UpdateBTTask(unsigned int btId, const char * taskId)
+NodeStatus GameManager::UpdateBTTask(unsigned int btId, const char * taskId, const BBVar* extraData)
 {
 	auto task = taskUpdateFunctions.find(btId);
 	if (task != taskUpdateFunctions.end())
 	{
-		return task->second(taskId);
+		return task->second(taskId, extraData);
 	}
 
 	return NS_FAILURE;
 }
 
-void GameManager::OnFinishBTTask(unsigned int btId, const char * taskId)
+void GameManager::OnFinishBTTask(unsigned int btId, const char * taskId, const BBVar* extraData)
 {
 	auto task = taskOnFinishFunctions.find(btId);
 	if (task != taskOnFinishFunctions.end())
-		task->second(taskId);
+		task->second(taskId, extraData);
 }
 
 void GameManager::DrawGridDebug(SDL_Renderer* renderer)

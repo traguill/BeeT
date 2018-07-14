@@ -59,8 +59,9 @@ public:
 protected:
 	// Render
 	SDL_Renderer* renderer;
-	SDL_Rect rect;
+	SDL_Rect rect, atlas;
 	SDL_Texture* texture = NULL;
+	float scale = 1.0f;
 
 	fPoint destination;
 

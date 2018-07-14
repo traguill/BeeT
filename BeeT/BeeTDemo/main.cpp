@@ -127,13 +127,13 @@ NodeStatus TaskCallbackFunc(unsigned int btId, const char* taskId, NodeFunction 
 	switch (func)
 	{
 	case NF_ONINIT:
-		g_GameManager->OnInitBTTask(btId, taskId);
+		g_GameManager->OnInitBTTask(btId, taskId, extraData);
 		break;
 	case NF_UPDATE:
-		ret = g_GameManager->UpdateBTTask(btId, taskId);
+		ret = g_GameManager->UpdateBTTask(btId, taskId, extraData);
 		break;
 	case NF_ONFINISH:
-		g_GameManager->OnFinishBTTask(btId, taskId);
+		g_GameManager->OnFinishBTTask(btId, taskId, extraData);
 		break;
 	}
 	g_Timer->Resume();

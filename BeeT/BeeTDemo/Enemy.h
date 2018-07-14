@@ -4,6 +4,10 @@
 #include "Entity.h"
 #include "../BeeTLib/beet.h"
 #include "../SharedData/SharedEnums.h"
+
+#include <functional>
+#include <string>
+#include <map>
 #include <vector>
 
 class Enemy : public Entity
@@ -16,12 +20,21 @@ public:
 
 	void OnCollision(Entity* otherEntity);
 
-	void BTTaskOnInit(const char* taskId);
-	NodeStatus BTTaskUpdate(const char* taskId);
-	void BTTaskOnFinish(const char* taskId);
+	void BTTaskOnInit(const char* taskId, const BBVar* extraData);
+	NodeStatus BTTaskUpdate(const char* taskId, const BBVar* extraData);
+	void BTTaskOnFinish(const char* taskId, const BBVar* extraData);
 
 private:
+	void BindTaskFunctions();
+
 	bool IsPlayerVisible()const;
+
+	void InitMoveTo(const BBVar* extraData);
+	NodeStatus UpdateMoveTo(const BBVar* extraData);
+
+	std::map<std::string, std::function<void(const BBVar*)>> OnInitFunctions;
+	std::map<std::string, std::function<NodeStatus(const BBVar*)>> OnUpdateFunctions;
+	std::map<std::string, std::function<void(const BBVar*)>> OnFinishFunctions;
 
 private:
 	unsigned int btId;

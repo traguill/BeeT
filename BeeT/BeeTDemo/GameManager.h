@@ -26,9 +26,9 @@ public:
 	void AddEntity(Entity* entity);
 	void RemoveEntity(Entity* entity);
 
-	void OnInitBTTask(unsigned int btId, const char* taskId);
-	NodeStatus UpdateBTTask(unsigned int btId, const char* taskId);
-	void OnFinishBTTask(unsigned int btId, const char* taskId);
+	void OnInitBTTask(unsigned int btId, const char* taskId, const BBVar* extraData);
+	NodeStatus UpdateBTTask(unsigned int btId, const char* taskId, const BBVar* extraData);
+	void OnFinishBTTask(unsigned int btId, const char* taskId, const BBVar* extraData);
 
 	// Debug
 	void DrawGridDebug(SDL_Renderer* renderer);
@@ -41,9 +41,9 @@ private:
 	SDL_Renderer* renderer;
 
 public:
-	std::map<int, std::function<void(const char*)>> taskOnInitFunctions; // Update
-	std::map<int, std::function<NodeStatus(const char*)>> taskUpdateFunctions; // Update
-	std::map<int, std::function<void(const char*)>> taskOnFinishFunctions; // Update
+	std::map<int, std::function<void(const char*, const BBVar*)>> taskOnInitFunctions; // Update
+	std::map<int, std::function<NodeStatus(const char*, const BBVar*)>> taskUpdateFunctions; // Update
+	std::map<int, std::function<void(const char*, const BBVar*)>> taskOnFinishFunctions; // Update
 
 	// Player
 	Player* player;

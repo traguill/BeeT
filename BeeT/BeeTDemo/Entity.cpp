@@ -25,7 +25,8 @@ bool Entity::LoadSprite(const char * path, int sizeX, int sizeY)
 		texture = SDL_CreateTextureFromSurface(renderer, surf);
 		if (texture)
 		{
-			rect = { int(pos.x - sizeX * 0.5f), int(pos.y - sizeY * 0.5f), sizeX, sizeY };
+			atlas = { int(pos.x - sizeX * 0.5f), int(pos.y - sizeY * 0.5f), sizeX, sizeY };
+			rect = SDL_Rect(atlas);
 			ret = true;
 		}
 	}
@@ -42,7 +43,15 @@ void Entity::Tick(float dt)
 void Entity::Draw()
 {
 	if (texture)
-		SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
+	{
+		SDL_Rect dstRect;
+		dstRect.w = rect.w * scale;
+		dstRect.h = rect.h * scale;
+		dstRect.x = pos.x - dstRect.w * 0.5f;
+		dstRect.y = pos.y - dstRect.h;
+
+		SDL_RenderCopyEx(renderer, texture, &rect, &dstRect, angle, NULL, SDL_FLIP_NONE);
+	}
 }
 
 void Entity::OnCollision(Entity * otherEntity)
@@ -82,7 +91,4 @@ iPoint Entity::GetTile() const
 void Entity::Move(float dt)
 {
 	pos += dir * dt * speed;
-
-	rect.x = pos.x - (rect.w * 0.5f);
-	rect.y = pos.y - (rect.h * 0.5f);
 }
