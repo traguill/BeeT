@@ -10,7 +10,7 @@
 Enemy::Enemy(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, posX, posY)
 {
 	type = ENEMY;
-	LoadSprite("Game/Panda.bmp", 32, 52);
+	LoadSprite("Game/pandaSprite.bmp", 16, 25);
 	g_Physics->AddBody(this, 16);
 
 	btId = BEET_LoadBehaviorTreeFromFile("Enemy.json", BEET_TRUE);
@@ -26,7 +26,8 @@ Enemy::Enemy(SDL_Renderer* renderer, float posX, float posY) : Entity(renderer, 
 	g_GameManager->taskOnFinishFunctions.insert(std::pair<int, std::function<void(const char*, const BBVar*)>>(btId, btTasksOnFinishFunc));
 
 	BindTaskFunctions();
-
+	InitAnimations();
+	scale = 2.0f;
 	speed = 50.0f;
 	dir.x = 0;
 	dir.y = 0;
@@ -39,7 +40,13 @@ Enemy::~Enemy()
 
 void Enemy::UpdateLogic(float dt)
 {
-	IsPlayerVisible();
+	//IsPlayerVisible();
+
+	if (ceil(dir.x) == 1.0f) currentAnim = &walkRight;
+	if (ceil(dir.x) == -1.0f) currentAnim = &walkLeft;
+	if (ceil(dir.y) == 1.0f) currentAnim = &walkDown;
+	if (ceil(dir.y) == -1.0f) currentAnim = &walkUp;
+	rect = currentAnim->GetCurrentFrame(dt);
 }
 
 void Enemy::OnCollision(Entity * otherEntity)
@@ -67,6 +74,42 @@ void Enemy::BTTaskOnFinish(const char * taskId, const BBVar* extraData)
 	auto task = OnFinishFunctions.find(taskId);
 	if (task != OnFinishFunctions.end())
 		task->second(extraData);
+}
+
+void Enemy::InitAnimations()
+{
+	// Walk
+	walkDown.frames.push_back({  0, 100, 16, 25 });
+	walkDown.frames.push_back({ 16, 100, 16, 25 });
+	walkDown.frames.push_back({ 32, 100, 16, 25 });
+	walkDown.frames.push_back({  0, 125, 16, 25 });
+	walkDown.frames.push_back({ 16, 125, 16, 25 });
+	walkDown.frames.push_back({ 32, 125, 16, 25 });
+	walkDown.speed = 10.0f;
+
+	walkLeft.frames.push_back({  0, 150, 16, 27 });
+	walkLeft.frames.push_back({ 16, 150, 16, 27 });
+	walkLeft.frames.push_back({ 32, 150, 16, 27 });
+	walkLeft.frames.push_back({  0, 177, 16, 27 });
+	walkLeft.frames.push_back({ 16, 177, 16, 27 });
+	walkLeft.frames.push_back({ 32, 177, 16, 27 });
+	walkLeft.speed = 8.0f;
+
+	walkRight.frames.push_back({ 48, 150, 16, 27 });
+	walkRight.frames.push_back({ 64, 150, 16, 27 });
+	walkRight.frames.push_back({ 80, 150, 16, 27 });
+	walkRight.frames.push_back({ 48, 177, 16, 27 });
+	walkRight.frames.push_back({ 64, 177, 16, 27 });
+	walkRight.frames.push_back({ 80, 177, 16, 27 });
+	walkRight.speed = 8.0f;
+
+	walkUp.frames.push_back({ 48, 100, 16, 25 });
+	walkUp.frames.push_back({ 64, 100, 16, 25 });
+	walkUp.frames.push_back({ 80, 100, 16, 25 });
+	walkUp.frames.push_back({ 48, 125, 16, 25 });
+	walkUp.frames.push_back({ 64, 125, 16, 25 });
+	walkUp.frames.push_back({ 80, 125, 16, 25 });
+	walkUp.speed = 10.0f;
 }
 
 void Enemy::BindTaskFunctions()

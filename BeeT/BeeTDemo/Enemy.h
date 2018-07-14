@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "../BeeTLib/beet.h"
 #include "../SharedData/SharedEnums.h"
+#include "Animation.h"
 
 #include <functional>
 #include <string>
@@ -25,6 +26,7 @@ public:
 	void BTTaskOnFinish(const char* taskId, const BBVar* extraData);
 
 private:
+	void InitAnimations();
 	void BindTaskFunctions();
 
 	bool IsPlayerVisible()const;
@@ -42,6 +44,13 @@ private:
 	int routeIdx = 0;
 	iPoint destination;
 	bool hasDestination = false;
+
+	Animation walkDown;
+	Animation walkUp;
+	Animation walkRight;
+	Animation walkLeft;
+
+	Animation* currentAnim;
 };
 #endif // !__ENEMY_H__
 
