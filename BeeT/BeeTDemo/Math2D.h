@@ -149,5 +149,51 @@ int GetSign(const T& number)
 {
 	return number >= 0.0f ? 1.0f : -1.0f;
 }
+
+// Trace a line and get all intersected tiles
+inline void TraceLine(float x1, float y1, float x2, float y2, std::vector<Point<int>>& tiles)
+{
+	tiles.clear();
+	const bool steep = (fabs(y2 - y1) > fabs(x2 - x1));
+	if (steep)
+	{
+		std::swap(x1, y1);
+		std::swap(x2, y2);
+	}
+
+	if (x1 > x2)
+	{
+		std::swap(x1, x2);
+		std::swap(y1, y2);
+	}
+
+	const float dx = x2 - x1;
+	const float dy = fabs(y2 - y1);
+
+	float error = dx / 2.0f;
+	const int ystep = (y1 < y2) ? 1 : -1;
+	int y = (int)y1;
+
+	const int maxX = (int)x2;
+
+	for (int x = (int)x1; x<maxX; x++)
+	{
+		if (steep)
+		{
+			tiles.push_back(iPoint(y, x));
+		}
+		else
+		{
+			tiles.push_back(iPoint(x, y));
+		}
+
+		error -= dy;
+		if (error < 0)
+		{
+			y += ystep;
+			error += dx;
+		}
+	}
+}
 #endif // !__MATH_2D_H__
 

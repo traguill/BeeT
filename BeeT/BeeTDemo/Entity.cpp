@@ -75,6 +75,12 @@ bool Entity::HasArrived()
 		isStop = true;
 		return true;
 	}
+	/*if (pos.DistanceTo(destination) < 4)
+	{
+		pos = destination;
+		isStop = true;
+		return true;
+	}*/
 	return false;
 }
 

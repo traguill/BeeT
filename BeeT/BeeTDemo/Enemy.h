@@ -34,6 +34,10 @@ private:
 	void InitMoveTo(const BBVar* extraData);
 	NodeStatus UpdateMoveTo(const BBVar* extraData);
 
+	void InitChase(const BBVar* extraData);
+	NodeStatus UpdateChase(const BBVar* extraData);
+	void FinishChase(const BBVar* extraData);
+
 	std::map<std::string, std::function<void(const BBVar*)>> OnInitFunctions;
 	std::map<std::string, std::function<NodeStatus(const BBVar*)>> OnUpdateFunctions;
 	std::map<std::string, std::function<void(const BBVar*)>> OnFinishFunctions;
@@ -45,12 +49,22 @@ private:
 	iPoint destination;
 	bool hasDestination = false;
 
+	Animation idleDown;
+	Animation idleUp;
+	Animation idleRight;
+	Animation idleLeft;
+
 	Animation walkDown;
 	Animation walkUp;
 	Animation walkRight;
 	Animation walkLeft;
 
 	Animation* currentAnim;
+
+	bool playerVisible = false;
+	iPoint lastSeenPlayerTile; 
+	fPoint lastDir;
+	float timer = 0.0f;
 };
 #endif // !__ENEMY_H__
 

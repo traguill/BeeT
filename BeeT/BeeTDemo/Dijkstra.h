@@ -27,6 +27,7 @@ public:
 	bool FindPath(const iPoint& tileStart, const iPoint& tileEnd, std::vector<iPoint>& path) const;
 
 	void WalkableTiles();
+	bool IsTileWalkable(int x, int y)const;
 private:
 	void SetWalkableMap(std::vector<iPoint*>* walkableTiles);
 	int CalculateDistance(const iPoint& start, const iPoint& end)const;

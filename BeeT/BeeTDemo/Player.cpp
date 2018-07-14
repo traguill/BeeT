@@ -140,7 +140,7 @@ void Player::InitAnimations()
 	walkDown.frames.push_back({  0, 82, 16, 28 });
 	walkDown.frames.push_back({ 16, 82, 16, 28 });
 	walkDown.frames.push_back({ 32, 82, 16, 28 });
-	walkDown.speed = 10.0f;
+	walkDown.speed = 12.0f;
 
 	walkLeft.frames.push_back({ 0 , 110, 17, 26 });
 	walkLeft.frames.push_back({ 17, 110, 17, 26 });
@@ -148,7 +148,7 @@ void Player::InitAnimations()
 	walkLeft.frames.push_back({ 0, 136, 17, 26 });
 	walkLeft.frames.push_back({ 17, 136, 17, 26 });
 	walkLeft.frames.push_back({ 34, 136, 17, 26 });
-	walkLeft.speed = 8.0f;
+	walkLeft.speed = 12.0f;
 
 	walkRight.frames.push_back({ 51, 110, 17, 26 });
 	walkRight.frames.push_back({ 68, 110, 17, 26 });
@@ -156,7 +156,7 @@ void Player::InitAnimations()
 	walkRight.frames.push_back({ 51, 136, 17, 26 });
 	walkRight.frames.push_back({ 68, 136, 17, 26 });
 	walkRight.frames.push_back({ 85, 136, 17, 26 });
-	walkRight.speed = 8.0f;
+	walkRight.speed = 12.0f;
 
 	walkUp.frames.push_back({ 48, 54, 16, 28 });
 	walkUp.frames.push_back({ 64, 54, 16, 28 });
@@ -164,7 +164,7 @@ void Player::InitAnimations()
 	walkUp.frames.push_back({ 48, 82, 16, 28 });
 	walkUp.frames.push_back({ 64, 82, 16, 28 });
 	walkUp.frames.push_back({ 80, 82, 16, 28 });
-	walkUp.speed = 10.0f;
+	walkUp.speed = 12.0f;
 
 	// Box
 	hideBox.frames.push_back({ 0, 162, 29, 38});

@@ -29,10 +29,16 @@ bool CompareNodes(const DNode* a, const DNode* b)
 
 bool Dijkstra::FindPath(const iPoint& tileStart, const iPoint & tileEnd, vector<iPoint>& path) const
 {
+	path.clear();
+	
 	if (!isWalkable[tileStart.x][tileStart.y] || !isWalkable[tileEnd.x][tileEnd.y])
 		return false;
 
-	path.clear();
+	if (tileStart == tileEnd)
+	{
+		path.push_back(tileEnd);
+		return true;
+	}
 
 	DNode grid[NUM_TILES_X][NUM_TILES_Y];
 	list<DNode*> toVisit;
@@ -145,4 +151,9 @@ void Dijkstra::WalkableTiles()
 	for (auto tile : t)
 		delete tile;
 	t.clear();
+}
+
+bool Dijkstra::IsTileWalkable(int x, int y) const
+{
+	return isWalkable[x][y];
 }
