@@ -46,6 +46,7 @@ int BeeT_dBT_GetSampleData(BeeT_dBT* bt, char** buf)
 	{
 		BeeT_Serializer* sData = BeeT_dSample_Serialize((BeeT_dSample*)it->data);
 		BeeT_Serializer_AppendArrayValue(data, sData);
+		BeeT_Serializer_Destroy(sData);
 		it = it->next;
 	}
 	int size = BeeT_Serializer_Serialize(data, buf);
