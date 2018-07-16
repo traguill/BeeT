@@ -44,7 +44,7 @@ Enemy::~Enemy()
 void Enemy::UpdateLogic(float dt)
 {
 	timer += dt;
-	if (timer > 0.4f)
+	if (timer > 0.2f)
 	{
 		playerVisible = IsPlayerVisible();
 		if (playerVisible)
@@ -187,7 +187,7 @@ bool Enemy::IsPlayerVisible() const
 	fVec playerVec = playerPosition - pos;
 	float angle = dir.AngleBetween(playerVec);
 
-	if (fabs(angle) < 90.0f)
+	if (fabs(angle) < 180.0f)
 	{
 		// Trace line
 		iPoint tile = GetTile();
