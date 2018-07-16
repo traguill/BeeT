@@ -25,6 +25,9 @@ int				BeeT_dBT_GetSampleData	(BeeT_dBT* bt, char** buf);					// Returns a buffe
 void			BeeT_dBT_ClearSampleData(BeeT_dBT* bt);
 float GetTimestamp(clock_t startTime); // Helper
 
+// Clears Sample types
+void BeeT_dBT_ClearBBVarChangeData(struct BeeT_sBBVar* n);
+
 
 // Blackboard variables change their value
 void BeeT_dBT_bbBool(BeeT_dBT* bt, struct BBVar* var, BEET_bool newValue);

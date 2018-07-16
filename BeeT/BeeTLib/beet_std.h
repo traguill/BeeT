@@ -55,7 +55,7 @@ BEET_API dequeue* InitDequeue();
 BEET_API void DestroyDequeue(dequeue* deq);
 
 BEET_API BEET_bool dequeue_is_empty(dequeue* d);
-BEET_API void dequeue_clear(dequeue* d);
+BEET_API void dequeue_clear(dequeue* d); // This causes memory leaks. Free the content of each item before calling clear
 BEET_API size_t dequeue_size(dequeue* d);
 
 BEET_API void dequeue_push_front(dequeue* d, void* value);
