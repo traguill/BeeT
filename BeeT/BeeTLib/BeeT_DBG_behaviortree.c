@@ -59,37 +59,24 @@ void BeeT_dBT_ClearSampleData(BeeT_dBT * bt)
 	while (item)
 	{
 		BeeT_dSample* s = (BeeT_dSample*)item->data;
-		if (s->type == BBVAR_CHANGED)
+		switch (s->type)
 		{
-			BeeT_sBBVar* n = (BeeT_sBBVar*)item->data;
-			BEET_free(n->name);
-			switch (n->varType)
-			{
-				case BV_BOOL:
-					BEET_free((BEET_bool*)n->oldValue);
-					BEET_free((BEET_bool*)n->newValue);
-					break;
-				case BV_INT:
-					BEET_free((int*)n->oldValue);
-					BEET_free((int*)n->newValue);
-					break;
-				case BV_FLOAT:
-					BEET_free((float*)n->oldValue);
-					BEET_free((float*)n->newValue);
-					break;
-				case BV_STRING:
-					BEET_free((char*)n->oldValue);
-					BEET_free((char*)n->newValue);
-					break;
-				case BV_VECTOR2:
-					BEET_free((float2*)n->oldValue);
-					BEET_free((float2*)n->newValue);
-					break;
-				case BV_VECTOR3:
-					BEET_free((float3*)n->oldValue);
-					BEET_free((float3*)n->newValue);
-					break;
-			}
+		case BBVAR_CHANGED:
+			BeeT_dBT_ClearBBVarChangeData((BeeT_sBBVar*)item->data);
+			BEET_free((BeeT_sBBVar*)item->data);
+			break;
+		case NODE_RETURNS:
+			BEET_free((BeeT_sNodeReturn*)item->data);
+			break;
+		case NEW_CURRENT_NODE:
+			BEET_free((BeeT_sNewCurrent*)item->data);
+			break;
+		case DECORATOR_CONDITION:
+			BEET_free((BeeT_sDecoratorCondition*)item->data);
+			break;
+		case BT_END:
+			BEET_free((BeeT_sBTEnd*)item->data);
+			break;
 		}
 		item = item->next;
 	}
@@ -99,6 +86,38 @@ void BeeT_dBT_ClearSampleData(BeeT_dBT * bt)
 float GetTimestamp(clock_t startTime)
 {
 	return ((float)(clock() - startTime) / (float)CLOCKS_PER_SEC);
+}
+
+void BeeT_dBT_ClearBBVarChangeData(BeeT_sBBVar* n)
+{
+	BEET_free(n->name);
+	switch (n->varType)
+	{
+	case BV_BOOL:
+		BEET_free((BEET_bool*)n->oldValue);
+		BEET_free((BEET_bool*)n->newValue);
+		break;
+	case BV_INT:
+		BEET_free((int*)n->oldValue);
+		BEET_free((int*)n->newValue);
+		break;
+	case BV_FLOAT:
+		BEET_free((float*)n->oldValue);
+		BEET_free((float*)n->newValue);
+		break;
+	case BV_STRING:
+		BEET_free((char*)n->oldValue);
+		BEET_free((char*)n->newValue);
+		break;
+	case BV_VECTOR2:
+		BEET_free((float2*)n->oldValue);
+		BEET_free((float2*)n->newValue);
+		break;
+	case BV_VECTOR3:
+		BEET_free((float3*)n->oldValue);
+		BEET_free((float3*)n->newValue);
+		break;
+	}
 }
 
 void BeeT_dBT_bbBool(BeeT_dBT * bt, BBVar * var, BEET_bool newValue)
