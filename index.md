@@ -1,11 +1,11 @@
-This is a test. 
+BeeT is a behavior tree library written in C with a visual editor and debugger.
 
-# Hello Index
+# Overview
 
-```c
-// Hello World
-int main()
-{
-  return 0;
-}
-```
+Text and stuff
+
+Gifs
+
+Images
+
+Wow :0 !!!
