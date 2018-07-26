@@ -2,13 +2,13 @@ BeeT is a behavior tree library written in C with a visual editor and debugger.
 
 # Overview
 
-Text and stuff
+| Visual Editor | Visual Debugger |
+|---------------|-----------------|
+| Testing some stuff | this fdkal |
 
-Gifs
+# Features
 
-Images
-
-Wow :0 !!!
+...
 
 [LibraryLink](docs/Library.md)
 
