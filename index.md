@@ -9,3 +9,8 @@ Gifs
 Images
 
 Wow :0 !!!
+
+[LibraryLink](docs/Library.md)
+
+# [Library](docs/Library.md)
+
