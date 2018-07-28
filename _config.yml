@@ -10,8 +10,8 @@ title: BeeT
 email: traguill1@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
  Behavior Tree Library
-baseurl: "/_posts" # the subpath of your site, e.g. /blog
-url: "https://traguill.github.io/BeeT/" # the base hostname & protocol for your site
+baseurl: "/BeeT" # the subpath of your site, e.g. /blog
+url: "https://traguill.github.io/BeeT" # the base hostname & protocol for your site
 
 # Social media profiles - feel free to add more here
 twitter_username: SBootstrap
