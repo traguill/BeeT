@@ -14,14 +14,13 @@ baseurl: "/BeeT" # the subpath of your site, e.g. /blog
 url: "https://traguill.github.io/BeeT" # the base hostname & protocol for your site
 
 # Social media profiles - feel free to add more here
-twitter_username: SBootstrap
-github_username:  BlackrockDigital
-facebook_username: StartBootstrap
+twitter_username: traguill
+github_username:  traguill/BeeT
 #instagram_username: beyonce
 #stackoverflow_url: https://
 #googleplus_username: BobMarley
 #skype_username: echo123
-#linkedin_url: https://
+linkedin_url: https://www.linkedin.com/in/traguill/
 
 # Address information
 address_street: 3034 Melrose Place
