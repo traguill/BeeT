@@ -314,21 +314,21 @@ footer .footer-below {
 }
 .btn-success {
     color: #fff;
-    background-color: #ffb828;
-    border-color: #ffb828;
+    background-color: #8eb9f7;
+    border-color: #8eb9f7;
     font-weight: 700;
 }
 .btn-success.active, .btn-success:active, .btn-success:focus, .btn-success:hover, .open .dropdown-toggle.btn-success {
     color: #fff;
-    background-color: #128f76;
-    border-color: #11866f;
+    background-color: #599bfb;
+    border-color: #599bfb;
 }
 .btn-success.disabled, .btn-success.disabled.active, .btn-success.disabled:active, .btn-success.disabled:focus, .btn-success.disabled:hover, .btn-success[disabled], .btn-success[disabled].active, .btn-success[disabled]:active, .btn-success[disabled]:focus, .btn-success[disabled]:hover, fieldset[disabled] .btn-success, fieldset[disabled] .btn-success.active, fieldset[disabled] .btn-success:active, fieldset[disabled] .btn-success:focus, fieldset[disabled] .btn-success:hover {
     background-color: #ffb828;
     border-color: #ffb828;
 }
 .btn-success .badge {
-    color: #ffb828;
+    color: #8eb9f7;
     background-color: #fff;
 }
 .btn-social {
