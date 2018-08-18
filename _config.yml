@@ -22,11 +22,5 @@ github_username:  traguill/BeeT
 #skype_username: echo123
 linkedin_url: https://www.linkedin.com/in/traguill/
 
-# Address information
-address_street: 3034 Melrose Place
-address_city: Beverly Hills
-address_state: CA
-address_zip: 90201
-
 # Build settings
 markdown: kramdown
