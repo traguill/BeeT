@@ -52,6 +52,11 @@ hr.star-primary:after {
     background-color: #fff;
     color: #111;
 }
+.special-section {
+    text-align: justify;
+    background: #ffb828;
+    color: #111;
+}
 .navbar-custom .navbar-brand, .navbar-custom .navbar-brand.active, .navbar-custom .navbar-brand:active, .navbar-custom .navbar-brand:focus, .navbar-custom .navbar-brand:hover, .navbar-custom .navbar-nav li a, header {
     color: #fff;
 }
